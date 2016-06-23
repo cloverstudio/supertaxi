@@ -1,0 +1,35 @@
+{
+  "name": "SuperTaxi",
+  "version": "0.0.1",
+  "author": {
+    "name": "Clover Studio Ltd"
+  },
+  "description": "SuperTaxi is simple ride share app",
+  "main": "src/server/index.js",
+  "private": false,
+  "dependencies": {
+    "JSON2": "latest",
+    "async": "1.4.0"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "build-js": "browserify src/client/js/main.js > public/js/bundle.js -d",
+    "watch-js": "watchify src/client/js/main.js -o public/js/bundle.js -v -d "
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "three": "global:THREE"
+  },
+  "apidoc": {
+    "name": "Super Taxi",
+    "version": "0.1.0",
+    "description": "Super Taxi Web API",
+    "title": "SuperTaxi Web API",
+    "url": ""
+  }
+}
