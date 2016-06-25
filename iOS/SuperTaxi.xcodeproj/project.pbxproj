@@ -58,6 +58,8 @@
 		C3B24B0F1D1C23F200508611 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B24B0E1D1C23F200508611 /* AVFoundation.framework */; };
 		C3B24B111D1C23F900508611 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B24B101D1C23F900508611 /* UIKit.framework */; };
 		C3B24B131D1C240000508611 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B24B121D1C240000508611 /* MapKit.framework */; };
+		C3C176291D1F234100D37B70 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C176281D1F234100D37B70 /* ForgotPasswordViewController.swift */; };
+		C3C1762B1D1F259100D37B70 /* EnterNewPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C1762A1D1F259100D37B70 /* EnterNewPasswordViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +167,8 @@
 		C3B24B0E1D1C23F200508611 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C3B24B101D1C23F900508611 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C3B24B121D1C240000508611 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C3C176281D1F234100D37B70 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		C3C1762A1D1F259100D37B70 /* EnterNewPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterNewPasswordViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -466,6 +470,8 @@
 				C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */,
 				C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */,
 				C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */,
+				C3C176281D1F234100D37B70 /* ForgotPasswordViewController.swift */,
+				C3C1762A1D1F259100D37B70 /* EnterNewPasswordViewController.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -632,6 +638,7 @@
 				C35433E01D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */,
 				C35433701D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m in Sources */,
 				C35433F31D1D624E00DD56B4 /* RECommonFunctions.m in Sources */,
+				C3C176291D1F234100D37B70 /* ForgotPasswordViewController.swift in Sources */,
 				C354339B1D1C4F0C00DD56B4 /* SVProgressHUD.m in Sources */,
 				C35433921D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift in Sources */,
 				C354338E1D1C4B6600DD56B4 /* UserHomeViewController.swift in Sources */,
@@ -644,6 +651,7 @@
 				C35433E11D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */,
 				C35433E21D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */,
 				C33289A21D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift in Sources */,
+				C3C1762B1D1F259100D37B70 /* EnterNewPasswordViewController.swift in Sources */,
 				C35433F41D1D624E00DD56B4 /* RESideMenu.m in Sources */,
 				C354338A1D1C4B3C00DD56B4 /* SelectProfileViewController.swift in Sources */,
 				C33289A81D1D9F9300EDF3DA /* UserLongPressViewController.swift in Sources */,
