@@ -1,0 +1,922 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C33289A21D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A11D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift */; };
+		C33289A41D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */; };
+		C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */; };
+		C33289A81D1D9F9300EDF3DA /* UserLongPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */; };
+		C33289AA1D1D9FD100EDF3DA /* TaxiStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A91D1D9FD100EDF3DA /* TaxiStartViewController.swift */; };
+		C35433511D1C491A00DD56B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C35433501D1C491A00DD56B4 /* Foundation.framework */; };
+		C35433531D1C492700DD56B4 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C35433521D1C492700DD56B4 /* CoreLocation.framework */; };
+		C35433601D1C4A1F00DD56B4 /* IQKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C354335C1D1C4A1F00DD56B4 /* IQKeyboardManager.m */; };
+		C35433611D1C4A1F00DD56B4 /* IQKeyboardReturnKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C354335E1D1C4A1F00DD56B4 /* IQKeyboardReturnKeyHandler.m */; };
+		C354336C1D1C4A3100DD56B4 /* IQNSArray+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433631D1C4A3100DD56B4 /* IQNSArray+Sort.m */; };
+		C354336D1D1C4A3100DD56B4 /* IQUITextFieldView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433651D1C4A3100DD56B4 /* IQUITextFieldView+Additions.m */; };
+		C354336E1D1C4A3100DD56B4 /* IQUIView+Hierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433671D1C4A3100DD56B4 /* IQUIView+Hierarchy.m */; };
+		C354336F1D1C4A3100DD56B4 /* IQUIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433691D1C4A3100DD56B4 /* IQUIViewController+Additions.m */; };
+		C35433701D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m in Sources */ = {isa = PBXBuildFile; fileRef = C354336B1D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m */; };
+		C35433751D1C4A4600DD56B4 /* IQSegmentedNextPrevious.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433741D1C4A4600DD56B4 /* IQSegmentedNextPrevious.m */; };
+		C35433781D1C4A5100DD56B4 /* IQTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433771D1C4A5100DD56B4 /* IQTextView.m */; };
+		C35433811D1C4A5B00DD56B4 /* IQBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C354337A1D1C4A5B00DD56B4 /* IQBarButtonItem.m */; };
+		C35433821D1C4A5B00DD56B4 /* IQTitleBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C354337C1D1C4A5B00DD56B4 /* IQTitleBarButtonItem.m */; };
+		C35433831D1C4A5B00DD56B4 /* IQToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C354337E1D1C4A5B00DD56B4 /* IQToolbar.m */; };
+		C35433841D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433801D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.m */; };
+		C35433861D1C4A6700DD56B4 /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C35433851D1C4A6700DD56B4 /* IQKeyboardManager.bundle */; };
+		C35433881D1C4B1200DD56B4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433871D1C4B1200DD56B4 /* LoginViewController.swift */; };
+		C354338A1D1C4B3C00DD56B4 /* SelectProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433891D1C4B3C00DD56B4 /* SelectProfileViewController.swift */; };
+		C354338C1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C354338B1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift */; };
+		C354338E1D1C4B6600DD56B4 /* UserHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C354338D1D1C4B6600DD56B4 /* UserHomeViewController.swift */; };
+		C35433901D1C4B9500DD56B4 /* TaxiCreateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C354338F1D1C4B9500DD56B4 /* TaxiCreateProfileViewController.swift */; };
+		C35433921D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433911D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift */; };
+		C35433991D1C4F0C00DD56B4 /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433951D1C4F0C00DD56B4 /* SVIndefiniteAnimatedView.m */; };
+		C354339A1D1C4F0C00DD56B4 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C35433961D1C4F0C00DD56B4 /* SVProgressHUD.bundle */; };
+		C354339B1D1C4F0C00DD56B4 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433981D1C4F0C00DD56B4 /* SVProgressHUD.m */; };
+		C35433A61D1C6C3A00DD56B4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */; };
+		C35433D21D1D58C800DD56B4 /* SlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D11D1D58C800DD56B4 /* SlideNavigationController.m */; };
+		C35433DE1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D51D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m */; };
+		C35433DF1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D71D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m */; };
+		C35433E01D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D91D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m */; };
+		C35433E11D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433DB1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m */; };
+		C35433E21D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */; };
+		C35433E91D1D5F5F00DD56B4 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433E81D1D5F5F00DD56B4 /* SWRevealViewController.m */; };
+		C35433F31D1D624E00DD56B4 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433EE1D1D624E00DD56B4 /* RECommonFunctions.m */; };
+		C35433F41D1D624E00DD56B4 /* RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433F01D1D624E00DD56B4 /* RESideMenu.m */; };
+		C35433F51D1D624E00DD56B4 /* UIViewController+RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433F21D1D624E00DD56B4 /* UIViewController+RESideMenu.m */; };
+		C35433F71D1D6A4100DD56B4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */; };
+		C3B24ADB1D1C236F00508611 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B24ADA1D1C236F00508611 /* AppDelegate.swift */; };
+		C3B24AE01D1C236F00508611 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3B24ADE1D1C236F00508611 /* Main.storyboard */; };
+		C3B24AE21D1C236F00508611 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3B24AE11D1C236F00508611 /* Assets.xcassets */; };
+		C3B24AE51D1C236F00508611 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3B24AE31D1C236F00508611 /* LaunchScreen.storyboard */; };
+		C3B24AF01D1C236F00508611 /* SuperTaxiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B24AEF1D1C236F00508611 /* SuperTaxiTests.swift */; };
+		C3B24AFB1D1C236F00508611 /* SuperTaxiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B24AFA1D1C236F00508611 /* SuperTaxiUITests.swift */; };
+		C3B24B0F1D1C23F200508611 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B24B0E1D1C23F200508611 /* AVFoundation.framework */; };
+		C3B24B111D1C23F900508611 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B24B101D1C23F900508611 /* UIKit.framework */; };
+		C3B24B131D1C240000508611 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B24B121D1C240000508611 /* MapKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C3B24AEC1D1C236F00508611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C3B24ACF1D1C236F00508611 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3B24AD61D1C236F00508611;
+			remoteInfo = SuperTaxi;
+		};
+		C3B24AF71D1C236F00508611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C3B24ACF1D1C236F00508611 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3B24AD61D1C236F00508611;
+			remoteInfo = SuperTaxi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C33289A11D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiRequestFromUserViewController.swift; sourceTree = "<group>"; };
+		C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiUserLocationViewController.swift; sourceTree = "<group>"; };
+		C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRequestReceivedViewController.swift; sourceTree = "<group>"; };
+		C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLongPressViewController.swift; sourceTree = "<group>"; };
+		C33289A91D1D9FD100EDF3DA /* TaxiStartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiStartViewController.swift; sourceTree = "<group>"; };
+		C35433501D1C491A00DD56B4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C35433521D1C492700DD56B4 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		C354335A1D1C4A1E00DD56B4 /* SuperTaxi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SuperTaxi-Bridging-Header.h"; sourceTree = "<group>"; };
+		C354335B1D1C4A1F00DD56B4 /* IQKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQKeyboardManager.h; path = ThirdParty/IQKeyboardManager/IQKeyboardManager.h; sourceTree = "<group>"; };
+		C354335C1D1C4A1F00DD56B4 /* IQKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQKeyboardManager.m; path = ThirdParty/IQKeyboardManager/IQKeyboardManager.m; sourceTree = "<group>"; };
+		C354335D1D1C4A1F00DD56B4 /* IQKeyboardReturnKeyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQKeyboardReturnKeyHandler.h; path = ThirdParty/IQKeyboardManager/IQKeyboardReturnKeyHandler.h; sourceTree = "<group>"; };
+		C354335E1D1C4A1F00DD56B4 /* IQKeyboardReturnKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQKeyboardReturnKeyHandler.m; path = ThirdParty/IQKeyboardManager/IQKeyboardReturnKeyHandler.m; sourceTree = "<group>"; };
+		C354335F1D1C4A1F00DD56B4 /* KeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyboardManager.h; path = ThirdParty/IQKeyboardManager/KeyboardManager.h; sourceTree = "<group>"; };
+		C35433621D1C4A3100DD56B4 /* IQNSArray+Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IQNSArray+Sort.h"; path = "ThirdParty/IQKeyboardManager/Categories/IQNSArray+Sort.h"; sourceTree = "<group>"; };
+		C35433631D1C4A3100DD56B4 /* IQNSArray+Sort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IQNSArray+Sort.m"; path = "ThirdParty/IQKeyboardManager/Categories/IQNSArray+Sort.m"; sourceTree = "<group>"; };
+		C35433641D1C4A3100DD56B4 /* IQUITextFieldView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IQUITextFieldView+Additions.h"; path = "ThirdParty/IQKeyboardManager/Categories/IQUITextFieldView+Additions.h"; sourceTree = "<group>"; };
+		C35433651D1C4A3100DD56B4 /* IQUITextFieldView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IQUITextFieldView+Additions.m"; path = "ThirdParty/IQKeyboardManager/Categories/IQUITextFieldView+Additions.m"; sourceTree = "<group>"; };
+		C35433661D1C4A3100DD56B4 /* IQUIView+Hierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IQUIView+Hierarchy.h"; path = "ThirdParty/IQKeyboardManager/Categories/IQUIView+Hierarchy.h"; sourceTree = "<group>"; };
+		C35433671D1C4A3100DD56B4 /* IQUIView+Hierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IQUIView+Hierarchy.m"; path = "ThirdParty/IQKeyboardManager/Categories/IQUIView+Hierarchy.m"; sourceTree = "<group>"; };
+		C35433681D1C4A3100DD56B4 /* IQUIViewController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IQUIViewController+Additions.h"; path = "ThirdParty/IQKeyboardManager/Categories/IQUIViewController+Additions.h"; sourceTree = "<group>"; };
+		C35433691D1C4A3100DD56B4 /* IQUIViewController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IQUIViewController+Additions.m"; path = "ThirdParty/IQKeyboardManager/Categories/IQUIViewController+Additions.m"; sourceTree = "<group>"; };
+		C354336A1D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IQUIWindow+Hierarchy.h"; path = "ThirdParty/IQKeyboardManager/Categories/IQUIWindow+Hierarchy.h"; sourceTree = "<group>"; };
+		C354336B1D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IQUIWindow+Hierarchy.m"; path = "ThirdParty/IQKeyboardManager/Categories/IQUIWindow+Hierarchy.m"; sourceTree = "<group>"; };
+		C35433711D1C4A3D00DD56B4 /* IQKeyboardManagerConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQKeyboardManagerConstants.h; path = ThirdParty/IQKeyboardManager/Constants/IQKeyboardManagerConstants.h; sourceTree = "<group>"; };
+		C35433721D1C4A3D00DD56B4 /* IQKeyboardManagerConstantsInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQKeyboardManagerConstantsInternal.h; path = ThirdParty/IQKeyboardManager/Constants/IQKeyboardManagerConstantsInternal.h; sourceTree = "<group>"; };
+		C35433731D1C4A4600DD56B4 /* IQSegmentedNextPrevious.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQSegmentedNextPrevious.h; path = ThirdParty/IQKeyboardManager/IQSegmentedNextPrevious/IQSegmentedNextPrevious.h; sourceTree = "<group>"; };
+		C35433741D1C4A4600DD56B4 /* IQSegmentedNextPrevious.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQSegmentedNextPrevious.m; path = ThirdParty/IQKeyboardManager/IQSegmentedNextPrevious/IQSegmentedNextPrevious.m; sourceTree = "<group>"; };
+		C35433761D1C4A5100DD56B4 /* IQTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQTextView.h; path = ThirdParty/IQKeyboardManager/IQTextView/IQTextView.h; sourceTree = "<group>"; };
+		C35433771D1C4A5100DD56B4 /* IQTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQTextView.m; path = ThirdParty/IQKeyboardManager/IQTextView/IQTextView.m; sourceTree = "<group>"; };
+		C35433791D1C4A5B00DD56B4 /* IQBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQBarButtonItem.h; path = ThirdParty/IQKeyboardManager/IQToolbar/IQBarButtonItem.h; sourceTree = "<group>"; };
+		C354337A1D1C4A5B00DD56B4 /* IQBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQBarButtonItem.m; path = ThirdParty/IQKeyboardManager/IQToolbar/IQBarButtonItem.m; sourceTree = "<group>"; };
+		C354337B1D1C4A5B00DD56B4 /* IQTitleBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQTitleBarButtonItem.h; path = ThirdParty/IQKeyboardManager/IQToolbar/IQTitleBarButtonItem.h; sourceTree = "<group>"; };
+		C354337C1D1C4A5B00DD56B4 /* IQTitleBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQTitleBarButtonItem.m; path = ThirdParty/IQKeyboardManager/IQToolbar/IQTitleBarButtonItem.m; sourceTree = "<group>"; };
+		C354337D1D1C4A5B00DD56B4 /* IQToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IQToolbar.h; path = ThirdParty/IQKeyboardManager/IQToolbar/IQToolbar.h; sourceTree = "<group>"; };
+		C354337E1D1C4A5B00DD56B4 /* IQToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IQToolbar.m; path = ThirdParty/IQKeyboardManager/IQToolbar/IQToolbar.m; sourceTree = "<group>"; };
+		C354337F1D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IQUIView+IQKeyboardToolbar.h"; path = "ThirdParty/IQKeyboardManager/IQToolbar/IQUIView+IQKeyboardToolbar.h"; sourceTree = "<group>"; };
+		C35433801D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IQUIView+IQKeyboardToolbar.m"; path = "ThirdParty/IQKeyboardManager/IQToolbar/IQUIView+IQKeyboardToolbar.m"; sourceTree = "<group>"; };
+		C35433851D1C4A6700DD56B4 /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = IQKeyboardManager.bundle; path = ThirdParty/IQKeyboardManager/Resources/IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		C35433871D1C4B1200DD56B4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C35433891D1C4B3C00DD56B4 /* SelectProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectProfileViewController.swift; sourceTree = "<group>"; };
+		C354338B1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatingUserProfileViewController.swift; sourceTree = "<group>"; };
+		C354338D1D1C4B6600DD56B4 /* UserHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHomeViewController.swift; sourceTree = "<group>"; };
+		C354338F1D1C4B9500DD56B4 /* TaxiCreateProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiCreateProfileViewController.swift; sourceTree = "<group>"; };
+		C35433911D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiProfileMapViewController.swift; sourceTree = "<group>"; };
+		C35433941D1C4F0C00DD56B4 /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVIndefiniteAnimatedView.h; path = ThirdParty/SVProgressHUD/SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
+		C35433951D1C4F0C00DD56B4 /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVIndefiniteAnimatedView.m; path = ThirdParty/SVProgressHUD/SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
+		C35433961D1C4F0C00DD56B4 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = SVProgressHUD.bundle; path = ThirdParty/SVProgressHUD/SVProgressHUD.bundle; sourceTree = "<group>"; };
+		C35433971D1C4F0C00DD56B4 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVProgressHUD.h; path = ThirdParty/SVProgressHUD/SVProgressHUD.h; sourceTree = "<group>"; };
+		C35433981D1C4F0C00DD56B4 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVProgressHUD.m; path = ThirdParty/SVProgressHUD/SVProgressHUD.m; sourceTree = "<group>"; };
+		C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		C35433D01D1D58C800DD56B4 /* SlideNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationController.h; path = ThirdParty/SlideMenu/SlideNavigationController/SlideNavigationController.h; sourceTree = "<group>"; };
+		C35433D11D1D58C800DD56B4 /* SlideNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationController.m; path = ThirdParty/SlideMenu/SlideNavigationController/SlideNavigationController.m; sourceTree = "<group>"; };
+		C35433D31D1D58DE00DD56B4 /* SlideNavigationContorllerAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimator.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimator.h; sourceTree = "<group>"; };
+		C35433D41D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorFade.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorFade.h; sourceTree = "<group>"; };
+		C35433D51D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorFade.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorFade.m; sourceTree = "<group>"; };
+		C35433D61D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorScale.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScale.h; sourceTree = "<group>"; };
+		C35433D71D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorScale.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScale.m; sourceTree = "<group>"; };
+		C35433D81D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorScaleAndFade.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScaleAndFade.h; sourceTree = "<group>"; };
+		C35433D91D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorScaleAndFade.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScaleAndFade.m; sourceTree = "<group>"; };
+		C35433DA1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorSlide.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlide.h; sourceTree = "<group>"; };
+		C35433DB1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorSlide.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlide.m; sourceTree = "<group>"; };
+		C35433DC1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorSlideAndFade.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlideAndFade.h; sourceTree = "<group>"; };
+		C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorSlideAndFade.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlideAndFade.m; sourceTree = "<group>"; };
+		C35433E71D1D5F5F00DD56B4 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = ThirdParty/SWRevealViewController/SWRevealViewController.h; sourceTree = "<group>"; };
+		C35433E81D1D5F5F00DD56B4 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = ThirdParty/SWRevealViewController/SWRevealViewController.m; sourceTree = "<group>"; };
+		C35433ED1D1D624E00DD56B4 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommonFunctions.h; sourceTree = "<group>"; };
+		C35433EE1D1D624E00DD56B4 /* RECommonFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommonFunctions.m; sourceTree = "<group>"; };
+		C35433EF1D1D624E00DD56B4 /* RESideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESideMenu.h; sourceTree = "<group>"; };
+		C35433F01D1D624E00DD56B4 /* RESideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESideMenu.m; sourceTree = "<group>"; };
+		C35433F11D1D624E00DD56B4 /* UIViewController+RESideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RESideMenu.h"; sourceTree = "<group>"; };
+		C35433F21D1D624E00DD56B4 /* UIViewController+RESideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RESideMenu.m"; sourceTree = "<group>"; };
+		C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C3B24AD71D1C236F00508611 /* SuperTaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperTaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3B24ADA1D1C236F00508611 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C3B24ADF1D1C236F00508611 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C3B24AE11D1C236F00508611 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C3B24AE41D1C236F00508611 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C3B24AE61D1C236F00508611 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3B24AEB1D1C236F00508611 /* SuperTaxiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuperTaxiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3B24AEF1D1C236F00508611 /* SuperTaxiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTaxiTests.swift; sourceTree = "<group>"; };
+		C3B24AF11D1C236F00508611 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3B24AF61D1C236F00508611 /* SuperTaxiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuperTaxiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3B24AFA1D1C236F00508611 /* SuperTaxiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperTaxiUITests.swift; sourceTree = "<group>"; };
+		C3B24AFC1D1C236F00508611 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3B24B0E1D1C23F200508611 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		C3B24B101D1C23F900508611 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C3B24B121D1C240000508611 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C3B24AD41D1C236F00508611 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C35433531D1C492700DD56B4 /* CoreLocation.framework in Frameworks */,
+				C35433511D1C491A00DD56B4 /* Foundation.framework in Frameworks */,
+				C3B24B131D1C240000508611 /* MapKit.framework in Frameworks */,
+				C3B24B111D1C23F900508611 /* UIKit.framework in Frameworks */,
+				C3B24B0F1D1C23F200508611 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3B24AE81D1C236F00508611 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3B24AF31D1C236F00508611 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C354334E1D1C48AC00DD56B4 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				C3B24ADA1D1C236F00508611 /* AppDelegate.swift */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		C354334F1D1C48F100DD56B4 /* IQKeyboardManager */ = {
+			isa = PBXGroup;
+			children = (
+				C354335B1D1C4A1F00DD56B4 /* IQKeyboardManager.h */,
+				C354335C1D1C4A1F00DD56B4 /* IQKeyboardManager.m */,
+				C354335D1D1C4A1F00DD56B4 /* IQKeyboardReturnKeyHandler.h */,
+				C354335E1D1C4A1F00DD56B4 /* IQKeyboardReturnKeyHandler.m */,
+				C354335F1D1C4A1F00DD56B4 /* KeyboardManager.h */,
+				C35433591D1C49EE00DD56B4 /* Categories */,
+				C35433581D1C49E600DD56B4 /* Constants */,
+				C35433571D1C49D800DD56B4 /* IQSegmentedNextPrevious */,
+				C35433561D1C49CB00DD56B4 /* IQTextView */,
+				C35433551D1C49C400DD56B4 /* IQToolbar */,
+				C35433541D1C49BB00DD56B4 /* Resources */,
+				C354335A1D1C4A1E00DD56B4 /* SuperTaxi-Bridging-Header.h */,
+			);
+			name = IQKeyboardManager;
+			sourceTree = "<group>";
+		};
+		C35433541D1C49BB00DD56B4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C35433851D1C4A6700DD56B4 /* IQKeyboardManager.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		C35433551D1C49C400DD56B4 /* IQToolbar */ = {
+			isa = PBXGroup;
+			children = (
+				C35433791D1C4A5B00DD56B4 /* IQBarButtonItem.h */,
+				C354337A1D1C4A5B00DD56B4 /* IQBarButtonItem.m */,
+				C354337B1D1C4A5B00DD56B4 /* IQTitleBarButtonItem.h */,
+				C354337C1D1C4A5B00DD56B4 /* IQTitleBarButtonItem.m */,
+				C354337D1D1C4A5B00DD56B4 /* IQToolbar.h */,
+				C354337E1D1C4A5B00DD56B4 /* IQToolbar.m */,
+				C354337F1D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.h */,
+				C35433801D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.m */,
+			);
+			name = IQToolbar;
+			sourceTree = "<group>";
+		};
+		C35433561D1C49CB00DD56B4 /* IQTextView */ = {
+			isa = PBXGroup;
+			children = (
+				C35433761D1C4A5100DD56B4 /* IQTextView.h */,
+				C35433771D1C4A5100DD56B4 /* IQTextView.m */,
+			);
+			name = IQTextView;
+			sourceTree = "<group>";
+		};
+		C35433571D1C49D800DD56B4 /* IQSegmentedNextPrevious */ = {
+			isa = PBXGroup;
+			children = (
+				C35433731D1C4A4600DD56B4 /* IQSegmentedNextPrevious.h */,
+				C35433741D1C4A4600DD56B4 /* IQSegmentedNextPrevious.m */,
+			);
+			name = IQSegmentedNextPrevious;
+			sourceTree = "<group>";
+		};
+		C35433581D1C49E600DD56B4 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				C35433711D1C4A3D00DD56B4 /* IQKeyboardManagerConstants.h */,
+				C35433721D1C4A3D00DD56B4 /* IQKeyboardManagerConstantsInternal.h */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		C35433591D1C49EE00DD56B4 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				C35433621D1C4A3100DD56B4 /* IQNSArray+Sort.h */,
+				C35433631D1C4A3100DD56B4 /* IQNSArray+Sort.m */,
+				C35433641D1C4A3100DD56B4 /* IQUITextFieldView+Additions.h */,
+				C35433651D1C4A3100DD56B4 /* IQUITextFieldView+Additions.m */,
+				C35433661D1C4A3100DD56B4 /* IQUIView+Hierarchy.h */,
+				C35433671D1C4A3100DD56B4 /* IQUIView+Hierarchy.m */,
+				C35433681D1C4A3100DD56B4 /* IQUIViewController+Additions.h */,
+				C35433691D1C4A3100DD56B4 /* IQUIViewController+Additions.m */,
+				C354336A1D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.h */,
+				C354336B1D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		C35433931D1C4ED400DD56B4 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				C35433941D1C4F0C00DD56B4 /* SVIndefiniteAnimatedView.h */,
+				C35433951D1C4F0C00DD56B4 /* SVIndefiniteAnimatedView.m */,
+				C35433961D1C4F0C00DD56B4 /* SVProgressHUD.bundle */,
+				C35433971D1C4F0C00DD56B4 /* SVProgressHUD.h */,
+				C35433981D1C4F0C00DD56B4 /* SVProgressHUD.m */,
+			);
+			name = SVProgressHUD;
+			sourceTree = "<group>";
+		};
+		C35433CD1D1D584C00DD56B4 /* SlideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				C35433CF1D1D586100DD56B4 /* Animations */,
+				C35433CE1D1D585500DD56B4 /* SlideNavigationController */,
+			);
+			name = SlideMenu;
+			sourceTree = "<group>";
+		};
+		C35433CE1D1D585500DD56B4 /* SlideNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				C35433D01D1D58C800DD56B4 /* SlideNavigationController.h */,
+				C35433D11D1D58C800DD56B4 /* SlideNavigationController.m */,
+			);
+			name = SlideNavigationController;
+			sourceTree = "<group>";
+		};
+		C35433CF1D1D586100DD56B4 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				C35433D31D1D58DE00DD56B4 /* SlideNavigationContorllerAnimator.h */,
+				C35433D41D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.h */,
+				C35433D51D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m */,
+				C35433D61D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.h */,
+				C35433D71D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m */,
+				C35433D81D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.h */,
+				C35433D91D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m */,
+				C35433DA1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.h */,
+				C35433DB1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m */,
+				C35433DC1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.h */,
+				C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */,
+			);
+			name = Animations;
+			sourceTree = "<group>";
+		};
+		C35433E31D1D5F1A00DD56B4 /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C35433E71D1D5F5F00DD56B4 /* SWRevealViewController.h */,
+				C35433E81D1D5F5F00DD56B4 /* SWRevealViewController.m */,
+			);
+			name = SWRevealViewController;
+			sourceTree = "<group>";
+		};
+		C35433EC1D1D624E00DD56B4 /* RESideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				C35433ED1D1D624E00DD56B4 /* RECommonFunctions.h */,
+				C35433EE1D1D624E00DD56B4 /* RECommonFunctions.m */,
+				C35433EF1D1D624E00DD56B4 /* RESideMenu.h */,
+				C35433F01D1D624E00DD56B4 /* RESideMenu.m */,
+				C35433F11D1D624E00DD56B4 /* UIViewController+RESideMenu.h */,
+				C35433F21D1D624E00DD56B4 /* UIViewController+RESideMenu.m */,
+			);
+			path = RESideMenu;
+			sourceTree = "<group>";
+		};
+		C3B24ACE1D1C236F00508611 = {
+			isa = PBXGroup;
+			children = (
+				C3B24AD91D1C236F00508611 /* SuperTaxi */,
+				C3B24AEE1D1C236F00508611 /* SuperTaxiTests */,
+				C3B24AF91D1C236F00508611 /* SuperTaxiUITests */,
+				C3B24B0D1D1C23E300508611 /* Frameworks */,
+				C3B24AD81D1C236F00508611 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C3B24AD81D1C236F00508611 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C3B24AD71D1C236F00508611 /* SuperTaxi.app */,
+				C3B24AEB1D1C236F00508611 /* SuperTaxiTests.xctest */,
+				C3B24AF61D1C236F00508611 /* SuperTaxiUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C3B24AD91D1C236F00508611 /* SuperTaxi */ = {
+			isa = PBXGroup;
+			children = (
+				C3B24B0A1D1C23A700508611 /* Controllers */,
+				C3B24B091D1C23A200508611 /* View */,
+				C3B24B081D1C239900508611 /* ThirdPary */,
+				C3B24AE61D1C236F00508611 /* Info.plist */,
+			);
+			path = SuperTaxi;
+			sourceTree = "<group>";
+		};
+		C3B24AEE1D1C236F00508611 /* SuperTaxiTests */ = {
+			isa = PBXGroup;
+			children = (
+				C3B24AEF1D1C236F00508611 /* SuperTaxiTests.swift */,
+				C3B24AF11D1C236F00508611 /* Info.plist */,
+			);
+			path = SuperTaxiTests;
+			sourceTree = "<group>";
+		};
+		C3B24AF91D1C236F00508611 /* SuperTaxiUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C3B24AFA1D1C236F00508611 /* SuperTaxiUITests.swift */,
+				C3B24AFC1D1C236F00508611 /* Info.plist */,
+			);
+			path = SuperTaxiUITests;
+			sourceTree = "<group>";
+		};
+		C3B24B081D1C239900508611 /* ThirdPary */ = {
+			isa = PBXGroup;
+			children = (
+				C35433EC1D1D624E00DD56B4 /* RESideMenu */,
+				C35433E31D1D5F1A00DD56B4 /* SWRevealViewController */,
+				C35433CD1D1D584C00DD56B4 /* SlideMenu */,
+				C35433931D1C4ED400DD56B4 /* SVProgressHUD */,
+				C354334F1D1C48F100DD56B4 /* IQKeyboardManager */,
+			);
+			name = ThirdPary;
+			sourceTree = "<group>";
+		};
+		C3B24B091D1C23A200508611 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C3B24ADE1D1C236F00508611 /* Main.storyboard */,
+				C3B24AE11D1C236F00508611 /* Assets.xcassets */,
+				C3B24AE31D1C236F00508611 /* LaunchScreen.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C3B24B0A1D1C23A700508611 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C354334E1D1C48AC00DD56B4 /* AppDelegate */,
+				C3B24B0C1D1C23D300508611 /* User */,
+				C3B24B0B1D1C23CB00508611 /* TaxiDriver */,
+				C35433871D1C4B1200DD56B4 /* LoginViewController.swift */,
+				C35433891D1C4B3C00DD56B4 /* SelectProfileViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		C3B24B0B1D1C23CB00508611 /* TaxiDriver */ = {
+			isa = PBXGroup;
+			children = (
+				C354338F1D1C4B9500DD56B4 /* TaxiCreateProfileViewController.swift */,
+				C35433911D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift */,
+				C33289A11D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift */,
+				C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */,
+				C33289A91D1D9FD100EDF3DA /* TaxiStartViewController.swift */,
+			);
+			name = TaxiDriver;
+			sourceTree = "<group>";
+		};
+		C3B24B0C1D1C23D300508611 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				C354338B1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift */,
+				C354338D1D1C4B6600DD56B4 /* UserHomeViewController.swift */,
+				C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */,
+				C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */,
+				C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */,
+				C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		C3B24B0D1D1C23E300508611 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C35433521D1C492700DD56B4 /* CoreLocation.framework */,
+				C35433501D1C491A00DD56B4 /* Foundation.framework */,
+				C3B24B121D1C240000508611 /* MapKit.framework */,
+				C3B24B101D1C23F900508611 /* UIKit.framework */,
+				C3B24B0E1D1C23F200508611 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C3B24AD61D1C236F00508611 /* SuperTaxi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3B24AFF1D1C236F00508611 /* Build configuration list for PBXNativeTarget "SuperTaxi" */;
+			buildPhases = (
+				C3B24AD31D1C236F00508611 /* Sources */,
+				C3B24AD41D1C236F00508611 /* Frameworks */,
+				C3B24AD51D1C236F00508611 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SuperTaxi;
+			productName = SuperTaxi;
+			productReference = C3B24AD71D1C236F00508611 /* SuperTaxi.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C3B24AEA1D1C236F00508611 /* SuperTaxiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3B24B021D1C236F00508611 /* Build configuration list for PBXNativeTarget "SuperTaxiTests" */;
+			buildPhases = (
+				C3B24AE71D1C236F00508611 /* Sources */,
+				C3B24AE81D1C236F00508611 /* Frameworks */,
+				C3B24AE91D1C236F00508611 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C3B24AED1D1C236F00508611 /* PBXTargetDependency */,
+			);
+			name = SuperTaxiTests;
+			productName = SuperTaxiTests;
+			productReference = C3B24AEB1D1C236F00508611 /* SuperTaxiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C3B24AF51D1C236F00508611 /* SuperTaxiUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3B24B051D1C236F00508611 /* Build configuration list for PBXNativeTarget "SuperTaxiUITests" */;
+			buildPhases = (
+				C3B24AF21D1C236F00508611 /* Sources */,
+				C3B24AF31D1C236F00508611 /* Frameworks */,
+				C3B24AF41D1C236F00508611 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C3B24AF81D1C236F00508611 /* PBXTargetDependency */,
+			);
+			name = SuperTaxiUITests;
+			productName = SuperTaxiUITests;
+			productReference = C3B24AF61D1C236F00508611 /* SuperTaxiUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C3B24ACF1D1C236F00508611 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Jensen Pich";
+				TargetAttributes = {
+					C3B24AD61D1C236F00508611 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = AJBPMM8M4V;
+					};
+					C3B24AEA1D1C236F00508611 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = C3B24AD61D1C236F00508611;
+					};
+					C3B24AF51D1C236F00508611 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = C3B24AD61D1C236F00508611;
+					};
+				};
+			};
+			buildConfigurationList = C3B24AD21D1C236F00508611 /* Build configuration list for PBXProject "SuperTaxi" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C3B24ACE1D1C236F00508611;
+			productRefGroup = C3B24AD81D1C236F00508611 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C3B24AD61D1C236F00508611 /* SuperTaxi */,
+				C3B24AEA1D1C236F00508611 /* SuperTaxiTests */,
+				C3B24AF51D1C236F00508611 /* SuperTaxiUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C3B24AD51D1C236F00508611 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C354339A1D1C4F0C00DD56B4 /* SVProgressHUD.bundle in Resources */,
+				C3B24AE51D1C236F00508611 /* LaunchScreen.storyboard in Resources */,
+				C3B24AE21D1C236F00508611 /* Assets.xcassets in Resources */,
+				C35433861D1C4A6700DD56B4 /* IQKeyboardManager.bundle in Resources */,
+				C3B24AE01D1C236F00508611 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3B24AE91D1C236F00508611 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3B24AF41D1C236F00508611 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C3B24AD31D1C236F00508611 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C33289A41D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift in Sources */,
+				C354338C1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift in Sources */,
+				C35433821D1C4A5B00DD56B4 /* IQTitleBarButtonItem.m in Sources */,
+				C35433841D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.m in Sources */,
+				C35433D21D1D58C800DD56B4 /* SlideNavigationController.m in Sources */,
+				C354336D1D1C4A3100DD56B4 /* IQUITextFieldView+Additions.m in Sources */,
+				C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */,
+				C35433601D1C4A1F00DD56B4 /* IQKeyboardManager.m in Sources */,
+				C35433991D1C4F0C00DD56B4 /* SVIndefiniteAnimatedView.m in Sources */,
+				C35433A61D1C6C3A00DD56B4 /* MenuViewController.swift in Sources */,
+				C35433811D1C4A5B00DD56B4 /* IQBarButtonItem.m in Sources */,
+				C33289AA1D1D9FD100EDF3DA /* TaxiStartViewController.swift in Sources */,
+				C354336F1D1C4A3100DD56B4 /* IQUIViewController+Additions.m in Sources */,
+				C35433E01D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */,
+				C35433701D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m in Sources */,
+				C35433F31D1D624E00DD56B4 /* RECommonFunctions.m in Sources */,
+				C354339B1D1C4F0C00DD56B4 /* SVProgressHUD.m in Sources */,
+				C35433921D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift in Sources */,
+				C354338E1D1C4B6600DD56B4 /* UserHomeViewController.swift in Sources */,
+				C35433611D1C4A1F00DD56B4 /* IQKeyboardReturnKeyHandler.m in Sources */,
+				C3B24ADB1D1C236F00508611 /* AppDelegate.swift in Sources */,
+				C35433E91D1D5F5F00DD56B4 /* SWRevealViewController.m in Sources */,
+				C35433831D1C4A5B00DD56B4 /* IQToolbar.m in Sources */,
+				C354336C1D1C4A3100DD56B4 /* IQNSArray+Sort.m in Sources */,
+				C35433901D1C4B9500DD56B4 /* TaxiCreateProfileViewController.swift in Sources */,
+				C35433E11D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */,
+				C35433E21D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */,
+				C33289A21D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift in Sources */,
+				C35433F41D1D624E00DD56B4 /* RESideMenu.m in Sources */,
+				C354338A1D1C4B3C00DD56B4 /* SelectProfileViewController.swift in Sources */,
+				C33289A81D1D9F9300EDF3DA /* UserLongPressViewController.swift in Sources */,
+				C35433881D1C4B1200DD56B4 /* LoginViewController.swift in Sources */,
+				C35433751D1C4A4600DD56B4 /* IQSegmentedNextPrevious.m in Sources */,
+				C35433781D1C4A5100DD56B4 /* IQTextView.m in Sources */,
+				C35433F71D1D6A4100DD56B4 /* SettingsViewController.swift in Sources */,
+				C354336E1D1C4A3100DD56B4 /* IQUIView+Hierarchy.m in Sources */,
+				C35433DE1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m in Sources */,
+				C35433DF1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m in Sources */,
+				C35433F51D1D624E00DD56B4 /* UIViewController+RESideMenu.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3B24AE71D1C236F00508611 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3B24AF01D1C236F00508611 /* SuperTaxiTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3B24AF21D1C236F00508611 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C3B24AFB1D1C236F00508611 /* SuperTaxiUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C3B24AED1D1C236F00508611 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3B24AD61D1C236F00508611 /* SuperTaxi */;
+			targetProxy = C3B24AEC1D1C236F00508611 /* PBXContainerItemProxy */;
+		};
+		C3B24AF81D1C236F00508611 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3B24AD61D1C236F00508611 /* SuperTaxi */;
+			targetProxy = C3B24AF71D1C236F00508611 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C3B24ADE1D1C236F00508611 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C3B24ADF1D1C236F00508611 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C3B24AE31D1C236F00508611 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C3B24AE41D1C236F00508611 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C3B24AFD1D1C236F00508611 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C3B24AFE1D1C236F00508611 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C3B24B001D1C236F00508611 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
+				INFOPLIST_FILE = SuperTaxi/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
+				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C3B24B011D1C236F00508611 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
+				INFOPLIST_FILE = SuperTaxi/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
+				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		C3B24B031D1C236F00508611 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SuperTaxiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SuperTaxi.app/SuperTaxi";
+			};
+			name = Debug;
+		};
+		C3B24B041D1C236F00508611 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SuperTaxiTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SuperTaxi.app/SuperTaxi";
+			};
+			name = Release;
+		};
+		C3B24B061D1C236F00508611 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SuperTaxiUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SuperTaxi;
+			};
+			name = Debug;
+		};
+		C3B24B071D1C236F00508611 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SuperTaxiUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxiUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SuperTaxi;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C3B24AD21D1C236F00508611 /* Build configuration list for PBXProject "SuperTaxi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3B24AFD1D1C236F00508611 /* Debug */,
+				C3B24AFE1D1C236F00508611 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C3B24AFF1D1C236F00508611 /* Build configuration list for PBXNativeTarget "SuperTaxi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3B24B001D1C236F00508611 /* Debug */,
+				C3B24B011D1C236F00508611 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C3B24B021D1C236F00508611 /* Build configuration list for PBXNativeTarget "SuperTaxiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3B24B031D1C236F00508611 /* Debug */,
+				C3B24B041D1C236F00508611 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C3B24B051D1C236F00508611 /* Build configuration list for PBXNativeTarget "SuperTaxiUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C3B24B061D1C236F00508611 /* Debug */,
+				C3B24B071D1C236F00508611 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C3B24ACF1D1C236F00508611 /* Project object */;
+}
