@@ -8,11 +8,12 @@
 
 import UIKit
 
-class CreatingUserProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIApplicationDelegate {
+class CreatingUserProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIApplicationDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var txtName: UITextField!
     @IBOutlet weak var txtAge: UITextField!
     @IBOutlet weak var txtNote: UITextField!
+    @IBOutlet weak var btnSave: UIButton!
     
     @IBOutlet weak var imgUserPhoto: UIImageView!
     @IBOutlet weak var imgUpload: UIImageView!
@@ -23,13 +24,32 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
 
         // Do any additional setup after loading the view.
         picker.delegate = self
-        imgUserPhoto.layer.cornerRadius = imgUserPhoto.frame.width/2
+        self.imgUserPhoto.layer.cornerRadius = self.imgUserPhoto.frame.size.width/2
         imgUserPhoto.clipsToBounds = true
+        
+        btnSave.enabled = false
+        btnSave.alpha = 0.4
+        
+        txtName.delegate = self
+        txtAge.delegate = self
+        txtNote.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - UITextField Delegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool{
+        btnSave.enabled = true
+        btnSave.alpha = 1.0
+        return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField){
+        btnSave.enabled = true
+        btnSave.alpha = 1.0
     }
     
     // MARK: - UIAction Methods
@@ -53,18 +73,24 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
                 let alert = UIAlertController(title: "Alert", message: "Please enter your Name", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
+                btnSave.enabled = false
+                btnSave.alpha = 0.4
             }
             
             if txtAge.text == "" {
                 let alert = UIAlertController(title: "Alert", message: "Please enter your Age", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
+                btnSave.enabled = false
+                btnSave.alpha = 0.4
             }
             
             if txtNote.text == "" {
                 let alert = UIAlertController(title: "Alert", message: "Please enter your Note", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
+                btnSave.enabled = false
+                btnSave.alpha = 0.4
             }
             
             if (imgUserPhoto.image == nil) {
@@ -73,14 +99,13 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
                 self.presentViewController(alert, animated: true, completion: nil)
             }
         }
-        
     }
 
+    
     
     // MARK: - UIAction Methods
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let choosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        imgUserPhoto.contentMode = .ScaleAspectFit
         imgUserPhoto.image = choosenImage
         dismissViewControllerAnimated(true, completion: nil)
         

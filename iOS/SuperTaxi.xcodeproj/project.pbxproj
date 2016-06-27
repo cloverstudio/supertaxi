@@ -45,10 +45,8 @@
 		C35433E11D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433DB1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m */; };
 		C35433E21D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */; };
 		C35433E91D1D5F5F00DD56B4 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433E81D1D5F5F00DD56B4 /* SWRevealViewController.m */; };
-		C35433F31D1D624E00DD56B4 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433EE1D1D624E00DD56B4 /* RECommonFunctions.m */; };
-		C35433F41D1D624E00DD56B4 /* RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433F01D1D624E00DD56B4 /* RESideMenu.m */; };
-		C35433F51D1D624E00DD56B4 /* UIViewController+RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433F21D1D624E00DD56B4 /* UIViewController+RESideMenu.m */; };
 		C35433F71D1D6A4100DD56B4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */; };
+		C362801F1D215D0B00CB9C2A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C362801E1D215D0B00CB9C2A /* QuartzCore.framework */; };
 		C3B24ADB1D1C236F00508611 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B24ADA1D1C236F00508611 /* AppDelegate.swift */; };
 		C3B24AE01D1C236F00508611 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3B24ADE1D1C236F00508611 /* Main.storyboard */; };
 		C3B24AE21D1C236F00508611 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3B24AE11D1C236F00508611 /* Assets.xcassets */; };
@@ -145,13 +143,8 @@
 		C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorSlideAndFade.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlideAndFade.m; sourceTree = "<group>"; };
 		C35433E71D1D5F5F00DD56B4 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = ThirdParty/SWRevealViewController/SWRevealViewController.h; sourceTree = "<group>"; };
 		C35433E81D1D5F5F00DD56B4 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = ThirdParty/SWRevealViewController/SWRevealViewController.m; sourceTree = "<group>"; };
-		C35433ED1D1D624E00DD56B4 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommonFunctions.h; sourceTree = "<group>"; };
-		C35433EE1D1D624E00DD56B4 /* RECommonFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommonFunctions.m; sourceTree = "<group>"; };
-		C35433EF1D1D624E00DD56B4 /* RESideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RESideMenu.h; sourceTree = "<group>"; };
-		C35433F01D1D624E00DD56B4 /* RESideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RESideMenu.m; sourceTree = "<group>"; };
-		C35433F11D1D624E00DD56B4 /* UIViewController+RESideMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RESideMenu.h"; sourceTree = "<group>"; };
-		C35433F21D1D624E00DD56B4 /* UIViewController+RESideMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RESideMenu.m"; sourceTree = "<group>"; };
 		C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C362801E1D215D0B00CB9C2A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C3B24AD71D1C236F00508611 /* SuperTaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperTaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3B24ADA1D1C236F00508611 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3B24ADF1D1C236F00508611 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -176,6 +169,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C362801F1D215D0B00CB9C2A /* QuartzCore.framework in Frameworks */,
 				C35433531D1C492700DD56B4 /* CoreLocation.framework in Frameworks */,
 				C35433511D1C491A00DD56B4 /* Foundation.framework in Frameworks */,
 				C3B24B131D1C240000508611 /* MapKit.framework in Frameworks */,
@@ -352,19 +346,6 @@
 			name = SWRevealViewController;
 			sourceTree = "<group>";
 		};
-		C35433EC1D1D624E00DD56B4 /* RESideMenu */ = {
-			isa = PBXGroup;
-			children = (
-				C35433ED1D1D624E00DD56B4 /* RECommonFunctions.h */,
-				C35433EE1D1D624E00DD56B4 /* RECommonFunctions.m */,
-				C35433EF1D1D624E00DD56B4 /* RESideMenu.h */,
-				C35433F01D1D624E00DD56B4 /* RESideMenu.m */,
-				C35433F11D1D624E00DD56B4 /* UIViewController+RESideMenu.h */,
-				C35433F21D1D624E00DD56B4 /* UIViewController+RESideMenu.m */,
-			);
-			path = RESideMenu;
-			sourceTree = "<group>";
-		};
 		C3B24ACE1D1C236F00508611 = {
 			isa = PBXGroup;
 			children = (
@@ -418,7 +399,6 @@
 		C3B24B081D1C239900508611 /* ThirdPary */ = {
 			isa = PBXGroup;
 			children = (
-				C35433EC1D1D624E00DD56B4 /* RESideMenu */,
 				C35433E31D1D5F1A00DD56B4 /* SWRevealViewController */,
 				C35433CD1D1D584C00DD56B4 /* SlideMenu */,
 				C35433931D1C4ED400DD56B4 /* SVProgressHUD */,
@@ -479,6 +459,7 @@
 		C3B24B0D1D1C23E300508611 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C362801E1D215D0B00CB9C2A /* QuartzCore.framework */,
 				C35433521D1C492700DD56B4 /* CoreLocation.framework */,
 				C35433501D1C491A00DD56B4 /* Foundation.framework */,
 				C3B24B121D1C240000508611 /* MapKit.framework */,
@@ -637,7 +618,6 @@
 				C354336F1D1C4A3100DD56B4 /* IQUIViewController+Additions.m in Sources */,
 				C35433E01D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */,
 				C35433701D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m in Sources */,
-				C35433F31D1D624E00DD56B4 /* RECommonFunctions.m in Sources */,
 				C3C176291D1F234100D37B70 /* ForgotPasswordViewController.swift in Sources */,
 				C354339B1D1C4F0C00DD56B4 /* SVProgressHUD.m in Sources */,
 				C35433921D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift in Sources */,
@@ -652,7 +632,6 @@
 				C35433E21D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */,
 				C33289A21D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift in Sources */,
 				C3C1762B1D1F259100D37B70 /* EnterNewPasswordViewController.swift in Sources */,
-				C35433F41D1D624E00DD56B4 /* RESideMenu.m in Sources */,
 				C354338A1D1C4B3C00DD56B4 /* SelectProfileViewController.swift in Sources */,
 				C33289A81D1D9F9300EDF3DA /* UserLongPressViewController.swift in Sources */,
 				C35433881D1C4B1200DD56B4 /* LoginViewController.swift in Sources */,
@@ -662,7 +641,6 @@
 				C354336E1D1C4A3100DD56B4 /* IQUIView+Hierarchy.m in Sources */,
 				C35433DE1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m in Sources */,
 				C35433DF1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m in Sources */,
-				C35433F51D1D624E00DD56B4 /* UIViewController+RESideMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

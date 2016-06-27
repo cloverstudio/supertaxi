@@ -9,4 +9,3 @@
 #import "SlideNavigationContorllerAnimatorScaleAndFade.h"
 #import "SlideNavigationContorllerAnimatorSlideAndFade.h"
 #import "SWRevealViewController.h"
-#import "RESideMenu.h"
