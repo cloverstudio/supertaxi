@@ -3,7 +3,7 @@
     var Config = {};
 
     Config.host = "localhost";
-    Config.port = 80;
+    Config.port = 8080;
     Config.urlPrefix = '/';
     
     Config.dbCollectionPrefix = '';

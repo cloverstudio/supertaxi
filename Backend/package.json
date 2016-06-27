@@ -5,14 +5,39 @@
     "name": "Clover Studio Ltd"
   },
   "description": "SuperTaxi is simple ride share app",
-  "main": "src/server/index.js",
+  "main": "src/server/main.js",
   "private": false,
   "dependencies": {
     "JSON2": "latest",
-    "async": "1.4.0"
+    "async": "1.4.0",
+    "body-parser": "^1.15.2",
+    "bootstrap-sass": "^3.3.6",
+    "browserify": "^13.0.1",
+    "browserify-shim": "^3.8.12",
+    "easyimage": "^2.1.0",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.13.0",
+    "font-awesome": "^4.6.3",
+    "formidable": "^1.0.17",
+    "fs-extra": "^0.30.0",
+    "gulp": "^3.9.1",
+    "gulp-apidoc": "^0.2.4",
+    "gulp-exit": "0.0.2",
+    "gulp-mocha": "^2.2.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^2.3.2",
+    "gulp-util": "^3.0.7",
+    "handlebars": "^4.0.5",
+    "hbsfy": "^2.7.0",
+    "md5": "^2.1.0",
+    "nodemailer": "^2.4.2",
+    "nodemailer-smtp-pool": "^2.6.0",
+    "sha1": "^1.1.1",
+    "should": "^9.0.2",
+    "supertest": "^1.2.0",
+    "vinyl-source-stream": "^1.1.0"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "build-js": "browserify src/client/js/main.js > public/js/bundle.js -d",
     "watch-js": "watchify src/client/js/main.js -o public/js/bundle.js -v -d "

@@ -1,0 +1,6 @@
+# third party modules
+node_modules
+
+# generated files
+public/uploads
+nohup.out

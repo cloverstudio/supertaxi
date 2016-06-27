@@ -3,6 +3,12 @@ var http = require('http');
 
 var Conf = require('./lib/init.js');
 
+Conf.host = "localhost";
+Conf.port = 8081;
+Conf.socketNameSpace = '/supertaxitest';
+Conf.dbCollectionPrefix = '';
+Conf.databaseUrl = "mongodb://localhost/spikaenterprisetest";
+
 // initialization
 var app = express();
 var server = http.createServer(app);
@@ -35,3 +41,5 @@ DatabaseManager.init(function(success){
     }
 
 });
+
+module.exports = server
