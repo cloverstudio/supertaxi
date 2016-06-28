@@ -28,10 +28,14 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func onStartTripClick(sender: AnyObject) {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight] // for supporting device rotation
+        blurEffectView.layer.opacity = 0.8
+        view.addSubview(blurEffectView)
+        blurEffectView.addSubview(viewAlert)
         viewAlert.hidden = false
-        btnStartTrip.alpha = 0.4
-        mapView.alpha = 0.4
     }
-
-
 }
