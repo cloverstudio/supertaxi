@@ -32,6 +32,11 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         
         btnSave.enabled = false
         btnSave.alpha = 0.4
+        txtTaxiDriverName.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
+        txtCartype.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
+        txtCarRegnumber.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
+        txtStartfee.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
+        txtFeekm.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
         
         txtTaxiDriverName.delegate = self
         txtCartype.delegate = self
@@ -44,19 +49,14 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    // MARK: - UITextField Delegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool{
-        btnSave.enabled = true
-        btnSave.alpha = 1.0
-        return true
-    }
     
-    func textFieldDidEndEditing(textField: UITextField){
-        btnSave.enabled = true
-        btnSave.alpha = 1.0
+    // MARK: - UITextField Delegate
+    func textFieldDidChange(textField: UITextField ) {
+        if (!(txtTaxiDriverName.text?.isEmpty)! && !(txtCartype.text?.isEmpty)! && !(txtCarRegnumber.text?.isEmpty)! && !(txtStartfee.text?.isEmpty)! && !(txtFeekm.text?.isEmpty)!)  {
+            btnSave.enabled = true
+            btnSave.alpha = 1.0
+        }
     }
-
     
     // MARK: - UIAction Methods
     @IBAction func onCancelClick(sender: AnyObject) {
@@ -80,60 +80,10 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         
         if(segue.identifier == "taxiprofile_segue")
         {
-            let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
-            appDelegate?.string = txtTaxiDriverName.text
-            
-            if ((txtTaxiDriverName.text?.isEmpty) == nil) {
-                let alert = UIAlertController(title: "Alert", message: "Please enter your Name", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                btnSave.enabled = false
-                btnSave.alpha = 0.4
-            }
-            
-            if ((txtCartype.text?.isEmpty) == nil) {
-                let alert = UIAlertController(title: "Alert", message: "Please enter your Car Type", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                btnSave.enabled = false
-                btnSave.alpha = 0.4
-            }
-            
-            if ((txtCarRegnumber.text?.isEmpty) == nil) {
-                let alert = UIAlertController(title: "Alert", message: "Please enter your Car Reg Number", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                btnSave.enabled = false
-                btnSave.alpha = 0.4
-            }
-            
-            if ((txtStartfee.text?.isEmpty) == nil) {
-                let alert = UIAlertController(title: "Alert", message: "Please enter your Start Fee", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                btnSave.enabled = false
-                btnSave.alpha = 0.4
-            }
-            
-            if ((txtFeekm.text?.isEmpty) == nil) {
-                let alert = UIAlertController(title: "Alert", message: "Please enter your Fee/km", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                btnSave.enabled = false
-                btnSave.alpha = 0.4
-            }
-            
             if (imgTaxiDriverPhoto.image == nil) {
                 let alert = UIAlertController(title: "Alert", message: "Please upload your avatar photo", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
-                
-                btnSave.enabled = false
-                btnSave.alpha = 0.4
             }
         }
         

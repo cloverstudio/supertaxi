@@ -21,10 +21,6 @@ class TaxiProfileMapViewController: UIViewController, UIApplicationDelegate {
         imgPhoto.layer.masksToBounds = false
         imgPhoto.layer.cornerRadius = imgPhoto.frame.size.width/2
         imgPhoto.clipsToBounds = true
-        
-        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
-        imgPhoto.image = appDelegate?.imgSave
-        lblTaxiDriverName.text = appDelegate?.string
     }
 
     override func didReceiveMemoryWarning() {

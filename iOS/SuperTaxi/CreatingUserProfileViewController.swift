@@ -29,6 +29,9 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         
         btnSave.enabled = false
         btnSave.alpha = 0.4
+        txtName.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
+        txtAge.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
+        txtNote.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
         
         txtName.delegate = self
         txtAge.delegate = self
@@ -41,15 +44,11 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     }
     
     // MARK: - UITextField Delegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool{
-        btnSave.enabled = true
-        btnSave.alpha = 1.0
-        return true
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField){
-        btnSave.enabled = true
-        btnSave.alpha = 1.0
+    func textFieldDidChange(textField: UITextField ) {
+        if (!(txtName.text?.isEmpty)! && !(txtAge.text?.isEmpty)! && !(txtNote.text?.isEmpty)!) {
+            btnSave.enabled = true
+            btnSave.alpha = 1.0
+        }
     }
     
     // MARK: - UIAction Methods
@@ -67,6 +66,8 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         super.prepareForSegue(segue, sender: sender)
         
+        let age:Int? = Int(txtAge.text!)
+        
         if(segue.identifier == "userhome_segue")
         {
             if txtName.text == "" {
@@ -77,12 +78,18 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
                 btnSave.alpha = 0.4
             }
             
-            if txtAge.text == "" {
+            if txtAge.text == ""  {
                 let alert = UIAlertController(title: "Alert", message: "Please enter your Age", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 btnSave.enabled = false
                 btnSave.alpha = 0.4
+            }
+            
+            if age > 150  {
+                let alert = UIAlertController(title: "Alert", message: "Age can't be bigger than 150", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
             }
             
             if txtNote.text == "" {
@@ -100,8 +107,6 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             }
         }
     }
-
-    
     
     // MARK: - UIAction Methods
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {

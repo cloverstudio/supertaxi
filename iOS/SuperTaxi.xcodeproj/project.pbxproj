@@ -38,12 +38,6 @@
 		C354339A1D1C4F0C00DD56B4 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C35433961D1C4F0C00DD56B4 /* SVProgressHUD.bundle */; };
 		C354339B1D1C4F0C00DD56B4 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433981D1C4F0C00DD56B4 /* SVProgressHUD.m */; };
 		C35433A61D1C6C3A00DD56B4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */; };
-		C35433D21D1D58C800DD56B4 /* SlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D11D1D58C800DD56B4 /* SlideNavigationController.m */; };
-		C35433DE1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D51D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m */; };
-		C35433DF1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D71D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m */; };
-		C35433E01D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433D91D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m */; };
-		C35433E11D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433DB1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m */; };
-		C35433E21D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */; };
 		C35433E91D1D5F5F00DD56B4 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35433E81D1D5F5F00DD56B4 /* SWRevealViewController.m */; };
 		C35433F71D1D6A4100DD56B4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */; };
 		C362801F1D215D0B00CB9C2A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C362801E1D215D0B00CB9C2A /* QuartzCore.framework */; };
@@ -128,19 +122,6 @@
 		C35433971D1C4F0C00DD56B4 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SVProgressHUD.h; path = ThirdParty/SVProgressHUD/SVProgressHUD.h; sourceTree = "<group>"; };
 		C35433981D1C4F0C00DD56B4 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SVProgressHUD.m; path = ThirdParty/SVProgressHUD/SVProgressHUD.m; sourceTree = "<group>"; };
 		C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		C35433D01D1D58C800DD56B4 /* SlideNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationController.h; path = ThirdParty/SlideMenu/SlideNavigationController/SlideNavigationController.h; sourceTree = "<group>"; };
-		C35433D11D1D58C800DD56B4 /* SlideNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationController.m; path = ThirdParty/SlideMenu/SlideNavigationController/SlideNavigationController.m; sourceTree = "<group>"; };
-		C35433D31D1D58DE00DD56B4 /* SlideNavigationContorllerAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimator.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimator.h; sourceTree = "<group>"; };
-		C35433D41D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorFade.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorFade.h; sourceTree = "<group>"; };
-		C35433D51D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorFade.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorFade.m; sourceTree = "<group>"; };
-		C35433D61D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorScale.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScale.h; sourceTree = "<group>"; };
-		C35433D71D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorScale.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScale.m; sourceTree = "<group>"; };
-		C35433D81D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorScaleAndFade.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScaleAndFade.h; sourceTree = "<group>"; };
-		C35433D91D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorScaleAndFade.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorScaleAndFade.m; sourceTree = "<group>"; };
-		C35433DA1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorSlide.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlide.h; sourceTree = "<group>"; };
-		C35433DB1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorSlide.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlide.m; sourceTree = "<group>"; };
-		C35433DC1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideNavigationContorllerAnimatorSlideAndFade.h; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlideAndFade.h; sourceTree = "<group>"; };
-		C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideNavigationContorllerAnimatorSlideAndFade.m; path = ThirdParty/SlideMenu/Animations/SlideNavigationContorllerAnimatorSlideAndFade.m; sourceTree = "<group>"; };
 		C35433E71D1D5F5F00DD56B4 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = ThirdParty/SWRevealViewController/SWRevealViewController.h; sourceTree = "<group>"; };
 		C35433E81D1D5F5F00DD56B4 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = ThirdParty/SWRevealViewController/SWRevealViewController.m; sourceTree = "<group>"; };
 		C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -301,42 +282,6 @@
 			name = SVProgressHUD;
 			sourceTree = "<group>";
 		};
-		C35433CD1D1D584C00DD56B4 /* SlideMenu */ = {
-			isa = PBXGroup;
-			children = (
-				C35433CF1D1D586100DD56B4 /* Animations */,
-				C35433CE1D1D585500DD56B4 /* SlideNavigationController */,
-			);
-			name = SlideMenu;
-			sourceTree = "<group>";
-		};
-		C35433CE1D1D585500DD56B4 /* SlideNavigationController */ = {
-			isa = PBXGroup;
-			children = (
-				C35433D01D1D58C800DD56B4 /* SlideNavigationController.h */,
-				C35433D11D1D58C800DD56B4 /* SlideNavigationController.m */,
-			);
-			name = SlideNavigationController;
-			sourceTree = "<group>";
-		};
-		C35433CF1D1D586100DD56B4 /* Animations */ = {
-			isa = PBXGroup;
-			children = (
-				C35433D31D1D58DE00DD56B4 /* SlideNavigationContorllerAnimator.h */,
-				C35433D41D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.h */,
-				C35433D51D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m */,
-				C35433D61D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.h */,
-				C35433D71D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m */,
-				C35433D81D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.h */,
-				C35433D91D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m */,
-				C35433DA1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.h */,
-				C35433DB1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m */,
-				C35433DC1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.h */,
-				C35433DD1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m */,
-			);
-			name = Animations;
-			sourceTree = "<group>";
-		};
 		C35433E31D1D5F1A00DD56B4 /* SWRevealViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -400,7 +345,6 @@
 			isa = PBXGroup;
 			children = (
 				C35433E31D1D5F1A00DD56B4 /* SWRevealViewController */,
-				C35433CD1D1D584C00DD56B4 /* SlideMenu */,
 				C35433931D1C4ED400DD56B4 /* SVProgressHUD */,
 				C354334F1D1C48F100DD56B4 /* IQKeyboardManager */,
 			);
@@ -537,7 +481,7 @@
 				TargetAttributes = {
 					C3B24AD61D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = XJXX32P7NP;
+						DevelopmentTeam = AJBPMM8M4V;
 					};
 					C3B24AEA1D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
@@ -607,7 +551,6 @@
 				C354338C1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift in Sources */,
 				C35433821D1C4A5B00DD56B4 /* IQTitleBarButtonItem.m in Sources */,
 				C35433841D1C4A5B00DD56B4 /* IQUIView+IQKeyboardToolbar.m in Sources */,
-				C35433D21D1D58C800DD56B4 /* SlideNavigationController.m in Sources */,
 				C354336D1D1C4A3100DD56B4 /* IQUITextFieldView+Additions.m in Sources */,
 				C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */,
 				C35433601D1C4A1F00DD56B4 /* IQKeyboardManager.m in Sources */,
@@ -616,7 +559,6 @@
 				C35433811D1C4A5B00DD56B4 /* IQBarButtonItem.m in Sources */,
 				C33289AA1D1D9FD100EDF3DA /* TaxiStartViewController.swift in Sources */,
 				C354336F1D1C4A3100DD56B4 /* IQUIViewController+Additions.m in Sources */,
-				C35433E01D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScaleAndFade.m in Sources */,
 				C35433701D1C4A3100DD56B4 /* IQUIWindow+Hierarchy.m in Sources */,
 				C3C176291D1F234100D37B70 /* ForgotPasswordViewController.swift in Sources */,
 				C354339B1D1C4F0C00DD56B4 /* SVProgressHUD.m in Sources */,
@@ -628,8 +570,6 @@
 				C35433831D1C4A5B00DD56B4 /* IQToolbar.m in Sources */,
 				C354336C1D1C4A3100DD56B4 /* IQNSArray+Sort.m in Sources */,
 				C35433901D1C4B9500DD56B4 /* TaxiCreateProfileViewController.swift in Sources */,
-				C35433E11D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlide.m in Sources */,
-				C35433E21D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorSlideAndFade.m in Sources */,
 				C33289A21D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift in Sources */,
 				C3C1762B1D1F259100D37B70 /* EnterNewPasswordViewController.swift in Sources */,
 				C354338A1D1C4B3C00DD56B4 /* SelectProfileViewController.swift in Sources */,
@@ -639,8 +579,6 @@
 				C35433781D1C4A5100DD56B4 /* IQTextView.m in Sources */,
 				C35433F71D1D6A4100DD56B4 /* SettingsViewController.swift in Sources */,
 				C354336E1D1C4A3100DD56B4 /* IQUIView+Hierarchy.m in Sources */,
-				C35433DE1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorFade.m in Sources */,
-				C35433DF1D1D58DE00DD56B4 /* SlideNavigationContorllerAnimatorScale.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -713,8 +651,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Tomislav Curkovic (387W7232FP)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tomislav Curkovic (387W7232FP)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -736,7 +674,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "60cf2b92-59de-4027-9e81-48b8b6e35a6c";
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -776,7 +714,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "60cf2b92-59de-4027-9e81-48b8b6e35a6c";
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -788,13 +726,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -806,13 +744,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Downing (8DU2LUZ23W)";
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mobile.SuperTaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "3a66edce-b693-47e3-8e6d-ea4a7415fafe";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 			};
 			name = Release;

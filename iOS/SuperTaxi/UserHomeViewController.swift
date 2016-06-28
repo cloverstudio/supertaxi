@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class UserHomeViewController: UIViewController, UIApplicationDelegate, MKMapViewDelegate, CLLocationManagerDelegate, SlideNavigationControllerDelegate {
+class UserHomeViewController: UIViewController, UIApplicationDelegate, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var imgOne: UIImageView!
     @IBOutlet weak var imgTwo: UIImageView!
@@ -39,15 +39,8 @@ class UserHomeViewController: UIViewController, UIApplicationDelegate, MKMapView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        
-//        // Circle Image
-//        imgPhoto.layer.masksToBounds = false
-//        imgPhoto.layer.cornerRadius = imgPhoto.frame.width/2
-//        imgPhoto.clipsToBounds = true
-//        
-//        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        imgPhoto.image = appDelegate.imgSave
-        
+
+        // Draw route between two points/locations
         // 1.
         mapView.delegate = self
         
@@ -110,17 +103,17 @@ class UserHomeViewController: UIViewController, UIApplicationDelegate, MKMapView
             self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
         }
         
+        // SlideMenu Viewcontroller
         if revealViewController() != nil {
             menuButton.target = revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         
+        // left and right bar buttonitem event
         let button: UIButton = UIButton(type: UIButtonType.Custom)
         //set image for button
         button.setImage(UIImage(named: "image1.png"), forState: UIControlState.Normal)
-        //add function for button
-        button.addTarget(self, action: #selector(UserHomeViewController.tap), forControlEvents: UIControlEvents.TouchUpInside)
         //set frame
         button.frame = CGRectMake(60, 0, 30, 30)
         
@@ -140,6 +133,7 @@ class UserHomeViewController: UIViewController, UIApplicationDelegate, MKMapView
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - MapView related Methods
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor(red: 57/255.0, green: 149/255.0, blue: 246/255.0, alpha: 1.0)
@@ -149,10 +143,6 @@ class UserHomeViewController: UIViewController, UIApplicationDelegate, MKMapView
     }
     
     // MARK: - UIAction Methods
-
-    func tap(){
-        NSLog("log");
-    }
     @IBAction func onNextClick(sender: AnyObject) {
         
         if !flag {
@@ -169,15 +159,6 @@ class UserHomeViewController: UIViewController, UIApplicationDelegate, MKMapView
             mapView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
         }
 
-    }
-    
-    // MARK: - SlideNavigationController Methods
-    func slideNavigationControllerShouldDisplayLeftMenu() -> Bool {
-        return false
-    }
-    
-    func slideNavigationControllerShouldDisplayRightMenu() -> Bool {
-        return false
     }
     
     // MARK: - SeatView UIButton Action Methods

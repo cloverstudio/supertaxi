@@ -40,7 +40,6 @@ class MenuViewController: UIViewController {
         
         if(segue.identifier == "settings_segue")
         {
-            SlideNavigationController.sharedInstance().popToRootAndSwitchToViewController(settingsVC, withSlideOutAnimation: self.slideOutAnimationEnabled, andCompletion: nil)
         }
     }
 
