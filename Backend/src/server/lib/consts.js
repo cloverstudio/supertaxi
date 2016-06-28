@@ -2,6 +2,11 @@
 
     Const.responsecodeSucceed = 1;
     Const.responsecodeUnknownError = 6000000;
+    Cnost.responsecodeParamErrorNoEmail = 6000001;
+    Cnost.responsecodeParamErrorNoPassword = 6000002;
+    Cnost.responsecodeParamErrorNoSecret = 6000003;
+    
+
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;

@@ -26,7 +26,7 @@ TestController.prototype.init = function(app){
     var self = this;
 
    /**
-     * @api {post} /api/v1/test just test
+     * @api {get} /api/v1/test just test
      * @apiName Test
      * @apiGroup WebAPI
      * @apiDescription Returns text "test"
@@ -39,7 +39,7 @@ TestController.prototype.init = function(app){
     });
 
    /**
-     * @api {post} /api/v1/test/error error
+     * @api {get} /api/v1/test/error error
      * @apiName General Error Response
      * @apiGroup WebAPI
      * @apiDescription Returns text "test"

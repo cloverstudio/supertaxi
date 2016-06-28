@@ -14,9 +14,12 @@ var BackendMain ={
         var self = this;
         
         router.use("/test", require("./Controllers/Test/TestController").init(app));
-        
+        router.use("/signup", require("./Controllers/Signup/SignupGeneralController").init(app));
+
         return router;
+
     }
+
 }
 
 module["exports"] = BackendMain;

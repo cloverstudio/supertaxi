@@ -27,5 +27,27 @@ describe('WEB API', function () {
         });
         
     });
+
+    describe('/test/error GET', function () {
     
+        it('should be error', function (done) {
+
+            request(app)
+                .get('/api/v1/test/error')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(6000000);
+                
+                done();
+            
+            });   
+            
+        });
+        
+    });
+
 });
