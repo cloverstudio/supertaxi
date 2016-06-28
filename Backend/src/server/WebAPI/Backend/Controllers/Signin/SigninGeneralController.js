@@ -18,20 +18,20 @@ var UpdateTokenLogic = require(pathTop + 'Logics/UpdateToken');
 
 var BackendBase = require('../BackendBase');
 
-var SignupGeneralController = function(){
+var SigninGeneralController = function(){
 }
 
-_.extend(SignupGeneralController.prototype,BackendBase.prototype);
+_.extend(SigninGeneralController.prototype,BackendBase.prototype);
 
-SignupGeneralController.prototype.init = function(app){
+SigninGeneralController.prototype.init = function(app){
         
     var self = this;
 
    /**
-     * @api {post} /api/v1/signin Signin
-     * @apiName General Signup
+     * @api {post} /api/v1/signin Signup
+     * @apiName General Signin
      * @apiGroup WebAPI
-     * @apiDescription Reigster new user to database and returns new token.
+     * @apiDescription Signin to backend and generate new token for the user.
      *   
      * @apiParam {String} email Email Address 
      * @apiParam {String} password Password 
@@ -41,10 +41,7 @@ SignupGeneralController.prototype.init = function(app){
      * @apiError ParamErrorNoEmail 6000001
      * @apiError ParamErrorNoPassword 6000002
      * @apiError ParamErrorNoSecret 6000003
-     * @apiError ParamErrorWrongEmail 6000004
-     * @apiError ParamErrorWrongPassword 6000005
-     * @apiError ParamErrorEmailExists 6000006
-     * @apiError ParamErrorWrongSecret 6000007
+     * @apiError SignInError 6000008
      * 
      * @apiSuccessExample Success-Response:
 {
@@ -63,7 +60,7 @@ SignupGeneralController.prototype.init = function(app){
 }
 
     * @apiErrorExample {json} Error-Response:
-{ code: 6000006, time: 1467124038393 }
+{ code: 6000008, time: 1467124038393 }
 
  */
 
@@ -117,73 +114,32 @@ SignupGeneralController.prototype.init = function(app){
             (done) => {
 
                 var result = {};
-
-                // check format
-                if(!validator.isEmail(reqEmail)){
-
-                    done({
-                        handledError:Const.responsecodeParamErrorWrongEmail
-                    });
-
-                }
-
-                // check password
-                else if(!Const.REPassword.test(reqPassword)){
-
-                    done({
-                        handledError:Const.responsecodeParamErrorWrongPassword
-                    });
-
-                } else 
-                    done(null,result);
-
-            },
-            (result,done) => {
-
-                // check duplication
-
-                var result = {};
-                var userModel = UserModel.get();
-
-                userModel.findOne({
-                    email: reqEmail
-                },function(err,findResult){
-
-                    if(findResult){
-
-                        done({
-                            handledError:Const.responsecodeParamErrorEmailExists
-                        });
-
-                    }else{
-                        done(err,result);
-                    }
-
-                });
-            },
-            (result,done) => {
-
                 var userModel = UserModel.get();
 
                 var passwordHashed = sha1(reqPassword + Config.hashSalt);
 
-                var user = new userModel({
+                userModel.findOne({
                     email: reqEmail,
-                    password: passwordHashed,
-                    created: Utils.now()
-                });
-                
-                user.save(function(err,saveResult){
-                    
-                    result.user = saveResult.toObject();
-                    done(err,result);
-                    
+                    password : passwordHashed
+                },function(err,findResult){
+
+                    if(!findResult){
+
+                        done({
+                            handledError:Const.responsecodeSignInError
+                        });
+
+                    }else{
+
+                        result.user = findResult.toObject();
+                        done(err,result);
+
+                    }
+
                 });
 
             },
             (result,done) => {
-
-                // create token
 
                 UpdateTokenLogic(result.user._id,(err,tokenResult) => {
 
@@ -192,7 +148,6 @@ SignupGeneralController.prototype.init = function(app){
 
                 });
 
-                
             }
 
         ],
@@ -229,4 +184,4 @@ SignupGeneralController.prototype.init = function(app){
 
 }
 
-module["exports"] = new SignupGeneralController();
+module["exports"] = new SigninGeneralController();

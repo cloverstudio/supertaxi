@@ -37,4 +37,7 @@
 
     Config.gcmAPIKey = "";
 
+    Config.hashSalt = "8zgqvU6LaziThJI1uz3PevYd";
+    Config.signinBackDoorSecret = "dontuseit";
+
     module["exports"] = Config;

@@ -7,7 +7,7 @@ describe('WEB API', function () {
 
     var req, res;
 
-    describe('/signup POST', function () {
+    describe('/signin POST', function () {
     
         it('works', function (done) {
 
@@ -27,7 +27,7 @@ describe('WEB API', function () {
                 var secret = sha1(key);
 
                 request(app)
-                    .post('/api/v1/signup')
+                    .post('/api/v1/signin')
                     .send({
                         email : global.user1.email,
                         password : global.user1.password,
@@ -51,7 +51,7 @@ describe('WEB API', function () {
 
         });
 
-        it('duplicate email', function (done) {
+        it('no email', function (done) {
 
             request(app)
             .get('/api/v1/test')
@@ -69,9 +69,8 @@ describe('WEB API', function () {
                 var secret = sha1(key);
 
                 request(app)
-                    .post('/api/v1/signup')
+                    .post('/api/v1/signin')
                     .send({
-                        email : global.user1.email,
                         password : global.user1.password,
                         secret: secret
                     })
@@ -81,47 +80,7 @@ describe('WEB API', function () {
                         throw err;
                     }
 
-                    res.body.code.should.be.exactly(6000006);
-
-                    done();
-                
-                });  
-
-            }); 
-
-        });
-
-        it('wrong email', function (done) {
-
-            request(app)
-            .get('/api/v1/test')
-            .end(function (err, res) {
-
-                if (err) {
-                    throw err;
-                }
-
-                var time = res.body.time;
-                
-                // generate secret
-                var tenSec = Math.floor(time / 1000 / 10);
-                var key =  global.hashsalt + tenSec;
-                var secret = sha1(key);
-
-                request(app)
-                    .post('/api/v1/signup')
-                    .send({
-                        email : "this is not email",
-                        password : global.user1.password,
-                        secret: secret
-                    })
-                    .end(function (err, res) {
-
-                    if (err) {
-                        throw err;
-                    }
-
-                    res.body.code.should.be.exactly(6000004);
+                    res.body.code.should.be.exactly(6000001);
                     
                     done();
                 
@@ -129,7 +88,7 @@ describe('WEB API', function () {
             });   
         });
 
-        it('wrong password', function (done) {
+        it('no password', function (done) {
 
 
             request(app)
@@ -148,10 +107,9 @@ describe('WEB API', function () {
                 var secret = sha1(key);
 
                 request(app)
-                    .post('/api/v1/signup')
+                    .post('/api/v1/signin')
                     .send({
                         email : global.user1.email,
-                        password : "bad",
                         secret: secret
                     })
                     .end(function (err, res) {
@@ -160,7 +118,7 @@ describe('WEB API', function () {
                         throw err;
                     }
 
-                    res.body.code.should.be.exactly(6000005);
+                    res.body.code.should.be.exactly(6000002);
                     
                     done();
                 
@@ -171,7 +129,7 @@ describe('WEB API', function () {
        it('wrong secret', function (done) {
 
             request(app)
-                .post('/api/v1/signup')
+                .post('/api/v1/signin')
                 .send({
                     email : global.user1.email,
                     password : global.user1.password,
@@ -194,7 +152,7 @@ describe('WEB API', function () {
        it('no secret', function (done) {
 
             request(app)
-                .post('/api/v1/signup')
+                .post('/api/v1/signin')
                 .send({
                     email : global.user1.email,
                     password : global.user1.password
@@ -212,6 +170,7 @@ describe('WEB API', function () {
             });  
               
         });
+
     });
 
 });

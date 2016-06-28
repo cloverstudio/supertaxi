@@ -30,6 +30,10 @@ TestController.prototype.init = function(app){
      * @apiName Test
      * @apiGroup WebAPI
      * @apiDescription Returns text "test"
+     * @apiSuccessExample Success-Response:
+
+{ code: 1, time: 1467125660699, data: 'test' }
+
      **/
 
     router.get('',function(request,response){
@@ -42,7 +46,7 @@ TestController.prototype.init = function(app){
      * @api {get} /api/v1/test/error error
      * @apiName General Error Response
      * @apiGroup WebAPI
-     * @apiDescription Returns text "test"
+     * @apiDescription Returns error
      **/
 
     router.get('/error',function(request,response){

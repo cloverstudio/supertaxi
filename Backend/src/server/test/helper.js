@@ -19,6 +19,11 @@ global.getRandomStr = function(){
 
 }
 
+global.user1 = {
+    email: "test" + global.getRandomStr() + "@test.com",
+    password : "password"
+}
+
 before(function(doneMain){
     
     this.timeout(15000);

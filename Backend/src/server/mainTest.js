@@ -5,9 +5,8 @@ var Conf = require('./lib/init.js');
 
 Conf.host = "localhost";
 Conf.port = 8081;
-Conf.socketNameSpace = '/supertaxitest';
 Conf.dbCollectionPrefix = '';
-Conf.databaseUrl = "mongodb://localhost/spikaenterprisetest";
+Conf.databaseUrl = "mongodb://localhost/supertaxitest";
 
 // initialization
 var app = express();

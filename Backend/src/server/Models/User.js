@@ -14,33 +14,26 @@ _.extend(User.prototype,BaseModel.prototype);
 User.prototype.init = function(mongoose){
     
     this.schema = new mongoose.Schema({
-        name: String,
-        sortName: String,
-        description: String,
-        userid: String,
+        email: String,
         password: String,
-        created: Number,
-        token: [],
-        pushToken: [],
-        organizationId: { type: String, index: true },
-        status: Number, // 1: Enabled, 0: Disabled
-        avatar: {
-            picture: { 
-                originalName: String, 
-                size: Number, 
-                mimeType: String,
-                nameOnServer: String
-            },
-            thumbnail: { 
-                originalName: String, 
-                size: Number, 
-                mimeType: String,
-                nameOnServer: String
-            }
+        user:{
+            name : String,
+            age : Number,
+            note : String,
+            avatar: String
         },
-        groups: [ String ],
-        permission: Number, // 1: user (za web client), 2: organizatinAdmin, 3: subAdmin,
-        isGuest: Number
+        driver:{
+            name : String,
+            car_type : String,
+            car_registration : String,
+            fee_start : Number,
+            fee_km : Number,
+            avatar : String
+        },
+        token: String,
+        token_generated: Number,
+        pushToken: String,
+        created: Number
     });
 
     this.model = mongoose.model(Config.dbCollectionPrefix + "User", this.schema);
@@ -52,36 +45,5 @@ User.get = function(){
     return DatabaseManager.getModel('User').model;
     
 }
-
-
-User.getUsersById = function(userIds,callBack){
-    
-    var model = DatabaseManager.getModel('User').model;
-
-    model.find({ _id: { "$in" : userIds } },function (err, result) {
-
-        if (err) throw err;
-                             
-        if(callBack)
-            callBack(result);    
-    
-    });
-    
-};
-
-User.getUserById = function(userId,callBack){
-    
-    var model = DatabaseManager.getModel('User').model;
-
-    model.findOne({ _id: userId },function (err, result) {
-
-        if (err) throw err;
-                             
-        if(callBack)
-            callBack(result);    
-    
-    });
-    
-};
 
 module["exports"] = User;
