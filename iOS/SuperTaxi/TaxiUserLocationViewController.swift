@@ -7,15 +7,19 @@
 //
 
 import UIKit
+import MapKit
 
-class TaxiUserLocationViewController: UIViewController {
+class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var viewAlert: UIView!
+    @IBOutlet weak var btnStartTrip: UIButton!
+    @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        viewAlert.layer.cornerRadius = 5
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,6 +29,8 @@ class TaxiUserLocationViewController: UIViewController {
     
     @IBAction func onStartTripClick(sender: AnyObject) {
         viewAlert.hidden = false
+        btnStartTrip.alpha = 0.4
+        mapView.alpha = 0.4
     }
 
 

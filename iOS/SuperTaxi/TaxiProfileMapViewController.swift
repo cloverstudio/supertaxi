@@ -9,18 +9,36 @@
 import UIKit
 
 class TaxiProfileMapViewController: UIViewController, UIApplicationDelegate {
-
-    @IBOutlet weak var lblTaxiDriverName: UILabel!
     
     @IBOutlet weak var imgPhoto: UIImageView!
     
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        imgPhoto.layer.masksToBounds = false
-        imgPhoto.layer.cornerRadius = imgPhoto.frame.size.width/2
-        imgPhoto.clipsToBounds = true
+        
+        // SlideMenu Viewcontroller
+        if revealViewController() != nil {
+            menuButton.target = revealViewController()
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        }
+        
+        // left and right bar buttonitem event
+        let button: UIButton = UIButton(type: UIButtonType.Custom)
+        //set image for button
+        button.setImage(UIImage(named: "ex_image.png"), forState: UIControlState.Normal)
+        //set frame
+        button.frame = CGRectMake(60, 0, 30, 30)
+        
+        let barButton = UIBarButtonItem(customView: button)
+        //assign button to navigationbar
+        self.navigationItem.rightBarButtonItem = barButton
+        
+        let titleDict: NSDictionary = [NSForegroundColorAttributeName: UIColor.blackColor()]
+        self.navigationController!.navigationBar.titleTextAttributes = titleDict as? [String : AnyObject]
+        
+        navigationController!.navigationBar.barTintColor = UIColor(red: 248/255.0, green: 244/255.0, blue: 236/255.0, alpha: 1.0)
     }
 
     override func didReceiveMemoryWarning() {
