@@ -269,11 +269,11 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hF2-bP-dSe" userLabel="ButtonSave">
-                                <rect key="frame" x="10" y="516" width="300" height="40"/>
+                                <rect key="frame" x="10" y="513" width="300" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="btn_save"/>
+                                <state key="normal" image="btn_save_active"/>
                                 <connections>
-                                    <segue destination="7bE-VL-5g4" kind="push" identifier="userhome_segue" id="hBq-c8-h0p"/>
+                                    <segue destination="biZ-kx-AM8" kind="push" identifier="userhome_segue" id="D22-O7-vqa"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" id="Sjm-7M-KOA">
@@ -318,6 +318,7 @@
                     <navigationItem key="navigationItem" id="k8N-s6-o27"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="btnSave" destination="hF2-bP-dSe" id="yEg-QK-5TQ"/>
                         <outlet property="imgUpload" destination="heG-ph-x7H" id="yJo-30-KSe"/>
                         <outlet property="imgUserPhoto" destination="dcB-A0-sqK" id="IqY-KU-7GQ"/>
                         <outlet property="txtAge" destination="dhb-5f-Bhi" id="M5I-Ai-UdN"/>
@@ -327,12 +328,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdG-kO-KsU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1163" y="144"/>
+            <point key="canvasLocation" x="1163" y="172"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu View Controller-->
         <scene sceneID="pIb-6M-WPO">
             <objects>
-                <viewController id="PkP-Fm-RK4" sceneMemberID="viewController">
+                <viewController id="PkP-Fm-RK4" customClass="MenuViewController" customModule="SuperTaxi" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Xgd-kJ-j2m">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -342,18 +343,18 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" id="BLy-07-LPJ">
-                                        <rect key="frame" x="18" y="17" width="55" height="55"/>
+                                        <rect key="frame" x="18" y="22" width="55" height="55"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Woodstock" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Buv-Mu-eCY">
-                                        <rect key="frame" x="99" y="47" width="145" height="21"/>
+                                        <rect key="frame" x="99" y="52" width="145" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alisa" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iHM-h7-Ufu">
-                                        <rect key="frame" x="99" y="23" width="145" height="21"/>
+                                        <rect key="frame" x="99" y="28" width="145" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -369,58 +370,77 @@
                                     <view contentMode="scaleToFill" id="Be8-13-My6" userLabel="SettingsLine">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.054901960784313725" green="0.10588235294117647" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xBW-6Q-5Eq">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8gj-ml-lMt" userLabel="ButtonSuperTaxi">
+                                        <rect key="frame" x="0.0" y="1" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <connections>
-                                            <segue destination="iIe-zs-XNa" kind="push" identifier="settings_segue" id="ub5-5c-p73"/>
+                                            <segue destination="qFM-mN-RnP" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="uUt-uc-9RL"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Super Taxi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Uo-Pb-uRO">
+                                        <rect key="frame" x="18" y="16" width="144" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" id="yw1-9X-JE4" userLabel="SuperTaxiLine">
+                                        <rect key="frame" x="0.0" y="52" width="320" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.054901960780000002" green="0.1058823529" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xBW-6Q-5Eq" userLabel="ButtonSettings">
+                                        <rect key="frame" x="0.0" y="52" width="320" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <segue destination="0go-cx-YeK" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="84W-FC-jRl"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="G9A-wj-oVQ">
-                                        <rect key="frame" x="18" y="14" width="81" height="21"/>
+                                        <rect key="frame" x="18" y="66" width="81" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" id="kze-De-end" userLabel="ReportLine">
-                                        <rect key="frame" x="0.0" y="50" width="320" height="1"/>
+                                        <rect key="frame" x="0.0" y="102" width="320" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.054901960784313725" green="0.10588235294117647" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="GSn-6z-v8A">
-                                        <rect key="frame" x="0.0" y="51" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="103" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report a problem" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5e7-XP-RtJ">
-                                        <rect key="frame" x="18" y="65" width="144" height="21"/>
+                                        <rect key="frame" x="18" y="117" width="144" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" id="qGs-MI-ICY" userLabel="AboutUsLine">
-                                        <rect key="frame" x="0.0" y="104" width="320" height="1"/>
+                                        <rect key="frame" x="0.0" y="156" width="320" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.054901960784313725" green="0.10588235294117647" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HVW-6d-uKf">
-                                        <rect key="frame" x="0.0" y="105" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="157" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="y7B-RP-Al5">
-                                        <rect key="frame" x="18" y="119" width="144" height="21"/>
+                                        <rect key="frame" x="18" y="171" width="144" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" id="Wwl-qA-RBH" userLabel="AboutUsLine">
-                                        <rect key="frame" x="0.0" y="157" width="320" height="1"/>
+                                        <rect key="frame" x="0.0" y="209" width="320" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.054901960784313725" green="0.10588235294117647" blue="0.21568627450980393" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -428,32 +448,75 @@
                         </subviews>
                         <color key="backgroundColor" red="0.10196078431372549" green="0.16862745098039217" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <connections>
-                        <outlet property="imgPhoto" destination="BLy-07-LPJ" id="zZq-f0-mPb"/>
-                        <outlet property="lblAddress" destination="Buv-Mu-eCY" id="Je7-dN-H4h"/>
-                        <outlet property="lblName" destination="iHM-h7-Ufu" id="BQI-Ab-xgA"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RZJ-e4-ch5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1541" y="-495"/>
+            <point key="canvasLocation" x="1163" y="-863"/>
         </scene>
-        <!--Settings View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="Hj6-bc-T3e">
+            <objects>
+                <navigationController id="qFM-mN-RnP" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="m2H-MO-zaJ"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f1p-IA-Iwi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textShadowColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="7bE-VL-5g4" kind="relationship" relationship="rootViewController" id="fUj-Ie-C5i"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jry-1G-cVP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1541" y="-497"/>
+        </scene>
+        <!--Reveal View Controller-->
+        <scene sceneID="uhd-7m-7sG">
+            <objects>
+                <viewController id="biZ-kx-AM8" customClass="SWRevealViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dfP-GW-9Ez">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="3n2-2Z-Okv"/>
+                    <connections>
+                        <segue destination="PkP-Fm-RK4" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="0NJ-d0-2FD"/>
+                        <segue destination="qFM-mN-RnP" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="iho-B5-XMh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PoA-E6-yeT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="773" y="-863"/>
+        </scene>
+        <!--Settings-->
         <scene sceneID="oiD-WX-Ana">
             <objects>
                 <viewController storyboardIdentifier="SettingsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iIe-zs-XNa" customClass="SettingsViewController" customModule="SuperTaxi" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pzJ-gN-BWT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="U3o-9X-z0a"/>
+                    <navigationItem key="navigationItem" title="Settings" id="U3o-9X-z0a">
+                        <barButtonItem key="leftBarButtonItem" image="menu_icon" id="G9R-I4-Nh4">
+                            <color key="tintColor" red="0.054901960780000002" green="0.1058823529" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="G9R-I4-Nh4" id="zTI-Sd-TLc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qdc-E0-hSo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1917" y="-495"/>
+            <point key="canvasLocation" x="1917" y="-1151"/>
         </scene>
-        <!--User Home View Controller-->
+        <!--SUPER TAXI-->
         <scene sceneID="QRb-lk-gEC">
             <objects>
                 <viewController storyboardIdentifier="UserHomeVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7bE-VL-5g4" customClass="UserHomeViewController" customModule="SuperTaxi" customModuleProvider="target" sceneMemberID="viewController">
@@ -461,39 +524,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="zFp-IM-RkS" userLabel="NavView">
-                                <rect key="frame" x="0.0" y="-1" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUPER TAXI" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y0x-Nn-18w">
-                                        <rect key="frame" x="68" y="26" width="185" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="P44-Pu-980" userLabel="ButtonMenu">
-                                        <rect key="frame" x="16" y="26" width="19" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="menu_icon">
-                                            <color key="titleColor" red="0.1019607843" green="0.16862745100000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onMenuClick:" destination="7bE-VL-5g4" eventType="touchUpInside" id="FB5-cd-vPt"/>
-                                        </connections>
-                                    </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" id="OGR-ta-kE6">
-                                        <rect key="frame" x="277" y="18" width="35" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="sio-p7-xF9" userLabel="NavLine">
-                                <rect key="frame" x="0.0" y="60" width="320" height="1"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.1019607843" green="0.16862745100000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Ra4-2e-tHt">
                                 <rect key="frame" x="0.0" y="61" width="320" height="446"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -695,24 +725,26 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="CuI-p8-O2W">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="SkA-Ou-tGt"/>
+                    <navigationItem key="navigationItem" title="SUPER TAXI" id="CuI-p8-O2W">
+                        <barButtonItem key="leftBarButtonItem" image="menu_icon" id="bQL-UV-Hud" userLabel="Menu Button">
+                            <color key="tintColor" red="0.1019607843" green="0.16862745100000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="btnMenu" destination="P44-Pu-980" id="4R3-Ie-sPI"/>
                         <outlet property="btnNext" destination="ozc-Xq-IeU" id="n1x-p9-iC3"/>
                         <outlet property="btnOneSeat" destination="SpU-LS-U95" id="um8-gI-DDr"/>
                         <outlet property="btnThreeSeat" destination="YD9-sL-ZXw" id="EP9-aJ-Xsz"/>
                         <outlet property="btnTwoSeat" destination="Nyp-hf-foq" id="w7c-vV-WxV"/>
                         <outlet property="imgOne" destination="a1K-zV-Jzd" id="INx-JF-TXd"/>
-                        <outlet property="imgPhoto" destination="OGR-ta-kE6" id="3dL-Lh-Ylh"/>
                         <outlet property="imgThree" destination="bor-5h-BwX" id="9Bd-hU-CTi"/>
                         <outlet property="imgTwo" destination="Pum-N1-an4" id="4p6-JC-K4C"/>
                         <outlet property="lblCars" destination="4cL-Qb-EwF" id="kDZ-Jt-93t"/>
                         <outlet property="lblKilometre" destination="0l1-Un-UtC" id="Mtg-L3-T0y"/>
                         <outlet property="mapView" destination="Ra4-2e-tHt" id="mVO-9C-w9n"/>
+                        <outlet property="menuButton" destination="bQL-UV-Hud" id="amB-v3-Hcp"/>
                         <outlet property="viewBottom" destination="mYk-bf-LPI" id="Qc0-dX-djW"/>
                         <outlet property="viewOneSeat" destination="6df-ld-Fyd" id="QsF-Ui-tzP"/>
                         <outlet property="viewRequest" destination="NnD-4b-BpF" id="8m0-Tj-55l"/>
@@ -723,7 +755,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WqD-iK-Uke" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1541" y="144"/>
+            <point key="canvasLocation" x="1541" y="172"/>
         </scene>
         <!--User Request Received View Controller-->
         <scene sceneID="qTE-4X-BUo">
@@ -875,10 +907,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="yBr-Tc-otv"/>
+                    <nil key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3ga-bv-44C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1917" y="144"/>
+            <point key="canvasLocation" x="1917" y="172"/>
         </scene>
         <!--User Long Press View Controller-->
         <scene sceneID="8Jw-f1-QEL">
@@ -918,6 +951,10 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.1019607843" green="0.16862745100000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="0Vr-83-TmH">
+                                <rect key="frame" x="0.0" y="61" width="320" height="447"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </mapView>
                             <view contentMode="scaleToFill" id="1ow-pl-Wg2" userLabel="BottomView">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -1086,6 +1123,33 @@
                                             <color key="titleColor" red="0.85490196080000003" green="0.0078431372550000003" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                     </button>
+                                    <view contentMode="scaleToFill" id="H4v-LQ-8Te">
+                                        <rect key="frame" x="68" y="224" width="116" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="AOu-TB-Ryu">
+                                                <rect key="frame" x="0.0" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="3e6-4w-kZ4">
+                                                <rect key="frame" x="22" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="HNr-lb-bzZ">
+                                                <rect key="frame" x="44" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="lPs-b7-fm0">
+                                                <rect key="frame" x="68" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gray_star" id="CEi-gK-J4v">
+                                                <rect key="frame" x="91" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -1138,6 +1202,33 @@
                                             <color key="titleColor" red="0.1019607843" green="0.16862745100000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                     </button>
+                                    <view contentMode="scaleToFill" id="3mH-rB-VYp">
+                                        <rect key="frame" x="43" y="218" width="215" height="51"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="V1L-ik-Fw6">
+                                                <rect key="frame" x="0.0" y="5" width="40" height="40"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="1yQ-GW-j5d">
+                                                <rect key="frame" x="43" y="6" width="40" height="40"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="HWu-4v-slI">
+                                                <rect key="frame" x="88" y="6" width="40" height="40"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="1Ib-SJ-3YI">
+                                                <rect key="frame" x="132" y="6" width="40" height="40"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gray_star" id="C2g-wj-AI9">
+                                                <rect key="frame" x="176" y="6" width="40" height="40"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -1148,7 +1239,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BZA-9F-Xwr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2288" y="144"/>
+            <point key="canvasLocation" x="2288" y="172"/>
         </scene>
         <!--Select Profile View Controller-->
         <scene sceneID="PaI-ov-0ff">
@@ -1293,7 +1384,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="aIJ-eu-nxL" userLabel="ButtonSave">
                                 <rect key="frame" x="10" y="516" width="300" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="btn_save"/>
+                                <state key="normal" image="btn_save_active"/>
                                 <connections>
                                     <segue destination="3uS-rh-Bfc" kind="push" identifier="taxiprofile_segue" id="O6F-Bc-b2P"/>
                                 </connections>
@@ -1351,6 +1442,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="8eF-M5-jUN"/>
                     <connections>
+                        <outlet property="btnSave" destination="aIJ-eu-nxL" id="Pj9-bd-aFu"/>
                         <outlet property="imgDriver" destination="SXp-OJ-gkN" id="Cr9-JT-Hyr"/>
                         <outlet property="imgTaxiDriverPhoto" destination="ejo-R2-bXa" id="a6z-YZ-IUJ"/>
                         <outlet property="txtCarRegnumber" destination="i63-aL-wXD" id="TTu-24-ho4"/>
@@ -1376,17 +1468,15 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="George Fox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ARv-J8-2JG">
-                                        <rect key="frame" x="8" y="27" width="242" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ex_image" id="0wA-pB-w1p">
                                         <rect key="frame" x="277" y="20" width="35" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bpW-Dp-42i">
+                                        <rect key="frame" x="14" y="24" width="19" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="menu_icon"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -1413,7 +1503,6 @@
                     <navigationItem key="navigationItem" id="GIp-jf-WID"/>
                     <connections>
                         <outlet property="imgPhoto" destination="0wA-pB-w1p" id="cey-f5-Nru"/>
-                        <outlet property="lblTaxiDriverName" destination="ARv-J8-2JG" id="Qsm-EJ-0xB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GSR-Fd-KIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1600,17 +1689,15 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="George Fox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="t39-05-PkV">
-                                        <rect key="frame" x="8" y="27" width="242" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ex_image" id="mUI-cM-AUz">
                                         <rect key="frame" x="277" y="20" width="35" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Q7s-vH-syM">
+                                        <rect key="frame" x="14" y="27" width="19" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="menu_icon"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -1619,6 +1706,10 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.1019607843" green="0.16862745100000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="hjw-XK-f9O">
+                                <rect key="frame" x="0.0" y="61" width="320" height="447"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </mapView>
                             <view contentMode="scaleToFill" id="4Rc-dn-EKH" userLabel="BottomView">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -1662,7 +1753,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.95686274510000002" green="0.94117647059999998" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" id="jXd-cK-GxK">
+                            <view contentMode="scaleToFill" id="jXd-cK-GxK">
                                 <rect key="frame" x="10" y="105" width="300" height="346"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -1698,6 +1789,33 @@
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" id="eLB-EV-pAS">
+                                        <rect key="frame" x="168" y="80" width="116" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="Kcb-be-h0o">
+                                                <rect key="frame" x="0.0" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="QoY-nO-uqh">
+                                                <rect key="frame" x="22" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="0tg-Gu-yrH">
+                                                <rect key="frame" x="44" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="yellow_star" id="cxn-LV-bI5">
+                                                <rect key="frame" x="68" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gray_star" id="uHn-9y-mVb">
+                                                <rect key="frame" x="91" y="2" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                     <view contentMode="scaleToFill" id="Cfw-kN-0SF">
                                         <rect key="frame" x="0.0" y="122" width="300" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -1808,17 +1926,15 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="George Fox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WqX-ot-uT7">
-                                        <rect key="frame" x="8" y="27" width="242" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ex_image" id="rVT-xd-8JQ">
                                         <rect key="frame" x="277" y="20" width="35" height="35"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yrk-qP-VMj">
+                                        <rect key="frame" x="15" y="27" width="19" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="menu_icon"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -1860,6 +1976,10 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.95686274510000002" green="0.94117647059999998" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="nTI-vH-MCn">
+                                <rect key="frame" x="0.0" y="61" width="320" height="447"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" red="0.97254901960784312" green="0.95686274509803915" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -1984,7 +2104,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nKg-Ca-UBz">
-                                <rect key="frame" x="136" y="442" width="106" height="21"/>
+                                <rect key="frame" x="199" y="447" width="106" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                 <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1999,6 +2119,28 @@
             </objects>
             <point key="canvasLocation" x="773" y="-189"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="3bf-o5-Y1L">
+            <objects>
+                <navigationController id="0go-cx-YeK" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="10s-5L-Kos"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZBS-qb-Dqp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textShadowColor" red="0.97254901959999995" green="0.95686274510000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="iIe-zs-XNa" kind="relationship" relationship="rootViewController" id="px8-TT-6Rg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zFz-bx-v8c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1541" y="-1151"/>
+        </scene>
     </scenes>
     <resources>
         <image name="avatar_one_seat" width="25" height="28"/>
@@ -2012,7 +2154,7 @@
         <image name="btn_fb" width="44" height="44"/>
         <image name="btn_ignore" width="80" height="40"/>
         <image name="btn_next" width="70" height="40"/>
-        <image name="btn_save" width="300" height="40"/>
+        <image name="btn_save_active" width="300" height="40"/>
         <image name="btn_send" width="300" height="40"/>
         <image name="btn_show_on_map" width="185" height="40"/>
         <image name="btn_signin" width="300" height="40"/>
@@ -2024,6 +2166,7 @@
         <image name="driver_back" width="320" height="225"/>
         <image name="ex_back" width="320" height="320"/>
         <image name="ex_image" width="160" height="160"/>
+        <image name="gray_star" width="13" height="13"/>
         <image name="image1" width="35" height="35"/>
         <image name="image_one_seat" width="150" height="150"/>
         <image name="menu_icon" width="19" height="11"/>
@@ -2032,5 +2175,9 @@
         <image name="taxi_photo_upload" width="138" height="103"/>
         <image name="user" width="139" height="139"/>
         <image name="user_profile_back" width="320" height="255"/>
+        <image name="yellow_star" width="13" height="13"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="uUt-uc-9RL"/>
+    </inferredMetricsTieBreakers>
 </document>
