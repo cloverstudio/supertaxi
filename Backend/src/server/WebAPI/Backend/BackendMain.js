@@ -16,6 +16,7 @@ var BackendMain ={
         router.use("/test", require("./Controllers/Test/TestController").init(app));
         router.use("/signup", require("./Controllers/Signup/SignupGeneralController").init(app));
         router.use("/signin", require("./Controllers/Signin/SigninGeneralController").init(app));
+        router.use("/proflie/update", require("./Controllers/Profile/UpdateProflieController").init(app));
 
         return router;
 

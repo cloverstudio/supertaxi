@@ -63,7 +63,10 @@ SignupGeneralController.prototype.init = function(app){
 }
 
     * @apiErrorExample {json} Error-Response:
-{ code: 6000006, time: 1467124038393 }
+    {
+        code: 6000006, 
+        time: 1467124038393 
+    }
 
  */
 
