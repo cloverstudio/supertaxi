@@ -13,7 +13,7 @@ var Const = require( pathTop + "lib/consts");
 var Config = require( pathTop + "lib/init");
 var DatabaseManager = require( pathTop + 'lib/DatabaseManager');
 var Utils = require( pathTop + 'lib/utils');
-var tokenChecker = require( pathTop + 'lib/authApi');
+var tokenChecker = require( pathTop + 'lib/authAPI');
 
 var BackendBase = require('../BackendBase');
 
