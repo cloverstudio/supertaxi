@@ -43,6 +43,8 @@ describe('WEB API', function () {
                     res.body.should.have.property('data');
                     res.body.data.should.have.property('token_new');
 
+                    global.user1.token = res.body.data.token_new;
+
                     done();
                 
                 });   

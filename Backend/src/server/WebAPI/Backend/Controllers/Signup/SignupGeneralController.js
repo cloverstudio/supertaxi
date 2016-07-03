@@ -28,7 +28,7 @@ SignupGeneralController.prototype.init = function(app){
     var self = this;
 
    /**
-     * @api {post} /api/v1/signin Signin
+     * @api {post} /api/v1/signup Signup
      * @apiName General Signup
      * @apiGroup WebAPI
      * @apiDescription Reigster new user to database and returns new token.

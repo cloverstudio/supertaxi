@@ -12,9 +12,10 @@ describe('WEB API', function () {
 
             request(app)
                 .post('/api/v1/proflie/update')
-                .send({
-
-                })
+                .set('access-token', global.user1.token)
+                .field('type', 'user')
+                .field('name', 'test')
+                .attach('file', 'src/server/test/samplefiles/max.jpg')
                 .end(function (err, res) {
 
     			if (err) {
@@ -29,7 +30,51 @@ describe('WEB API', function () {
             });   
             
         });
-        
+
+        it('no name', function (done) {
+
+            request(app)
+                .post('/api/v1/proflie/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'user')
+                .field('name', '')
+                .attach('file', 'src/server/test/samplefiles/max.jpg')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(6000010);
+                
+                done();
+            
+            });   
+            
+        });
+
+       it('wrong type', function (done) {
+
+            request(app)
+                .post('/api/v1/proflie/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'wrong')
+                .field('name', 'test')
+                .attach('file', 'src/server/test/samplefiles/max.jpg')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(6000011);
+                
+                done();
+            
+            });   
+            
+        });
+
     });
 
 });

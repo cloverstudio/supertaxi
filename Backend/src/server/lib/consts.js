@@ -10,6 +10,9 @@
     Const.responsecodeParamErrorEmailExists = 6000006;
     Const.responsecodeParamErrorWrongSecret = 6000007;
     Const.responsecodeSignInError = 6000008;
+    Const.responsecodeTokenInvalid = 6000009;
+    Const.responsecodeParamErrorNoName = 6000010;
+    Const.responsecodeParamErrorWrongType = 6000011;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;
@@ -22,5 +25,10 @@
     Const.REUsername = /^[0-9A-Za-z._+-]{6,}$/;
     Const.REPassword = /^[0-9A-Za-z._+-]{6,}$/;
     Const.RENumbers = /^[0-9]*$/;
+
+    Const.userTypeNormal = 'user';
+    Const.userTypeDriver = 'driver';
+
+    Const.tokenValidInteval = 60*60*24*1000;
 
     module["exports"] = Const;
