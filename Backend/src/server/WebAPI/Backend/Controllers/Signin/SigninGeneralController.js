@@ -33,9 +33,9 @@ SigninGeneralController.prototype.init = function(app){
      * @apiGroup WebAPI
      * @apiDescription Signin to backend and generate new token for the user.
      *   
-     * @apiParam {String} email Email Address 
-     * @apiParam {String} password Password 
-     * @apiParam {String} secret Secret
+     * @apiParam {String} email (Required)  Email Address 
+     * @apiParam {String} password (Required)  Password 
+     * @apiParam {String} secret (Required)  Secret
      * 
      * @apiError UnknownError 6000000
      * @apiError ParamErrorNoEmail 6000001

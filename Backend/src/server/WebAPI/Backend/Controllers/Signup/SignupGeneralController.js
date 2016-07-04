@@ -33,9 +33,9 @@ SignupGeneralController.prototype.init = function(app){
      * @apiGroup WebAPI
      * @apiDescription Reigster new user to database and returns new token.
      *   
-     * @apiParam {String} email Email Address 
-     * @apiParam {String} password Password 
-     * @apiParam {String} secret Secret
+     * @apiParam {String} email (Required) Email Address 
+     * @apiParam {String} password (Required) Password 
+     * @apiParam {String} secret (Required) Secret
      * 
      * @apiError UnknownError 6000000
      * @apiError ParamErrorNoEmail 6000001
