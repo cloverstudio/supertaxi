@@ -31,8 +31,10 @@ UpdateProfileController.prototype.init = function(app){
      * @api {post} /api/v1/profile/update Update Profile
      * @apiName UpdateProfile
      * @apiGroup WebAPI
-     * @apiDescription Update user's proflie, both for taxt driver and user
-     *
+     * @apiDescription This API receives multipare url-form-encoded request not JSON. Update user's proflie, both for taxt driver and user
+     * 
+     * @apiHeader {String} access-token Users unique access-token.
+     * 
      * @apiParam {String} name* Name of user/driver 
      * @apiParam {String} type* User type should be "user" or "driver"
      * @apiParam {Number} age Age of user 
