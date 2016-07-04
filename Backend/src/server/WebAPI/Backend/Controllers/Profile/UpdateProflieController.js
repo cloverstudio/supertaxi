@@ -3,9 +3,10 @@ var router = express.Router();
 var _ = require('lodash');
 var async = require('async');
 var formidable = require('formidable');
-var fs = require('fs');
-var easyImg = require('easyimage');
+var fs = require('fs-extra');
+var easyimg = require('easyimage');
 var path = require('path');
+var validator = require('validator');
 
 var pathTop = "../../../../";
 
@@ -27,10 +28,30 @@ UpdateProfileController.prototype.init = function(app){
     var self = this;
 
    /**
-     * @api {post} /api/v1/profile/update just test
+     * @api {post} /api/v1/profile/update Update Profile
      * @apiName UpdateProfile
      * @apiGroup WebAPI
      * @apiDescription Update user's proflie, both for taxt driver and user
+     *
+     * @apiParam {String} name* Name of user/driver 
+     * @apiParam {String} type* User type should be "user" or "driver"
+     * @apiParam {Number} age Age of user 
+     * @apiParam {String} note note
+     * @apiParam {String} car_type CarType
+     * @apiParam {String} car_registration Car registration number
+     * @apiParam {Number} fee_start Start fee
+     * @apiParam {Number} fee_km Fee per km
+     * @apiParam {File} file picture file (png,jpeg,gif)
+     * 
+     * @apiError UnknownError 6000000
+     * @apiError ParamErrorNoName 6000010
+     * @apiError ParamErrorWrongType 6000011
+     * @apiError ParamErrorFeeStart 6000013
+     * @apiError ParamErrorFeeKm 6000014
+     * @apiError ParamErrorWrongImageType 6000012
+     * @apiError ParamErrorAge 6000015
+
+     * 
      * @apiSuccessExample Success-Response:
 
 { code: 1, time: 1467125660699}
@@ -48,7 +69,9 @@ UpdateProfileController.prototype.init = function(app){
                 form.parse(request, (err, fields, files) =>  {
 
                     result.fields = fields;
-                    result.files = files;
+
+                    if(files)
+                        result.file = files.file;
                     
                     done(null,result)
 
@@ -57,6 +80,7 @@ UpdateProfileController.prototype.init = function(app){
             },
             (result,done) => {
 
+                // validation
                 if(_.isEmpty(result.fields.name)){
                     done({
                         handledError:Const.responsecodeParamErrorNoName
@@ -71,6 +95,70 @@ UpdateProfileController.prototype.init = function(app){
                     return;
                 }
 
+                if(result.fields.type == Const.userTypeDriver){
+
+                    if(_.isEmpty(result.fields.fee_start)){
+                        done({
+                            handledError:Const.responsecodeParamErrorFeeStart
+                        });
+                        return;
+                    }
+
+                    if(_.isEmpty(result.fields.fee_km)){
+                        done({
+                            handledError:Const.responsecodeParamErrorFeeKm
+                        });
+                        return;
+                    }
+                    
+                }
+                
+                if(result.fields.fee_start){
+
+                    if(!validator.isNumeric(result.fields.fee_start)){
+                        done({
+                            handledError:Const.responsecodeParamErrorFeeStart
+                        });
+                        return;
+                    }
+
+                }
+
+                if(result.fields.fee_km){
+
+                    if(!validator.isNumeric(result.fields.fee_km)){
+                        done({
+                            handledError:Const.responsecodeParamErrorFeeKm
+                        });
+                        return;
+                    }
+
+                }
+
+                if(result.fields.age){
+
+                    if(!validator.isNumeric(result.fields.age)){
+                        done({
+                            handledError:Const.responsecodeParamErrorAge
+                        });
+                        return;
+                    }
+
+                }
+
+                if(result.file){
+
+                    // generate thumbnail      
+                    if(result.file.type.indexOf("jpeg") == -1 &&
+                        result.file.type.indexOf("gif") == -1 &&
+                        result.file.type.indexOf("png") ==  -1){
+                            done({
+                                handledError:Const.responsecodeParamErrorWrongImageType
+                            });
+                            return;
+                        }
+
+                }
 
                 done(null,result);
 
@@ -82,15 +170,27 @@ UpdateProfileController.prototype.init = function(app){
                 var updateParams = {};
 
                 if(result.fields.type == Const.userTypeNormal){
+
+                    if(!result.fields.age)
+                        result.fields.age = 0;
+
                     updateParams.user = {
-                        name: result.fields.name
+                        name: result.fields.name,
+                        age:result.fields.age,
+                        note:result.fields.note,
                     };
                 }
 
                 else if(result.fields.type == Const.userTypeDriver){
+
                     updateParams.driver = {
-                        name: result.fields.name
+                        name: result.fields.name,
+                        car_type:result.fields.name,
+                        car_registration:result.fields.car_registration,
+                        fee_start:result.fields.fee_start,
+                        fee_km:result.fields.fee_km,
                     };
+
                 } else {
                     done({
                         handledError:Const.responsecodeParamErrorWrongType
@@ -127,7 +227,7 @@ UpdateProfileController.prototype.init = function(app){
                         var destPathTmp = Config.uploadPath + "/" + thumbFileName;
 
                         easyimg.thumbnail({
-                                src: Config.uploadPath + "/" + result.file.newFileName, 
+                                src: file.path, 
                                 dst:destPathTmp + ".png",
                                 width:Const.thumbSize, height:Const.thumbSize
                             }).then(
@@ -154,9 +254,81 @@ UpdateProfileController.prototype.init = function(app){
                     
                 } else {
                     
-                    done(null,result);
+                    done({
+                        handledError:Const.responsecodeParamErrorWrongImageType
+                    });
                     
                 }
+
+            },
+            (result,done) => {
+                
+                if(!result.file){
+                    done(null,result);
+                    return;
+                }
+            
+                var file = result.file;
+
+                // save file
+                if(file.type.indexOf("jpeg") > -1 ||
+                    file.type.indexOf("gif") > -1 ||
+                    file.type.indexOf("png") > -1){
+                        
+                    // save to upload dir
+                    var tempPath = result.file.path;
+                    var fileName = result.file.name;
+                    var destPath = Config.uploadPath + "/";
+                    
+                    var newFileName = Utils.getRandomString(32);                
+                    result.file.newFileName = newFileName;
+                    
+                    fs.copy(tempPath, destPath + newFileName, function(err) {
+
+                        easyimg.convert({src: destPath + newFileName, dst: destPath + newFileName + ".png", quality:100}).then(function (file) {
+
+                            fs.rename( destPath + newFileName + ".png", 
+                                destPath + newFileName, function(err) {
+                                
+                                done(err,result);
+                                
+                            });
+                                                            
+                        });
+                    
+                    });
+                    
+                } else {
+                    
+                    done({
+                        handledError:Const.responsecodeParamErrorWrongImageType
+                    });
+                    
+                }
+
+            },
+            (result,done) => {
+
+                if(!result.file){
+                    done(null,result);
+                    return;
+                }
+
+                // save thumbnail and avatar fileid
+
+                var user = request.user;
+
+                user.update({
+                    avatar:{
+                        fileid: result.file.newFileName,
+                        thumbfileid: result.file.thumbName
+                    }
+                }
+                ,{},(err,userResult) => {
+
+                    done(err,result);
+
+                });
 
             }
         ],

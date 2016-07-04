@@ -19,16 +19,18 @@ User.prototype.init = function(mongoose){
         user:{
             name : String,
             age : Number,
-            note : String,
-            avatar: String
+            note : String
         },
         driver:{
             name : String,
             car_type : String,
             car_registration : String,
             fee_start : Number,
-            fee_km : Number,
-            avatar : String
+            fee_km : Number
+        },
+        avatar:{
+            fileid:String,
+            thumbfileid:String
         },
         token: String,
         token_generated: Number,

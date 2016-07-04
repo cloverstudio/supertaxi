@@ -28,7 +28,7 @@ SigninGeneralController.prototype.init = function(app){
     var self = this;
 
    /**
-     * @api {post} /api/v1/signin Signup
+     * @api {post} /api/v1/signin SignIn
      * @apiName General Signin
      * @apiGroup WebAPI
      * @apiDescription Signin to backend and generate new token for the user.

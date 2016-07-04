@@ -13,6 +13,10 @@
     Const.responsecodeTokenInvalid = 6000009;
     Const.responsecodeParamErrorNoName = 6000010;
     Const.responsecodeParamErrorWrongType = 6000011;
+    Const.responsecodeParamErrorWrongImageType = 6000012;
+    Const.responsecodeParamErrorFeeStart = 6000013;
+    Const.responsecodeParamErrorFeeKm = 6000014;
+    Const.responsecodeParamErrorAge = 6000015;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;
@@ -30,5 +34,7 @@
     Const.userTypeDriver = 'driver';
 
     Const.tokenValidInteval = 60*60*24*1000;
+
+    Const.thumbSize = 256;
 
     module["exports"] = Const;

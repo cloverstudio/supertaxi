@@ -8,13 +8,38 @@ describe('WEB API', function () {
 
     describe('/profile/update POST', function () {
     
-        it('success', function (done) {
+        it('success user', function (done) {
 
             request(app)
                 .post('/api/v1/proflie/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'user')
                 .field('name', 'test')
+                .attach('file', 'src/server/test/samplefiles/max.jpg')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(1);
+                res.body.should.have.property('data');
+                
+                done();
+            
+            });   
+            
+        });
+
+        it('success driver', function (done) {
+
+            request(app)
+                .post('/api/v1/proflie/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'driver')
+                .field('name', 'test')
+                .field('fee_start', 30)
+                .field('fee_km', 5)
                 .attach('file', 'src/server/test/samplefiles/max.jpg')
                 .end(function (err, res) {
 
@@ -68,6 +93,100 @@ describe('WEB API', function () {
     			}
 
                 res.body.code.should.be.exactly(6000011);
+                
+                done();
+            
+            });   
+            
+        });
+
+       it('wrong file', function (done) {
+
+            request(app)
+                .post('/api/v1/proflie/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'user')
+                .field('name', 'test')
+                .attach('file', 'src/server/test/samplefiles/test.text')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(6000012);
+                
+                done();
+            
+            });   
+            
+        });
+
+       it('wrong age', function (done) {
+
+            request(app)
+                .post('/api/v1/proflie/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'user')
+                .field('name', 'test')
+                .field('age', 'test')
+                .attach('file', 'src/server/test/samplefiles/test.text')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(6000015);
+                
+                done();
+            
+            });   
+            
+        });
+
+
+       it('wrong fee', function (done) {
+
+            request(app)
+                .post('/api/v1/proflie/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'driver')
+                .field('name', 'test')
+                .field('fee_start', 'test')
+                .field('fee_km', 5)
+                .attach('file', 'src/server/test/samplefiles/test.text')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(6000013);
+                
+                done();
+            
+            });   
+            
+        });
+
+       it('wrong fee km', function (done) {
+
+            request(app)
+                .post('/api/v1/proflie/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'driver')
+                .field('name', 'test')
+                .field('fee_start', 35)
+                .field('fee_km', 'test')
+                .attach('file', 'src/server/test/samplefiles/test.text')
+                .end(function (err, res) {
+
+    			if (err) {
+    				throw err;
+    			}
+
+                res.body.code.should.be.exactly(6000014);
                 
                 done();
             
