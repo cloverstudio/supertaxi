@@ -17,6 +17,7 @@
     Const.responsecodeParamErrorFeeStart = 6000013;
     Const.responsecodeParamErrorFeeKm = 6000014;
     Const.responsecodeParamErrorAge = 6000015;
+    Const.responsecodeParamErrorWrongTelNum = 6000016;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;

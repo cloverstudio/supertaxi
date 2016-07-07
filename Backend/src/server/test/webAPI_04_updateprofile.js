@@ -7,14 +7,15 @@ describe('WEB API', function () {
     var req, res;
 
     describe('/profile/update POST', function () {
-    
+        
         it('success user', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'user')
                 .field('name', 'test')
+                .field('telNum', '+385 98 9057 351')
                 .attach('file', 'src/server/test/samplefiles/max.jpg')
                 .end(function (err, res) {
 
@@ -34,10 +35,11 @@ describe('WEB API', function () {
         it('success driver', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'driver')
                 .field('name', 'test')
+                .field('telNum', '+385 98 1234 567')                
                 .field('fee_start', 30)
                 .field('fee_km', 5)
                 .attach('file', 'src/server/test/samplefiles/max.jpg')
@@ -59,7 +61,7 @@ describe('WEB API', function () {
         it('no name', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'user')
                 .field('name', '')
@@ -81,7 +83,7 @@ describe('WEB API', function () {
        it('wrong type', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'wrong')
                 .field('name', 'test')
@@ -103,7 +105,7 @@ describe('WEB API', function () {
        it('wrong file', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'user')
                 .field('name', 'test')
@@ -125,7 +127,7 @@ describe('WEB API', function () {
        it('wrong age', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'user')
                 .field('name', 'test')
@@ -149,7 +151,7 @@ describe('WEB API', function () {
        it('wrong fee', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'driver')
                 .field('name', 'test')
@@ -173,7 +175,7 @@ describe('WEB API', function () {
        it('wrong fee km', function (done) {
 
             request(app)
-                .post('/api/v1/proflie/update')
+                .post('/api/v1/profile/update')
                 .set('access-token', global.user1.token)
                 .field('type', 'driver')
                 .field('name', 'test')
@@ -187,6 +189,29 @@ describe('WEB API', function () {
     			}
 
                 res.body.code.should.be.exactly(6000014);
+                
+                done();
+            
+            });   
+            
+        });
+
+        it('wrong telNum', function (done) {
+
+            request(app)
+                .post('/api/v1/profile/update')
+                .set('access-token', global.user1.token)
+                .field('type', 'user')
+                .field('name', 'test')
+                .field('telNum', '')
+                .attach('file', 'src/server/test/samplefiles/max.jpg')
+                .end(function (err, res) {
+
+                if (err) {
+                    throw err;
+                }
+
+                res.body.code.should.be.exactly(6000016);
                 
                 done();
             

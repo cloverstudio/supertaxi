@@ -7,6 +7,7 @@ var fs = require('fs-extra');
 var easyimg = require('easyimage');
 var path = require('path');
 var validator = require('validator');
+var phone = require('phone');
 
 var pathTop = "../../../../";
 
@@ -31,12 +32,13 @@ UpdateProfileController.prototype.init = function(app){
      * @api {post} /api/v1/profile/update Update Profile
      * @apiName UpdateProfile
      * @apiGroup WebAPI
-     * @apiDescription This API receives multipart url-form-encoded request not JSON. Update user's proflie, both for taxt driver and user
+     * @apiDescription This API receives multipart url-form-encoded request not JSON. Update user's profile, both for taxt driver and user
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
      * @apiParam {String} name (Required) Name of user/driver 
      * @apiParam {String} type (Required) User type should be "user" or "driver"
+     * @apiParam {String} telNum (Required) Telephone number of user/driver (+385981234567, +385 99 1234 655, ...)
      * @apiParam {Number} age Age of user 
      * @apiParam {String} note note
      * @apiParam {String} car_type CarType
@@ -52,6 +54,7 @@ UpdateProfileController.prototype.init = function(app){
      * @apiError ParamErrorFeeKm 6000014
      * @apiError ParamErrorWrongImageType 6000012
      * @apiError ParamErrorAge 6000015
+     * @apiError ParamErrorWrongTelNum 6000016
 
      * 
      * @apiSuccessExample Success-Response:
@@ -82,6 +85,7 @@ UpdateProfileController.prototype.init = function(app){
             },
             (result,done) => {
 
+
                 // validation
                 if(_.isEmpty(result.fields.name)){
                     done({
@@ -90,7 +94,7 @@ UpdateProfileController.prototype.init = function(app){
                     return;
                 }
 
-                if(_.isEmpty(result.fields.type)){
+                if(result.fields.type != Const.userTypeNormal && result.fields.type != Const.userTypeDriver) {
                     done({
                         handledError:Const.responsecodeParamErrorWrongType
                     });
@@ -162,6 +166,16 @@ UpdateProfileController.prototype.init = function(app){
 
                 }
 
+                var telNum = phone(result.fields.telNum)[0];
+
+                if (_.isEmpty(telNum)) {
+                    done({
+                        handledError: Const.responsecodeParamErrorWrongTelNum
+                    });
+                    return;
+                }
+
+                result.fields.telNum = telNum;
                 done(null,result);
 
             },
@@ -193,12 +207,9 @@ UpdateProfileController.prototype.init = function(app){
                         fee_km:result.fields.fee_km,
                     };
 
-                } else {
-                    done({
-                        handledError:Const.responsecodeParamErrorWrongType
-                    });
-                    return;
                 }
+
+                updateParams.telNum = result.fields.telNum;
 
                 user.update(
                     updateParams
