@@ -1,5 +1,147 @@
 define({ "api": [
   {
+    "type": "post",
+    "url": "/api/v1/order/call",
+    "title": "Call Taxi",
+    "name": "Call_Taxi",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. Sent request to taxi driver</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "latFrom",
+            "description": "<p>(Required) From latitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "lonFrom",
+            "description": "<p>(Required) From longitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "addressFrom",
+            "description": "<p>(Required) From address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "latTo",
+            "description": "<p>(Required) To latitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "lonTo",
+            "description": "<p>(Required) To longitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "addressTo",
+            "description": "<p>(Required) To address</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "crewNum",
+            "description": "<p>(Required) Number of passengers</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLatitudeFrom",
+            "description": "<p>6000017</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLongitudeFrom",
+            "description": "<p>6000018</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorNoAddressFrom",
+            "description": "<p>6000019</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLatitudeTo",
+            "description": "<p>6000020</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLongitudeTo",
+            "description": "<p>6000021</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorNoAddressTo",
+            "description": "<p>6000022</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorCrewNumber",
+            "description": "<p>6000023</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "\n{ code: 1, time: 1467125660699 }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Order/CallOrderController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
     "type": "get",
     "url": "/api/v1/test/error",
     "title": "error",

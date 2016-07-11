@@ -18,6 +18,13 @@
     Const.responsecodeParamErrorFeeKm = 6000014;
     Const.responsecodeParamErrorAge = 6000015;
     Const.responsecodeParamErrorWrongTelNum = 6000016;
+    Const.responsecodeParamErrorLatitudeFrom = 6000017;
+    Const.responsecodeParamErrorLongitudeFrom = 6000018;
+    Const.responsecodeParamErrorNoAddressFrom = 6000019;
+    Const.responsecodeParamErrorLatitudeTo = 6000020;
+    Const.responsecodeParamErrorLongitudeTo = 6000021;
+    Const.responsecodeParamErrorNoAddressTo = 6000022;
+    Const.responsecodeParamErrorCrewNumber = 6000023;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;

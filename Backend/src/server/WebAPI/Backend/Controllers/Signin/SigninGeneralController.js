@@ -163,7 +163,7 @@ SigninGeneralController.prototype.init = function(app){
 
                     console.log(err);
 
-                    self.successResponse(response,err.responsecodeUnknownError);
+                    self.successResponse(response,Const.responsecodeUnknownError);
 
                 }
 

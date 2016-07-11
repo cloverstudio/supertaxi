@@ -41,7 +41,7 @@ function checkToken(request, response, next) {
         if(diff > Const.tokenValidInteval){
 
             response.json({
-                code : Const.responsecodeSigninInvalidToken
+                code : Const.responsecodeTokenInvalid
             });
         
             return;

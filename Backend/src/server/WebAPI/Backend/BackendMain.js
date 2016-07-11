@@ -18,6 +18,8 @@ var BackendMain ={
         router.use("/signin", require("./Controllers/Signin/SigninGeneralController").init(app));
         router.use("/profile/update", require("./Controllers/Profile/UpdateProfileController").init(app));
 
+        router.use("/order/call", require("./Controllers/Order/CallOrderController").init(app));
+
         return router;
 
     }
