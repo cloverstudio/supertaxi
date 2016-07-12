@@ -12,6 +12,11 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import clover_studio.com.supertaxi.R;
+import clover_studio.com.supertaxi.dialog.BasicProgressDialog;
+import clover_studio.com.supertaxi.utils.Const;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Created by ivoperic on 12/07/16.
@@ -19,6 +24,9 @@ import clover_studio.com.supertaxi.R;
 public class BaseActivity extends AppCompatActivity{
 
     protected Toolbar toolbar;
+    private BasicProgressDialog basicDialog;
+    protected Retrofit client;
+
 
     public Activity getActivity(){
         return this;
@@ -28,9 +36,19 @@ public class BaseActivity extends AppCompatActivity{
         return this;
     }
 
+    public Retrofit getRetrofit(){
+        return client;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
+
+        client = new Retrofit.Builder()
+                .baseUrl(Const.BASE_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 
     /**
@@ -57,6 +75,58 @@ public class BaseActivity extends AppCompatActivity{
         if(toolbar != null){
             TextView tvTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
             if(tvTitle != null) tvTitle.setText(title);
+        }
+    }
+
+    /**
+     * set toolbar left text button
+     * @param left text to show
+     */
+    protected void setToolbarLeftText(String left){
+        if(toolbar != null){
+            TextView tvLeft = (TextView) toolbar.findViewById(R.id.toolbarLeft);
+            if(tvLeft != null) tvLeft.setText(left);
+        }
+    }
+
+    /**
+     * set toolbar left text button clicklistener
+     * @param onClickListener click listener
+     */
+    protected void setToolbarLeftTextListener(View.OnClickListener onClickListener){
+        if(toolbar != null){
+            TextView tvLeft = (TextView) toolbar.findViewById(R.id.toolbarLeft);
+            if(tvLeft != null) tvLeft.setOnClickListener(onClickListener);
+        }
+    }
+
+    public void showProgress(){
+        try {
+
+            if (basicDialog != null && basicDialog.isShowing()) {
+                basicDialog.dismiss();
+                basicDialog = null;
+            }
+
+            basicDialog = new BasicProgressDialog(this);
+            basicDialog.show();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void hideProgress(){
+        try {
+
+            if (basicDialog != null && basicDialog.isShowing()) {
+                basicDialog.dismiss();
+            }
+
+            basicDialog = null;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

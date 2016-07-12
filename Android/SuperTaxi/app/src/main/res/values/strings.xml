@@ -12,4 +12,24 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
+    <string name="username">Username</string>
+    <string name="sign_up_capital">SIGN UP</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="close">close</string>
+    <string name="OK">OK</string>
+    <string name="try_again">Try again</string>
+
+    <!-- ERROR -->
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_invalid_token">Invalid token</string>
+    <string name="error_no_name">No name</string>
+    <string name="error_wrong_type">Wrong type</string>
+    <string name="error_fee_start">Error fee start</string>
+    <string name="error_fee_km">Error fee km</string>
+    <string name="error_wrong_image_type">Wrong image type</string>
+    <string name="error_age">Error age</string>
+    <string name="error_wrong_tel_num">Wrong tel num</string>
+
+
 </resources>

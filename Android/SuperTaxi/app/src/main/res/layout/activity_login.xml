@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:id="@+id/leftView"
-                    android:background="@color/revert_devil_gray"
+                    android:background="@color/line_gray"
                     android:layout_toLeftOf="@id/tvSignInWith"
                     android:layout_toStartOf="@id/tvSignInWith"
                     android:layout_marginRight="@dimen/default_margin"
@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:id="@+id/rightView"
-                    android:background="@color/revert_devil_gray"
+                    android:background="@color/line_gray"
                     android:layout_toRightOf="@id/tvSignInWith"
                     android:layout_toEndOf="@id/tvSignInWith"
                     android:layout_marginLeft="@dimen/default_margin"
@@ -147,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:id="@+id/leftView2"
-                    android:background="@color/revert_devil_gray"
+                    android:background="@color/line_gray"
                     android:layout_toLeftOf="@id/tvOrUserEmail"
                     android:layout_toStartOf="@id/tvOrUserEmail"
                     android:layout_marginRight="@dimen/default_margin"
@@ -158,7 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:id="@+id/rightView2"
-                    android:background="@color/revert_devil_gray"
+                    android:background="@color/line_gray"
                     android:layout_toRightOf="@id/tvOrUserEmail"
                     android:layout_toEndOf="@id/tvOrUserEmail"
                     android:layout_marginLeft="@dimen/default_margin"
@@ -187,6 +187,8 @@
                     android:textColor="@color/devil_gray"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:textColorHint="@color/revert_devil_gray"
                     android:hint="@string/email_address"
                     android:background="@color/transparent"
@@ -195,7 +197,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/revert_devil_gray"/>
+                    android:background="@color/line_gray"/>
 
                 <clover_studio.com.supertaxi.view.CustomEditText
                     android:layout_width="match_parent"
@@ -213,7 +215,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/revert_devil_gray"/>
+                    android:background="@color/line_gray"/>
 
             </LinearLayout>
 

@@ -2,11 +2,13 @@
 <resources>
     <color name="colorPrimary">#1A2B4E</color>
     <color name="colorPrimaryDark">#1A2B4E</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#CCCCCC</color>
     <color name="devil_gray">#666666</color>
     <color name="revert_devil_gray">#999999</color>
     <color name="white">@android:color/white</color>
     <color name="transparent">@android:color/transparent</color>
     <color name="green_button_color">#81D135</color>
     <color name="green_button_color_press">#5CAA06</color>
+    <color name="line_gray">#D8D8D8</color>
+    <color name="dim_dark_black">#aa0000</color>
 </resources>
