@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="clover_studio.com.supertaxi.LoginActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tToolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tToolbar"
+            android:id="@+id/mainContent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlSignInWithArea"
+                android:padding="@dimen/default_margin"
+                android:layout_marginTop="10dp">
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:text="@string/sign_in_with"
+                    android:id="@+id/tvSignInWith"
+                    android:layout_centerHorizontal="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/leftView"
+                    android:background="@color/revert_devil_gray"
+                    android:layout_toLeftOf="@id/tvSignInWith"
+                    android:layout_toStartOf="@id/tvSignInWith"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/rightView"
+                    android:background="@color/revert_devil_gray"
+                    android:layout_toRightOf="@id/tvSignInWith"
+                    android:layout_toEndOf="@id/tvSignInWith"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlSignInWithArea"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:id="@+id/llSocialArea"
+                android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/facebook"
+                        android:layout_centerHorizontal="true"
+                        android:drawableTop="@drawable/ic_facebook_selector"
+                        android:id="@+id/tvFacebook"
+                        android:drawablePadding="10dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginEnd="40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/twitter"
+                        android:layout_centerHorizontal="true"
+                        android:drawableTop="@drawable/ic_twitter_selector"
+                        android:id="@+id/tvTwitter"
+                        android:drawablePadding="10dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/g_plus"
+                        android:layout_centerHorizontal="true"
+                        android:drawableTop="@drawable/ic_gplus_selector"
+                        android:id="@+id/tvGPlus"
+                        android:drawablePadding="10dp"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlOrUseEmailArea"
+                android:padding="@dimen/default_margin"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/llSocialArea"
+                android:layout_marginBottom="10dp">
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:text="@string/or_user_email"
+                    android:id="@+id/tvOrUserEmail"
+                    android:layout_centerHorizontal="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/leftView2"
+                    android:background="@color/revert_devil_gray"
+                    android:layout_toLeftOf="@id/tvOrUserEmail"
+                    android:layout_toStartOf="@id/tvOrUserEmail"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/rightView2"
+                    android:background="@color/revert_devil_gray"
+                    android:layout_toRightOf="@id/tvOrUserEmail"
+                    android:layout_toEndOf="@id/tvOrUserEmail"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlOrUseEmailArea"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:id="@+id/llEmailArea"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:paddingLeft="@dimen/default_margin"
+                android:paddingStart="@dimen/default_margin"
+                android:layout_marginTop="10dp">
+
+                <clover_studio.com.supertaxi.view.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColorHint="@color/revert_devil_gray"
+                    android:hint="@string/email_address"
+                    android:background="@color/transparent"
+                    android:id="@+id/etEmailAddress"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/revert_devil_gray"/>
+
+                <clover_studio.com.supertaxi.view.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:textColorHint="@color/revert_devil_gray"
+                    android:hint="@string/password"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:inputType="textPassword"
+                    android:background="@color/transparent"
+                    android:id="@+id/etPassword"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/revert_devil_gray"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/llEmailArea"
+                android:id="@+id/rlRememberMe">
+
+                <CheckBox
+                    android:id="@+id/cbRememberMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/remember_me"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/default_to_devil_gray"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_below="@id/rlRememberMe"
+                android:id="@+id/rlSignInButtonArea">
+
+                <clover_studio.com.supertaxi.view.CustomButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_green_button_with_corners_selector"
+                    android:text="@string/sign_in_capital"
+                    android:textColor="@color/white"
+                    android:id="@+id/buttonSignIn"
+                    android:textSize="@dimen/default_title_size"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlForgotPasswordAndSignUp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/rlSignInButtonArea">
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:id="@+id/tvForgotPassword"
+                    android:text="@string/forgot_password"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/default_to_devil_gray"/>
+
+                <LinearLayout
+                    android:layout_below="@id/tvForgotPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/dont_have_account"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:textColor="@color/devil_gray"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingRight="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="5dp"
+                        android:id="@+id/tvSignUp"
+                        android:text="@string/sign_up"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:textColor="@color/default_to_devil_gray"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

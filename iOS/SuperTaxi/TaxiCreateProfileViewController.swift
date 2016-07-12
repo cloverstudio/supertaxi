@@ -86,7 +86,6 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
                 self.presentViewController(alert, animated: true, completion: nil)
             }
         }
-        
     }
     
     // MARK: - UIAction Methods

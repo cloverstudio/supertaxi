@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Fabric
+import TwitterKit
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,10 +21,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Facebook
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        // Twitter
+        Fabric.with([Twitter.self])
+        
+        // Google+
+//            var configureError: NSError?
+//            GGLContext.sharedInstance().configureWithError(&configureError)
+//            assert(configureError == nil, "Error configuring Google services: \(configureError)")
+//    
+//            GIDSignIn.sharedInstance().delegate = self
+        
         return true
     }
 
+    func application(application: UIApplication,
+                     openURL url: NSURL,
+                             sourceApplication: String?,
+                             annotation: AnyObject) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(
+            application,
+            openURL: url,
+            sourceApplication: sourceApplication,
+            annotation: annotation)
+    }
+    
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        if Twitter.sharedInstance().application(app, openURL:url, options: options) {
+            return true
+        }
+        
+        // If you handle other (non Twitter Kit) URLs elsewhere in your app, return true. Otherwise
+        return false
+    }
+    
+//    func googleapplication(application: UIApplication,
+//                     openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+//        if #available(iOS 9.0, *) {
+//            let options: [String: AnyObject] = [UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication!,
+//                                                UIApplicationOpenURLOptionsAnnotationKey: annotation!]
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//        return GIDSignIn.sharedInstance().handleURL(url,
+//                                                    sourceApplication: sourceApplication,
+//                                                    annotation: annotation)
+//    }
+//    
+//    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
+//                withError error: NSError!) {
+//        // Perform any operations when the user disconnects from app here.
+//        // ...
+//    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -38,6 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(application: UIApplication) {

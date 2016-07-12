@@ -59,6 +59,9 @@
                                         <rect key="frame" x="29" y="9" width="44" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="btn_fb"/>
+                                        <connections>
+                                            <action selector="btnFBLoginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="q2Y-cb-2wZ"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yz9-PS-puG">
                                         <rect key="frame" x="23" y="61" width="57" height="13"/>
@@ -71,6 +74,9 @@
                                         <rect key="frame" x="126" y="9" width="44" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="btn_twitter"/>
+                                        <connections>
+                                            <action selector="btnTwitterLoginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sIv-2f-uBa"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Twitter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wyg-SB-Z9B">
                                         <rect key="frame" x="120" y="61" width="57" height="13"/>
@@ -83,6 +89,9 @@
                                         <rect key="frame" x="224" y="8" width="44" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="btn_G+"/>
+                                        <connections>
+                                            <action selector="btnGoogleLoginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Oql-37-NX8"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google +" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xzW-6S-Mrr">
                                         <rect key="frame" x="218" y="61" width="57" height="13"/>
@@ -188,7 +197,7 @@
                                     <color key="titleColor" red="0.1019607843" green="0.16862745100000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="rrS-Wm-FiV" kind="push" id="T9l-KU-E6Y"/>
+                                    <segue destination="rrS-Wm-FiV" kind="push" identifier="select_segue_identifier" id="T9l-KU-E6Y"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -2179,7 +2188,7 @@
         <image name="yellow_star" width="13" height="13"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uUt-uc-9RL"/>
         <segue reference="J3X-hr-xsg"/>
+        <segue reference="uUt-uc-9RL"/>
     </inferredMetricsTieBreakers>
 </document>
