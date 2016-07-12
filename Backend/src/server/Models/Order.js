@@ -30,6 +30,11 @@ Order.prototype.init = function(mongoose){
         acceptTs: Number,
         arriveTs: Number,
         finishTs: Number,
+        cancel: {
+            userTs: Number, // if user canceled
+            driverTs: Number, // if driver canceled
+            reason: String
+        },
         crewNum: Number
     });
 

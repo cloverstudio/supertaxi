@@ -19,6 +19,8 @@ var BackendMain ={
         router.use("/profile/update", require("./Controllers/Profile/UpdateProfileController").init(app));
 
         router.use("/order/call", require("./Controllers/Order/CallOrderController").init(app));
+        router.use("/order/getOpenOrder", require("./Controllers/Order/GetOpenOrderController").init(app));
+        router.use("/order/cancel", require("./Controllers/Order/CancelOrderController").init(app));
 
         return router;
 
