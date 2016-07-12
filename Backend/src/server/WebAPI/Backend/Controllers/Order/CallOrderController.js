@@ -3,8 +3,6 @@ var router = express.Router();
 var _ = require('lodash');
 var async = require('async');
 
-var validator = require('validator');
-
 var pathTop = "../../../../";
 
 var Const = require( pathTop + "lib/consts");

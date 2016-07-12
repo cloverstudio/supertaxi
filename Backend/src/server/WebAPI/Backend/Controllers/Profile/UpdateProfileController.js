@@ -201,7 +201,7 @@ UpdateProfileController.prototype.init = function(app){
 
                     updateParams.driver = {
                         name: result.fields.name,
-                        car_type:result.fields.name,
+                        car_type:result.fields.car_type,
                         car_registration:result.fields.car_registration,
                         fee_start:result.fields.fee_start,
                         fee_km:result.fields.fee_km,

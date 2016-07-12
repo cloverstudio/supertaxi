@@ -42,6 +42,8 @@ describe('WEB API', function () {
                 .field('telNum', '+385 98 1234 567')                
                 .field('fee_start', 30)
                 .field('fee_km', 5)
+                .field('car_type', 'Caravan')
+                .field('car_registration', 'ZG2344HR')
                 .attach('file', 'src/server/test/samplefiles/max.jpg')
                 .end(function (err, res) {
 

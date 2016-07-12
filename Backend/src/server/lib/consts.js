@@ -25,6 +25,8 @@
     Const.responsecodeParamErrorLongitudeTo = 6000021;
     Const.responsecodeParamErrorNoAddressTo = 6000022;
     Const.responsecodeParamErrorCrewNumber = 6000023;
+    Const.responsecodeParamErrorLatitudeDriver = 6000024;
+    Const.responsecodeParamErrorLongitudeDriver = 6000025;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;
