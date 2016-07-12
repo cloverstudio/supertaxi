@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Super Taxi</string>
+    <string name="sign_in_with">Sign in with</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="g_plus">Google +</string>
+    <string name="or_user_email">Or user email</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="sign_in_capital">SIGN IN</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
 </resources>
