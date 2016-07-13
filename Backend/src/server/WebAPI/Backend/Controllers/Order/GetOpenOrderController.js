@@ -46,7 +46,7 @@ GetOpenOrderController.prototype.init = function(app){
             data: { 
                 order: { 
                     userId: '5784a21a773cfd5e2d58e770',
-                    orderTs: 1468310044176,
+                    createOrderTs: 1468310044176,
                     crewNum: 4,
                     _id: 5784a21c773cfd5e2d58e771,
                     __v: 0,
@@ -106,10 +106,8 @@ GetOpenOrderController.prototype.init = function(app){
 
                 // get open order
                 orderModel.findOne({
-                    acceptTs: { $exists: false },
-                    arriveTs: { $exists: false },
-                    finishTs: { $exists: false },
-                    cancel: { $exists: false }
+                    acceptOrderTs: { $exists: false },
+                    cancelOrderOrTrip: { $exists: false }
                 }, (err, findResult) => {
 
                     if (findResult) 

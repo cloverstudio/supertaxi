@@ -15,7 +15,11 @@ Order.prototype.init = function(mongoose){
     
     this.schema = new mongoose.Schema({
         userId: { type: String, index: true },
-        driverId: { type: String, index: true },
+        driver: {
+            id: { type: String, index: true },
+            lat: Number,
+            lon: Number
+        },
         from: {
             lat: Number,
             lon: Number,
@@ -26,11 +30,12 @@ Order.prototype.init = function(mongoose){
             lon: Number,
             address: String
         },
-        orderTs: Number,
-        acceptTs: Number,
-        arriveTs: Number,
-        finishTs: Number,
-        cancel: {
+        createOrderTs: Number,
+        acceptOrderTs: Number,
+        arriveToStartLocationTs: Number,
+        startTripTs: Number,
+        finishTripTs: Number,
+        cancelOrderOrTrip: {
             userTs: Number, // if user canceled
             driverTs: Number, // if driver canceled
             reason: String

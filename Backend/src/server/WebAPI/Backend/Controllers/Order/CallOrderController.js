@@ -30,12 +30,12 @@ CallOrderController.prototype.init = function(app){
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
-     * @apiParam {Decimal} latFrom (Required) From latitude
-     * @apiParam {Decimal} lonFrom (Required) From longitude
-     * @apiParam {String} addressFrom (Required) From address
-     * @apiParam {Decimal} latTo (Required) To latitude
-     * @apiParam {Decimal} lonTo (Required) To longitude
-     * @apiParam {String} addressTo (Required) To address
+     * @apiParam {Decimal} latFrom (Required) User start latitude
+     * @apiParam {Decimal} lonFrom (Required) User start longitude
+     * @apiParam {String} addressFrom (Required) User start address
+     * @apiParam {Decimal} latTo (Required) User destination latitude
+     * @apiParam {Decimal} lonTo (Required) User destination longitude
+     * @apiParam {String} addressTo (Required) User destination address
      * @apiParam {Number} crewNum (Required) Number of passengers
     
      * @apiError UnknownError 6000000
@@ -85,7 +85,7 @@ CallOrderController.prototype.init = function(app){
                         lon: result.fields.lonTo,
                         address: result.fields.addressTo
                     },
-                    orderTs: Utils.now(),
+                    createOrderTs: Utils.now(),
                     crewNum: result.fields.crewNum
                 };                           
                 

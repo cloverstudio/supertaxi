@@ -1,6 +1,83 @@
 [
   {
     "type": "post",
+    "url": "/api/v1/order/accept",
+    "title": "Accept Order",
+    "name": "Accept_Order",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. Driver accepts order</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "lat",
+            "description": "<p>(Required) Current driver latitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "lon",
+            "description": "<p>(Required) Current driver longitude</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLatitudeDriver",
+            "description": "<p>6000024</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLongitudeDriver",
+            "description": "<p>6000025</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \n    code: 1,\n    time: 1468314014075\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Order/AcceptOrderController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
+    "type": "post",
     "url": "/api/v1/order/call",
     "title": "Call Taxi",
     "name": "Call_Taxi",
@@ -27,42 +104,42 @@
             "type": "Decimal",
             "optional": false,
             "field": "latFrom",
-            "description": "<p>(Required) From latitude</p>"
+            "description": "<p>(Required) User start latitude</p>"
           },
           {
             "group": "Parameter",
             "type": "Decimal",
             "optional": false,
             "field": "lonFrom",
-            "description": "<p>(Required) From longitude</p>"
+            "description": "<p>(Required) User start longitude</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "addressFrom",
-            "description": "<p>(Required) From address</p>"
+            "description": "<p>(Required) User start address</p>"
           },
           {
             "group": "Parameter",
             "type": "Decimal",
             "optional": false,
             "field": "latTo",
-            "description": "<p>(Required) To latitude</p>"
+            "description": "<p>(Required) User destination latitude</p>"
           },
           {
             "group": "Parameter",
             "type": "Decimal",
             "optional": false,
             "field": "lonTo",
-            "description": "<p>(Required) To longitude</p>"
+            "description": "<p>(Required) User destination longitude</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "addressTo",
-            "description": "<p>(Required) To address</p>"
+            "description": "<p>(Required) User destination address</p>"
           },
           {
             "group": "Parameter",
@@ -147,7 +224,7 @@
     "title": "Cancel Order",
     "name": "Cancel_Order",
     "group": "WebAPI",
-    "description": "<p>This API receives JSON request. Cancels open order</p>",
+    "description": "<p>This API receives JSON request. Cancels order or trip</p>",
     "header": {
       "fields": {
         "Header": [
@@ -166,17 +243,17 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
             "field": "type",
-            "description": "<p>(Required) User type should be &quot;user&quot; or &quot;driver&quot;</p>"
+            "description": "<p>(Required) User type should be 1: user or 2: driver</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": true,
             "field": "reason",
-            "description": "<p>Descriptive reason for canceling a order</p>"
+            "description": "<p>Descriptive reason for canceling a order or trip</p>"
           }
         ]
       }
@@ -489,7 +566,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: { \n        order: { \n            userId: '5784a21a773cfd5e2d58e770',\n            orderTs: 1468310044176,\n            crewNum: 4,\n            _id: 5784a21c773cfd5e2d58e771,\n            __v: 0,\n            to: { \n                lat: 235.45454545,\n                lon: 100.45454545,\n                address: 'Bučarova 13 Zagreb' \n            },\n            from: { \n                lat: 99.45454545, \n                lon: 70.45445, \n                address: 'Siget 11 Zagreb' \n            },\n            user: { \n                __v: 0,\n                _id: 5784a21a773cfd5e2d58e770,\n                created: 1468310042789,\n                email: 'testn4eH1@test.com',\n                password: '*****',\n                telNum: '+385981234567',\n                token: '*****',\n                token_generated: 1468310042935,\n                avatar: { \n                    fileid: '7osIqcIYQeCcxoC3FQXwreu0Sj07JkvT',\n                    thumbfileid: 'tIXtp5R6z0aylAYv97ktDRQVK209pRAs' \n                },\n                user: { \n                    name: 'test', \n                    age: 0, \n                    note: null \n                }\n            }\n        }\n    }\n}",
+          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: { \n        order: { \n            userId: '5784a21a773cfd5e2d58e770',\n            createOrderTs: 1468310044176,\n            crewNum: 4,\n            _id: 5784a21c773cfd5e2d58e771,\n            __v: 0,\n            to: { \n                lat: 235.45454545,\n                lon: 100.45454545,\n                address: 'Bučarova 13 Zagreb' \n            },\n            from: { \n                lat: 99.45454545, \n                lon: 70.45445, \n                address: 'Siget 11 Zagreb' \n            },\n            user: { \n                __v: 0,\n                _id: 5784a21a773cfd5e2d58e770,\n                created: 1468310042789,\n                email: 'testn4eH1@test.com',\n                password: '*****',\n                telNum: '+385981234567',\n                token: '*****',\n                token_generated: 1468310042935,\n                avatar: { \n                    fileid: '7osIqcIYQeCcxoC3FQXwreu0Sj07JkvT',\n                    thumbfileid: 'tIXtp5R6z0aylAYv97ktDRQVK209pRAs' \n                },\n                user: { \n                    name: 'test', \n                    age: 0, \n                    note: null \n                }\n            }\n        }\n    }\n}",
           "type": "json"
         }
       ]
@@ -550,10 +627,10 @@
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
             "field": "type",
-            "description": "<p>(Required) User type should be &quot;user&quot; or &quot;driver&quot;</p>"
+            "description": "<p>(Required) User type should be 1: user or 2: driver</p>"
           },
           {
             "group": "Parameter",

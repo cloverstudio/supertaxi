@@ -6,18 +6,18 @@ describe('WEB API', function () {
 
     var req, res;
 
-    describe('/order/cancel POST', function () {
+    describe('/order/accept POST', function () {
         
-        it('success user cancel order', (done) => {
+        it('success accept order', function (done) {
 
             request(app)
-                .post('/api/v1/order/cancel')
+                .post('/api/v1/order/accept')
                 .set('access-token', global.user1.token)
                 .send({
-                    type: "user",
-                    reason: "Odustao"
+                    lat: 99.45454545,
+                    lon: 70.45445
                 })
-                .end((err, res) => {
+                .end(function (err, res) {
 
     			if (err) {
     				throw err;
@@ -32,37 +32,14 @@ describe('WEB API', function () {
             
         });
 
-        it('success driver cancel order', (done) => {
+        it('wrong latitude', function (done) {
 
             request(app)
-                .post('/api/v1/order/cancel')
+                .post('/api/v1/order/accept')
                 .set('access-token', global.user1.token)
                 .send({
-                    type: "driver",
-                    reason: "Canceled"
-                })
-                .end((err, res) => {
-
-                if (err) {
-                    throw err;
-                }
-
-                res.body.code.should.be.exactly(1);
-                res.body.should.have.property('data');
-                
-                done();
-            
-            });   
-            
-        });
-
-        it('wrong type', function (done) {
-
-            request(app)
-                .post('/api/v1/order/cancel')
-                .set('access-token', global.user1.token)
-                .send({
-                    type: "test"
+                    lat: 'test',
+                    lon: 70.45445
                 })
                 .end(function (err, res) {
 
@@ -70,7 +47,30 @@ describe('WEB API', function () {
                     throw err;
                 }
 
-                res.body.code.should.be.exactly(6000011);
+                res.body.code.should.be.exactly(6000024);
+                
+                done();
+            
+            });   
+            
+        });
+
+        it('wrong longitude', function (done) {
+
+            request(app)
+                .post('/api/v1/order/accept')
+                .set('access-token', global.user1.token)
+                .send({
+                    lat: 99.45454545,
+                    lon: 'test'
+                })
+                .end(function (err, res) {
+
+                if (err) {
+                    throw err;
+                }
+
+                res.body.code.should.be.exactly(6000025);
                 
                 done();
             

@@ -13,28 +13,29 @@ var BackendBase = require('../BackendBase');
 
 var OrderModel = require(pathTop + 'Models/Order');
 
-var CancelOrderController = function(){
+var AcceptOrderController = function(){
 }
 
-_.extend(CancelOrderController.prototype,BackendBase.prototype);
+_.extend(AcceptOrderController.prototype,BackendBase.prototype);
 
-CancelOrderController.prototype.init = function(app){
+AcceptOrderController.prototype.init = function(app){
         
     var self = this;
 
    /**
-     * @api {post} /api/v1/order/cancel Cancel Order
-     * @apiName Cancel Order
+     * @api {post} /api/v1/order/accept Accept Order
+     * @apiName Accept Order
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Cancels order or trip
+     * @apiDescription This API receives JSON request. Driver accepts order
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
-     * @apiParam {Number} type (Required) User type should be 1: user or 2: driver
-     * @apiParam {String} [reason] Descriptive reason for canceling a order or trip
+     * @apiParam {Decimal} lat (Required) Current driver latitude
+     * @apiParam {Decimal} lon (Required) Current driver longitude
     
      * @apiError UnknownError 6000000
-     * @apiError ParamErrorWrongType 6000011
+     * @apiError ParamErrorLatitudeDriver 6000024
+     * @apiError ParamErrorLongitudeDriver 6000025
 
      * 
      * @apiSuccessExample Success-Response:
@@ -48,6 +49,7 @@ CancelOrderController.prototype.init = function(app){
     router.post('', tokenChecker, (request, response) => {
 
         var orderModel = OrderModel.get();
+        var user = request.user;
 
         async.waterfall([
 
@@ -58,18 +60,17 @@ CancelOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
-                var updateParams = {};
-
-                if (request.body.type == Const.userTypeNormal)
-                    updateParams.cancelOrderOrTrip = { userTs: Utils.now() };
-                else
-                    updateParams.cancelOrderOrTrip = { driverTs: Utils.now() };
-
-                if (request.body.reason)
-                        updateParams.cancelOrderOrTrip.reason = request.body.reason;
+                var updateParams = {
+                    driver: {
+                        id: user._id.toString(),
+                        lat: request.body.lat,
+                        lon: request.body.lon
+                    },
+                    acceptOrderTs: Utils.now()
+                };
 
                 orderModel.update({
-                    startTripTs: { $exists: false },
+                    acceptOrderTs: { $exists: false },
                     cancelOrderOrTrip: { $exists: false }
                 }, { 
                     $set: updateParams
@@ -111,13 +112,17 @@ CancelOrderController.prototype.init = function(app){
 
 }
 
-CancelOrderController.prototype.validation = function(fields) {
+AcceptOrderController.prototype.validation = function(fields) {
 
-    if (fields.type != Const.userTypeNormal && fields.type != Const.userTypeDriver) {
-        return { handledError: Const.responsecodeParamErrorWrongType };
+    if (!_.isNumber(fields.lat)) {
+        return { handledError: Const.responsecodeParamErrorLatitudeDriver };
+    }
+    
+    if (!_.isNumber(fields.lon)) {
+        return { handledError: Const.responsecodeParamErrorLongitudeDriver };
     }
 
     return null;
 }
 
-module["exports"] = new CancelOrderController();
+module["exports"] = new AcceptOrderController();
