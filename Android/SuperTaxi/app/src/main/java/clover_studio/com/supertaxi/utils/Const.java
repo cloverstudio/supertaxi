@@ -49,12 +49,23 @@ public class Const {
         public static final String SHA1_PASSWORD = "SHA1_PASSWORD";
         public static final String EMAIL_LOGIN = "EMAIL_LOGIN";
         public static final String USER_TYPE = "USER_TYPE";
+
+        public static final String NAME = "NAME";
+        public static final String TEL_NUM = "TEL_NUM";
+        public static final String AGE = "AGE";
+        public static final String NOTE = "NOTE";
+        public static final String CAR_TYPE = "CAR_TYPE";
+        public static final String CAR_REGISTRATION = "CAR_REGISTRATION";
+        public static final String FEE_START = "FEE_START";
+        public static final String FEE_KM = "FEE_KM";
+
     }
 
     public class Server {
         public static final String SIGN_UP = "/api/v1/signup";
         public static final String SIGN_IN = "/api/v1/signin";
         public static final String TEST_API = "/api/v1/test";
+        public static final String UPDATE_USER_API = "/api/v1/profile/update";
     }
 
     public class Secrets {
@@ -64,5 +75,25 @@ public class Const {
     public class UserType {
         public static final int USER_TYPE_USER = 1;
         public static final int USER_TYPE_DRIVER = 2;
+    }
+
+    public class Extras {
+        public static final String USER_TYPE = "USER_TYPE";
+    }
+
+    public class PostParams {
+        public static final String NAME = "name";
+        public static final String TYPE = "type";
+        public static final String TEL_NUM = "telNum";
+        public static final String AGE = "age";
+        public static final String NOTE = "note";
+        public static final String CAR_TYPE = "car_type";
+        public static final String CAR_REGISTRATION = "car_registration";
+        public static final String FEE_START = "fee_start";
+        public static final String FEE_KM = "fee_km";
+    }
+
+    public class HeadersParams {
+        public static final String ACCESS_TOKEN = "access-token";
     }
 }

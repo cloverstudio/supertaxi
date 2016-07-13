@@ -10,6 +10,9 @@
     <color name="transparent">@android:color/transparent</color>
     <color name="green_button_color">#81D135</color>
     <color name="green_button_color_press">#5CAA06</color>
+    <color name="green_button_color_disabled">#CDEDAA</color>
     <color name="line_gray">#D8D8D8</color>
     <color name="dim_dark_black">#aa000000</color>
+    <color name="menu_separator_background">#0f1c37</color>
+    <color name="trans_white">#55FFFFFF</color>
 </resources>

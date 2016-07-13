@@ -48,6 +48,13 @@
     <string name="i_am">I am</string>
     <string name="user">User</string>
     <string name="taxi_driver">Taxi driver</string>
+    <string name="version">Version</string>
+    <string name="build">build</string>
+    <string name="create_user_profile">Create user profile</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
+    <string name="note">Note</string>
+    <string name="save_capital">SAVE</string>
 
 
 </resources>

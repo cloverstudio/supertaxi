@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import clover_studio.com.supertaxi.models.MyUserDetailsModel;
 import clover_studio.com.supertaxi.models.MyUserModel;
 
 /**
@@ -99,6 +100,17 @@ public class Preferences {
         setCustomString(Const.PreferencesKey.USER_ID, user.user._id);
         setCustomString(Const.PreferencesKey.EMAIL, user.user.email);
         setCustomLong(Const.PreferencesKey.CREATED, user.user.created);
+    }
+
+    public void setUserDetails(MyUserDetailsModel user){
+        setCustomString(Const.PreferencesKey.NAME, user.name);
+        setCustomString(Const.PreferencesKey.TEL_NUM, user.telNum);
+        setCustomInt(Const.PreferencesKey.AGE, user.age);
+        setCustomString(Const.PreferencesKey.NOTE, user.note);
+        setCustomString(Const.PreferencesKey.CAR_TYPE, user.car_type);
+        setCustomString(Const.PreferencesKey.CAR_REGISTRATION, user.car_registration);
+        setCustomInt(Const.PreferencesKey.FEE_START, user.fee_start);
+        setCustomInt(Const.PreferencesKey.FEE_KM, user.fee_km);
     }
 
     public void signOut(){

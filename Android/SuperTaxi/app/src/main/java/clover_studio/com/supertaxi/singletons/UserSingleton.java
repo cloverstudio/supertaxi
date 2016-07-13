@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
+import clover_studio.com.supertaxi.models.MyUserDetailsModel;
 import clover_studio.com.supertaxi.models.MyUserModel;
 import clover_studio.com.supertaxi.utils.Const;
 import clover_studio.com.supertaxi.utils.Utils;
@@ -34,6 +35,7 @@ public class UserSingleton {
     private static UserSingleton singleton;
 
     private MyUserModel user;
+    private MyUserDetailsModel userDetails;
     private boolean isAppActive = true;
 
     public static UserSingleton getInstance() {
@@ -53,32 +55,58 @@ public class UserSingleton {
         return user;
     }
 
+    public MyUserDetailsModel getUserDetails(){
+        if(userDetails == null){
+            generateDetails();
+        }
+
+        return userDetails;
+    }
+
     private void generateUser(){
         user = new MyUserModel();
         MyUserModel.MyUser myUser = user.new MyUser();
-        myUser._id = SuperTaxiApp.getEnterpriseSharedPreferences().getCustomString(Const.PreferencesKey._ID);
-        myUser.email = SuperTaxiApp.getEnterpriseSharedPreferences().getCustomString(Const.PreferencesKey.EMAIL);
-        myUser.created = SuperTaxiApp.getEnterpriseSharedPreferences().getCustomLong(Const.PreferencesKey.CREATED);
-        user.token_new = SuperTaxiApp.getEnterpriseSharedPreferences().getToken();
+        myUser._id = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey._ID);
+        myUser.email = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.EMAIL);
+        myUser.created = SuperTaxiApp.getPreferences().getCustomLong(Const.PreferencesKey.CREATED);
+        user.token_new = SuperTaxiApp.getPreferences().getToken();
+        user.user = myUser;
+    }
+
+    private void generateDetails() {
+        userDetails = new MyUserDetailsModel();
+        userDetails.name = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.NAME);
+        userDetails.type = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.USER_TYPE);
+        userDetails.telNum = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.TEL_NUM);
+        userDetails.age = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.AGE);
+        userDetails.car_type = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.CAR_TYPE);
+        userDetails.car_registration = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.CAR_REGISTRATION);
+        userDetails.fee_km = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.FEE_KM);
+        userDetails.fee_start = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.FEE_START);
     }
 
     public void updateUser(MyUserModel newUser){
-        SuperTaxiApp.getEnterpriseSharedPreferences().setUserData(newUser);
+        SuperTaxiApp.getPreferences().setUserData(newUser);
         generateUser();
     }
 
     public void updateToken(String token){
-        SuperTaxiApp.getEnterpriseSharedPreferences().setToken(token);
+        SuperTaxiApp.getPreferences().setToken(token);
         generateUser();
+    }
+
+    public void updateUserDetails(MyUserDetailsModel newUser){
+        SuperTaxiApp.getPreferences().setUserDetails(newUser);
+        generateDetails();
     }
 
     public void singOut(Context context, boolean tokenInvalid){
         user = null;
         signOut(context, getUser().token_new);
         if(tokenInvalid){
-            SuperTaxiApp.getEnterpriseSharedPreferences().invalidToken();
+            SuperTaxiApp.getPreferences().invalidToken();
         }else{
-            SuperTaxiApp.getEnterpriseSharedPreferences().signOut();
+            SuperTaxiApp.getPreferences().signOut();
         }
     }
 
