@@ -40,8 +40,8 @@
     Const.REPassword = /^[0-9A-Za-z._+-]{6,}$/;
     Const.RENumbers = /^[0-9]*$/;
 
-    Const.userTypeNormal = 'user';
-    Const.userTypeDriver = 'driver';
+    Const.userTypeNormal = 1; // user
+    Const.userTypeDriver = 2; // driver
 
     Const.tokenValidInteval = 60*60*24*1000;
 
