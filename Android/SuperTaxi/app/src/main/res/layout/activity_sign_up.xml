@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="clover_studio.com.supertaxi.LoginActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tToolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tToolbar"
+            android:id="@+id/mainContent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlSignUpArea"
+                android:padding="@dimen/default_margin"
+                android:layout_marginTop="10dp">
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:text="@string/sign_up"
+                    android:id="@+id/tvSignUp"
+                    android:layout_centerHorizontal="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/leftView"
+                    android:background="@color/line_gray"
+                    android:layout_toLeftOf="@id/tvSignUp"
+                    android:layout_toStartOf="@id/tvSignUp"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/rightView"
+                    android:background="@color/line_gray"
+                    android:layout_toRightOf="@id/tvSignUp"
+                    android:layout_toEndOf="@id/tvSignUp"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlSignUpArea"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:id="@+id/llEmailArea"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:paddingLeft="@dimen/default_margin"
+                android:paddingStart="@dimen/default_margin"
+                android:layout_marginTop="10dp">
+
+                <clover_studio.com.supertaxi.view.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColorHint="@color/revert_devil_gray"
+                    android:hint="@string/username"
+                    android:background="@color/transparent"
+                    android:id="@+id/etUsername"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_gray"/>
+
+                <clover_studio.com.supertaxi.view.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColorHint="@color/revert_devil_gray"
+                    android:hint="@string/email_address"
+                    android:background="@color/transparent"
+                    android:id="@+id/etEmailAddress"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_gray"/>
+
+                <clover_studio.com.supertaxi.view.CustomEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/devil_gray"
+                    android:textColorHint="@color/revert_devil_gray"
+                    android:hint="@string/password"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:inputType="textPassword"
+                    android:background="@color/transparent"
+                    android:id="@+id/etPassword"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_gray"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_below="@id/llEmailArea"
+                android:id="@+id/rlSignInButtonArea">
+
+                <clover_studio.com.supertaxi.view.CustomButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_green_button_with_corners_selector"
+                    android:text="@string/sign_up_capital"
+                    android:textColor="@color/white"
+                    android:id="@+id/buttonSignUp"
+                    android:textSize="@dimen/default_title_size"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

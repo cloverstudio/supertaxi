@@ -12,4 +12,42 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="sign_up">Sign up</string>
+    <string name="username">Username</string>
+    <string name="sign_up_capital">SIGN UP</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="close">close</string>
+    <string name="OK">OK</string>
+    <string name="try_again">Try again</string>
+
+    <!-- ERROR -->
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_invalid_token">Invalid token</string>
+    <string name="error_no_name">No name</string>
+    <string name="error_wrong_type">Wrong type</string>
+    <string name="error_fee_start">Error fee start</string>
+    <string name="error_fee_km">Error fee km</string>
+    <string name="error_wrong_image_type">Wrong image type</string>
+    <string name="error_age">Error age</string>
+    <string name="error_wrong_tel_num">Wrong tel num</string>
+    <string name="error_latitude_from">No latitude from</string>
+    <string name="error_longitude_from">No longitude from</string>
+    <string name="error_address_from">No address from</string>
+    <string name="error_latitude_to">No latitude to</string>
+    <string name="error_longitude_to">No longitude to</string>
+    <string name="error_address_to">No address to</string>
+    <string name="error_crew_number">Wrong crew number</string>
+    <string name="error_no_email">No email</string>
+    <string name="error_no_password">No password</string>
+    <string name="error_no_secret">No secret</string>
+    <string name="error_sign_in">Sign in error</string>
+    <string name="error_wrong_email">Wrong email</string>
+    <string name="error_wrong_password">Wrong password</string>
+    <string name="error_email_exists">Email already exists</string>
+    <string name="error_wrong_secret">Wrong secret</string>
+    <string name="i_am">I am</string>
+    <string name="user">User</string>
+    <string name="taxi_driver">Taxi driver</string>
+
+
 </resources>

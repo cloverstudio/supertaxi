@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="clover_studio.com.supertaxi.LoginActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tToolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tToolbar"
+            android:id="@+id/mainContent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlIAmArea"
+                android:padding="@dimen/default_margin"
+                android:layout_marginTop="10dp">
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_view_bigger"
+                    android:textColor="@color/white"
+                    android:text="@string/i_am"
+                    android:id="@+id/tvIAm"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:layout_centerHorizontal="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/leftView"
+                    android:background="@color/white"
+                    android:layout_toLeftOf="@id/tvIAm"
+                    android:layout_toStartOf="@id/tvIAm"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/rightView"
+                    android:background="@color/white"
+                    android:layout_toRightOf="@id/tvIAm"
+                    android:layout_toEndOf="@id/tvIAm"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <android.support.percent.PercentRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/rlIAmArea">
+
+                <!--suppress AndroidDomInspection -->
+                <RelativeLayout
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_oval_white_selector"
+                    app:layout_widthPercent="45%"
+                    app:layout_aspectRatio="100%"
+                    android:id="@+id/rlUserType"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/user_type"/>
+
+                        <clover_studio.com.supertaxi.view.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_view_default"
+                            android:text="@string/user"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/colorPrimary"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <!--suppress AndroidDomInspection -->
+                <RelativeLayout
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/shape_oval_white_selector"
+                    app:layout_widthPercent="45%"
+                    app:layout_aspectRatio="100%"
+                    android:layout_below="@id/rlUserType"
+                    android:layout_marginTop="40dp"
+                    android:id="@+id/rlTaxiType"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/taxi_driver_type"/>
+
+                        <clover_studio.com.supertaxi.view.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_view_default"
+                            android:text="@string/taxi_driver"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/colorPrimary"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.percent.PercentRelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
