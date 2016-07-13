@@ -107,10 +107,15 @@ public class Preferences {
         removePreference(Const.PreferencesKey.EMAIL);
         removePreference(Const.PreferencesKey.CREATED);
         removePreference(Const.PreferencesKey.TOKEN);
+        removePreference(Const.PreferencesKey.SHA1_PASSWORD);
+        removePreference(Const.PreferencesKey.EMAIL_LOGIN);
+        removePreference(Const.PreferencesKey.REMEMBER_ME);
     }
 
     public void invalidToken(){
         removePreference(Const.PreferencesKey.TOKEN);
+        removePreference(Const.PreferencesKey.SHA1_PASSWORD);
+        removePreference(Const.PreferencesKey.REMEMBER_ME);
     }
 
     public void removePreference(String key) {

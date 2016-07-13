@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="clover_studio.com.supertaxi">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,7 +26,11 @@
             />
 
         <activity android:name=".SignUpActivity"
-            android:windowSoftInputMode="stateVisible"
+            android:windowSoftInputMode="stateHidden"
+            />
+
+        <activity android:name=".ChooseTypeActivity"
+            android:windowSoftInputMode="stateHidden"
             />
 
     </application>

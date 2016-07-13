@@ -1,8 +1,11 @@
 package clover_studio.com.supertaxi.api.retrofit;
 
 import clover_studio.com.supertaxi.models.BaseModel;
+import clover_studio.com.supertaxi.models.SignInDataModel;
+import clover_studio.com.supertaxi.models.post_models.PostSignUpModel;
 import clover_studio.com.supertaxi.utils.Const;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
@@ -11,7 +14,13 @@ import retrofit2.http.POST;
  */
 public interface LoginRetroApiInterface {
 
-    @POST(Const.Server.SIGN_UP)
+    @GET(Const.Server.TEST_API)
     Call<BaseModel> testApi();
+
+    @POST(Const.Server.SIGN_UP)
+    Call<SignInDataModel> signUp(@Body PostSignUpModel post);
+
+    @POST(Const.Server.SIGN_IN)
+    Call<SignInDataModel> signIn(@Body PostSignUpModel post);
 
 }

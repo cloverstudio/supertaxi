@@ -27,6 +27,36 @@ public class ErrorUtils {
                 return res.getString(R.string.error_age);
             case Const.ErrorCodes.WRONG_TEL_NUM:
                 return res.getString(R.string.error_wrong_tel_num);
+            case Const.ErrorCodes.LATITUDE_FROM:
+                return res.getString(R.string.error_latitude_from);
+            case Const.ErrorCodes.LONGITUDE_FROM:
+                return res.getString(R.string.error_longitude_from);
+            case Const.ErrorCodes.NO_ADDRESS_FROM:
+                return res.getString(R.string.error_address_from);
+            case Const.ErrorCodes.NO_ADDRESS_TO:
+                return res.getString(R.string.error_address_to);
+            case Const.ErrorCodes.LATITUDE_TO:
+                return res.getString(R.string.error_latitude_to);
+            case Const.ErrorCodes.LONGITUDE_TO:
+                return res.getString(R.string.error_longitude_to);
+            case Const.ErrorCodes.CREW_NUMBER:
+                return res.getString(R.string.error_crew_number);
+            case Const.ErrorCodes.NO_EMAIL:
+                return res.getString(R.string.error_no_email);
+            case Const.ErrorCodes.NO_PASSWORD:
+                return res.getString(R.string.error_no_password);
+            case Const.ErrorCodes.NO_SECRET:
+                return res.getString(R.string.error_no_secret);
+            case Const.ErrorCodes.SIGN_IN_ERROR:
+                return res.getString(R.string.error_sign_in);
+            case Const.ErrorCodes.WRONG_EMAIL:
+                return res.getString(R.string.error_wrong_email);
+            case Const.ErrorCodes.WRONG_PASSWORD:
+                return res.getString(R.string.error_wrong_password);
+            case Const.ErrorCodes.WRONG_SECRET:
+                return res.getString(R.string.error_wrong_secret);
+            case Const.ErrorCodes.EMAIL_EXISTS:
+                return res.getString(R.string.error_email_exists);
             default:
                 return res.getString(R.string.error_unknown);
         }
