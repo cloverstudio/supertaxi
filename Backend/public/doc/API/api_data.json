@@ -749,7 +749,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\n{ code: 1, time: 1467125660699}",
+          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: { \n        user: { \n            __v: 0,\n            _id: 57875c9c1c1a343769872e7e,\n            created: 1468488860290,\n            email: 'testsFr2B@test.com',\n            password: '*****',\n            telNum: '+385981234567',\n            token: '*****',\n            token_generated: 1468488860456,\n            avatar: { \n                fileid: 'nJSoPuuRMGwHOjP3n0qwldOB13uLNyPF',\n                thumbfileid: 'qjZn3t0WiD079YuKbRIGMjpjojBD6w2x' \n            },\n            driver: { \n                name: 'test',\n                car_type: 'Caravan',\n                car_registration: 'ZG2344HR',\n                fee_start: 30,\n                fee_km: 5 \n            },\n            user: { \n                age: 0, \n                name: 'test' \n            }\n        }\n    }\n}",
           "type": "json"
         }
       ]

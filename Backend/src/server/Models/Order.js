@@ -15,11 +15,7 @@ Order.prototype.init = function(mongoose){
     
     this.schema = new mongoose.Schema({
         userId: { type: String, index: true },
-        driver: {
-            id: { type: String, index: true },
-            lat: Number,
-            lon: Number
-        },
+        driverId: { type: String, index: true },
         from: {
             lat: Number,
             lon: Number,
