@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="clover_studio.com.supertaxi.LoginActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tToolbar"
+        android:id="@+id/mainContent"></RelativeLayout>
+
+</RelativeLayout>

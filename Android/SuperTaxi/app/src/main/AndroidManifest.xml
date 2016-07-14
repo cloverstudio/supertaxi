@@ -33,6 +33,22 @@
             android:windowSoftInputMode="stateHidden"
             />
 
+        <activity android:name=".HomeActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
+
+        <activity android:name=".UserHomeActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
+
+        <activity android:name=".DriverHomeActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
+
+        <activity android:name=".CreateUserActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
+
     </application>
 
 </manifest>

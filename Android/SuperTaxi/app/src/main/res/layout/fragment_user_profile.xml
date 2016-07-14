@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--suppress AndroidDomInspection -->
+        <RelativeLayout
+            app:layout_widthPercent="100%"
+            app:layout_heightPercent="40%"
+            android:id="@+id/rlHeaderLayout"
+            android:background="@color/colorPrimary"></RelativeLayout>
+
+        <!--suppress AndroidDomInspection -->
+        <RelativeLayout
+            app:layout_widthPercent="100%"
+            app:layout_heightPercent="60%"
+            android:layout_below="@id/rlHeaderLayout">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_above="@+id/rlSaveButtonArea"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/llEditingArea"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:paddingLeft="@dimen/default_margin"
+                    android:paddingStart="@dimen/default_margin">
+
+                    <clover_studio.com.supertaxi.view.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:textColor="@color/devil_gray"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColorHint="@color/revert_devil_gray"
+                        android:hint="@string/name"
+                        android:background="@color/transparent"
+                        android:id="@+id/etName"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_gray"/>
+
+                    <clover_studio.com.supertaxi.view.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:textColor="@color/devil_gray"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColorHint="@color/revert_devil_gray"
+                        android:hint="@string/age"
+                        android:inputType="number"
+                        android:background="@color/transparent"
+                        android:id="@+id/etAge"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_gray"/>
+
+                    <clover_studio.com.supertaxi.view.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:textColor="@color/devil_gray"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColorHint="@color/revert_devil_gray"
+                        android:hint="@string/note"
+                        android:background="@color/transparent"
+                        android:id="@+id/etNote"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_gray"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/default_margin"
+                android:id="@+id/rlSaveButtonArea">
+
+                <clover_studio.com.supertaxi.view.CustomButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_green_button_with_corners_selector"
+                    android:text="@string/save_capital"
+                    android:textColor="@color/white"
+                    android:enabled="false"
+                    android:id="@+id/buttonSave"
+                    android:textSize="@dimen/default_title_size"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </android.support.percent.PercentRelativeLayout>
+
+</RelativeLayout>

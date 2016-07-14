@@ -32,7 +32,7 @@ public class SuperTaxiApp extends Application{
     // end: Init Application context
 
     // start: Init Shared preferences
-    public static Preferences getEnterpriseSharedPreferences() {
+    public static Preferences getPreferences() {
 
         if (mAppPreferences == null) {
             mAppPreferences = new Preferences(getAppContext());
