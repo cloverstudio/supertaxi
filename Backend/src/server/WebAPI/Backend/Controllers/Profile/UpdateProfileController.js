@@ -58,8 +58,37 @@ UpdateProfileController.prototype.init = function(app){
 
      * 
      * @apiSuccessExample Success-Response:
-
-{ code: 1, time: 1467125660699}
+        { 
+            code: 1,
+            time: 1468314014075,
+            data: { 
+                user: { 
+                    __v: 0,
+                    _id: 57875c9c1c1a343769872e7e,
+                    created: 1468488860290,
+                    email: 'testsFr2B@test.com',
+                    password: '*****',
+                    telNum: '+385981234567',
+                    token: '*****',
+                    token_generated: 1468488860456,
+                    avatar: { 
+                        fileid: 'nJSoPuuRMGwHOjP3n0qwldOB13uLNyPF',
+                        thumbfileid: 'qjZn3t0WiD079YuKbRIGMjpjojBD6w2x' 
+                    },
+                    driver: { 
+                        name: 'test',
+                        car_type: 'Caravan',
+                        car_registration: 'ZG2344HR',
+                        fee_start: 30,
+                        fee_km: 5 
+                    },
+                    user: { 
+                        age: 0, 
+                        name: 'test' 
+                    }
+                }
+            }
+        }
 
      **/
 
@@ -190,32 +219,31 @@ UpdateProfileController.prototype.init = function(app){
                     if(!result.fields.age)
                         result.fields.age = 0;
 
-                    updateParams.user = {
+                    user.user = {
                         name: result.fields.name,
                         age:result.fields.age,
-                        note:result.fields.note,
+                        note:result.fields.note
                     };
                 }
 
                 else if(result.fields.type == Const.userTypeDriver){
 
-                    updateParams.driver = {
+                    user.driver = {
                         name: result.fields.name,
                         car_type:result.fields.car_type,
                         car_registration:result.fields.car_registration,
                         fee_start:result.fields.fee_start,
-                        fee_km:result.fields.fee_km,
+                        fee_km:result.fields.fee_km
                     };
 
                 }
 
-                updateParams.telNum = result.fields.telNum;
+                user.telNum = result.fields.telNum;
 
-                user.update(
-                    updateParams
-                ,{},(err,userResult) => {
+                user.save((err, saveResult) => {
 
-                    done(err,result);
+                    result.user = user.toObject();
+                    done(err, result);
 
                 });
 
@@ -331,14 +359,14 @@ UpdateProfileController.prototype.init = function(app){
 
                 var user = request.user;
 
-                user.update({
-                    avatar:{
-                        fileid: result.file.newFileName,
-                        thumbfileid: result.file.thumbName
-                    }
-                }
-                ,{},(err,userResult) => {
+                user.avatar = {
+                    fileid: result.file.newFileName,
+                    thumbfileid: result.file.thumbName
+                };
 
+                user.save((err, saveResult) => {
+
+                    result.user = user.toObject();
                     done(err,result);
 
                 });
@@ -363,7 +391,7 @@ UpdateProfileController.prototype.init = function(app){
 
             } else {
 
-                self.successResponse(response,Const.responsecodeSucceed,{});
+                self.successResponse(response, Const.responsecodeSucceed, { user: result.user });
 
             }
 

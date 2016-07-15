@@ -36,7 +36,9 @@ User.prototype.init = function(mongoose){
         token_generated: Number,
         pushToken: String,
         created: Number,
-        telNum: String
+        telNum: String,
+        currentLat: Number,
+        currentLon: Number
     });
 
     this.model = mongoose.model(Config.dbCollectionPrefix + "User", this.schema);

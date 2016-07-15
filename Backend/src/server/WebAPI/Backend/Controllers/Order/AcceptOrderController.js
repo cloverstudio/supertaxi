@@ -60,12 +60,22 @@ AcceptOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
+                // update current user coordinates
+                user.update({
+                    currentLat: request.body.lat,
+                    currentLon: request.body.lon
+                }, {}, (err, userResult) => {
+
+                    done(err, result);
+
+                });
+
+            },
+            (result, done) => {
+
+                // update order
                 var updateParams = {
-                    driver: {
-                        id: user._id.toString(),
-                        lat: request.body.lat,
-                        lon: request.body.lon
-                    },
+                    driverId: user._id.toString(),                
                     acceptOrderTs: Utils.now()
                 };
 
