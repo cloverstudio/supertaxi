@@ -39,4 +39,25 @@ public class UserHomeActivity extends HomeActivity {
 
     }
 
+    @Override
+    protected void initSidebar() {
+        if(UserSingleton.getInstance().getUser().user.name != null &&
+                UserSingleton.getInstance().getUser().user.name.length() > 0){
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().user.name);
+        }else{
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().email);
+        }
+        super.initSidebar();
+    }
+
+    @Override
+    public void refreshSidebar() {
+        if(UserSingleton.getInstance().getUser().user.name != null &&
+                UserSingleton.getInstance().getUser().user.name.length() > 0){
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().user.name);
+        }else{
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().email);
+        }
+        super.refreshSidebar();
+    }
 }

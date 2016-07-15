@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1A2B4E</color>
-    <color name="colorPrimaryDark">#1A2B4E</color>
+    <color name="colorPrimary">#18105F</color>
+    <color name="colorPrimaryDark">#18105F</color>
     <color name="colorAccent">#CCCCCC</color>
     <color name="devil_gray">#666666</color>
     <color name="revert_devil_gray">#999999</color>
@@ -15,4 +15,7 @@
     <color name="dim_dark_black">#aa000000</color>
     <color name="menu_separator_background">#0f1c37</color>
     <color name="trans_white">#55FFFFFF</color>
+    <color name="light_light_gray">#EFEFEF</color>
+    <color name="white_0_5_a">#80ffffff</color>
+    <color name="update_profile_almost_white">#fdfdfe</color>
 </resources>

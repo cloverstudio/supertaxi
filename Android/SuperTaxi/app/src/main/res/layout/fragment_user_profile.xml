@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/update_profile_almost_white"
     android:layout_height="match_parent">
 
     <android.support.percent.PercentRelativeLayout
@@ -14,7 +15,40 @@
             app:layout_widthPercent="100%"
             app:layout_heightPercent="40%"
             android:id="@+id/rlHeaderLayout"
-            android:background="@color/colorPrimary"></RelativeLayout>
+            android:background="@drawable/user_profile_no_picture_bg">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:id="@+id/llEditImage"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/user"/>
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textColor="@color/white"
+                    android:text="@string/tap_to_edit_upload_nyour_avatar_photo"
+                    android:textSize="@dimen/text_view_default"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:id="@+id/ivAvatar"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
         <!--suppress AndroidDomInspection -->
         <RelativeLayout
@@ -66,6 +100,7 @@
                         android:paddingBottom="10dp"
                         android:maxLines="1"
                         android:singleLine="true"
+                        android:imeOptions="actionNext"
                         android:textColorHint="@color/revert_devil_gray"
                         android:hint="@string/age"
                         android:inputType="number"

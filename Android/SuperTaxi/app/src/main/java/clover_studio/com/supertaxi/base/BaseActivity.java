@@ -7,7 +7,9 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -15,6 +17,7 @@ import java.util.Locale;
 import clover_studio.com.supertaxi.R;
 import clover_studio.com.supertaxi.dialog.BasicProgressDialog;
 import clover_studio.com.supertaxi.utils.Const;
+import clover_studio.com.supertaxi.utils.ImageUtils;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -76,6 +79,20 @@ public class BaseActivity extends AppCompatActivity{
         if(toolbar != null){
             TextView tvTitle = (TextView) toolbar.findViewById(R.id.toolbarTitle);
             if(tvTitle != null) tvTitle.setText(title);
+        }
+    }
+
+    protected void setToolbarRightImage(String url){
+        if(toolbar != null){
+            ImageView imageView = (ImageView) toolbar.findViewById(R.id.ivAvatarInToolbar);
+            if(imageView != null) {
+                if(TextUtils.isEmpty(url)){
+                    imageView.setVisibility(View.INVISIBLE);
+                }else{
+                    imageView.setVisibility(View.VISIBLE);
+                    ImageUtils.setImageWithPicasso(imageView, url);
+                }
+            }
         }
     }
 

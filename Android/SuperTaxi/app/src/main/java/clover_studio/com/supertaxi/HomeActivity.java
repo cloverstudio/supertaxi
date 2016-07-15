@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +21,12 @@ import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.MaterialMenuView;
 
 import clover_studio.com.supertaxi.base.BaseActivity;
+import clover_studio.com.supertaxi.base.BaseFragment;
+import clover_studio.com.supertaxi.fragments.UserProfileFragment;
+import clover_studio.com.supertaxi.models.UpdateProfileResponse;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
+import clover_studio.com.supertaxi.utils.ImageUtils;
+import clover_studio.com.supertaxi.utils.Utils;
 
 /**
  * Created by ubuntu_ivo on 08.02.16..
@@ -44,7 +53,9 @@ public class HomeActivity extends BaseActivity {
     LinearLayout llMainContent;
     MaterialMenuView menuHamburgerView;
     TextView tvSidebarMyName;
+    RelativeLayout rlForFragment;
 
+    UserProfileFragment profileFragment;
     String activeFragmentTag;
 
     @Override
@@ -59,11 +70,12 @@ public class HomeActivity extends BaseActivity {
         llMainContent = (LinearLayout) findViewById(R.id.mainContent);
         menuHamburgerView = (MaterialMenuView) findViewById(R.id.sidebarBtnMaterial);
         tvSidebarMyName = (TextView) findViewById(R.id.tvSidebarMyName);
+        rlForFragment = (RelativeLayout) findViewById(R.id.rlForFragment);
 
         frManager = getSupportFragmentManager();
-//
+
 //        setInitialFragment();
-//        initOtherFragments();
+        initOtherFragments();
 //
 //        rightToolbarButton.setOnClickListener(onRightToolbarListener);
 //        subRightToolbarButton.setOnClickListener(onSubRightToolbarListener);
@@ -75,7 +87,8 @@ public class HomeActivity extends BaseActivity {
         dlDrawerLayout.addDrawerListener(sidebarDrawerListener);
         dlDrawerLayout.setScrimColor(Color.TRANSPARENT);
         initSidebar();
-        setToolbarTitle("TITLESAD");
+        setToolbarTitle("HOME");
+        setToolbarRightImage(Utils.getMyAvatarUrl());
 //
 //        LogCS.d("LOG", "ACCESS TOKEN: " + UserSingleton.getInstance().getUser().token);
 //        LogCS.d("LOG", "MY USER ID: " + UserSingleton.getInstance().getUser()._id);
@@ -219,15 +232,10 @@ public class HomeActivity extends BaseActivity {
 //
 //    }
 //
-//    private void initOtherFragments(){
-//        favoritesFragment = FavoritesFragment.newInstance();
-//        newsFragment = NewsFragment.newInstance();
-//        informationFragment = InformationFragment.newInstance();
-//    }
-//
-//    public void setTitle(String title){
-//        setToolbarTitle(title);
-//    }
+    private void initOtherFragments(){
+        profileFragment = new UserProfileFragment();
+    }
+
 //
 //    public void manageToolbar(int type){
 //        if(type == Const.ToolbarTypes.NONE){
@@ -325,26 +333,18 @@ public class HomeActivity extends BaseActivity {
             }
         }
     };
-//
-    private void initSidebar() {
-        if(UserSingleton.getInstance().getUserDetails().name != null &&
-                UserSingleton.getInstance().getUserDetails().name.length() > 0){
-            tvSidebarMyName.setText(UserSingleton.getInstance().getUserDetails().name);
-        }else{
-            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().user.email);
-        }
-//        String url = Utils.getMyAvatarUrl(Utils.getMyPictureNameOnServer());
-//        ((RoundImageView)myAvatar).setBorderColor(ContextCompat.getColor(getActivity(), R.color.menu_background));
-//        UtilsImage.setImageWithLoader(myAvatar, R.drawable.avatar_male, myAvatarProgressBar, url);
-//
+
+    protected void initSidebar() {
+        String url = Utils.getMyAvatarUrl();
+        ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url, (ProgressBar) findViewById(R.id.myAvatarProgressBar));
+
         LinearLayout menuListLayout = (LinearLayout) findViewById(R.id.menuListLayout);
         if(menuListLayout != null){
             for(int i = 0; i < menuListLayout.getChildCount(); i++){
                 menuListLayout.getChildAt(i).setOnClickListener(onSideBarItemClickListener);
             }
         }
-//        ImageButton settings = (ImageButton) findViewById(R.id.ibSidebarSettings);
-//        if (settings != null) settings.setOnClickListener(onSideBarItemClickListener);
+
         View rlMyData = findViewById(R.id.myDataContent);
         if(rlMyData != null) rlMyData.setOnClickListener(onSideBarItemClickListener);
 
@@ -378,7 +378,8 @@ public class HomeActivity extends BaseActivity {
                     break;
 
                 case R.id.myDataContent:
-                    Toast.makeText(getActivity(), "PROFILE", Toast.LENGTH_SHORT).show();
+                    setToolbarTitle(getString(R.string.profile_capital));
+                    switchFragment(profileFragment);
                     break;
             }
         }
@@ -393,34 +394,25 @@ public class HomeActivity extends BaseActivity {
 //        switchFragment(homeFragment, goToSettings);
 //    }
 //
-//    private void switchFragment (BaseFragment fragment, boolean goToSettings){
-//        if(fragment.getClass().toString().equals(activeFragmentTag)){
-//            dlDrawerLayout.closeDrawer(llSidebarDrawer);
-//        }else{
-//
-//            activeFragmentTag = fragment.getClass().getName();
-//            frManager.beginTransaction().replace(rlForFragment.getId(), fragment, activeFragmentTag).commit();
-//
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    dlDrawerLayout.closeDrawer(llSidebarDrawer);
-//                }
-//            }, 200);
-//
-//        }
-//
-//        if(fragment instanceof HomeFragment){
-//            if(homeFragment != null){
-//                if(goToSettings){
-//                    homeFragment.changePageToSettings();
-//                } else{
-//                    homeFragment.changePageToRecent();
-//                }
-//            }
-//        }
-//    }
-//
+    private void switchFragment (BaseFragment fragment){
+        if(fragment.getClass().toString().equals(activeFragmentTag)){
+            dlDrawerLayout.closeDrawer(llSidebarDrawer);
+        }else{
+
+            activeFragmentTag = fragment.getClass().getName();
+            frManager.beginTransaction().replace(rlForFragment.getId(), fragment, activeFragmentTag).commit();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dlDrawerLayout.closeDrawer(llSidebarDrawer);
+                }
+            }, 200);
+
+        }
+
+    }
+
 //    //*****************DATA FOR FRAGMENT******//
 //    public void addDataForUsersFragment(List<UserModel> users, int currentPage){
 //        usersFragmentData.addAll(users);
@@ -500,13 +492,12 @@ public class HomeActivity extends BaseActivity {
 //            homeFragment.reloadSettings();
 //        }
 //    }
-//
-//    public void refreshSidebar(){
-//        tvSidebarMyName.setText(UserSingleton.getInstance().getUser().name);
-//        String url = Utils.getMyAvatarUrl(Utils.getMyPictureNameOnServer());
-//        UtilsImage.setImageWithLoader(myAvatar, R.drawable.avatar_male, myAvatarProgressBar, url);
-//    }
-//
+
+    public void refreshSidebar(){
+        String url = Utils.getMyAvatarUrl();
+        ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url);
+    }
+
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 //        switch (requestCode) {
