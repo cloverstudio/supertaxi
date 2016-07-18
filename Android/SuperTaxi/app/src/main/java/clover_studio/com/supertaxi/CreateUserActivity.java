@@ -63,4 +63,8 @@ public class CreateUserActivity extends BaseActivity {
     }
 
 
+    public void apiDone() {
+        UserHomeActivity.startActivity(getActivity());
+        finish();
+    }
 }

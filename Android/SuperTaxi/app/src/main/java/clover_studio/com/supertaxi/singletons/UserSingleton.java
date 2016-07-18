@@ -1,28 +1,13 @@
 package clover_studio.com.supertaxi.singletons;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.PowerManager;
-import android.support.v4.content.LocalBroadcastManager;
-import android.text.TextUtils;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
-import clover_studio.com.supertaxi.models.MyUserDetailsModel;
-import clover_studio.com.supertaxi.models.MyUserModel;
+import clover_studio.com.supertaxi.models.DriverTypeModel;
+import clover_studio.com.supertaxi.models.ImageAvatarModel;
+import clover_studio.com.supertaxi.models.UserModel;
+import clover_studio.com.supertaxi.models.UserTypeModel;
 import clover_studio.com.supertaxi.utils.Const;
-import clover_studio.com.supertaxi.utils.Utils;
-import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -34,8 +19,7 @@ public class UserSingleton {
 
     private static UserSingleton singleton;
 
-    private MyUserModel user;
-    private MyUserDetailsModel userDetails;
+    private UserModel user;
     private boolean isAppActive = true;
 
     public static UserSingleton getInstance() {
@@ -47,7 +31,7 @@ public class UserSingleton {
         return singleton;
     }
 
-    public MyUserModel getUser(){
+    public UserModel getUser(){
         if(user == null){
             generateUser();
         }
@@ -55,37 +39,42 @@ public class UserSingleton {
         return user;
     }
 
-    public MyUserDetailsModel getUserDetails(){
-        if(userDetails == null){
-            generateDetails();
+    private void generateUser(){
+        user = new UserModel();
+        user._id = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey._ID);
+        user.email = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.EMAIL);
+        user.created = SuperTaxiApp.getPreferences().getCustomLong(Const.PreferencesKey.CREATED);
+        user.token_new = SuperTaxiApp.getPreferences().getToken();
+        user.type = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.USER_TYPE);
+        user.telNum = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.TEL_NUM);
+
+        ImageAvatarModel avatar = new ImageAvatarModel();
+        avatar.fileid = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.AVATAR_FILE_ID);
+        avatar.thumbfileid = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.AVATAR_THUMB_ID);
+        if(avatar.fileid != null && avatar.fileid.length() > 0) {
+            user.avatar = avatar;
         }
 
-        return userDetails;
+        DriverTypeModel driver = new DriverTypeModel();
+        driver.name = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.DRIVER_TYPE_NAME);
+        driver.car_type = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.CAR_TYPE);
+        driver.car_registration = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.CAR_REGISTRATION);
+        driver.fee_km = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.FEE_KM);
+        driver.fee_start = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.FEE_START);
+        if(driver.name != null && driver.name.length() > 0) {
+            user.driver = driver;
+        }
+
+        UserTypeModel userType = new UserTypeModel();
+        userType.name = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.USER_TYPE_NAME);
+        userType.age = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.AGE);
+        if(userType.name != null && userType.name.length() > 0) {
+            user.user = userType;
+        }
+
     }
 
-    private void generateUser(){
-        user = new MyUserModel();
-        MyUserModel.MyUser myUser = user.new MyUser();
-        myUser._id = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey._ID);
-        myUser.email = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.EMAIL);
-        myUser.created = SuperTaxiApp.getPreferences().getCustomLong(Const.PreferencesKey.CREATED);
-        user.token_new = SuperTaxiApp.getPreferences().getToken();
-        user.user = myUser;
-    }
-
-    private void generateDetails() {
-        userDetails = new MyUserDetailsModel();
-        userDetails.name = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.NAME);
-        userDetails.type = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.USER_TYPE);
-        userDetails.telNum = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.TEL_NUM);
-        userDetails.age = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.AGE);
-        userDetails.car_type = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.CAR_TYPE);
-        userDetails.car_registration = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.CAR_REGISTRATION);
-        userDetails.fee_km = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.FEE_KM);
-        userDetails.fee_start = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.FEE_START);
-    }
-
-    public void updateUser(MyUserModel newUser){
+    public void updateUser(UserModel newUser){
         SuperTaxiApp.getPreferences().setUserData(newUser);
         generateUser();
     }
@@ -93,11 +82,6 @@ public class UserSingleton {
     public void updateToken(String token){
         SuperTaxiApp.getPreferences().setToken(token);
         generateUser();
-    }
-
-    public void updateUserDetails(MyUserDetailsModel newUser){
-        SuperTaxiApp.getPreferences().setUserDetails(newUser);
-        generateDetails();
     }
 
     public void singOut(Context context, boolean tokenInvalid){

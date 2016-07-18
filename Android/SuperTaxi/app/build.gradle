@@ -29,4 +29,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.2.1'
     compile 'com.android.support:percent:23.2.1'
     compile 'com.balysv.materialmenu:material-menu:1.5.4'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

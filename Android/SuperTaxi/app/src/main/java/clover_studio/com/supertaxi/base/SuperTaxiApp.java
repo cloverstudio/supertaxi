@@ -3,6 +3,8 @@ package clover_studio.com.supertaxi.base;
 import android.app.Application;
 import android.content.Context;
 
+import java.io.File;
+
 import clover_studio.com.supertaxi.utils.Preferences;
 
 /**
@@ -41,5 +43,32 @@ public class SuperTaxiApp extends Application{
         return mAppPreferences;
     }
     // end: Init Shared preferences
+
+    // start; Samsung image path variable and methods
+    private static String mSamsungPath = null;
+
+    public static String samsungImagePath() {
+        return mSamsungPath;
+    }
+
+    public static void setSamsungImagePath(String path) {
+        mSamsungPath = path;
+    }
+
+    public static void deleteSamsungPathImage() {
+
+        if (mSamsungPath != null && !mSamsungPath.equals("-1")) {
+
+            File f = new File(mSamsungPath);
+            if (f.exists()) {
+
+                //noinspection ResultOfMethodCallIgnored
+                f.delete();
+            }
+        }
+
+        setSamsungImagePath(null);
+    }
+    // end: Samsung image path variable and methods
 
 }

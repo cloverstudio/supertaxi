@@ -40,7 +40,6 @@ public class Const {
 
     public class PreferencesKey {
         public static final String TOKEN = "TOKEN";
-        public static final String USER_ID = "USER_ID";
         public static final String _ID = "_ID";
         public static final String EMAIL = "EMAIL";
         public static final String PUSH_TOKEN = "PUSH_TOKEN";
@@ -50,7 +49,6 @@ public class Const {
         public static final String EMAIL_LOGIN = "EMAIL_LOGIN";
         public static final String USER_TYPE = "USER_TYPE";
 
-        public static final String NAME = "NAME";
         public static final String TEL_NUM = "TEL_NUM";
         public static final String AGE = "AGE";
         public static final String NOTE = "NOTE";
@@ -58,6 +56,12 @@ public class Const {
         public static final String CAR_REGISTRATION = "CAR_REGISTRATION";
         public static final String FEE_START = "FEE_START";
         public static final String FEE_KM = "FEE_KM";
+        public static final String AVATAR_FILE_ID = "AVATAR_FILE_ID";
+        public static final String AVATAR_THUMB_ID = "AVATAR_THUMB_ID";
+
+        public static final String DRIVER_TYPE_NAME = "DRIVER_TYPE_NAME";
+        public static final String USER_TYPE_NAME = "USER_TYPE_NAME";
+
 
     }
 
@@ -66,6 +70,7 @@ public class Const {
         public static final String SIGN_IN = "/api/v1/signin";
         public static final String TEST_API = "/api/v1/test";
         public static final String UPDATE_USER_API = "/api/v1/profile/update";
+        public static final String UPLOADS = "/uploads";
     }
 
     public class Secrets {
@@ -91,9 +96,41 @@ public class Const {
         public static final String CAR_REGISTRATION = "car_registration";
         public static final String FEE_START = "fee_start";
         public static final String FEE_KM = "fee_km";
+        public static final String FILE = "file";
     }
 
     public class HeadersParams {
         public static final String ACCESS_TOKEN = "access-token";
+    }
+
+    public class ContentTypes {
+        public static final String IMAGE_JPG = "image/jpeg";
+        public static final String IMAGE_PNG = "image/png";
+    }
+
+    public class IntentParams {
+        public static final String INTENT_TYPE = "IntentType";
+        public static final String GALLERY_INTENT = "GalleryIntent";
+        public static final String CAMERA_INTENT = "CameraIntent";
+        public static final String PATH_INTENT = "PathIntent";
+        public static final String EXTRA_PATH = "ExtraPath";
+    }
+
+    public class Files {
+        public static final String FILE_APP_DIRECTORY = "SuperTaxi/";
+        public static final String PROFILE_IMAGES_FOLDER = ".ProfileImages/";
+        public static final String FILE_APP_NO_FILE = ".nofile";
+
+        public static final String VIDEO_FOLDER = "Zipt Video/";
+        public static final String AUDIO_FOLDER = "Zipt Audio/";
+        public static final String IMAGE_FOLDER = "Zipt Image/";
+
+        public static final String HIDDEN_VIDEO_FOLDER = ".Video/";
+        public static final String HIDDEN_AUDIO_FOLDER = ".Audio/";
+        public static final String HIDDEN_IMAGE_FOLDER = ".Image/";
+    }
+
+    public class PermissionCode {
+        public static final int CHAT_STORAGE = 99;
     }
 }

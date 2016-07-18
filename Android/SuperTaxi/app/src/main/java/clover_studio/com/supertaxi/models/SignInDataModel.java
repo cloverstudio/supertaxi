@@ -5,7 +5,7 @@ package clover_studio.com.supertaxi.models;
  */
 public class SignInDataModel extends BaseModel{
 
-    public MyUserModel data;
+    public UserModel data;
 
     @Override
     public String toString() {

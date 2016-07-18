@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import clover_studio.com.supertaxi.models.MyUserDetailsModel;
-import clover_studio.com.supertaxi.models.MyUserModel;
+import clover_studio.com.supertaxi.models.UserModel;
 
 /**
  * Created by ubuntu_ivo on 22.07.15..
@@ -95,27 +94,35 @@ public class Preferences {
         return getCustomString(Const.PreferencesKey.PUSH_TOKEN);
     }
 
-    public void setUserData(MyUserModel user){
-        setCustomString(Const.PreferencesKey._ID, user.user._id);
-        setCustomString(Const.PreferencesKey.USER_ID, user.user._id);
-        setCustomString(Const.PreferencesKey.EMAIL, user.user.email);
-        setCustomLong(Const.PreferencesKey.CREATED, user.user.created);
-    }
+    public void setUserData(UserModel user){
 
-    public void setUserDetails(MyUserDetailsModel user){
-        setCustomString(Const.PreferencesKey.NAME, user.name);
+        setCustomString(Const.PreferencesKey._ID, user._id);
+        setCustomString(Const.PreferencesKey.EMAIL, user.email);
+        setCustomLong(Const.PreferencesKey.CREATED, user.created);
         setCustomString(Const.PreferencesKey.TEL_NUM, user.telNum);
-        setCustomInt(Const.PreferencesKey.AGE, user.age);
-        setCustomString(Const.PreferencesKey.NOTE, user.note);
-        setCustomString(Const.PreferencesKey.CAR_TYPE, user.car_type);
-        setCustomString(Const.PreferencesKey.CAR_REGISTRATION, user.car_registration);
-        setCustomInt(Const.PreferencesKey.FEE_START, user.fee_start);
-        setCustomInt(Const.PreferencesKey.FEE_KM, user.fee_km);
+
+        if(user.avatar != null){
+            setCustomString(Const.PreferencesKey.AVATAR_FILE_ID, user.avatar.fileid);
+            setCustomString(Const.PreferencesKey.AVATAR_THUMB_ID, user.avatar.thumbfileid);
+        }
+
+        if(user.driver != null){
+            setCustomString(Const.PreferencesKey.DRIVER_TYPE_NAME, user.driver.name);
+            setCustomString(Const.PreferencesKey.CAR_TYPE, user.driver.car_type);
+            setCustomString(Const.PreferencesKey.CAR_REGISTRATION, user.driver.car_registration);
+            setCustomInt(Const.PreferencesKey.FEE_KM, user.driver.fee_km);
+            setCustomInt(Const.PreferencesKey.FEE_START, user.driver.fee_start);
+
+        }
+
+        if(user.user != null){
+            setCustomString(Const.PreferencesKey.USER_TYPE_NAME, user.user.name);
+            setCustomInt(Const.PreferencesKey.AGE, user.user.age);
+        }
     }
 
     public void signOut(){
         removePreference(Const.PreferencesKey._ID);
-        removePreference(Const.PreferencesKey.USER_ID);
         removePreference(Const.PreferencesKey.EMAIL);
         removePreference(Const.PreferencesKey.CREATED);
         removePreference(Const.PreferencesKey.TOKEN);

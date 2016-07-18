@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import clover_studio.com.supertaxi.base.BaseActivity;
+import clover_studio.com.supertaxi.singletons.UserSingleton;
 
 /**
  * Created by ubuntu_ivo on 08.02.16..
@@ -32,6 +33,28 @@ public class DriverHomeActivity extends HomeActivity {
         View tvHistoryLine = findViewById(R.id.lineViewAboveHistory);
         tvHistoryLine.setVisibility(View.GONE);
 
+    }
+
+    @Override
+    protected void initSidebar() {
+        if(UserSingleton.getInstance().getUser().driver.name != null &&
+                UserSingleton.getInstance().getUser().driver.name.length() > 0){
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().driver.name);
+        }else{
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().email);
+        }
+        super.initSidebar();
+    }
+
+    @Override
+    public void refreshSidebar() {
+        if(UserSingleton.getInstance().getUser().driver.name != null &&
+                UserSingleton.getInstance().getUser().driver.name.length() > 0){
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().driver.name);
+        }else{
+            tvSidebarMyName.setText(UserSingleton.getInstance().getUser().email);
+        }
+        super.refreshSidebar();
     }
 
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relativeLayout_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <clover_studio.com.supertaxi.view.CustomTextView
+        android:id="@+id/topText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="@string/edit_your_photo"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_view_default"
+        android:textStyle="bold"/>
+
+    <clover_studio.com.supertaxi.view.cropper.CropImageView
+        android:id="@+id/CropImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footerLayout"
+        android:layout_below="@+id/topText"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <clover_studio.com.supertaxi.view.CustomButton
+            android:id="@+id/btn_rotate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_white_button_border_selector"
+            android:text="@string/rotate"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"/>
+
+        <clover_studio.com.supertaxi.view.CustomButton
+            android:id="@+id/btn_done"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_white_button_selector"
+            android:text="@string/keyDone"
+            android:textAllCaps="false"
+            android:textColor="@color/default_to_devil_gray"/>
+    </LinearLayout>
+</RelativeLayout>

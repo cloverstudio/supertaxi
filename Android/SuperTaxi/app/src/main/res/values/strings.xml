@@ -55,6 +55,16 @@
     <string name="age">Age</string>
     <string name="note">Note</string>
     <string name="save_capital">SAVE</string>
+    <string name="waiting_to_response">Waiting for response</string>
+    <string name="tap_to_edit_upload_nyour_avatar_photo">Tap to edit / upload \nyour avatar photo</string>
+    <string name="uploading">Uploading...</string>
+    <string name="choose_camera_or_gallery">Choose camera or gallery</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="edit_your_photo">Edit your photo</string>
+    <string name="rotate">Rotate</string>
+    <string name="keyDone">Done</string>
+    <string name="profile_capital">PROFILE</string>
 
 
 </resources>
