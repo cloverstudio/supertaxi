@@ -311,7 +311,6 @@ var Const = require('../lib/consts');
         
     }
 
-        
     // Exports ----------------------------------------------
     module["exports"] = new Utils();
 

@@ -39,6 +39,7 @@ CallOrderController.prototype.init = function(app){
      * @apiParam {Number} crewNum (Required) Number of passengers
     
      * @apiError UnknownError 6000000
+     * @apiError TokenInvalid 6000009
      * @apiError ParamErrorLatitudeFrom 6000017
      * @apiError ParamErrorLongitudeFrom 6000018
      * @apiError ParamErrorNoAddressFrom 6000019
@@ -76,13 +77,11 @@ CallOrderController.prototype.init = function(app){
                 var insertParams = {                    
                     userId: user._id.toString(),
                     from: {
-                        lat: result.fields.latFrom,
-                        lon: result.fields.lonFrom,
+                        location: [ result.fields.lonFrom, result.fields.latFrom ],
                         address: result.fields.addressFrom
                     },
                     to: {
-                        lat: result.fields.latTo,
-                        lon: result.fields.lonTo,
+                        location: [ result.fields.lonTo, result.fields.latTo ],
                         address: result.fields.addressTo
                     },
                     createOrderTs: Utils.now(),

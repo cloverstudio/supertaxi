@@ -48,6 +48,7 @@ UpdateProfileController.prototype.init = function(app){
      * @apiParam {File} file picture file (png,jpeg,gif)
      * 
      * @apiError UnknownError 6000000
+     * @apiError TokenInvalid 6000009
      * @apiError ParamErrorNoName 6000010
      * @apiError ParamErrorWrongType 6000011
      * @apiError ParamErrorFeeStart 6000013

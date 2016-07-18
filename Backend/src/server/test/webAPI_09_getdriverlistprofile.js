@@ -6,16 +6,16 @@ describe('WEB API', function () {
 
     var req, res;
 
-    describe('/order/getOpenOrder POST', function () {
+    describe('/profile/getDriverList POST', function () {
         
-        it('success get open order', function (done) {
+        it('success get driver list', function (done) {
 
             request(app)
-                .post('/api/v1/order/getOpenOrder')
+                .post('/api/v1/profile/getDriverList')
                 .set('access-token', global.user1.token)
                 .send({
-                    lat: 99.45454545,
-                    lon: 70.45445
+                    lat: -20, 
+                    lon: 10
                 })
                 .end(function (err, res) {
 
@@ -25,11 +25,7 @@ describe('WEB API', function () {
 
                 res.body.code.should.be.exactly(1);
                 res.body.should.have.property('data');
-                res.body.data.should.have.property('order');
-                res.body.data.order.should.have.property('_id');
                 
-                global.orderId = res.body.data.order._id;
-
                 done();
             
             });   
@@ -39,11 +35,11 @@ describe('WEB API', function () {
         it('wrong latitude', function (done) {
 
             request(app)
-                .post('/api/v1/order/getOpenOrder')
+                .post('/api/v1/profile/getDriverList')
                 .set('access-token', global.user1.token)
                 .send({
                     lat: 'test',
-                    lon: 70.45445
+                    lon: 10
                 })
                 .end(function (err, res) {
 
@@ -62,10 +58,10 @@ describe('WEB API', function () {
         it('wrong longitude', function (done) {
 
             request(app)
-                .post('/api/v1/order/getOpenOrder')
+                .post('/api/v1/profile/getDriverList')
                 .set('access-token', global.user1.token)
                 .send({
-                    lat: 99.45454545,
+                    lat: -20,
                     lon: 'test'
                 })
                 .end(function (err, res) {

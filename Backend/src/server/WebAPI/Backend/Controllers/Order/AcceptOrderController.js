@@ -26,16 +26,16 @@ AcceptOrderController.prototype.init = function(app){
      * @api {post} /api/v1/order/accept Accept Order
      * @apiName Accept Order
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Driver accepts order
+     * @apiDescription This API receives JSON request. Driver accepts open order
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
-     * @apiParam {Decimal} lat (Required) Current driver latitude
-     * @apiParam {Decimal} lon (Required) Current driver longitude
+     * @apiParam {String} orderId (Required) Open order id
     
      * @apiError UnknownError 6000000
-     * @apiError ParamErrorLatitudeDriver 6000024
-     * @apiError ParamErrorLongitudeDriver 6000025
+     * @apiError TokenInvalid 6000009
+     * @apiError ParamErrorInvalidId 6000026
+     * @apiError ParamErrorOrderAlreadyAcceptedOrCanceled 6000027
 
      * 
      * @apiSuccessExample Success-Response:
@@ -60,19 +60,6 @@ AcceptOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
-                // update current user coordinates
-                user.update({
-                    currentLat: request.body.lat,
-                    currentLon: request.body.lon
-                }, {}, (err, userResult) => {
-
-                    done(err, result);
-
-                });
-
-            },
-            (result, done) => {
-
                 // update order
                 var updateParams = {
                     driverId: user._id.toString(),                
@@ -80,13 +67,27 @@ AcceptOrderController.prototype.init = function(app){
                 };
 
                 orderModel.update({
+                    _id: request.body.orderId,
                     acceptOrderTs: { $exists: false },
                     cancelOrderOrTrip: { $exists: false }
-                }, { 
+                }, {
                     $set: updateParams
                 }, (err, updateResult) => {
-                    
-                    done(err, result);
+
+                    var error = null;
+
+                    if (err)
+
+                        error = err;
+
+                    else {
+                        // if order not found
+                        if (updateResult.n == 0)
+                            error = { handledError: Const.responsecodeParamErrorOrderAlreadyAcceptedOrCanceled };
+
+                    }
+
+                    done(error, result);
 
                 });
 
@@ -124,12 +125,8 @@ AcceptOrderController.prototype.init = function(app){
 
 AcceptOrderController.prototype.validation = function(fields) {
 
-    if (!_.isNumber(fields.lat)) {
-        return { handledError: Const.responsecodeParamErrorLatitudeDriver };
-    }
-    
-    if (!_.isNumber(fields.lon)) {
-        return { handledError: Const.responsecodeParamErrorLongitudeDriver };
+    if (!Utils.isObjectId(fields.orderId)) {
+        return { handledError: Const.responsecodeParamErrorInvalidId };
     }
 
     return null;

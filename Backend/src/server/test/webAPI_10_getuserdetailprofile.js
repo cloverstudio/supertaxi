@@ -6,15 +6,15 @@ describe('WEB API', function () {
 
     var req, res;
 
-    describe('/order/accept POST', function () {
+    describe('/profile/detail POST', function () {
         
-        it('success accept order', function (done) {
+        it('success get profile detail', function (done) {
 
             request(app)
-                .post('/api/v1/order/accept')
+                .post('/api/v1/profile/detail')
                 .set('access-token', global.user1.token)
                 .send({
-                    orderId: global.orderId
+                    userId: global.user1._id
                 })
                 .end(function (err, res) {
 
@@ -31,13 +31,13 @@ describe('WEB API', function () {
             
         });
 
-        it('wrong order id', function (done) {
+        it('wrong user id', function (done) {
 
             request(app)
-                .post('/api/v1/order/accept')
+                .post('/api/v1/profile/detail')
                 .set('access-token', global.user1.token)
                 .send({
-                    orderId: ""
+                    userId: "test"
                 })
                 .end(function (err, res) {
 
@@ -46,28 +46,6 @@ describe('WEB API', function () {
                 }
 
                 res.body.code.should.be.exactly(6000026);
-                
-                done();
-            
-            });   
-            
-        });
-
-        it('order already accepted or canceled', function (done) {
-
-            request(app)
-                .post('/api/v1/order/accept')
-                .set('access-token', global.user1.token)
-                .send({
-                    orderId: global.orderId
-                })
-                .end(function (err, res) {
-
-                if (err) {
-                    throw err;
-                }
-
-                res.body.code.should.be.exactly(6000027);
                 
                 done();
             
