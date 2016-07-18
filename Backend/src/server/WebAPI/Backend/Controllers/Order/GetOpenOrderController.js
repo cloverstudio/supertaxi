@@ -35,8 +35,9 @@ GetOpenOrderController.prototype.init = function(app){
      * @apiParam {Decimal} lon (Required) Current driver longitude
     
      * @apiError UnknownError 6000000
-     * @apiError ParamErrorLatitudeDriver 6000024
-     * @apiError ParamErrorLongitudeDriver 6000025
+     * @apiError TokenInvalid 6000009
+     * @apiError ParamErrorLatitude 6000024
+     * @apiError ParamErrorLongitude 6000025
 
      * 
      * @apiSuccessExample Success-Response:
@@ -170,11 +171,11 @@ GetOpenOrderController.prototype.init = function(app){
 GetOpenOrderController.prototype.validation = function(fields) {
 
     if (!_.isNumber(fields.lat)) {
-        return { handledError: Const.responsecodeParamErrorLatitudeDriver };
+        return { handledError: Const.responsecodeParamErrorLatitude };
     }
     
     if (!_.isNumber(fields.lon)) {
-        return { handledError: Const.responsecodeParamErrorLongitudeDriver };
+        return { handledError: Const.responsecodeParamErrorLongitude };
     }
 
     return null;

@@ -8,12 +8,13 @@ describe('WEB API', function () {
 
     describe('/order/cancel POST', function () {
         
-        it('success user cancel order', (done) => {
+        it('success cancel order', (done) => {
 
             request(app)
                 .post('/api/v1/order/cancel')
                 .set('access-token', global.user1.token)
                 .send({
+                    orderId: global.orderId,
                     type: 1,
                     reason: "Odustao"
                 })
@@ -32,23 +33,21 @@ describe('WEB API', function () {
             
         });
 
-        it('success driver cancel order', (done) => {
+        it('wrong order id', function (done) {
 
             request(app)
                 .post('/api/v1/order/cancel')
                 .set('access-token', global.user1.token)
                 .send({
-                    type: 2,
-                    reason: "Canceled"
+                    orderId: "test"
                 })
-                .end((err, res) => {
+                .end(function (err, res) {
 
                 if (err) {
                     throw err;
                 }
 
-                res.body.code.should.be.exactly(1);
-                res.body.should.have.property('data');
+                res.body.code.should.be.exactly(6000026);
                 
                 done();
             
@@ -62,6 +61,7 @@ describe('WEB API', function () {
                 .post('/api/v1/order/cancel')
                 .set('access-token', global.user1.token)
                 .send({
+                    orderId: global.orderId,
                     type: "test"
                 })
                 .end(function (err, res) {
@@ -71,6 +71,29 @@ describe('WEB API', function () {
                 }
 
                 res.body.code.should.be.exactly(6000011);
+                
+                done();
+            
+            });   
+            
+        });
+
+        it('order already accepted or canceled', function (done) {
+
+            request(app)
+                .post('/api/v1/order/cancel')
+                .set('access-token', global.user1.token)
+                .send({
+                    orderId: global.orderId,
+                    type: 1
+                })
+                .end(function (err, res) {
+
+                if (err) {
+                    throw err;
+                }
+
+                res.body.code.should.be.exactly(6000027);
                 
                 done();
             

@@ -26,16 +26,19 @@ CancelOrderController.prototype.init = function(app){
      * @api {post} /api/v1/order/cancel Cancel Order
      * @apiName Cancel Order
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Cancels order or trip
+     * @apiDescription This API receives JSON request. Cancels order
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
+     * @apiParam {String} orderId (Required) Accepted order id
      * @apiParam {Number} type (Required) User type should be 1: user or 2: driver
-     * @apiParam {String} [reason] Descriptive reason for canceling a order or trip
+     * @apiParam {String} [reason] Descriptive reason for canceling a order
     
      * @apiError UnknownError 6000000
+     * @apiError TokenInvalid 6000009
      * @apiError ParamErrorWrongType 6000011
-
+     * @apiError ParamErrorInvalidId 6000026
+     * @apiError ParamErrorOrderAlreadyAcceptedOrCanceled 6000027
      * 
      * @apiSuccessExample Success-Response:
         { 
@@ -66,16 +69,30 @@ CancelOrderController.prototype.init = function(app){
                     updateParams.cancelOrderOrTrip = { driverTs: Utils.now() };
 
                 if (request.body.reason)
-                        updateParams.cancelOrderOrTrip.reason = request.body.reason;
+                    updateParams.cancelOrderOrTrip.reason = request.body.reason;
 
                 orderModel.update({
+                    _id: request.body.orderId,
                     startTripTs: { $exists: false },
                     cancelOrderOrTrip: { $exists: false }
                 }, { 
                     $set: updateParams
                 }, (err, updateResult) => {
                     
-                    done(err, result);
+                    var error = null;
+
+                    if (err)
+
+                        error = err;
+
+                    else {
+                        // if order not found
+                        if (updateResult.n == 0)
+                            error = { handledError: Const.responsecodeParamErrorOrderAlreadyAcceptedOrCanceled };
+
+                    }
+
+                    done(error, result);
 
                 });
 
@@ -112,6 +129,10 @@ CancelOrderController.prototype.init = function(app){
 }
 
 CancelOrderController.prototype.validation = function(fields) {
+
+    if (!Utils.isObjectId(fields.orderId)) {
+        return { handledError: Const.responsecodeParamErrorInvalidId };
+    }
 
     if (fields.type != Const.userTypeNormal && fields.type != Const.userTypeDriver) {
         return { handledError: Const.responsecodeParamErrorWrongType };

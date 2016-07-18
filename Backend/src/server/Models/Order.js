@@ -17,13 +17,11 @@ Order.prototype.init = function(mongoose){
         userId: { type: String, index: true },
         driverId: { type: String, index: true },
         from: {
-            lat: Number,
-            lon: Number,
+            location: { type: [ Number ], index: '2dsphere' }, // [ longitude, latitude ]
             address: String
         },
         to: {
-            lat: Number,
-            lon: Number,
+            location: { type: [ Number ], index: '2dsphere' }, // [ longitude, latitude ]
             address: String
         },
         createOrderTs: Number,

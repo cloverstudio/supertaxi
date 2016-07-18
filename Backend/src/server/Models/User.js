@@ -37,8 +37,7 @@ User.prototype.init = function(mongoose){
         pushToken: String,
         created: Number,
         telNum: String,
-        currentLat: Number,
-        currentLon: Number
+        currentLocation: { type: [ Number ], index: '2dsphere' } // [ longitude, latitude ]
     });
 
     this.model = mongoose.model(Config.dbCollectionPrefix + "User", this.schema);
