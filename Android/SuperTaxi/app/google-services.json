@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "563054939309",
+    "project_id": "supertaxi-97311"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563054939309:android:b066a53ae5e16797",
+        "android_client_info": {
+          "package_name": "clover_studio.com.supertaxi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563054939309-7mq2pmfsoe83ms4k2j3k0pa2jpcsiris.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "clover_studio.com.supertaxi",
+            "certificate_hash": "CCE924F770AAF71D6F212BDF3CEEFDDAD88E9154"
+          }
+        },
+        {
+          "client_id": "563054939309-gtee1pl4n30t9v3kan0cb61c6umct6u9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBONAsYG4Pq-Sx9obbuHxlDaj4aa872kvs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

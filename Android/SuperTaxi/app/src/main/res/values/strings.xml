@@ -20,6 +20,9 @@
     <string name="OK">OK</string>
     <string name="try_again">Try again</string>
 
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id">1639880416329372</string>
+
     <!-- ERROR -->
     <string name="error_unknown">Unknown error</string>
     <string name="error_invalid_token">Invalid token</string>
@@ -65,6 +68,21 @@
     <string name="rotate">Rotate</string>
     <string name="keyDone">Done</string>
     <string name="profile_capital">PROFILE</string>
+    <string name="car_type">Car type</string>
+    <string name="car_registration">Cat reg number</string>
+    <string name="start_fee">Start fee</string>
+    <string name="fee_km">Fee / km</string>
+    <string name="user_canceled">User Canceled</string>
+    <string name="error_login_facebook">Failed to sign in with facebook</string>
+    <string name="failed_to_sing_in_with_google_plus">Failed to sign in with google+</string>
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string name="report_a_problem">Report a problem</string>
+    <string name="about">About</string>
+    <string name="home_capital">HOME</string>
+    <string name="request_taxi">Request taxi</string>
+    <string name="show_more">Show more</string>
 
 
 </resources>

@@ -62,7 +62,7 @@ public class Const {
         public static final String DRIVER_TYPE_NAME = "DRIVER_TYPE_NAME";
         public static final String USER_TYPE_NAME = "USER_TYPE_NAME";
 
-
+        public static final String USER_CREATED = "USER_CREATED";
     }
 
     public class Server {

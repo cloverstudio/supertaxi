@@ -3,6 +3,9 @@ package clover_studio.com.supertaxi.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 import java.io.File;
 
 import clover_studio.com.supertaxi.utils.Preferences;
@@ -20,6 +23,9 @@ public class SuperTaxiApp extends Application{
         super.onCreate();
 
         setAppContext(getApplicationContext());
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
     }
 

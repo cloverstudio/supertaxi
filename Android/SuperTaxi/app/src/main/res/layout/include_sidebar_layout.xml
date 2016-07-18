@@ -71,6 +71,23 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:id="@+id/lineViewAboveHome"
+                    android:background="@color/menu_separator_background"/>
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:id="@+id/tvHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home"
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white_to_devil_gray"
+                    android:textSize="@dimen/default_text_view_title_text_size"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
                     android:id="@+id/lineViewAboveHistory"
                     android:background="@color/menu_separator_background"/>
 
@@ -78,7 +95,7 @@
                     android:id="@+id/tvHistory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="History"
+                    android:text="@string/history"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
@@ -94,7 +111,7 @@
                     android:id="@+id/tvSettings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Settings"
+                    android:text="@string/settings"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
@@ -110,7 +127,7 @@
                     android:id="@+id/tvReportAProblem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Report a problem"
+                    android:text="@string/report_a_problem"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
@@ -126,7 +143,7 @@
                     android:id="@+id/tvAbout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="About"
+                    android:text="@string/about"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"

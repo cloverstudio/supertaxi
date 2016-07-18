@@ -118,6 +118,7 @@ public class Preferences {
         if(user.user != null){
             setCustomString(Const.PreferencesKey.USER_TYPE_NAME, user.user.name);
             setCustomInt(Const.PreferencesKey.AGE, user.user.age);
+            setCustomString(Const.PreferencesKey.NOTE, user.user.note);
         }
     }
 

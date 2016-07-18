@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.widget.RelativeLayout;
 
@@ -272,6 +273,15 @@ public class AnimationUtils {
 
         return rotate;
 
+    }
+
+    public static void rotationInfinite(View view, boolean clockwise, int cycleDuration) {
+        ObjectAnimator rotation = ObjectAnimator.ofFloat(view, "rotation", 0, clockwise ? 360 : -360);
+        rotation.setDuration(cycleDuration);
+        rotation.setRepeatMode(Animation.RESTART);
+        rotation.setRepeatCount(Animation.INFINITE);
+        rotation.setInterpolator(new LinearInterpolator());
+        rotation.start();
     }
 
     /**

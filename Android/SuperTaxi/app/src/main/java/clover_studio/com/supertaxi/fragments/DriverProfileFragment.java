@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +23,8 @@ import java.util.List;
 
 import clover_studio.com.supertaxi.CameraCropActivity;
 import clover_studio.com.supertaxi.CreateUserActivity;
-import clover_studio.com.supertaxi.DriverHomeActivity;
 import clover_studio.com.supertaxi.HomeActivity;
 import clover_studio.com.supertaxi.R;
-import clover_studio.com.supertaxi.UserHomeActivity;
 import clover_studio.com.supertaxi.api.UploadFileManagement;
 import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
 import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
@@ -50,13 +47,15 @@ import retrofit2.Response;
 /**
  * Created by ivoperic on 13/07/16.
  */
-public class UserProfileFragment extends BaseFragment{
+public class DriverProfileFragment extends BaseFragment{
 
     public static final int RESULT_CODE = 9999;
 
     private EditText etName;
-    private EditText etAge;
-    private EditText etNote;
+    private EditText etCarType;
+    private EditText etCarRegistration;
+    private EditText etFeeStart;
+    private EditText etFeeKm;
     private Button buttonSave;
     private LinearLayout llForChangeImage;
     private ImageView ivAvatarImage;
@@ -71,30 +70,44 @@ public class UserProfileFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_driver_profile, container, false);
 
         etName = (EditText) rootView.findViewById(R.id.etName);
-        etAge = (EditText) rootView.findViewById(R.id.etAge);
-        etNote = (EditText) rootView.findViewById(R.id.etNote);
+        etCarType = (EditText) rootView.findViewById(R.id.etCarType);
+        etCarRegistration = (EditText) rootView.findViewById(R.id.etCarRegistration);
+        etFeeStart = (EditText) rootView.findViewById(R.id.etFeeStart);
+        etFeeKm = (EditText) rootView.findViewById(R.id.etFeeKm);
+
         buttonSave = (Button) rootView.findViewById(R.id.buttonSave);
         llForChangeImage = (LinearLayout) rootView.findViewById(R.id.llEditImage);
         ivAvatarImage = (ImageView) rootView.findViewById(R.id.ivAvatar);
 
         etName.addTextChangedListener(checkForButton);
-        etAge.addTextChangedListener(checkForButton);
-        etNote.addTextChangedListener(checkForButton);
+        etCarType.addTextChangedListener(checkForButton);
+        etCarRegistration.addTextChangedListener(checkForButton);
+        etFeeStart.addTextChangedListener(checkForButton);
+        etFeeKm.addTextChangedListener(checkForButton);
 
         buttonSave.setOnClickListener(onSaveClick);
         llForChangeImage.setOnClickListener(onImageChange);
         ivAvatarImage.setOnClickListener(onImageChange);
 
         UserModel myUser = UserSingleton.getInstance().getUser();
-        if(myUser.user != null){
-            if(!TextUtils.isEmpty(myUser.user.name)){
-                etName.setText(myUser.user.name);
+        if(myUser.driver != null){
+            if(!TextUtils.isEmpty(myUser.driver.name)){
+                etName.setText(myUser.driver.name);
             }
-            if(myUser.user.age != 0){
-                etAge.setText(String.valueOf(myUser.user.age));
+            if(!TextUtils.isEmpty(myUser.driver.car_type)){
+                etCarType.setText(String.valueOf(myUser.driver.car_type));
+            }
+            if(!TextUtils.isEmpty(myUser.driver.car_registration)){
+                etCarRegistration.setText(myUser.driver.car_registration);
+            }
+            if(myUser.driver.fee_start != 0){
+                etFeeStart.setText(String.valueOf(myUser.driver.fee_start));
+            }
+            if(myUser.driver.fee_km != 0){
+                etFeeKm.setText(String.valueOf(myUser.driver.fee_km));
             }
         }
         String avatarUrl = Utils.getMyAvatarUrl();
@@ -117,7 +130,7 @@ public class UserProfileFragment extends BaseFragment{
         @Override
         public void afterTextChanged(Editable s) {
 
-            if(etName.getText().toString().length() > 0 && etAge.getText().toString().length() > 0 && etNote.getText().toString().length() > 0){
+            if(etName.getText().toString().length() > 0){
                 buttonSave.setEnabled(true);
             }else{
                 buttonSave.setEnabled(false);
@@ -168,14 +181,14 @@ public class UserProfileFragment extends BaseFragment{
         showProgress();
         UserRetroApiInterface retroApiInterface = getRetrofit().create(UserRetroApiInterface.class);
         final String name = etName.getText().toString();
-        final String note = etNote.getText().toString();
+        final String note = "";
         final String telNum = "+385976376676";
-        final int age = Integer.parseInt(etAge.getText().toString());
-        final int type = Const.UserType.USER_TYPE_USER;
-        final String carType = "";
-        final String carRegistration = "";
-        final int feeStart = 0;
-        final int feeKM = 0;
+        final int age = 0;
+        final int type = Const.UserType.USER_TYPE_DRIVER;
+        final String carType = etCarType.getText().toString();
+        final String carRegistration = etCarRegistration.getText().toString();
+        final int feeStart = etFeeStart.getText().toString().length() > 0 ? Integer.parseInt(etFeeStart.getText().toString()) : 0;
+        final int feeKM = etFeeKm.getText().toString().length() > 0 ? Integer.parseInt(etFeeKm.getText().toString()) : 0;
         retrofit2.Call<UpdateProfileResponse> call = retroApiInterface.updateProfile(name, type, telNum, age, note, carType, carRegistration, feeStart, feeKM, UserSingleton.getInstance().getUser().token_new);
         call.enqueue(new CustomResponse<UpdateProfileResponse>(getActivity(), true, true) {
             @Override
@@ -201,14 +214,14 @@ public class UserProfileFragment extends BaseFragment{
 
         List<KeyValueModel> postModel = new ArrayList<>();
         final String name = etName.getText().toString();
-        final String note = etNote.getText().toString();
+        final String note = "";
         final String telNum = "+385976376676";
-        final int age = Integer.parseInt(etAge.getText().toString());
-        final int type = Const.UserType.USER_TYPE_USER;
-        final String carType = "";
-        final String carRegistration = "";
-        final int feeStart = 0;
-        final int feeKM = 0;
+        final int age = 0;
+        final int type = Const.UserType.USER_TYPE_DRIVER;
+        final String carType = etCarType.getText().toString();
+        final String carRegistration = etCarRegistration.getText().toString();
+        final int feeStart = etFeeStart.getText().toString().length() > 0 ? Integer.parseInt(etFeeStart.getText().toString()) : 0;
+        final int feeKM = etFeeKm.getText().toString().length() > 0 ? Integer.parseInt(etFeeKm.getText().toString()) : 0;
         postModel.add(new KeyValueModel(Const.PostParams.NAME, name));
         postModel.add(new KeyValueModel(Const.PostParams.NOTE, note));
         postModel.add(new KeyValueModel(Const.PostParams.TEL_NUM, telNum));
@@ -297,7 +310,7 @@ public class UserProfileFragment extends BaseFragment{
         UserSingleton.getInstance().updateUser(response.data.user);
 
         hideProgress();
-        Utils.hideKeyboard(etNote, getActivity());
+        Utils.hideKeyboard(etFeeKm, getActivity());
 
         if(getActivity() != null && getActivity() instanceof HomeActivity){
             ((HomeActivity)getActivity()).refreshSidebar();
