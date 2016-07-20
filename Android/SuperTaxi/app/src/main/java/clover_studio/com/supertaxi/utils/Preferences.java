@@ -3,6 +3,7 @@ package clover_studio.com.supertaxi.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import clover_studio.com.supertaxi.models.UserModel;
 
@@ -107,18 +108,18 @@ public class Preferences {
         }
 
         if(user.driver != null){
-            setCustomString(Const.PreferencesKey.DRIVER_TYPE_NAME, user.driver.name);
-            setCustomString(Const.PreferencesKey.CAR_TYPE, user.driver.car_type);
-            setCustomString(Const.PreferencesKey.CAR_REGISTRATION, user.driver.car_registration);
-            setCustomInt(Const.PreferencesKey.FEE_KM, user.driver.fee_km);
-            setCustomInt(Const.PreferencesKey.FEE_START, user.driver.fee_start);
+            if(!TextUtils.isEmpty(user.driver.name))setCustomString(Const.PreferencesKey.DRIVER_TYPE_NAME, user.driver.name);
+            if(!TextUtils.isEmpty(user.driver.car_type))setCustomString(Const.PreferencesKey.CAR_TYPE, user.driver.car_type);
+            if(!TextUtils.isEmpty(user.driver.car_registration))setCustomString(Const.PreferencesKey.CAR_REGISTRATION, user.driver.car_registration);
+            if(user.driver.fee_km != 0) setCustomInt(Const.PreferencesKey.FEE_KM, user.driver.fee_km);
+            if(user.driver.fee_start != 0) setCustomInt(Const.PreferencesKey.FEE_START, user.driver.fee_start);
 
         }
 
         if(user.user != null){
-            setCustomString(Const.PreferencesKey.USER_TYPE_NAME, user.user.name);
-            setCustomInt(Const.PreferencesKey.AGE, user.user.age);
-            setCustomString(Const.PreferencesKey.NOTE, user.user.note);
+            if(!TextUtils.isEmpty(user.user.name)) setCustomString(Const.PreferencesKey.USER_TYPE_NAME, user.user.name);
+            if(user.user.age != 0) setCustomInt(Const.PreferencesKey.AGE, user.user.age);
+            if(!TextUtils.isEmpty(user.user.note)) setCustomString(Const.PreferencesKey.NOTE, user.user.note);
         }
     }
 

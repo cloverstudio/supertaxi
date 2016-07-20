@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentView"
+    android:layout_width="match_parent"
+    android:paddingTop="5dp"
+    android:layout_height="wrap_content">
+
+    <clover_studio.com.supertaxi.view.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_with_gray_border"
+        android:padding="15dp"
+        android:id="@+id/tvAddress"
+        android:textSize="@dimen/text_view_default"
+        android:textColor="@color/revert_devil_gray" />
+
+</RelativeLayout>

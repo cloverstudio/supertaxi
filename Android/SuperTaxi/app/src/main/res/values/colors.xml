@@ -12,6 +12,9 @@
     <color name="green_button_color">#81D135</color>
     <color name="green_button_color_press">#5CAA06</color>
     <color name="green_button_color_disabled">#CDEDAA</color>
+    <color name="red_button_color">#D0021B</color>
+    <color name="red_button_color_press">#9F081A</color>
+    <color name="red_button_color_disabled">#76D0021B</color>
     <color name="line_gray">#D8D8D8</color>
     <color name="dim_dark_black">#aa000000</color>
     <color name="menu_separator_background">#061940</color>
@@ -19,4 +22,7 @@
     <color name="light_light_gray">#EFEFEF</color>
     <color name="white_0_5_a">#80ffffff</color>
     <color name="update_profile_almost_white">#fdfdfe</color>
+    <color name="border_gray">#c8c8c8</color>
+    <color name="gray_in_edit_text">#808080</color>
+    <color name="black">@android:color/black</color>
 </resources>
