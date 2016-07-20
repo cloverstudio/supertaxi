@@ -14,7 +14,7 @@ describe('WEB API', function () {
                 .post('/api/v1/order/accept')
                 .set('access-token', global.user1.token)
                 .send({
-                    orderId: global.orderId
+                    orderId: global.order._id
                 })
                 .end(function (err, res) {
 
@@ -59,7 +59,7 @@ describe('WEB API', function () {
                 .post('/api/v1/order/accept')
                 .set('access-token', global.user1.token)
                 .send({
-                    orderId: global.orderId
+                    orderId: global.order._id
                 })
                 .end(function (err, res) {
 

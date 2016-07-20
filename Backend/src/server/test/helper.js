@@ -24,7 +24,7 @@ global.user1 = {
     password : "password"
 }
 
-global.orderId = "";
+global.order = {};
 
 before(function(doneMain){
     

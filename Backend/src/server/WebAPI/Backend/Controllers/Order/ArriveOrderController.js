@@ -13,32 +13,30 @@ var BackendBase = require('../BackendBase');
 
 var OrderModel = require(pathTop + 'Models/Order');
 
-var CancelOrderController = function(){
+var ArriveOrderController = function(){
 }
 
-_.extend(CancelOrderController.prototype,BackendBase.prototype);
+_.extend(ArriveOrderController.prototype,BackendBase.prototype);
 
-CancelOrderController.prototype.init = function(app){
+ArriveOrderController.prototype.init = function(app){
         
     var self = this;
 
    /**
-     * @api {post} /api/v1/order/cancel Cancel Order
-     * @apiName Cancel Order
+     * @api {post} /api/v1/order/arrive Update Driver's Arrive Time
+     * @apiName Update Driver's Arrive Time
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Cancels order
+     * @apiDescription This API receives JSON request. Update driver's arrive time in accepted order
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
      * @apiParam {String} orderId (Required) Accepted order id
-     * @apiParam {Number} type (Required) User type should be 1: user or 2: driver
-     * @apiParam {String} [reason] Descriptive reason for canceling a order
     
      * @apiError UnknownError 6000000
      * @apiError TokenInvalid 6000009
-     * @apiError ParamErrorWrongType 6000011
      * @apiError ParamErrorInvalidId 6000026
-     * @apiError ParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled 6000029
+     * @apiError ParamErrorDriverAlreadyArrivedOrOrderIsCanceled 6000028
+
      * 
      * @apiSuccessExample Success-Response:
         { 
@@ -61,24 +59,19 @@ CancelOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
-                var updateParams = {};
-
-                if (request.body.type == Const.userTypeNormal)
-                    updateParams.cancelOrderOrTrip = { userTs: Utils.now() };
-                else
-                    updateParams.cancelOrderOrTrip = { driverTs: Utils.now() };
-
-                if (request.body.reason)
-                    updateParams.cancelOrderOrTrip.reason = request.body.reason;
+                // update order
+                var updateParams = {
+                    arriveToStartLocationTs: Utils.now()
+                };
 
                 orderModel.update({
                     _id: request.body.orderId,
-                    startTripTs: { $exists: false },
+                    arriveToStartLocationTs: { $exists: false },
                     cancelOrderOrTrip: { $exists: false }
-                }, { 
+                }, {
                     $set: updateParams
                 }, (err, updateResult) => {
-                    
+
                     var error = null;
 
                     if (err)
@@ -88,7 +81,7 @@ CancelOrderController.prototype.init = function(app){
                     else {
                         // if order not found
                         if (updateResult.n == 0)
-                            error = { handledError: Const.responsecodeParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled };
+                            error = { handledError: Const.responsecodeParamErrorDriverAlreadyArrivedOrOrderIsCanceled };
 
                     }
 
@@ -128,17 +121,13 @@ CancelOrderController.prototype.init = function(app){
 
 }
 
-CancelOrderController.prototype.validation = function(fields) {
+ArriveOrderController.prototype.validation = function(fields) {
 
     if (!Utils.isObjectId(fields.orderId)) {
         return { handledError: Const.responsecodeParamErrorInvalidId };
     }
 
-    if (fields.type != Const.userTypeNormal && fields.type != Const.userTypeDriver) {
-        return { handledError: Const.responsecodeParamErrorWrongType };
-    }
-
     return null;
 }
 
-module["exports"] = new CancelOrderController();
+module["exports"] = new ArriveOrderController();

@@ -14,12 +14,12 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 99.45454545,
+                    latFrom: 89.45454545,
                     lonFrom: 70.45445,
-                    addressFrom: 'Siget 11 Zagreb',
-                    latTo: 235.45454545,
-                    lonTo: 100.45454545,
-                    addressTo: 'Bučarova 13 Zagreb',
+                    addressFrom: 'Test adresa start',
+                    latTo: -70.3455,
+                    lonTo: -45.94595,
+                    addressTo: 'Proba destinacija',
                     crewNum: 4
                 })
                 .end(function (err, res) {
@@ -33,7 +33,7 @@ describe('WEB API', function () {
                 
                 done();
             
-            });   
+            });  
             
         });
 

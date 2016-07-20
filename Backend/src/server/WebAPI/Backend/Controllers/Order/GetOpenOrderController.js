@@ -27,7 +27,7 @@ GetOpenOrderController.prototype.init = function(app){
      * @api {post} /api/v1/order/getOpenOrder Get Open Order 
      * @apiName Get Open Order
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Get open order for taxi driver
+     * @apiDescription This API receives JSON request. Get closest open order for taxi driver
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
@@ -52,13 +52,11 @@ GetOpenOrderController.prototype.init = function(app){
                     _id: 5784a21c773cfd5e2d58e771,
                     __v: 0,
                     to: { 
-                        lat: 235.45454545,
-                        lon: 100.45454545,
+                        location: [ 34.4344333, -44.5665333 ],
                         address: 'Bučarova 13 Zagreb' 
                     },
                     from: { 
-                        lat: 99.45454545, 
-                        lon: 70.45445, 
+                        location: [ 35.4344333, -44.7453333 ],
                         address: 'Siget 11 Zagreb' 
                     },
                     user: { 
@@ -105,15 +103,23 @@ GetOpenOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
-                // get open order
+                // get nearest open order
                 orderModel.findOne({
+                    "from.location": { 
+                        $near: {
+                            $geometry: { 
+                                type: 'Point',
+                                coordinates: [ request.body.lon, request.body.lat ]
+                            }
+                        }
+                    },
                     acceptOrderTs: { $exists: false },
                     cancelOrderOrTrip: { $exists: false }
                 }, (err, findResult) => {
 
                     if (findResult) 
                         result.order = findResult.toObject();
-                    
+
                     done(err, result);
 
                 });
