@@ -22,9 +22,13 @@ import com.balysv.materialmenu.MaterialMenuView;
 
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.base.BaseFragment;
+import clover_studio.com.supertaxi.base.SuperTaxiApp;
+import clover_studio.com.supertaxi.fragments.DriverProfileFragment;
+import clover_studio.com.supertaxi.fragments.UserMainFragment;
 import clover_studio.com.supertaxi.fragments.UserProfileFragment;
 import clover_studio.com.supertaxi.models.UpdateProfileResponse;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
+import clover_studio.com.supertaxi.utils.Const;
 import clover_studio.com.supertaxi.utils.ImageUtils;
 import clover_studio.com.supertaxi.utils.Utils;
 
@@ -35,6 +39,20 @@ public class HomeActivity extends BaseActivity {
 
     public static void startActivity(Activity activity){
         Intent startActivity = new Intent(activity, HomeActivity.class);
+        if(activity instanceof BaseActivity){
+            ((BaseActivity)activity).startActivity(startActivity);
+        }else{
+            activity.startActivity(startActivity);
+        }
+    }
+
+    public static void startActivity(Activity activity, int type){
+        Intent startActivity;
+        if(type == Const.UserType.USER_TYPE_DRIVER){
+            startActivity = new Intent(activity, DriverHomeActivity.class);
+        }else{
+            startActivity = new Intent(activity, UserHomeActivity.class);
+        }
         if(activity instanceof BaseActivity){
             ((BaseActivity)activity).startActivity(startActivity);
         }else{
@@ -55,7 +73,8 @@ public class HomeActivity extends BaseActivity {
     TextView tvSidebarMyName;
     RelativeLayout rlForFragment;
 
-    UserProfileFragment profileFragment;
+    BaseFragment profileFragment;
+    BaseFragment mainFragment;
     String activeFragmentTag;
 
     @Override
@@ -74,8 +93,8 @@ public class HomeActivity extends BaseActivity {
 
         frManager = getSupportFragmentManager();
 
-//        setInitialFragment();
         initOtherFragments();
+        setInitialFragment();
 //
 //        rightToolbarButton.setOnClickListener(onRightToolbarListener);
 //        subRightToolbarButton.setOnClickListener(onSubRightToolbarListener);
@@ -87,7 +106,7 @@ public class HomeActivity extends BaseActivity {
         dlDrawerLayout.addDrawerListener(sidebarDrawerListener);
         dlDrawerLayout.setScrimColor(Color.TRANSPARENT);
         initSidebar();
-        setToolbarTitle("HOME");
+        setToolbarTitle(getString(R.string.home_capital));
         setToolbarRightImage(Utils.getMyAvatarUrl());
 //
 //        LogCS.d("LOG", "ACCESS TOKEN: " + UserSingleton.getInstance().getUser().token);
@@ -223,17 +242,26 @@ public class HomeActivity extends BaseActivity {
 //            }
 //        });
 //    }
-//
-//    private void setInitialFragment() {
-//
-//        homeFragment = HomeFragment.newInstance();
-//        activeFragmentTag = homeFragment.getClass().getName();
-//        frManager.beginTransaction().add(rlForFragment.getId(), homeFragment, activeFragmentTag).commit();
-//
-//    }
-//
+
+    private void setInitialFragment() {
+
+        activeFragmentTag = mainFragment.getClass().getName();
+        frManager.beginTransaction().add(rlForFragment.getId(), mainFragment, activeFragmentTag).commit();
+
+    }
+
     private void initOtherFragments(){
-        profileFragment = new UserProfileFragment();
+        if(UserSingleton.getInstance().getUserType() == Const.UserType.USER_TYPE_DRIVER){
+            profileFragment = new DriverProfileFragment();
+        }else{
+            profileFragment = new UserProfileFragment();
+        }
+
+        if(UserSingleton.getInstance().getUserType() == Const.UserType.USER_TYPE_DRIVER){
+            mainFragment = new UserMainFragment();
+        }else{
+            mainFragment = new UserMainFragment();
+        }
     }
 
 //
@@ -336,7 +364,7 @@ public class HomeActivity extends BaseActivity {
 
     protected void initSidebar() {
         String url = Utils.getMyAvatarUrl();
-        ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url, (ProgressBar) findViewById(R.id.myAvatarProgressBar));
+        ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url, (ProgressBar) findViewById(R.id.myAvatarProgressBar), R.drawable.user);
 
         LinearLayout menuListLayout = (LinearLayout) findViewById(R.id.menuListLayout);
         if(menuListLayout != null){
@@ -360,6 +388,11 @@ public class HomeActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+
+                case R.id.tvHome:
+                    setToolbarTitle(getString(R.string.home_capital));
+                    switchFragment(mainFragment);
+                    break;
 
                 case R.id.tvHistory:
                     Toast.makeText(getActivity(), "HISTORY", Toast.LENGTH_SHORT).show();

@@ -53,15 +53,22 @@ public class ChooseTypeActivity extends BaseActivity {
     private View.OnClickListener onUserTypeClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            UserSingleton.getInstance().setUserType(Const.UserType.USER_TYPE_USER);
+            afterSelected();
         }
     };
 
     private View.OnClickListener onTaxiTypeClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            UserSingleton.getInstance().setUserType(Const.UserType.USER_TYPE_DRIVER);
+            afterSelected();
         }
     };
+
+    private void afterSelected(){
+        CreateUserActivity.startActivity(getActivity(), UserSingleton.getInstance().getUserType());
+        finish();
+    }
 
 }

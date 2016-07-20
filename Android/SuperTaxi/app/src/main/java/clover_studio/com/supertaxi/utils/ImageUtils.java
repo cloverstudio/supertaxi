@@ -21,6 +21,10 @@ public class ImageUtils {
     }
 
     public static void setImageWithPicasso(final ImageView imageView, final String url, final ProgressBar loading){
+        setImageWithPicasso(imageView, url, loading, -1);
+    }
+
+    public static void setImageWithPicasso(final ImageView imageView, final String url, final ProgressBar loading, final int resourceId){
         if(!TextUtils.isEmpty(url)){
             Picasso.with(imageView.getContext()).load(url).networkPolicy(NetworkPolicy.OFFLINE).into(imageView, new Callback() {
                 @Override
@@ -39,10 +43,18 @@ public class ImageUtils {
                         @Override
                         public void onError() {
                             if(loading != null) loading.setVisibility(View.GONE);
+                            if(resourceId != -1){
+                                imageView.setImageResource(resourceId);
+                            }
                         }
                     });
                 }
             });
+        }else{
+            if(loading != null) loading.setVisibility(View.GONE);
+            if(resourceId != -1){
+                imageView.setImageResource(resourceId);
+            }
         }
     }
 

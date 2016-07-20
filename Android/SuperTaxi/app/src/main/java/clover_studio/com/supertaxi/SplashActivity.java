@@ -1,5 +1,6 @@
 package clover_studio.com.supertaxi;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clover_studio.com.supertaxi.base.BaseActivity;
+import clover_studio.com.supertaxi.base.SuperTaxiApp;
 import clover_studio.com.supertaxi.file.LocalFilesManagement;
+import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.CheckPermissions;
 import clover_studio.com.supertaxi.utils.Const;
 import clover_studio.com.supertaxi.utils.Utils;
@@ -25,8 +28,13 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.PermissionCode.CHAT_STORAGE);
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION}, Const.PermissionCode.CHAT_STORAGE);
+
             return;
         }else{
             afterPermissions();
@@ -40,7 +48,14 @@ public class SplashActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                LoginActivity.startActivity(getActivity());
+                if(SuperTaxiApp.getPreferences().getCustomBoolean(Const.PreferencesKey.USER_CREATED) &&
+                        SuperTaxiApp.getPreferences().getCustomBoolean(Const.PreferencesKey.REMEMBER_ME)){
+
+                    HomeActivity.startActivity(getActivity(), UserSingleton.getInstance().getUserType());
+
+                }else{
+                    LoginActivity.startActivity(getActivity());
+                }
                 finish();
             }
         }, 1000);

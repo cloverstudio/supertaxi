@@ -68,6 +68,7 @@ public class UserSingleton {
         UserTypeModel userType = new UserTypeModel();
         userType.name = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.USER_TYPE_NAME);
         userType.age = SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.AGE);
+        userType.note = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.NOTE);
         if(userType.name != null && userType.name.length() > 0) {
             user.user = userType;
         }
@@ -82,6 +83,14 @@ public class UserSingleton {
     public void updateToken(String token){
         SuperTaxiApp.getPreferences().setToken(token);
         generateUser();
+    }
+
+    public void setUserType(int type){
+        SuperTaxiApp.getPreferences().setCustomInt(Const.PreferencesKey.USER_TYPE, type);
+    }
+
+    public int getUserType(){
+        return SuperTaxiApp.getPreferences().getCustomInt(Const.PreferencesKey.USER_TYPE);
     }
 
     public void singOut(Context context, boolean tokenInvalid){

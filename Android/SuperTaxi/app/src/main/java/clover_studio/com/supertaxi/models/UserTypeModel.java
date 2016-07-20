@@ -9,6 +9,7 @@ import android.os.Parcelable;
 public class UserTypeModel extends BaseModel implements Parcelable{
 
     public String name;
+    public String note;
     public int age;
 
     @Override
@@ -19,6 +20,7 @@ public class UserTypeModel extends BaseModel implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
+        dest.writeString(this.note);
         dest.writeInt(this.age);
     }
 
@@ -27,6 +29,7 @@ public class UserTypeModel extends BaseModel implements Parcelable{
 
     private UserTypeModel(Parcel in) {
         this.name = in.readString();
+        this.note = in.readString();
         this.age = in.readInt();
     }
 

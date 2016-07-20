@@ -19,6 +19,7 @@ import clover_studio.com.supertaxi.api.retrofit.LoginRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
 import clover_studio.com.supertaxi.dialog.BasicDialog;
+import clover_studio.com.supertaxi.fragments.DriverProfileFragment;
 import clover_studio.com.supertaxi.fragments.UserProfileFragment;
 import clover_studio.com.supertaxi.models.SignInDataModel;
 import clover_studio.com.supertaxi.models.post_models.PostSignUpModel;
@@ -52,7 +53,9 @@ public class CreateUserActivity extends BaseActivity {
 
         userType = getIntent().getIntExtra(Const.Extras.USER_TYPE, 1);
 
-        if(userType == Const.UserType.USER_TYPE_USER){
+        if(userType == Const.UserType.USER_TYPE_DRIVER){
+            getSupportFragmentManager().beginTransaction().add(R.id.mainContent, new DriverProfileFragment(), DriverProfileFragment.class.getName()).commit();
+        }else{
             getSupportFragmentManager().beginTransaction().add(R.id.mainContent, new UserProfileFragment(), UserProfileFragment.class.getName()).commit();
         }
 
@@ -64,6 +67,7 @@ public class CreateUserActivity extends BaseActivity {
 
 
     public void apiDone() {
+        SuperTaxiApp.getPreferences().setCustomBoolean(Const.PreferencesKey.USER_CREATED, true);
         UserHomeActivity.startActivity(getActivity());
         finish();
     }
