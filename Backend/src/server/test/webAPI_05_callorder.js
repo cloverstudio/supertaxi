@@ -15,10 +15,10 @@ describe('WEB API', function () {
                 .set('access-token', global.user1.token)
                 .send({
                     latFrom: 89.45454545,
-                    lonFrom: 150.45445,
+                    lonFrom: 70.45445,
                     addressFrom: 'Test adresa start',
-                    latTo: 88.45454545,
-                    lonTo: 149.94595,
+                    latTo: -70.3455,
+                    lonTo: -45.94595,
                     addressTo: 'Proba destinacija',
                     crewNum: 4
                 })

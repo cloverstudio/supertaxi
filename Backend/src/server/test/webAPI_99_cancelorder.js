@@ -20,7 +20,7 @@ describe('WEB API', function () {
                     latTo: 88.45454545,
                     lonTo: 149.94595,
                     addressTo: 'Proba destinacija',
-                    crewNum: 4
+                    crewNum: 10
                 })
                 .end(function (err, res) {
 
@@ -35,8 +35,8 @@ describe('WEB API', function () {
                     .post('/api/v1/order/getOpenOrder')
                     .set('access-token', global.user1.token)
                     .send({
-                        lat: 99.45454545,
-                        lon: 70.45445
+                        lat: 89.45454545,
+                        lon: 150.45445
                     })
                     .end(function (err, res) {
 

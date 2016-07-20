@@ -27,7 +27,7 @@ GetOpenOrderController.prototype.init = function(app){
      * @api {post} /api/v1/order/getOpenOrder Get Open Order 
      * @apiName Get Open Order
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Get open order for taxi driver
+     * @apiDescription This API receives JSON request. Get closest open order for taxi driver
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
@@ -103,15 +103,23 @@ GetOpenOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
-                // get open order
+                // get nearest open order
                 orderModel.findOne({
+                    "from.location": { 
+                        $near: {
+                            $geometry: { 
+                                type: 'Point',
+                                coordinates: [ request.body.lon, request.body.lat ]
+                            }
+                        }
+                    },
                     acceptOrderTs: { $exists: false },
                     cancelOrderOrTrip: { $exists: false }
                 }, (err, findResult) => {
 
                     if (findResult) 
                         result.order = findResult.toObject();
-                    
+
                     done(err, result);
 
                 });

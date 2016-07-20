@@ -617,7 +617,7 @@ define({ "api": [
     "title": "Get Open Order",
     "name": "Get_Open_Order",
     "group": "WebAPI",
-    "description": "<p>This API receives JSON request. Get open order for taxi driver</p>",
+    "description": "<p>This API receives JSON request. Get closest open order for taxi driver</p>",
     "header": {
       "fields": {
         "Header": [
