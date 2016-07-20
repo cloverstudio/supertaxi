@@ -11,25 +11,69 @@ describe('WEB API', function () {
         it('success cancel order', (done) => {
 
             request(app)
-                .post('/api/v1/order/cancel')
+                .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    orderId: global.orderId,
-                    type: 1,
-                    reason: "Odustao"
+                    latFrom: 89.45454545,
+                    lonFrom: 150.45445,
+                    addressFrom: 'Test adresa start',
+                    latTo: 88.45454545,
+                    lonTo: 149.94595,
+                    addressTo: 'Proba destinacija',
+                    crewNum: 4
                 })
-                .end((err, res) => {
+                .end(function (err, res) {
 
-    			if (err) {
-    				throw err;
-    			}
+                if (err) {
+                    throw err;
+                }
 
                 res.body.code.should.be.exactly(1);
                 res.body.should.have.property('data');
                 
-                done();
+                request(app)
+                    .post('/api/v1/order/getOpenOrder')
+                    .set('access-token', global.user1.token)
+                    .send({
+                        lat: 99.45454545,
+                        lon: 70.45445
+                    })
+                    .end(function (err, res) {
+
+                    if (err) {
+                        throw err;
+                    }
+
+                    res.body.code.should.be.exactly(1);
+                    res.body.should.have.property('data');
+                    res.body.data.should.have.property('order');
+                    
+                    global.order = res.body.data.order;
+
+                    request(app)
+                        .post('/api/v1/order/cancel')
+                        .set('access-token', global.user1.token)
+                        .send({
+                            orderId: global.order._id,
+                            type: 1,
+                            reason: "Odustao"
+                        })
+                        .end((err, res) => {
+
+                        if (err) {
+                            throw err;
+                        }
+
+                        res.body.code.should.be.exactly(1);
+                        res.body.should.have.property('data');
+                        
+                        done();
+                    
+                    });  
+                
+                });
             
-            });   
+            });  
             
         });
 
@@ -61,7 +105,7 @@ describe('WEB API', function () {
                 .post('/api/v1/order/cancel')
                 .set('access-token', global.user1.token)
                 .send({
-                    orderId: global.orderId,
+                    orderId: global.order._id,
                     type: "test"
                 })
                 .end(function (err, res) {
@@ -78,13 +122,13 @@ describe('WEB API', function () {
             
         });
 
-        it('order already accepted or canceled', function (done) {
+        it('driver already started drive or order is canceled', function (done) {
 
             request(app)
                 .post('/api/v1/order/cancel')
                 .set('access-token', global.user1.token)
                 .send({
-                    orderId: global.orderId,
+                    orderId: global.order._id,
                     type: 1
                 })
                 .end(function (err, res) {
@@ -93,7 +137,7 @@ describe('WEB API', function () {
                     throw err;
                 }
 
-                res.body.code.should.be.exactly(6000027);
+                res.body.code.should.be.exactly(6000029);
                 
                 done();
             

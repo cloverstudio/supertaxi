@@ -31,6 +31,26 @@ describe('WEB API', function () {
             
         });
 
+        it('success get profile detail without user id', function (done) {
+
+            request(app)
+                .post('/api/v1/profile/detail')
+                .set('access-token', global.user1.token)
+                .end(function (err, res) {
+
+                if (err) {
+                    throw err;
+                }
+
+                res.body.code.should.be.exactly(1);
+                res.body.should.have.property('data');
+                
+                done();
+            
+            });   
+            
+        });
+
         it('wrong user id', function (done) {
 
             request(app)

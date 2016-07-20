@@ -52,13 +52,11 @@ GetOpenOrderController.prototype.init = function(app){
                     _id: 5784a21c773cfd5e2d58e771,
                     __v: 0,
                     to: { 
-                        lat: 235.45454545,
-                        lon: 100.45454545,
+                        location: [ 34.4344333, -44.5665333 ],
                         address: 'Bučarova 13 Zagreb' 
                     },
                     from: { 
-                        lat: 99.45454545, 
-                        lon: 70.45445, 
+                        location: [ 35.4344333, -44.7453333 ],
                         address: 'Siget 11 Zagreb' 
                     },
                     user: { 

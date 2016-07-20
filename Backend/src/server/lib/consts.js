@@ -29,6 +29,12 @@
     Const.responsecodeParamErrorLongitude = 6000025;
     Const.responsecodeParamErrorInvalidId = 6000026;
     Const.responsecodeParamErrorOrderAlreadyAcceptedOrCanceled = 6000027;
+    Const.responsecodeParamErrorDriverAlreadyArrivedOrOrderIsCanceled = 6000028;
+    Const.responsecodeParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled = 6000029;
+    Const.responsecodeParamErrorDriverAlreadyFinishedDrive = 6000030;
+    Const.responsecodeParamErrorRateNumber = 6000031;
+    Const.responsecodeParamErrorUserNotFound = 6000032;
+    Const.responsecodeParamErrorDriverNotFound = 6000033;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;
@@ -44,6 +50,11 @@
 
     Const.userTypeNormal = 1; // user
     Const.userTypeDriver = 2; // driver
+
+    Const.userRate = {
+        min: 1,
+        max: 5
+    };
 
     Const.tokenValidInteval = 60*60*24*1000;
 

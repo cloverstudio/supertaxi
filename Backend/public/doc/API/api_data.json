@@ -300,8 +300,8 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "ParamErrorOrderAlreadyAcceptedOrCanceled",
-            "description": "<p>6000027</p>"
+            "field": "ParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled",
+            "description": "<p>6000029</p>"
           }
         ]
       }
@@ -685,7 +685,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: { \n        order: { \n            userId: '5784a21a773cfd5e2d58e770',\n            createOrderTs: 1468310044176,\n            crewNum: 4,\n            _id: 5784a21c773cfd5e2d58e771,\n            __v: 0,\n            to: { \n                lat: 235.45454545,\n                lon: 100.45454545,\n                address: 'Bučarova 13 Zagreb' \n            },\n            from: { \n                lat: 99.45454545, \n                lon: 70.45445, \n                address: 'Siget 11 Zagreb' \n            },\n            user: { \n                __v: 0,\n                _id: 5784a21a773cfd5e2d58e770,\n                created: 1468310042789,\n                email: 'testn4eH1@test.com',\n                password: '*****',\n                telNum: '+385981234567',\n                token: '*****',\n                token_generated: 1468310042935,\n                avatar: { \n                    fileid: '7osIqcIYQeCcxoC3FQXwreu0Sj07JkvT',\n                    thumbfileid: 'tIXtp5R6z0aylAYv97ktDRQVK209pRAs' \n                },\n                user: { \n                    name: 'test', \n                    age: 0, \n                    note: null \n                }\n            }\n        }\n    }\n}",
+          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: { \n        order: { \n            userId: '5784a21a773cfd5e2d58e770',\n            createOrderTs: 1468310044176,\n            crewNum: 4,\n            _id: 5784a21c773cfd5e2d58e771,\n            __v: 0,\n            to: { \n                location: [ 34.4344333, -44.5665333 ],\n                address: 'Bučarova 13 Zagreb' \n            },\n            from: { \n                location: [ 35.4344333, -44.7453333 ],\n                address: 'Siget 11 Zagreb' \n            },\n            user: { \n                __v: 0,\n                _id: 5784a21a773cfd5e2d58e770,\n                created: 1468310042789,\n                email: 'testn4eH1@test.com',\n                password: '*****',\n                telNum: '+385981234567',\n                token: '*****',\n                token_generated: 1468310042935,\n                avatar: { \n                    fileid: '7osIqcIYQeCcxoC3FQXwreu0Sj07JkvT',\n                    thumbfileid: 'tIXtp5R6z0aylAYv97ktDRQVK209pRAs' \n                },\n                user: { \n                    name: 'test', \n                    age: 0, \n                    note: null \n                }\n            }\n        }\n    }\n}",
           "type": "json"
         }
       ]
@@ -762,6 +762,125 @@
     },
     "version": "0.0.0",
     "filename": "src/server/WebAPI/Backend/Controllers/Profile/GetUserDetailProfileController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/profile/rate",
+    "title": "Rate Profile",
+    "name": "Rate_Profile",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. Rate user or driver profile</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>(Required) Profile id to rate</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "allowedValues": [
+              "1",
+              "2"
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>(Required) Profile type should be 1: user or 2: driver. Profile type to rate</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "allowedValues": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ],
+            "optional": false,
+            "field": "rate",
+            "description": "<p>(Required) Rate number</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenInvalid",
+            "description": "<p>6000009</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorWrongType",
+            "description": "<p>6000011</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorInvalidId",
+            "description": "<p>6000026</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorRateNumber",
+            "description": "<p>6000031</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorUserNotFound",
+            "description": "<p>6000032</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorDriverNotFound",
+            "description": "<p>6000033</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \n    code: 1,\n    time: 1468314014075\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Profile/RateProfileController.js",
     "groupTitle": "WebAPI"
   },
   {
@@ -951,6 +1070,234 @@
     },
     "version": "0.0.0",
     "filename": "src/server/WebAPI/Backend/Controllers/Profile/UpdateProfileController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/order/arrive",
+    "title": "Update Driver's Arrive Time",
+    "name": "Update_Driver_s_Arrive_Time",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. Update driver's arrive time in accepted order</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "orderId",
+            "description": "<p>(Required) Accepted order id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenInvalid",
+            "description": "<p>6000009</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorInvalidId",
+            "description": "<p>6000026</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorDriverAlreadyArrivedOrOrderIsCanceled",
+            "description": "<p>6000028</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \n    code: 1,\n    time: 1468314014075\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Order/ArriveOrderController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/order/finish",
+    "title": "Update Driver's Finish Time",
+    "name": "Update_Driver_s_Finish_Time",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. Update driver's finish time</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "orderId",
+            "description": "<p>(Required) Order id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenInvalid",
+            "description": "<p>6000009</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorInvalidId",
+            "description": "<p>6000026</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorDriverAlreadyFinishedDrive",
+            "description": "<p>6000030</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \n    code: 1,\n    time: 1468314014075\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Order/FinishTripOrderController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/order/start",
+    "title": "Update Driver's Start Time",
+    "name": "Update_Driver_s_Start_Time",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. Update driver's start time</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "orderId",
+            "description": "<p>(Required) Order id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenInvalid",
+            "description": "<p>6000009</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorInvalidId",
+            "description": "<p>6000026</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled",
+            "description": "<p>6000029</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \n    code: 1,\n    time: 1468314014075\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Order/StartTripOrderController.js",
     "groupTitle": "WebAPI"
   },
   {
