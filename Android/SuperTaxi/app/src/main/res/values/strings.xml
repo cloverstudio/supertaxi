@@ -100,5 +100,17 @@
     <string name="one_seat_available">1 SEAT AVAILABLE</string>
     <string name="two_seats_available">2 SEATS AVAILABLE</string>
     <string name="four_seats_available">4 SEATS AVAILABLE</string>
+    <string name="show_on_map">Show on map</string>
+    <string name="contact_driver">Contact driver</string>
+    <string name="car_">Car:</string>
+    <string name="car_reg_number_">Car reg number:</string>
+    <string name="start_fee_">Start fee:</string>
+    <string name="fee_per_km_">Fee per km:</string>
+    <string name="rating_">Rating:</string>
+    <string name="seat">seat</string>
+    <string name="seats">seats</string>
+    <string name="mobile_">Mobile:</string>
+    <string name="cancel_trip">Cancel Trip</string>
+    <string name="close_capital_first">Close</string>
 
 </resources>

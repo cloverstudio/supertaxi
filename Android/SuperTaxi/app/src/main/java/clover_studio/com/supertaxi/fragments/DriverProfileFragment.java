@@ -56,6 +56,7 @@ public class DriverProfileFragment extends BaseFragment{
     private EditText etCarRegistration;
     private EditText etFeeStart;
     private EditText etFeeKm;
+    private EditText etTelNum;
     private Button buttonSave;
     private LinearLayout llForChangeImage;
     private ImageView ivAvatarImage;
@@ -73,6 +74,7 @@ public class DriverProfileFragment extends BaseFragment{
         View rootView = inflater.inflate(R.layout.fragment_driver_profile, container, false);
 
         etName = (EditText) rootView.findViewById(R.id.etName);
+        etTelNum = (EditText) rootView.findViewById(R.id.etTelNum);
         etCarType = (EditText) rootView.findViewById(R.id.etCarType);
         etCarRegistration = (EditText) rootView.findViewById(R.id.etCarRegistration);
         etFeeStart = (EditText) rootView.findViewById(R.id.etFeeStart);
@@ -83,6 +85,7 @@ public class DriverProfileFragment extends BaseFragment{
         ivAvatarImage = (ImageView) rootView.findViewById(R.id.ivAvatar);
 
         etName.addTextChangedListener(checkForButton);
+        etTelNum.addTextChangedListener(checkForButton);
         etCarType.addTextChangedListener(checkForButton);
         etCarRegistration.addTextChangedListener(checkForButton);
         etFeeStart.addTextChangedListener(checkForButton);
@@ -117,6 +120,10 @@ public class DriverProfileFragment extends BaseFragment{
             ImageUtils.setImageWithPicasso(ivAvatarImage, avatarUrl);
         }
 
+        if(!TextUtils.isEmpty(myUser.telNum)){
+            etTelNum.setText(myUser.telNum);
+        }
+
         return rootView;
     }
 
@@ -130,7 +137,7 @@ public class DriverProfileFragment extends BaseFragment{
         @Override
         public void afterTextChanged(Editable s) {
 
-            if(etName.getText().toString().length() > 0){
+            if(etName.getText().toString().length() > 0 && etTelNum.getText().toString().length() > 0){
                 buttonSave.setEnabled(true);
             }else{
                 buttonSave.setEnabled(false);
@@ -182,7 +189,7 @@ public class DriverProfileFragment extends BaseFragment{
         UserRetroApiInterface retroApiInterface = getRetrofit().create(UserRetroApiInterface.class);
         final String name = etName.getText().toString();
         final String note = "";
-        final String telNum = "+385976376676";
+        final String telNum = etTelNum.getText().toString();
         final int age = 0;
         final int type = Const.UserType.USER_TYPE_DRIVER;
         final String carType = etCarType.getText().toString();
@@ -215,7 +222,7 @@ public class DriverProfileFragment extends BaseFragment{
         List<KeyValueModel> postModel = new ArrayList<>();
         final String name = etName.getText().toString();
         final String note = "";
-        final String telNum = "+385976376676";
+        final String telNum = etTelNum.getText().toString();
         final int age = 0;
         final int type = Const.UserType.USER_TYPE_DRIVER;
         final String carType = etCarType.getText().toString();

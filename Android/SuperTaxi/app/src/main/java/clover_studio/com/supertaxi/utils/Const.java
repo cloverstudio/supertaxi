@@ -73,6 +73,7 @@ public class Const {
         public static final String UPLOADS = "/uploads";
         public static final String GET_DRIVER_LIST = "/api/v1/profile/getDriverList";
         public static final String CALL_TAXI = "/api/v1/order/call";
+        public static final String CANCEL_TRIP = "/api/v1/order/cancel";
     }
 
     public class Secrets {

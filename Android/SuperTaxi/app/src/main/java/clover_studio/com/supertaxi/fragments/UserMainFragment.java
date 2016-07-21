@@ -41,10 +41,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import clover_studio.com.supertaxi.LoginActivity;
 import clover_studio.com.supertaxi.R;
+import clover_studio.com.supertaxi.RespondedDriverDetailsActivity;
 import clover_studio.com.supertaxi.adapters.AddressAdapter;
 import clover_studio.com.supertaxi.base.BaseFragment;
 import clover_studio.com.supertaxi.dialog.BasicDialog;
+import clover_studio.com.supertaxi.dialog.DriverDetailsDialog;
 import clover_studio.com.supertaxi.dialog.RequestSentDialog;
 import clover_studio.com.supertaxi.dialog.SeatsNumberDialog;
 import clover_studio.com.supertaxi.dialog.ShowMoreInMapDialog;
@@ -473,6 +476,9 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     private void requestTaxi(){
+//        RespondedDriverDetailsActivity.startActivity(getActivity());
+        DriverDetailsDialog.startDialog(getActivity());
+        if(true) return;
         if(currentLocation == null || currentAddress == null){
             BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.please_set_pick_up_location));
             return;

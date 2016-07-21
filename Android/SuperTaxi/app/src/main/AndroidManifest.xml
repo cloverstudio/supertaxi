@@ -56,6 +56,10 @@
             android:windowSoftInputMode="stateHidden|adjustPan"
             />
 
+        <activity android:name=".RespondedDriverDetailsActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            />
+
         <activity android:name=".CameraCropActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"

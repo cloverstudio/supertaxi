@@ -15,7 +15,7 @@
             app:layout_widthPercent="100%"
             app:layout_heightPercent="40%"
             android:id="@+id/rlHeaderLayout"
-            android:background="@drawable/user_profile_no_picture_bg">
+            android:background="@drawable/driver_blur_no_avatar_photo">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/user"/>
+                    android:src="@drawable/driver_avatar_photo"/>
 
                 <clover_studio.com.supertaxi.view.CustomTextView
                     android:layout_width="wrap_content"
@@ -58,7 +58,6 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_above="@+id/rlSaveButtonArea"
                 android:layout_height="match_parent">
 
                 <LinearLayout
@@ -85,6 +84,25 @@
                         android:hint="@string/name"
                         android:background="@color/transparent"
                         android:id="@+id/etName"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_gray"/>
+
+                    <clover_studio.com.supertaxi.view.CustomEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:textColor="@color/devil_gray"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="10dp"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:textColorHint="@color/revert_devil_gray"
+                        android:hint="Tel num (eg. +385981231234)"
+                        android:background="@color/transparent"
+                        android:id="@+id/etTelNum"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -172,29 +190,29 @@
                         android:layout_height="1dp"
                         android:background="@color/line_gray"/>
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="@dimen/default_margin"
+                        android:id="@+id/rlSaveButtonArea">
+
+                        <clover_studio.com.supertaxi.view.CustomButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_green_button_with_corners_selector"
+                            android:text="@string/save_capital"
+                            android:textColor="@color/white"
+                            android:enabled="false"
+                            android:id="@+id/buttonSave"
+                            android:textSize="@dimen/default_title_size"/>
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
             </ScrollView>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="@dimen/default_margin"
-                android:id="@+id/rlSaveButtonArea">
-
-                <clover_studio.com.supertaxi.view.CustomButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_green_button_with_corners_selector"
-                    android:text="@string/save_capital"
-                    android:textColor="@color/white"
-                    android:enabled="false"
-                    android:id="@+id/buttonSave"
-                    android:textSize="@dimen/default_title_size"/>
-
-            </RelativeLayout>
 
         </RelativeLayout>
 

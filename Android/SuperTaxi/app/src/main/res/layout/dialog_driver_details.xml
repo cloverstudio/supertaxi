@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dim_dark_black">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_centerInParent="true"
+            android:id="@+id/mainLayout"
+            android:background="@drawable/rounded_white_with_5">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlUserData">
+
+                <clover_studio.com.supertaxi.view.roundimage.RoundImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/__nedved"
+                    android:id="@+id/ivAvatarInDriverDetails"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingEnd="20dp"
+                    android:paddingRight="20dp"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@id/ivAvatarInDriverDetails"
+                    android:layout_toEndOf="@id/ivAvatarInDriverDetails">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvName"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/bigger_text_view_title_text_size"
+                        android:text="NAME"
+                        android:layout_below="@id/ivAvatarInDriverDetails"
+                        android:layout_centerHorizontal="true"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvTaxiDriveLabel"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:text="@string/taxi_driver"
+                        android:layout_below="@id/tvName"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/ivAvatarInDriverDetails"
+                    android:background="@color/border_gray"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlUserData"
+                android:layout_marginTop="20dp"
+                android:id="@+id/rlDriverDetailsData"
+                android:paddingBottom="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/llCarType">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="@string/car_"
+                        android:id="@+id/tvCarTypeLabel"
+                        android:textSize="@dimen/text_view_default"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="Golf VII"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/tvCarTypeValue"
+                        android:textSize="@dimen/text_view_default"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingEnd="30dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/llCarReg">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="@string/car_reg_number_"
+                        android:id="@+id/tvCarRegLabel"
+                        android:textSize="@dimen/text_view_default"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="ZT-1234-AV"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/tvCarRegValue"
+                        android:textSize="@dimen/text_view_default"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingEnd="30dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/llStartFee">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="@string/start_fee_"
+                        android:id="@+id/tvStartFeeLabel"
+                        android:textSize="@dimen/text_view_default"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="$4"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/tvStartFeeValue"
+                        android:textSize="@dimen/text_view_default"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingEnd="30dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/llKMFee">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="@string/fee_per_km_"
+                        android:id="@+id/tvKMFeeLabel"
+                        android:textSize="@dimen/text_view_default"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="$4"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/tvKMFeeValue"
+                        android:textSize="@dimen/text_view_default"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingEnd="30dp"
+                    android:paddingRight="30dp"
+                    android:id="@+id/llMobile">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="@string/mobile_"
+                        android:id="@+id/tvMobileLabel"
+                        android:textSize="@dimen/text_view_default"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="+385976376676"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/tvMobileValue"
+                        android:textSize="@dimen/text_view_default"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingEnd="30dp"
+                    android:paddingRight="30dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/llRating">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="@string/rating_"
+                        android:id="@+id/tvRatingLabel"
+                        android:textSize="@dimen/text_view_default"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:id="@+id/ratingStars">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="10dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                    </LinearLayout>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/devil_gray"
+                        android:text="4,9"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/tvKRatingValue"
+                        android:textSize="@dimen/text_view_default"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/rlDriverDetailsData"
+                android:background="@color/border_gray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/llButtons"
+                android:layout_below="@id/rlDriverDetailsData"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal"
+                android:weightSum="101">
+
+                <clover_studio.com.supertaxi.view.CustomButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:background="@color/transparent"
+                    android:textColor="@color/devil_gray_to_revert"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/default_title_size"
+                    android:text="@string/cancel_trip"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/rlDriverDetailsData"
+                    android:background="@color/border_gray"/>
+
+                <clover_studio.com.supertaxi.view.CustomButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:background="@color/transparent"
+                    android:textColor="@color/red_to_red_darker"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/default_title_size"
+                    android:text="@string/close_capital_first"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
