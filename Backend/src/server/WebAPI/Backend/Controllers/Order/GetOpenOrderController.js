@@ -176,11 +176,11 @@ GetOpenOrderController.prototype.init = function(app){
 
 GetOpenOrderController.prototype.validation = function(fields) {
 
-    if (!_.isNumber(fields.lat)) {
+    if (!Utils.isNumeric(fields.lat)) {
         return { handledError: Const.responsecodeParamErrorLatitude };
     }
     
-    if (!_.isNumber(fields.lon)) {
+    if (!Utils.isNumeric(fields.lon)) {
         return { handledError: Const.responsecodeParamErrorLongitude };
     }
 

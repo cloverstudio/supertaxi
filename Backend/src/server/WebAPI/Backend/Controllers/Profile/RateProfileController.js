@@ -163,7 +163,7 @@ RateProfileController.prototype.validation = function(fields, callback) {
             else if (fields.type != Const.userTypeNormal && fields.type != Const.userTypeDriver)
                 errorObject = { handledError: Const.responsecodeParamErrorWrongType };
 
-            else if (!_.isNumber(fields.rate) || fields.rate < Const.userRate.min || fields.rate > Const.userRate.max)
+            else if (!Utils.isNumeric(fields.rate) || fields.rate < Const.userRate.min || fields.rate > Const.userRate.max)
                 errorObject = { handledError: Const.responsecodeParamErrorRateNumber };
             
             done(errorObject, {});

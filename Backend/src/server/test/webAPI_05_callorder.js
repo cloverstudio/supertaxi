@@ -14,13 +14,13 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 89.45454545,
-                    lonFrom: 70.45445,
-                    addressFrom: 'Test adresa start',
-                    latTo: -70.3455,
-                    lonTo: -45.94595,
-                    addressTo: 'Proba destinacija',
-                    crewNum: 4
+                    latFrom: '45.81143500048897',
+                    lonFrom: 15.97635893988804,
+                    addressFrom: 'Gajeva ulica 7\U20139, City of Zagreb, Croatia',
+                    latTo: 45.79635910671964,
+                    lonTo: 15.97025768768202,
+                    addressTo: 'Ivana Lucica 4, City of Zagreb, Croatia',
+                    crewNum: 1
                 })
                 .end(function (err, res) {
 
@@ -44,10 +44,10 @@ describe('WEB API', function () {
                 .set('access-token', global.user1.token)
                 .send({
                     latFrom: 'test',
-                    lonFrom: 70.45445,
+                    lonFrom: 15.97635893988804,
                     addressFrom: 'Siget 11 Zagreb',
-                    latTo: 235.45454545,
-                    lonTo: 100.45454545,
+                    latTo: 45.79635910671964,
+                    lonTo: 15.97025768768202,
                     addressTo: 'Bučarova 13 Zagreb',
                     crewNum: 4
                 })
@@ -71,11 +71,11 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 99.45454545,
+                    latFrom: 45.81143500048897,
                     lonFrom: 'test',
                     addressFrom: 'Siget 11 Zagreb',
-                    latTo: 235.45454545,
-                    lonTo: 100.45454545,
+                    latTo: 45.79635910671964,
+                    lonTo: 15.97025768768202,
                     addressTo: 'Bučarova 13 Zagreb',
                     crewNum: 4
                 })
@@ -99,11 +99,11 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 99.45454545,
-                    lonFrom: 70.45445,
+                    latFrom: 45.81143500048897,
+                    lonFrom: 15.97635893988804,
                     addressFrom: '',
-                    latTo: 235.45454545,
-                    lonTo: 100.45454545,
+                    latTo: 45.79635910671964,
+                    lonTo: 15.97025768768202,
                     addressTo: 'Bučarova 13 Zagreb',
                     crewNum: 4
                 })
@@ -127,11 +127,11 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 99.45454545,
-                    lonFrom: 70.45445,
+                    latFrom: 45.81143500048897,
+                    lonFrom: 15.97635893988804,
                     addressFrom: 'Siget 11 Zagreb',
                     latTo: 'test',
-                    lonTo: 100.45454545,
+                    lonTo: 15.97025768768202,
                     addressTo: 'Bučarova 13 Zagreb',
                     crewNum: 4
                 })
@@ -155,10 +155,10 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 99.45454545,
-                    lonFrom: 70.45445,
+                    latFrom: 45.81143500048897,
+                    lonFrom: 15.97635893988804,
                     addressFrom: 'Siget 11 Zagreb',
-                    latTo: 235.45454545,
+                    latTo: 45.79635910671964,
                     lonTo: 'test',
                     addressTo: 'Bučarova 13 Zagreb',
                     crewNum: 4
@@ -183,11 +183,11 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 99.45454545,
-                    lonFrom: 70.45445,
+                    latFrom: 45.81143500048897,
+                    lonFrom: 15.97635893988804,
                     addressFrom: 'Siget 11 Zagreb',
-                    latTo: 235.45454545,
-                    lonTo: 100.45454545,                    
+                    latTo: 45.79635910671964,
+                    lonTo: 15.97025768768202,
                     addressTo: '',
                     crewNum: 4
                 })
@@ -211,11 +211,11 @@ describe('WEB API', function () {
                 .post('/api/v1/order/call')
                 .set('access-token', global.user1.token)
                 .send({
-                    latFrom: 99.45454545,
-                    lonFrom: 70.45445,
+                    latFrom: 45.81143500048897,
+                    lonFrom: 15.97635893988804,
                     addressFrom: 'Siget 11 Zagreb',
-                    latTo: 235.45454545,
-                    lonTo: 100.45454545,                    
+                    latTo: 45.79635910671964,
+                    lonTo: 15.97025768768202,
                     addressTo: 'Bučarova 13 Zagreb',        
                     crewNum: 'test'
                 })

@@ -50,8 +50,27 @@ CallOrderController.prototype.init = function(app){
 
      * 
      * @apiSuccessExample Success-Response:
-
-    { code: 1, time: 1467125660699 }
+        { 
+            code: 1,
+            time: 1468314014075,
+            data: { 
+                order: { 
+                    userId: '5784a21a773cfd5e2d58e770',
+                    createOrderTs: 1468310044176,
+                    crewNum: 4,
+                    _id: 5784a21c773cfd5e2d58e771,
+                    __v: 0,
+                    to: { 
+                        location: [ 34.4344333, -44.5665333 ],
+                        address: 'Bučarova 13 Zagreb' 
+                    },
+                    from: { 
+                        location: [ 35.4344333, -44.7453333 ],
+                        address: 'Siget 11 Zagreb' 
+                    }
+                }
+            }
+        }
 
      **/
 
@@ -91,7 +110,8 @@ CallOrderController.prototype.init = function(app){
                 // save new order           
                 var order = new orderModel(insertParams);
                 order.save((err, saveResult) => {
-
+                    
+                    result.order = saveResult.toObject();
                     done(err, result);
 
                 });  
@@ -116,7 +136,7 @@ CallOrderController.prototype.init = function(app){
 
             } else {
 
-                self.successResponse(response, Const.responsecodeSucceed, {});
+                self.successResponse(response, Const.responsecodeSucceed, { order: result.order });
 
             }
 
@@ -132,11 +152,11 @@ CallOrderController.prototype.init = function(app){
 CallOrderController.prototype.validation = function(fields) {
 
     // coordinates from
-    if (!_.isNumber(fields.latFrom)) {
+    if (!Utils.isNumeric(fields.latFrom)) {
         return { handledError: Const.responsecodeParamErrorLatitudeFrom };
     }
-    
-    if (!_.isNumber(fields.lonFrom)) {
+
+    if (!Utils.isNumeric(fields.lonFrom)) {
         return { handledError: Const.responsecodeParamErrorLongitudeFrom };
     }
     
@@ -145,11 +165,11 @@ CallOrderController.prototype.validation = function(fields) {
     }
 
     // coordinates to
-    if (!_.isNumber(fields.latTo)) {
+    if (!Utils.isNumeric(fields.latTo)) {
         return { handledError: Const.responsecodeParamErrorLatitudeTo };
     }
     
-    if (!_.isNumber(fields.lonTo)) {
+    if (!Utils.isNumeric(fields.lonTo)) {
         return { handledError: Const.responsecodeParamErrorLongitudeTo };
     }
     
@@ -158,7 +178,7 @@ CallOrderController.prototype.validation = function(fields) {
     }
 
      // passenger number
-    if (!_.isNumber(fields.crewNum)) {
+    if (!Utils.isNumeric(fields.crewNum)) {
         return { handledError: Const.responsecodeParamErrorCrewNumber };
     }
 

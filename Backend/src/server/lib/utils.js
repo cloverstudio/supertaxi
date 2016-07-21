@@ -37,6 +37,7 @@ var Const = require('../lib/consts');
     Utils.prototype.chatIdByGroup = chatIdByGroup;
     Utils.prototype.chatIdByRoom = chatIdByRoom;
     Utils.prototype.stripPrivateData = stripPrivateData;
+    Utils.prototype.isNumeric = isNumeric;
     // Implementation ---------------------------------------
     
     function formatDate(ut,useUserFriendlyText,showTime){
@@ -309,6 +310,12 @@ var Const = require('../lib/consts');
             
         });
         
+    }
+
+    function isNumeric(obj) {
+
+        return _.isNumber(obj) || (obj != "" && !isNaN(obj));
+
     }
 
     // Exports ----------------------------------------------

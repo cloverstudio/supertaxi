@@ -214,7 +214,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\n{ code: 1, time: 1467125660699 }",
+          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: { \n        order: { \n            userId: '5784a21a773cfd5e2d58e770',\n            createOrderTs: 1468310044176,\n            crewNum: 4,\n            _id: 5784a21c773cfd5e2d58e771,\n            __v: 0,\n            to: { \n                location: [ 34.4344333, -44.5665333 ],\n                address: 'Bučarova 13 Zagreb' \n            },\n            from: { \n                location: [ 35.4344333, -44.7453333 ],\n                address: 'Siget 11 Zagreb' \n            }\n        }\n    }\n}",
           "type": "json"
         }
       ]

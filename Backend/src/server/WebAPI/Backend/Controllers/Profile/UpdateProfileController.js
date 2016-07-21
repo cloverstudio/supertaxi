@@ -6,7 +6,6 @@ var formidable = require('formidable');
 var fs = require('fs-extra');
 var easyimg = require('easyimage');
 var path = require('path');
-var validator = require('validator');
 var phone = require('phone');
 
 var pathTop = "../../../../";
@@ -151,7 +150,7 @@ UpdateProfileController.prototype.init = function(app){
                 
                 if(result.fields.fee_start){
 
-                    if(!validator.isNumeric(result.fields.fee_start)){
+                    if(!Utils.isNumeric(result.fields.fee_start)){
                         done({
                             handledError:Const.responsecodeParamErrorFeeStart
                         });
@@ -162,7 +161,7 @@ UpdateProfileController.prototype.init = function(app){
 
                 if(result.fields.fee_km){
 
-                    if(!validator.isNumeric(result.fields.fee_km)){
+                    if(!Utils.isNumeric(result.fields.fee_km)){
                         done({
                             handledError:Const.responsecodeParamErrorFeeKm
                         });
@@ -173,7 +172,7 @@ UpdateProfileController.prototype.init = function(app){
 
                 if(result.fields.age){
 
-                    if(!validator.isNumeric(result.fields.age)){
+                    if(!Utils.isNumeric(result.fields.age)){
                         done({
                             handledError:Const.responsecodeParamErrorAge
                         });
