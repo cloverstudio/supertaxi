@@ -93,6 +93,9 @@ public class UserProfileFragment extends BaseFragment{
             if(!TextUtils.isEmpty(myUser.user.name)){
                 etName.setText(myUser.user.name);
             }
+            if(!TextUtils.isEmpty(myUser.user.note)){
+                etNote.setText(myUser.user.note);
+            }
             if(myUser.user.age != 0){
                 etAge.setText(String.valueOf(myUser.user.age));
             }

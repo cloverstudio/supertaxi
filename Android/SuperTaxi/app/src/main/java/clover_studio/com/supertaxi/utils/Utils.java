@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.location.Address;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
@@ -175,6 +176,17 @@ public class Utils {
             }
         }
         return "";
+    }
+
+    public static String formatAddress(Address address){
+        StringBuilder returnString = new StringBuilder();
+        returnString.append(address.getAddressLine(0));
+        if(!TextUtils.isEmpty(address.getPostalCode())){
+            returnString.append(", " + address.getPostalCode());
+        }if(!TextUtils.isEmpty(address.getLocality())){
+            returnString.append(", " + address.getLocality());
+        }
+        return returnString.toString();
     }
 
 }

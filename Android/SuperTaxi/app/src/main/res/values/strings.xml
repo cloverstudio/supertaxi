@@ -83,6 +83,22 @@
     <string name="home_capital">HOME</string>
     <string name="request_taxi">Request taxi</string>
     <string name="show_more">Show more</string>
-
+    <string name="from_">From:</string>
+    <string name="to_">To:</string>
+    <string name="min">min</string>
+    <string name="set_pickup_location_capital">SET PICKUP LOCATION</string>
+    <string name="max_size_capital_">MAX SIZE:</string>
+    <string name="etc_capital_">ETC:</string>
+    <string name="min_fare_capital_">MIN FARE:</string>
+    <string name="cars_available">cars available</string>
+    <string name="set_destination_location_capital">SET DESTINATION LOCATION</string>
+    <string name="cancel_trip_capital">CANCEL TRIP</string>
+    <string name="request_sent_capital">REQUEST SENT</string>
+    <string name="please_wait_for_driver_confirmation">Please wait for driver confirmation.</string>
+    <string name="please_set_pick_up_location">Please set pick up location</string>
+    <string name="please_set_destination_location">Please set destination location</string>
+    <string name="one_seat_available">1 SEAT AVAILABLE</string>
+    <string name="two_seats_available">2 SEATS AVAILABLE</string>
+    <string name="four_seats_available">4 SEATS AVAILABLE</string>
 
 </resources>

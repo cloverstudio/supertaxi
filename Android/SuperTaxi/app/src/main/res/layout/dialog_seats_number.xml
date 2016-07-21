@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/parentLayout"
+        android:background="#CCFFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:paddingTop="60dp">
+
+            <RelativeLayout
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_white_button_selector"
+                android:id="@+id/rlOneSeats">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/oneSeatIV"
+                    android:src="@drawable/car_one_seat_available"/>
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/one_seat_available"
+                    android:layout_toRightOf="@id/oneSeatIV"
+                    android:layout_toEndOf="@id/oneSeatIV"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_view_bigger"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@drawable/rounded_white_button_selector"
+                android:id="@+id/rlTwoSeats">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/twoSeatIV"
+                    android:src="@drawable/car_two_seats_available"/>
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/two_seats_available"
+                    android:layout_toRightOf="@id/twoSeatIV"
+                    android:layout_toEndOf="@id/twoSeatIV"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_view_bigger"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_white_button_selector"
+                android:id="@+id/rlThreeSeats">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:id="@+id/threeSeatIV"
+                    android:src="@drawable/car_three_seats_available"/>
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/four_seats_available"
+                    android:layout_toRightOf="@id/threeSeatIV"
+                    android:layout_toEndOf="@id/threeSeatIV"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/text_view_bigger"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
