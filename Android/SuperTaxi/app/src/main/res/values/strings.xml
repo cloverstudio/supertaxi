@@ -115,5 +115,9 @@
     <string name="your_last_trip">Your last trip</string>
     <string name="price_">Price:</string>
     <string name="rate_your_ride">Rate Your Ride</string>
+    <string name="note_">Note:</string>
+    <string name="you_ride_is_over">You ride is over!</string>
+    <string name="please_rate_our_passenger">Please rate our passenger :)</string>
+    <string name="i_ll_do_it_next_time">I\'ll do it next time..</string>
 
 </resources>

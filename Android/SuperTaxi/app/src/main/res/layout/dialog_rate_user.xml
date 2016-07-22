@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dim_dark_black">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_centerInParent="true"
+            android:id="@+id/mainLayout"
+            android:background="@drawable/rounded_white_with_5">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rlHeaderLayout"
+                android:background="@drawable/rounded_green_with_5">
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/you_ride_is_over"
+                    android:textColor="@color/green_in_rate_users_text"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"
+                    android:textSize="25sp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rlHeaderLayout"
+                android:id="@+id/rlUserData">
+
+                <clover_studio.com.supertaxi.view.roundimage.RoundImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/__nedved"
+                    android:id="@+id/ivAvatarInUserDetails"/>
+
+                <clover_studio.com.supertaxi.view.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/please_rate_our_passenger"
+                    android:textColor="@color/devil_gray"
+                    android:id="@+id/tvPleaseRateLabel"
+                    android:layout_below="@id/ivAvatarInUserDetails"
+                    android:textSize="@dimen/text_view_default"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/bigStarsLayout"
+                    android:gravity="center"
+                    android:layout_below="@id/tvPleaseRateLabel"
+                    android:layout_marginTop="20dp"
+                    android:paddingBottom="20dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="10dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_big_star_selector" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_big_star_selector" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_big_star_selector" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_big_star_selector" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_big_star_selector" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/bigStarsLayout"
+                    android:background="@color/border_gray"/>
+
+            </RelativeLayout>
+
+            <clover_studio.com.supertaxi.view.CustomButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_view_bigger"
+                android:text="@string/i_ll_do_it_next_time"
+                android:background="@color/transparent"
+                android:textColor="@color/default_to_devil_gray"
+                android:textAllCaps="false"
+                android:layout_below="@id/rlUserData"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

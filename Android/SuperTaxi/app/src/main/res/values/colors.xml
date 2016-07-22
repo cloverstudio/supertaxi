@@ -26,4 +26,6 @@
     <color name="border_gray">#c8c8c8</color>
     <color name="gray_in_edit_text">#808080</color>
     <color name="black">@android:color/black</color>
+    <color name="green_in_rate_users">#A5DE6B</color>
+    <color name="green_in_rate_users_text">#2B490F</color>
 </resources>
