@@ -87,6 +87,8 @@ public class Const {
 
     public class Extras {
         public static final String USER_TYPE = "USER_TYPE";
+        public static final String START_LOCATION = "START_LOCATION";
+        public static final String DESTINATION_LOCATION = "DESTINATION_LOCATION";
     }
 
     public class PostParams {
@@ -135,5 +137,6 @@ public class Const {
 
     public class PermissionCode {
         public static final int CHAT_STORAGE = 99;
+        public static final int CALL = 99;
     }
 }

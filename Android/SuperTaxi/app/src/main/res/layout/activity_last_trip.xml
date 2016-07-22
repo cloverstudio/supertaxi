@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dim_dark_black">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_centerInParent="true"
+            android:id="@+id/mainLayout"
+            android:background="@drawable/rounded_white_with_5">
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvLastTripLabel"
+                android:textColor="@color/black"
+                android:textSize="@dimen/bigger_text_view_title_text_size"
+                android:text="@string/your_last_trip"
+                android:layout_marginTop="@dimen/default_margin"
+                android:textAllCaps="true"
+                android:layout_centerHorizontal="true"/>
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvLastTripDate"
+                android:textColor="@color/devil_gray"
+                android:textSize="@dimen/text_view_bigger"
+                android:layout_below="@id/tvLastTripLabel"
+                android:text="DATE"
+                android:textAllCaps="true"
+                android:layout_centerHorizontal="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:id="@+id/line1"
+                android:layout_below="@id/tvLastTripDate"
+                android:background="@color/border_gray" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line1"
+                android:id="@+id/mapAndDataLayout">
+
+                <FrameLayout
+                    android:id="@+id/frameForMapInDialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+
+                </FrameLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rlNameAndPrice"
+                    android:layout_below="@id/frameForMapInDialog"
+                    android:background="@color/light_light_gray_back">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/llPrice"
+                        android:orientation="vertical">
+
+                        <clover_studio.com.supertaxi.view.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvPriceLabel"
+                            android:textColor="@color/devil_gray"
+                            android:textSize="@dimen/small_text_view_title_text_size"
+                            android:layout_below="@id/tvLastTripLabel"
+                            android:text="@string/price_"
+                            android:textAllCaps="false"
+                            android:layout_marginTop="5dp"/>
+
+                        <clover_studio.com.supertaxi.view.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvPriceValue"
+                            android:textColor="@color/black"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:paddingBottom="5dp"
+                            android:textSize="@dimen/text_view_bigger"
+                            android:layout_below="@id/tvLastTripLabel"
+                            android:text="$7,23"
+                            android:textAllCaps="false"
+                            android:layout_marginTop="5dp"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/border_gray"
+                        android:layout_alignTop="@id/llPrice"
+                        android:layout_toLeftOf="@id/llPrice"
+                        android:layout_toStartOf="@id/llPrice"
+                        android:layout_marginRight="@dimen/default_margin"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/line2"
+                        android:layout_alignBottom="@id/llPrice" />
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvName"
+                        android:textColor="@color/black"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_centerVertical="true"
+                        android:paddingBottom="5dp"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:text="Pavel Nedved"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginTop="5dp"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/line3"
+                    android:layout_above="@+id/rlNameAndPrice"
+                    android:background="@color/border_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rlNameAndPrice">
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvRateLabel"
+                        android:textColor="@color/devil_gray"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/text_view_bigger"
+                        android:text="@string/rate_your_ride"
+                        android:layout_marginTop="25dp"
+                        android:textAllCaps="false"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/bigStarsLayout"
+                        android:gravity="center"
+                        android:layout_below="@id/tvRateLabel"
+                        android:layout_marginTop="20dp"
+                        android:paddingBottom="40dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="10dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_star_selector" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <clover_studio.com.supertaxi.view.roundimage.RoundImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_alignBottom="@id/rlNameAndPrice"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/__nedved"
+                    android:id="@+id/ivAvatarInDriverDetails"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

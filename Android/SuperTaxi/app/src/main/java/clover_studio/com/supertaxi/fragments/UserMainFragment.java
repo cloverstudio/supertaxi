@@ -3,7 +3,6 @@ package clover_studio.com.supertaxi.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -41,17 +40,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import clover_studio.com.supertaxi.LoginActivity;
+import clover_studio.com.supertaxi.LastTripDialogLikeActivity;
 import clover_studio.com.supertaxi.R;
-import clover_studio.com.supertaxi.RespondedDriverDetailsActivity;
 import clover_studio.com.supertaxi.adapters.AddressAdapter;
 import clover_studio.com.supertaxi.base.BaseFragment;
 import clover_studio.com.supertaxi.dialog.BasicDialog;
-import clover_studio.com.supertaxi.dialog.DriverDetailsDialog;
 import clover_studio.com.supertaxi.dialog.RequestSentDialog;
 import clover_studio.com.supertaxi.dialog.SeatsNumberDialog;
 import clover_studio.com.supertaxi.dialog.ShowMoreInMapDialog;
 import clover_studio.com.supertaxi.utils.AnimationUtils;
+import clover_studio.com.supertaxi.utils.LocationSourceListener;
 import clover_studio.com.supertaxi.utils.Utils;
 import clover_studio.com.supertaxi.view.touchable_map.MapStateListener;
 import clover_studio.com.supertaxi.view.touchable_map.TouchableMapFragment;
@@ -64,8 +62,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     public static final int WAIT_FOR_SEARCH_WHILE_TYPING = 500;
 
     GoogleMap googleMap;
-    private LatLng currentLocation = null;
-    private String currentAddress = null;
+    private LatLng pickupLocation = null;
+    private String pickupAddress = null;
     private LatLng destinationLocation = null;
     private String destinationAddress = null;
 
@@ -94,6 +92,10 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     private int nowCharacterFromLength = 0;
     private int nowCharacterToLength = 0;
 
+    private Location myLocation = null;
+    private LocationSourceListener locationSourceListener;
+    private Geocoder geocoder;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +117,19 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
         getFragmentManager().beginTransaction().add(layoutForMap.getId(), mapFragment, "TAG").commit();
         mapFragment.getMapAsync(UserMainFragment.this);
 
+        locationSourceListener = new LocationSourceListener(getActivity(), onMyLocationChangedListener);
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationSourceListener.getBestAvailableProvider();
+        if(googleMap != null){
+            googleMap.setLocationSource(locationSourceListener);
+        }
     }
 
     private void initViews(View rootView){
@@ -163,6 +177,10 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
         loadingProgress.setVisibility(View.GONE);
 
         this.googleMap = googleMap;
+
+        googleMap.setLocationSource(locationSourceListener);
+        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
         new MapStateListener(googleMap, mapFragment, getActivity()) {
             @Override
@@ -222,7 +240,10 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
                 ContextCompat.checkSelfPermission( getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
         }else{
-            Location myLocation = locationManager.getLastKnownLocation(provider);
+
+            if(myLocation == null){
+                myLocation = locationManager.getLastKnownLocation(provider);
+            }
 
             if(myLocation != null){
                 LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -233,17 +254,25 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
 
     }
 
+    private LocationSourceListener.OnMyLocationChangedListener onMyLocationChangedListener = new LocationSourceListener.OnMyLocationChangedListener() {
+        @Override
+        public void onLocationChanged(Location myLocationNew) {
+            myLocation = myLocationNew;
+            Log.d("LOG_IVO", "MY LOCATION: " + myLocation.getLatitude() + ", " + myLocation.getLongitude());
+        }
+    };
+
     private View.OnClickListener onCurrentPinListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            if(currentLocation == null){
+            if(pickupLocation == null){
                 isUserSetLocationFromWithPin = true;
                 LatLng current = googleMap.getCameraPosition().target;
                 String address = getAddress(current.latitude, current.longitude);
                 etFrom.setText(address);
-                currentLocation = current;
-                currentAddress = address;
+                pickupLocation = current;
+                pickupAddress = address;
 
                 tvTextViewInMyCurrent.setText(getString(R.string.set_destination_location_capital));
             }else{
@@ -273,8 +302,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
 
             etFrom.setText("");
             etTo.setText("");
-            currentLocation = null;
-            currentAddress = null;
+            pickupLocation = null;
+            pickupAddress = null;
             destinationLocation = null;
             destinationAddress = null;
             tvTextViewInMyCurrent.setText(getString(R.string.set_pickup_location_capital));
@@ -374,8 +403,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             isUserSetLocationFromWithPin = true;
             String addressString = Utils.formatAddress(item);
             etFrom.setText(addressString);
-            currentLocation = new LatLng(item.getLatitude(), item.getLongitude());
-            currentAddress = addressString;
+            pickupLocation = new LatLng(item.getLatitude(), item.getLongitude());
+            pickupAddress = addressString;
             tvTextViewInMyCurrent.setText(getString(R.string.set_destination_location_capital));
             hideRlFromList();
             Utils.hideKeyboard(etFrom, getActivity());
@@ -398,7 +427,6 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     private String getAddress(double latitude, double longitude) {
         StringBuilder result = new StringBuilder();
         try {
-            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
@@ -440,9 +468,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     private List<Address> searchAddresses(String search) {
-        Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
         try {
-            List<Address> addresses = geoCoder.getFromLocationName(search, 5);
+            List<Address> addresses = geocoder.getFromLocationName(search, 20);
             return addresses;
         } catch (IOException e) {
             e.printStackTrace();
@@ -477,9 +504,10 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
 
     private void requestTaxi(){
 //        RespondedDriverDetailsActivity.startActivity(getActivity());
-        DriverDetailsDialog.startDialog(getActivity());
+//        DriverDetailsDialog.startDialog(getActivity());
+        LastTripDialogLikeActivity.startActivity(getActivity(), pickupLocation, destinationLocation);
         if(true) return;
-        if(currentLocation == null || currentAddress == null){
+        if(pickupLocation == null || pickupAddress == null){
             BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.please_set_pick_up_location));
             return;
         }
@@ -492,7 +520,7 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             @Override
             public void onClicked(SeatsNumberDialog dialog, int numberOfSeats) {
                 dialog.dismiss();
-                RequestSentDialog.startDialog(getActivity(), currentLocation, destinationLocation, currentAddress, destinationAddress, numberOfSeats);
+                RequestSentDialog.startDialog(getActivity(), pickupLocation, destinationLocation, pickupAddress, destinationAddress, numberOfSeats);
             }
         });
 

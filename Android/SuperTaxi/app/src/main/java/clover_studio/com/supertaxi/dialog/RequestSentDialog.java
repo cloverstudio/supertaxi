@@ -221,7 +221,7 @@ public class RequestSentDialog extends Dialog {
                 @Override
                 public void onTryAgain(Call<BaseModel> call, Response<BaseModel> response) {
                     super.onTryAgain(call, response);
-                    requestTaxiApi();
+                    cancelTripApi();
                 }
             });
 

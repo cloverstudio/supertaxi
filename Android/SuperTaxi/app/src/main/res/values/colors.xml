@@ -20,6 +20,7 @@
     <color name="menu_separator_background">#061940</color>
     <color name="trans_white">#55FFFFFF</color>
     <color name="light_light_gray">#EFEFEF</color>
+    <color name="light_light_gray_back">#F0F0F0</color>
     <color name="white_0_5_a">#80ffffff</color>
     <color name="update_profile_almost_white">#fdfdfe</color>
     <color name="border_gray">#c8c8c8</color>

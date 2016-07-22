@@ -227,12 +227,19 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/colorPrimary"
                         android:text="+385976376676"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:id="@+id/tvMobileValue"
                         android:textSize="@dimen/text_view_default"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/fill_1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"/>
 
                 </LinearLayout>
 
@@ -347,6 +354,7 @@
                     android:textColor="@color/devil_gray_to_revert"
                     android:textAllCaps="false"
                     android:textSize="@dimen/default_title_size"
+                    android:id="@+id/buttonCancelTrip"
                     android:text="@string/cancel_trip"/>
 
                 <View
@@ -359,6 +367,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
+                    android:id="@+id/closeButton"
                     android:background="@color/transparent"
                     android:textColor="@color/red_to_red_darker"
                     android:textAllCaps="false"
