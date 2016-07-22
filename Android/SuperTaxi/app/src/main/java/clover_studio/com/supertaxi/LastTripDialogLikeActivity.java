@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -76,13 +77,6 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
         startLocation = getIntent().getParcelableExtra(Const.Extras.START_LOCATION);
         destinationLocation = getIntent().getParcelableExtra(Const.Extras.DESTINATION_LOCATION);
 
-        int rating = 2;
-        if (rating > llStarLayout.getChildCount()) {
-            rating = llStarLayout.getChildCount();
-        }
-        for (int i = 0; i < rating; i++) {
-            llStarLayout.getChildAt(i).setSelected(true);
-        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -94,7 +88,25 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
 
         animateLayout();
 
+        for(int i = 0; i < llStarLayout.getChildCount(); i++){
+            llStarLayout.getChildAt(i).setTag(i);
+            llStarLayout.getChildAt(i).setOnClickListener(onStarsClicked);
+        }
+
     }
+
+    private View.OnClickListener onStarsClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Integer tag = (Integer) v.getTag();
+            for(int i = 0; i <= tag; i++){
+                llStarLayout.getChildAt(i).setSelected(true);
+            }
+            for(int i = tag + 1; i < llStarLayout.getChildCount(); i++){
+                llStarLayout.getChildAt(i).setSelected(false);
+            }
+        }
+    };
 
     private void animateLayout(){
         AnimationUtils.fade(mainLayout, 0, 1, 300, null);
