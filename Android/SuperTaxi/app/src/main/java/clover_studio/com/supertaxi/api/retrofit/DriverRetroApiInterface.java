@@ -1,8 +1,10 @@
 package clover_studio.com.supertaxi.api.retrofit;
 
 import clover_studio.com.supertaxi.models.BaseModel;
+import clover_studio.com.supertaxi.models.CallTaxiModel;
 import clover_studio.com.supertaxi.models.DriverListResponse;
 import clover_studio.com.supertaxi.models.post_models.PostCallTaxiModel;
+import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
 import clover_studio.com.supertaxi.models.post_models.PostLatLngModel;
 import clover_studio.com.supertaxi.utils.Const;
 import retrofit2.Call;
@@ -19,7 +21,9 @@ public interface DriverRetroApiInterface {
     Call<DriverListResponse> getDriverList(@Body PostLatLngModel postModel, @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
 
     @POST(Const.Server.CALL_TAXI)
-    Call<BaseModel> callTaxi(@Body PostCallTaxiModel postModel, @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
+    Call<CallTaxiModel> callTaxi(@Body PostCallTaxiModel postModel, @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
 
+    @POST(Const.Server.CANCEL_TRIP)
+    Call<BaseModel> cancelTrip(@Body PostCancelTripModel postModel, @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
 
 }

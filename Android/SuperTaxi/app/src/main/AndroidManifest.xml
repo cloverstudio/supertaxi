@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="clover_studio.com.supertaxi">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -56,10 +57,21 @@
             android:windowSoftInputMode="stateHidden|adjustPan"
             />
 
+        <activity android:name=".RespondedDriverDetailsActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            />
+
         <activity android:name=".CameraCropActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
+            />
+
+        <activity android:name=".LastTripDialogLikeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.Transparent"
             />
 
         <activity android:name="com.facebook.FacebookActivity"

@@ -73,6 +73,7 @@ public class Const {
         public static final String UPLOADS = "/uploads";
         public static final String GET_DRIVER_LIST = "/api/v1/profile/getDriverList";
         public static final String CALL_TAXI = "/api/v1/order/call";
+        public static final String CANCEL_TRIP = "/api/v1/order/cancel";
     }
 
     public class Secrets {
@@ -86,6 +87,8 @@ public class Const {
 
     public class Extras {
         public static final String USER_TYPE = "USER_TYPE";
+        public static final String START_LOCATION = "START_LOCATION";
+        public static final String DESTINATION_LOCATION = "DESTINATION_LOCATION";
     }
 
     public class PostParams {
@@ -134,5 +137,6 @@ public class Const {
 
     public class PermissionCode {
         public static final int CHAT_STORAGE = 99;
+        public static final int CALL = 99;
     }
 }

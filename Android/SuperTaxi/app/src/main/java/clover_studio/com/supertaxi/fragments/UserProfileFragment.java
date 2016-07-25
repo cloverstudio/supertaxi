@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class UserProfileFragment extends BaseFragment{
     private EditText etName;
     private EditText etAge;
     private EditText etNote;
+    private EditText etTelNum;
     private Button buttonSave;
     private LinearLayout llForChangeImage;
     private ImageView ivAvatarImage;
@@ -76,6 +78,7 @@ public class UserProfileFragment extends BaseFragment{
         etName = (EditText) rootView.findViewById(R.id.etName);
         etAge = (EditText) rootView.findViewById(R.id.etAge);
         etNote = (EditText) rootView.findViewById(R.id.etNote);
+        etTelNum = (EditText) rootView.findViewById(R.id.etTelNum);
         buttonSave = (Button) rootView.findViewById(R.id.buttonSave);
         llForChangeImage = (LinearLayout) rootView.findViewById(R.id.llEditImage);
         ivAvatarImage = (ImageView) rootView.findViewById(R.id.ivAvatar);
@@ -83,6 +86,7 @@ public class UserProfileFragment extends BaseFragment{
         etName.addTextChangedListener(checkForButton);
         etAge.addTextChangedListener(checkForButton);
         etNote.addTextChangedListener(checkForButton);
+        etTelNum.addTextChangedListener(checkForButton);
 
         buttonSave.setOnClickListener(onSaveClick);
         llForChangeImage.setOnClickListener(onImageChange);
@@ -107,6 +111,10 @@ public class UserProfileFragment extends BaseFragment{
             ImageUtils.setImageWithPicasso(ivAvatarImage, avatarUrl);
         }
 
+        if(!TextUtils.isEmpty(myUser.telNum)){
+            etTelNum.setText(myUser.telNum);
+        }
+
         return rootView;
     }
 
@@ -120,7 +128,7 @@ public class UserProfileFragment extends BaseFragment{
         @Override
         public void afterTextChanged(Editable s) {
 
-            if(etName.getText().toString().length() > 0 && etAge.getText().toString().length() > 0 && etNote.getText().toString().length() > 0){
+            if(etName.getText().toString().length() > 0 && etAge.getText().toString().length() > 0 && etNote.getText().toString().length() > 0 && etTelNum.getText().toString().length() > 0){
                 buttonSave.setEnabled(true);
             }else{
                 buttonSave.setEnabled(false);
@@ -172,7 +180,7 @@ public class UserProfileFragment extends BaseFragment{
         UserRetroApiInterface retroApiInterface = getRetrofit().create(UserRetroApiInterface.class);
         final String name = etName.getText().toString();
         final String note = etNote.getText().toString();
-        final String telNum = "+385976376676";
+        final String telNum = etTelNum.getText().toString();
         final int age = Integer.parseInt(etAge.getText().toString());
         final int type = Const.UserType.USER_TYPE_USER;
         final String carType = "";
@@ -201,33 +209,12 @@ public class UserProfileFragment extends BaseFragment{
         final UploadFileDialog dialog = UploadFileDialog.startDialog(getActivity());
 
         UploadFileManagement uploadFileManager = new UploadFileManagement();
-
-        List<KeyValueModel> postModel = new ArrayList<>();
-        final String name = etName.getText().toString();
-        final String note = etNote.getText().toString();
-        final String telNum = "+385976376676";
-        final int age = Integer.parseInt(etAge.getText().toString());
-        final int type = Const.UserType.USER_TYPE_USER;
-        final String carType = "";
-        final String carRegistration = "";
-        final int feeStart = 0;
-        final int feeKM = 0;
-        postModel.add(new KeyValueModel(Const.PostParams.NAME, name));
-        postModel.add(new KeyValueModel(Const.PostParams.NOTE, note));
-        postModel.add(new KeyValueModel(Const.PostParams.TEL_NUM, telNum));
-        postModel.add(new KeyValueModel(Const.PostParams.AGE, String.valueOf(age)));
-        postModel.add(new KeyValueModel(Const.PostParams.TYPE, String.valueOf(type)));
-        postModel.add(new KeyValueModel(Const.PostParams.CAR_TYPE, carType));
-        postModel.add(new KeyValueModel(Const.PostParams.CAR_REGISTRATION, carRegistration));
-        postModel.add(new KeyValueModel(Const.PostParams.FEE_KM, String.valueOf(feeKM)));
-        postModel.add(new KeyValueModel(Const.PostParams.FEE_START, String.valueOf(feeStart)));
-
         String contentType = Const.ContentTypes.IMAGE_JPG;
         if(path.endsWith(".png")){
             contentType = Const.ContentTypes.IMAGE_PNG;
         }
 
-        uploadFileManager.new BackgroundUploader(Const.BASE_URL + Const.Server.UPDATE_USER_API, new File(path), contentType, postModel, new UploadFileManagement.OnUploadResponse() {
+        uploadFileManager.new BackgroundUploader(Const.BASE_URL + Const.Server.UPDATE_USER_API, new File(path), contentType, returnUserData(), new UploadFileManagement.OnUploadResponse() {
             @Override
             public void onStart() {
                 LogCS.d("LOG", "START");
@@ -294,6 +281,30 @@ public class UserProfileFragment extends BaseFragment{
 
             }
         }).execute();
+    }
+
+    private List<KeyValueModel>  returnUserData(){
+        List<KeyValueModel> postModel = new ArrayList<>();
+        final String name = etName.getText().toString();
+        final String note = etNote.getText().toString();
+        final String telNum = etTelNum.getText().toString();
+        final int age = Integer.parseInt(etAge.getText().toString());
+        final int type = Const.UserType.USER_TYPE_USER;
+        final String carType = "";
+        final String carRegistration = "";
+        final int feeStart = 0;
+        final int feeKM = 0;
+        postModel.add(new KeyValueModel(Const.PostParams.NAME, name));
+        postModel.add(new KeyValueModel(Const.PostParams.NOTE, note));
+        postModel.add(new KeyValueModel(Const.PostParams.TEL_NUM, telNum));
+        postModel.add(new KeyValueModel(Const.PostParams.AGE, String.valueOf(age)));
+        postModel.add(new KeyValueModel(Const.PostParams.TYPE, String.valueOf(type)));
+        postModel.add(new KeyValueModel(Const.PostParams.CAR_TYPE, carType));
+        postModel.add(new KeyValueModel(Const.PostParams.CAR_REGISTRATION, carRegistration));
+        postModel.add(new KeyValueModel(Const.PostParams.FEE_KM, String.valueOf(feeKM)));
+        postModel.add(new KeyValueModel(Const.PostParams.FEE_START, String.valueOf(feeStart)));
+
+        return postModel;
     }
 
     private void afterApi(UpdateProfileResponse response){

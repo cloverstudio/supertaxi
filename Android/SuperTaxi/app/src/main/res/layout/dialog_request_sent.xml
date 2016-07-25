@@ -33,13 +33,16 @@
 
                     <ImageView
                         android:layout_width="wrap_content"
+                        android:id="@+id/ivSeatImage"
                         android:layout_height="wrap_content"
                         android:src="@drawable/user_black_border"/>
 
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1 SEAT"
+                        android:text=""
+                        android:textAllCaps="true"
+                        android:id="@+id/tvSeatValue"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_view_bigger"/>
@@ -91,7 +94,7 @@
                 android:background="@drawable/shape_red_button_with_corners_selector"
                 android:text="@string/cancel_trip_capital"
                 android:textColor="@color/white"
-                android:id="@+id/buttonSignIn"
+                android:id="@+id/buttonCancelTrip"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/default_margin"
                 android:textSize="@dimen/default_title_size"/>
