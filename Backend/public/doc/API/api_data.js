@@ -256,6 +256,10 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "Number",
+            "allowedValues": [
+              "1",
+              "2"
+            ],
             "optional": false,
             "field": "type",
             "description": "<p>(Required) User type should be 1: user or 2: driver</p>"
@@ -410,8 +414,18 @@ define({ "api": [
     "success": {
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "{\n\tcode: 1,\n\ttime: 1467123777463,\n\tdata: {\n\t\ttoken_new: 'UpQM5SM2hKyCzKoP',\n\t\tuser: {\n\t\t\t__v: 0,\n\t\t\temail: 'testT61gb@test.com',\n\t\t\tpassword: '*****',\n\t\t\tcreated: 1467123777437,\n\t\t\t_id: '5772884116cc68e662fc072f'\n\t\t}\n\t}\n}",
+          "title": "Success-Response User:",
+          "content": "{\n    code: 1,\n    time: 1467123777463,\n    data: {\n        token_new: 'UpQM5SM2hKyCzKoP',\n        user: {\n            __v: 0,\n            email: 'testT61gb@test.com',\n            password: '*****',\n            created: 1467123777437,\n            _id: '5772884116cc68e662fc072f',\n            user: { \n                name: 'test',\n                age: 0,\n                note: null\n            }\n        }\n    }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Success-Response Driver:",
+          "content": "{\n    code: 1,\n    time: 1467123777463,\n    data: {\n        token_new: 'UpQM5SM2hKyCzKoP',\n        user: {\n            __v: 0,\n            email: 'testT61gb@test.com',\n            password: '*****',\n            created: 1467123777437,\n            _id: '5772884116cc68e662fc072f',\n            driver: {\n                name: 'test',\n                car_type: 'Caravan',\n                car_registration: 'ZG2344HR',\n                fee_start: 30,\n                fee_km: 5\n            }\n        }\n    }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Success-Response Undefined:",
+          "content": "{\n    code: 1,\n    time: 1467123777463,\n    data: {\n        token_new: 'UpQM5SM2hKyCzKoP',\n        user: {\n            __v: 0,\n            email: 'testT61gb@test.com',\n            password: '*****',\n            created: 1467123777437,\n            _id: '5772884116cc68e662fc072f'\n        }\n    }\n}",
           "type": "json"
         }
       ]
@@ -936,6 +950,10 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "Number",
+            "allowedValues": [
+              "1",
+              "2"
+            ],
             "optional": false,
             "field": "type",
             "description": "<p>(Required) User type should be 1: user or 2: driver</p>"

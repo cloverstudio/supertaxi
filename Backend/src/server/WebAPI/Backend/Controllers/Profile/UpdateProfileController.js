@@ -36,7 +36,7 @@ UpdateProfileController.prototype.init = function(app){
      * @apiHeader {String} access-token Users unique access-token.
      * 
      * @apiParam {String} name (Required) Name of user/driver 
-     * @apiParam {Number} type (Required) User type should be 1: user or 2: driver
+     * @apiParam {Number=1,2} type (Required) User type should be 1: user or 2: driver
      * @apiParam {String} telNum (Required) Telephone number of user/driver (+385981234567, +385 99 1234 655, ...)
      * @apiParam {Number} age Age of user 
      * @apiParam {String} note note
@@ -211,8 +211,6 @@ UpdateProfileController.prototype.init = function(app){
             (result,done) => {
 
                 var user = request.user;
-
-                var updateParams = {};
 
                 if(result.fields.type == Const.userTypeNormal){
 

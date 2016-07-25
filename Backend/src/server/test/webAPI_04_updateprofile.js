@@ -39,7 +39,7 @@ describe('WEB API', function () {
                 .set('access-token', global.user1.token)
                 .field('type', 2)
                 .field('name', 'test')
-                .field('telNum', '+385 98 1234 567')                
+                .field('telNum', '+385 98 1234 567')
                 .field('fee_start', 30)
                 .field('fee_km', 5)
                 .field('car_type', 'Caravan')

@@ -31,7 +31,7 @@ CancelOrderController.prototype.init = function(app){
      * @apiHeader {String} access-token Users unique access-token.
      * 
      * @apiParam {String} orderId (Required) Accepted order id
-     * @apiParam {Number} type (Required) User type should be 1: user or 2: driver
+     * @apiParam {Number=1,2} type (Required) User type should be 1: user or 2: driver
      * @apiParam {String} [reason] Descriptive reason for canceling a order
     
      * @apiError UnknownError 6000000

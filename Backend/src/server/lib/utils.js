@@ -314,7 +314,7 @@ var Const = require('../lib/consts');
 
     function isNumeric(obj) {
 
-        return _.isNumber(obj) || (obj != "" && !isNaN(obj));
+        return _.isNumber(obj) || !isNaN(parseFloat(obj));
 
     }
 
