@@ -57,7 +57,33 @@ UpdateProfileController.prototype.init = function(app){
      * @apiError ParamErrorWrongTelNum 6000016
 
      * 
-     * @apiSuccessExample Success-Response:
+     * @apiSuccessExample Success-Response User:
+        { 
+            code: 1,
+            time: 1468314014075,
+            data: { 
+                user: { 
+                    __v: 0,
+                    _id: 57875c9c1c1a343769872e7e,
+                    created: 1468488860290,
+                    email: 'testsFr2B@test.com',
+                    password: '*****',
+                    telNum: '+385981234567',
+                    token: '*****',
+                    token_generated: 1468488860456,
+                    avatar: { 
+                        fileid: 'nJSoPuuRMGwHOjP3n0qwldOB13uLNyPF',
+                        thumbfileid: 'qjZn3t0WiD079YuKbRIGMjpjojBD6w2x' 
+                    },
+                    user: { 
+                        age: 0, 
+                        name: 'test' 
+                    }
+                }
+            }
+        }
+    
+    * @apiSuccessExample Success-Response Driver:
         { 
             code: 1,
             time: 1468314014075,
@@ -81,10 +107,6 @@ UpdateProfileController.prototype.init = function(app){
                         car_registration: 'ZG2344HR',
                         fee_start: 30,
                         fee_km: 5 
-                    },
-                    user: { 
-                        age: 0, 
-                        name: 'test' 
                     }
                 }
             }
