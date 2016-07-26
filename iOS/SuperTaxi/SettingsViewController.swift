@@ -16,11 +16,6 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
 
         // SlideMenu Viewcontroller
-        if revealViewController() != nil {
-            menuButton.target = revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-        }
         
         // left and right bar buttonitem event
         navigationController!.navigationBar.barTintColor = UIColor(red: 248/255.0, green: 244/255.0, blue: 236/255.0, alpha: 1.0)

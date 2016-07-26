@@ -9,12 +9,19 @@
 import UIKit
 
 class UserRequestReceivedViewController: UIViewController {
+    
+    @IBOutlet var contactView: UIView!
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBar.hidden = true
+        
+        contactView.layer.borderWidth = 1
+        contactView.layer.borderColor = Colors.darkBlue(1).CGColor
     }
 
     override func didReceiveMemoryWarning() {
