@@ -324,6 +324,98 @@ define({ "api": [
     "groupTitle": "WebAPI"
   },
   {
+    "type": "post",
+    "url": "/api/v1/order/status",
+    "title": "Check Order Status",
+    "name": "Check_Order_Status",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. User check order status (accepted, canceled, pending)</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "orderId",
+            "description": "<p>(Required) Order id</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenInvalid",
+            "description": "<p>6000009</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorInvalidId",
+            "description": "<p>6000026</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorOrderNotFound",
+            "description": "<p>6000034</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "allowedValues": [
+              "1",
+              "2",
+              "3"
+            ],
+            "optional": false,
+            "field": "orderStatus",
+            "description": "<p>1 = accepted, 2 = canceled, 3 = pending</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: {\n        orderStatus: 1,\n        driver: {\n            __v: 0,\n            _id: 57875c9c1c1a343769872e7e,\n            created: 1468488860290,\n            currentLocation: [ 10.000151, -19.999907 ],\n            email: 'testsFr2B@test.com',\n            password: '*****',\n            telNum: '+385981234567',\n            token: '*****',\n            token_generated: 1468488860456,\n            avatar: { \n                fileid: 'nJSoPuuRMGwHOjP3n0qwldOB13uLNyPF',\n                thumbfileid: 'qjZn3t0WiD079YuKbRIGMjpjojBD6w2x' \n            },\n            driver: { \n                name: 'test',\n                car_type: 'Caravan',\n                car_registration: 'ZG2344HR',\n                fee_start: 30,\n                fee_km: 5 \n            }\n        }\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Order/CheckStatusOrderController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
     "type": "get",
     "url": "/api/v1/test/error",
     "title": "error",

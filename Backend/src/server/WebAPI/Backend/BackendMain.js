@@ -30,6 +30,7 @@ var BackendMain ={
         router.use("/order/arrive", require("./Controllers/Order/ArriveOrderController").init(app));
         router.use("/order/start", require("./Controllers/Order/StartTripOrderController").init(app));
         router.use("/order/finish", require("./Controllers/Order/FinishTripOrderController").init(app));
+        router.use("/order/status", require("./Controllers/Order/CheckStatusOrderController").init(app));
 
         return router;
 

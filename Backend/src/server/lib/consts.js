@@ -35,6 +35,7 @@
     Const.responsecodeParamErrorRateNumber = 6000031;
     Const.responsecodeParamErrorUserNotFound = 6000032;
     Const.responsecodeParamErrorDriverNotFound = 6000033;
+    Const.responsecodeParamErrorOrderNotFound = 6000034;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;
@@ -59,5 +60,11 @@
     Const.tokenValidInteval = 60*60*24*1000;
 
     Const.thumbSize = 256;
+
+    Const.orderStatus = {
+        accepted: 1,
+        canceled: 2,
+        pending: 3
+    };
 
     module["exports"] = Const;
