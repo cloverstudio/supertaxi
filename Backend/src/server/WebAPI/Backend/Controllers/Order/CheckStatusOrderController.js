@@ -39,7 +39,7 @@ CheckStatusOrderController.prototype.init = function(app){
      * @apiError ParamErrorOrderNotFound 6000034
     
      * 
-     * @apiSuccess {Number=1,2,3} orderStatus 1 = accepted, 2 = canceled, 3 = pending
+     * @apiSuccess {Number=1,2,3,4,5,6} orderStatus 1 = accepted, 2 = canceled, 3 = pending, 4 = arrivedToStartLocation, 5 = startedDrive, 6 = finishedDrive
 
      * @apiSuccessExample Success-Response:
         { 
@@ -104,13 +104,25 @@ CheckStatusOrderController.prototype.init = function(app){
 
                     if (order.cancelOrderOrTrip)
                         orderStatus = Const.orderStatus.canceled;
+
                     else if (order.acceptOrderTs)
                         orderStatus = Const.orderStatus.accepted;
+
+                    else if (order.arriveToStartLocationTs)
+                        orderStatus = Const.orderStatus.arrivedToStartLocation;
+
+                    else if (order.startTripTs)
+                        orderStatus = Const.orderStatus.startedDrive;
+
+                    else if (order.finishTripTs)
+                        orderStatus = Const.orderStatus.finishedDrive;
+
                     else
                         orderStatus = Const.orderStatus.pending;
 
                     result.driverId = order.driverId;
                     result.orderStatus = orderStatus;
+                    
                     done(err, result);
 
                 });

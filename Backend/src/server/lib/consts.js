@@ -64,7 +64,10 @@
     Const.orderStatus = {
         accepted: 1,
         canceled: 2,
-        pending: 3
+        pending: 3,
+        arrivedToStartLocation: 4,
+        startedDrive: 5,
+        finishedDrive: 6
     };
 
     module["exports"] = Const;

@@ -395,11 +395,14 @@ define({ "api": [
             "allowedValues": [
               "1",
               "2",
-              "3"
+              "3",
+              "4",
+              "5",
+              "6"
             ],
             "optional": false,
             "field": "orderStatus",
-            "description": "<p>1 = accepted, 2 = canceled, 3 = pending</p>"
+            "description": "<p>1 = accepted, 2 = canceled, 3 = pending, 4 = arrivedToStartLocation, 5 = startedDrive, 6 = finishedDrive</p>"
           }
         ]
       },
