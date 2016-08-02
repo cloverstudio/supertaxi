@@ -27,7 +27,7 @@ CheckStatusOrderController.prototype.init = function(app){
      * @api {post} /api/v1/order/status Check Order Status
      * @apiName Check Order Status
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. User check order status (accepted, canceled, pending)
+     * @apiDescription This API receives JSON request. User check order status (accepted, canceled, pending, arrivedToStartLocation, startedDrive, finishedDrive)
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
@@ -40,13 +40,14 @@ CheckStatusOrderController.prototype.init = function(app){
     
      * 
      * @apiSuccess {Number=1,2,3,4,5,6} orderStatus 1 = accepted, 2 = canceled, 3 = pending, 4 = arrivedToStartLocation, 5 = startedDrive, 6 = finishedDrive
+     * @apiSuccess {Number=1,2} [cancelType] 1 = user, 2 = driver. Tells who cancel order (user or driver). If order isn't canceled, then cancelType isn't returned to response
 
      * @apiSuccessExample Success-Response:
         { 
             code: 1,
             time: 1468314014075,
             data: {
-                orderStatus: 1,
+                orderStatus: 2,
                 driver: {
                     __v: 0,
                     _id: 57875c9c1c1a343769872e7e,
@@ -68,7 +69,8 @@ CheckStatusOrderController.prototype.init = function(app){
                         fee_start: 30,
                         fee_km: 5 
                     }
-                }
+                },
+                cancelType: 1
             }
         }
 
@@ -102,10 +104,16 @@ CheckStatusOrderController.prototype.init = function(app){
 
                     var orderStatus = 0;
 
-                    if (order.cancelOrderOrTrip)
+                    if (order.cancelOrderOrTrip) {
+
                         orderStatus = Const.orderStatus.canceled;
 
-                    else if (order.acceptOrderTs)
+                        if (order.cancelOrderOrTrip.userTs)
+                            result.cancelType = Const.userTypeNormal
+                        else
+                            result.cancelType = Const.userTypeDriver
+
+                    } else if (order.acceptOrderTs)
                         orderStatus = Const.orderStatus.accepted;
 
                     else if (order.arriveToStartLocationTs)
@@ -159,10 +167,15 @@ CheckStatusOrderController.prototype.init = function(app){
 
             } else {
 
-                self.successResponse(response, Const.responsecodeSucceed, {
+                var data = {
                     orderStatus: result.orderStatus,
                     driver: result.driver
-                });
+                };
+
+                if (result.cancelType)
+                    data.cancelType = result.cancelType;
+
+                self.successResponse(response, Const.responsecodeSucceed, data);
 
             }
 
