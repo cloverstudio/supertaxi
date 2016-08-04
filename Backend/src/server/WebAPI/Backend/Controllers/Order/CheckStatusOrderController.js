@@ -113,17 +113,17 @@ CheckStatusOrderController.prototype.init = function(app){
                         else
                             result.cancelType = Const.userTypeDriver
 
-                    } else if (order.acceptOrderTs)
-                        orderStatus = Const.orderStatus.accepted;
-
-                    else if (order.arriveToStartLocationTs)
-                        orderStatus = Const.orderStatus.arrivedToStartLocation;
+                    } else if (order.finishTripTs)
+                        orderStatus = Const.orderStatus.finishedDrive;
 
                     else if (order.startTripTs)
                         orderStatus = Const.orderStatus.startedDrive;
 
-                    else if (order.finishTripTs)
-                        orderStatus = Const.orderStatus.finishedDrive;
+                    else if (order.arriveToStartLocationTs)
+                        orderStatus = Const.orderStatus.arrivedToStartLocation;
+
+                    else if (order.acceptOrderTs)
+                        orderStatus = Const.orderStatus.accepted;
 
                     else
                         orderStatus = Const.orderStatus.pending;
