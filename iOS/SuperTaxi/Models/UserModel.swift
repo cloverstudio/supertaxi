@@ -8,6 +8,7 @@
 
 import Foundation
 import ObjectMapper
+import SwiftyJSON
 
 public class UserModel: Mappable {
 
@@ -18,6 +19,7 @@ public class UserModel: Mappable {
     var password: String!
     var token: String!
     var token_generated: String!
+    var avatar: JSON!
     var driver: DriverInfoModel!
     var user: UserInfoModel!
     
@@ -33,6 +35,7 @@ public class UserModel: Mappable {
         password <- map["password"]
         token <- map["token"]
         token_generated <- map["token_generated"]
+        avatar <- map["avatar"]
         driver <- map["driver"]
         user <- map["user"]
         

@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import AssetsLibrary
 
 class TaxiCreateProfileViewController: UIViewController, UINavigationControllerDelegate,
                 UIImagePickerControllerDelegate, UIApplicationDelegate, UITextFieldDelegate, SetUserDetailsDelegate {
@@ -56,6 +57,12 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         
         apiManager = ApiManager()
         apiManager.setUserDetailsDelegate = self
+        
+        let status:ALAuthorizationStatus = ALAssetsLibrary.authorizationStatus()
+        
+        if status != ALAuthorizationStatus.Authorized{
+            print("User has not given authorization for the camera roll")
+        }
     }
 
     override func didReceiveMemoryWarning() {

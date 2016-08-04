@@ -12,7 +12,7 @@ import CoreLocation
 import SWRevealViewController
 import SwiftyJSON
 
-class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, DriverListDelegate  {
+class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, DriverListDelegate, GetOpenOrdersDelegate  {
     
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet var avatar: UIImageView!
@@ -26,18 +26,23 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     var lat: Double!
     var lon: Double!
     
+    var getOrder: Bool = false
+    
+    var n = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != ""){
+        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
             avatar.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!)
         }
         
-        apiManager = ApiManager()
-        apiManager.driversListDelegate = self
-        
         avatar.layer.cornerRadius = avatar.frame.size.height/2
         avatar.clipsToBounds = true
+        
+        apiManager = ApiManager()
+        apiManager.driversListDelegate = self
+        apiManager.openOrderDelegate = self
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -53,13 +58,18 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             mapView.setCenterCoordinate(coor, animated: true)
         }
         
-//        mapView.showsUserLocation = true;
+        mapView.showsUserLocation = true;
         
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        n = 0
+        getOpenOrders()
     }
     
     @IBAction func menuButton(sender: AnyObject) {
@@ -91,23 +101,27 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         lat = center.latitude
         lon = center.longitude
         
+        apiManager.updateCoordinates(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
+        
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        let annotationReuseId = "driver"
-        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(annotationReuseId)
-        if anView == nil {
-            anView = MKAnnotationView(annotation: annotation, reuseIdentifier: annotationReuseId)
-        } else if (annotation is DriverAnnotation){
-            anView!.annotation = annotation
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?{
+        if (annotation is MKUserLocation) {
+            return nil
         }
         
-        if annotation is DriverAnnotation {
-            anView!.image = UIImage(named: "map_car")
-            anView!.backgroundColor = UIColor.clearColor()
-        } else {
-            anView?.image = UIImage(named: "location_pin")
+        let reuseId = "driver"
+        
+        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        if anView == nil {
+            anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            anView!.canShowCallout = true
         }
+        else {
+            anView!.annotation = annotation
+        }
+
+        anView!.image = UIImage(named: "black_car_icon")
         
         return anView
     }
@@ -125,10 +139,11 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         mapView.removeAnnotations(mapView.annotations)
         
         for driver in json.array! {
-            let driverAnnotation = DriverAnnotation(title: driver["driver"]["name"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!), info: "Taxi")
+            let driverAnnotation = DriverAnnotation(title: driver["driver"]["name"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!))
             mapView.addAnnotation(driverAnnotation)
             
         }
+    
     }
     
     func onDriversListError(error: NSInteger) {
@@ -136,24 +151,18 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+        mapView.removeOverlays(mapView.overlays)
+        mapView.removeAnnotations(mapView.annotations)
         
-//        // 2.
-//        let sourceLocation = CLLocationCoordinate2D(latitude: 45.815956, longitude: 15.956540)
-//        let destinationLocation = CLLocationCoordinate2D(latitude: 45.801506, longitude: 16.013786)
-        
-        // 2.
         let sourceLocation = startLocation
         let destinationLocation = endLocation
         
-        // 3.
         let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
         let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
         
-        // 4.
         let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
         let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
         
-        // 5.
         let sourceAnnotation = MKPointAnnotation()
         sourceAnnotation.title = "Times Square"
         
@@ -169,19 +178,15 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             destinationAnnotation.coordinate = location.coordinate
         }
         
-        // 6.
         self.mapView.showAnnotations([sourceAnnotation,destinationAnnotation], animated: true )
         
-        // 7.
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
         directionRequest.transportType = .Automobile
         
-        // Calculate the direction
         let directions = MKDirections(request: directionRequest)
         
-        // 8.
         directions.calculateDirectionsWithCompletionHandler {
             (response, error) -> Void in
             
@@ -196,10 +201,37 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             let route = response.routes[0]
             self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
             
-            let rect = route.polyline.boundingMapRect
-            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
         }
     
+    }
+    
+    func getOpenOrders(){
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            self.apiManager.getOpenOrder(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+        })
+    }
+    
+    func onOpenOrderNoOrders() {
+        if n < 1 {
+            getOpenOrders()
+        }
+    }
+    
+    func onOpenOrderSuccess(json: JSON) {
+        
+        self.n += 1
+        
+        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiRequestMapView") as? TaxiRequestFromUserViewController
+        viewController!.json = json
+        viewController!.lat = mapView.userLocation.coordinate.latitude
+        viewController!.lon = mapView.userLocation.coordinate.longitude
+        self.navigationController?.pushViewController(viewController!, animated: true)
+        
+    }
+    
+    func onOpenOrderError(error: NSInteger) {
+        
     }
 
 }

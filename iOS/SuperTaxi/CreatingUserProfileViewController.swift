@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import AssetsLibrary
 
 class CreatingUserProfileViewController: UIViewController, UIImagePickerControllerDelegate,
                     UINavigationControllerDelegate, UIApplicationDelegate, UITextFieldDelegate,
@@ -50,6 +51,12 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         
         apiManager = ApiManager()
         apiManager.setUserDetailsDelegate = self
+        
+        let status:ALAuthorizationStatus = ALAssetsLibrary.authorizationStatus()
+        
+        if status != ALAuthorizationStatus.Authorized{
+            print("User has not given authorization for the camera roll")
+        }
     }
 
     override func didReceiveMemoryWarning() {

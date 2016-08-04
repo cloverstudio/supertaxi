@@ -15,10 +15,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // SlideMenu Viewcontroller
         
-        // left and right bar buttonitem event
-        navigationController!.navigationBar.barTintColor = UIColor(red: 248/255.0, green: 244/255.0, blue: 236/255.0, alpha: 1.0)
     }
 
     override func didReceiveMemoryWarning() {

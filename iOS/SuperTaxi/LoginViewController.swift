@@ -72,8 +72,8 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
 //            parameters = ["email" : txtEmail.text!,
 //                                             "password" : Tools().sha1(txtPassword.text! + Api.SALT),
 //                                             "secret": secret]
-            parameters = ["email" : "jurica.mlinaric@clover-studio.com",
-                          "password" : Tools().sha1("clover" + Api.SALT),
+            parameters = ["email" : "driver@clover.com",
+                          "password" : Tools().sha1("driver" + Api.SALT),
                           "secret": secret]
             
         } else if(loginType == 2){
@@ -90,8 +90,16 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         
         if data.data.user.user != nil {
             self.performSegueWithIdentifier("SignInSeague", sender: nil)
+            userInformation.setValue(data.data.user.user.name, forKey: UserDetails.NAME)
+            userInformation.setValue(data.data.user.user.age, forKey: UserDetails.AGE)
+            userInformation.setValue(data.data.user.user.note, forKey: UserDetails.NOTE)
+            userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
+
         } else {
             self.performSegueWithIdentifier("DriverSigInSegue", sender: nil)
+            userInformation.setValue(data.data.user.driver.name, forKey: UserDetails.NAME)
+            userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
+    
         }
         
         userInformation.setValue(data.data.token_new, forKey: UserDetails.TOKEN)

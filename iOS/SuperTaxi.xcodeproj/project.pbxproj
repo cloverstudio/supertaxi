@@ -11,6 +11,8 @@
 		7696880E1D368FDB00F360BE /* UserLoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7696880D1D368FDB00F360BE /* UserLoginModel.swift */; };
 		769688101D36911F00F360BE /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7696880F1D36911F00F360BE /* UserDataModel.swift */; };
 		769688121D36926C00F360BE /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769688111D36926C00F360BE /* UserModel.swift */; };
+		76A2131B1D477EE2006AD36A /* GetOrderResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A2131A1D477EE2006AD36A /* GetOrderResponseModel.swift */; };
+		76A2131D1D477F4D006AD36A /* GetOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A2131C1D477F4D006AD36A /* GetOrderModel.swift */; };
 		76EFDD941D3785DB00EC5109 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EFDD931D3785DB00EC5109 /* SignUpViewController.swift */; };
 		76F0CF221D3D1F6C0034AF05 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76F0CF201D3D1F6C0034AF05 /* Main.storyboard */; };
 		76F12C881D46203500C1E95D /* UserInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F12C871D46203500C1E95D /* UserInfoModel.swift */; };
@@ -21,6 +23,7 @@
 		76F44ED91D40FF0000CC9D57 /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F44ED81D40FEFF00CC9D57 /* OrderModel.swift */; };
 		76F44EDD1D41008A00CC9D57 /* AddressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F44EDC1D41008A00CC9D57 /* AddressModel.swift */; };
 		76F44EDF1D41034000CC9D57 /* OrderResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F44EDE1D41034000CC9D57 /* OrderResponseModel.swift */; };
+		76F579BE1D520A26002417EB /* UserAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F579BD1D520A26002417EB /* UserAnnotation.swift */; };
 		76F7A6211D36548300C81B51 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6201D36548300C81B51 /* Tools.swift */; };
 		76F7A6241D367AA300C81B51 /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6231D367AA300C81B51 /* BaseModel.swift */; };
 		76F7A6271D367EDF00C81B51 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6261D367EDF00C81B51 /* ApiManager.swift */; };
@@ -30,7 +33,6 @@
 		C33289A41D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */; };
 		C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */; };
 		C33289A81D1D9F9300EDF3DA /* UserLongPressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */; };
-		C33289AA1D1D9FD100EDF3DA /* TaxiStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A91D1D9FD100EDF3DA /* TaxiStartViewController.swift */; };
 		C35433881D1C4B1200DD56B4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433871D1C4B1200DD56B4 /* LoginViewController.swift */; };
 		C354338A1D1C4B3C00DD56B4 /* SelectProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433891D1C4B3C00DD56B4 /* SelectProfileViewController.swift */; };
 		C354338C1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C354338B1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift */; };
@@ -76,6 +78,8 @@
 		7696880D1D368FDB00F360BE /* UserLoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoginModel.swift; sourceTree = "<group>"; };
 		7696880F1D36911F00F360BE /* UserDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		769688111D36926C00F360BE /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		76A2131A1D477EE2006AD36A /* GetOrderResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderResponseModel.swift; sourceTree = "<group>"; };
+		76A2131C1D477F4D006AD36A /* GetOrderModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderModel.swift; sourceTree = "<group>"; };
 		76EFDD931D3785DB00EC5109 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		76F0CF211D3D1F6C0034AF05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		76F12C871D46203500C1E95D /* UserInfoModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoModel.swift; sourceTree = "<group>"; };
@@ -86,6 +90,7 @@
 		76F44ED81D40FEFF00CC9D57 /* OrderModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderModel.swift; sourceTree = "<group>"; };
 		76F44EDC1D41008A00CC9D57 /* AddressModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressModel.swift; sourceTree = "<group>"; };
 		76F44EDE1D41034000CC9D57 /* OrderResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderResponseModel.swift; sourceTree = "<group>"; };
+		76F579BD1D520A26002417EB /* UserAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAnnotation.swift; sourceTree = "<group>"; };
 		76F7A6201D36548300C81B51 /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		76F7A6231D367AA300C81B51 /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 		76F7A6261D367EDF00C81B51 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -96,7 +101,6 @@
 		C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiUserLocationViewController.swift; sourceTree = "<group>"; };
 		C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRequestReceivedViewController.swift; sourceTree = "<group>"; };
 		C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLongPressViewController.swift; sourceTree = "<group>"; };
-		C33289A91D1D9FD100EDF3DA /* TaxiStartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiStartViewController.swift; sourceTree = "<group>"; };
 		C354335A1D1C4A1E00DD56B4 /* SuperTaxi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SuperTaxi-Bridging-Header.h"; sourceTree = "<group>"; };
 		C35433871D1C4B1200DD56B4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C35433891D1C4B3C00DD56B4 /* SelectProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectProfileViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				76F7A6201D36548300C81B51 /* Tools.swift */,
 				76F7A6281D36813500C81B51 /* Constants.swift */,
 				76F12C8D1D463BB600C1E95D /* DriverAnnotation.swift */,
+				76F579BD1D520A26002417EB /* UserAnnotation.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -176,6 +181,8 @@
 				76F12C8B1D46243000C1E95D /* DriverInfoModel.swift */,
 				76F12C8F1D464C2500C1E95D /* DriversListResponseModel.swift */,
 				76F12C911D464C7C00C1E95D /* DriversListDataModel.swift */,
+				76A2131A1D477EE2006AD36A /* GetOrderResponseModel.swift */,
+				76A2131C1D477F4D006AD36A /* GetOrderModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -280,6 +287,7 @@
 				C354334E1D1C48AC00DD56B4 /* AppDelegate */,
 				C3B24B0C1D1C23D300508611 /* User */,
 				C3B24B0B1D1C23CB00508611 /* TaxiDriver */,
+				C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */,
 				C35433871D1C4B1200DD56B4 /* LoginViewController.swift */,
 				C35433891D1C4B3C00DD56B4 /* SelectProfileViewController.swift */,
 				76EFDD931D3785DB00EC5109 /* SignUpViewController.swift */,
@@ -294,7 +302,6 @@
 				C35433911D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift */,
 				C33289A11D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift */,
 				C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */,
-				C33289A91D1D9FD100EDF3DA /* TaxiStartViewController.swift */,
 			);
 			name = TaxiDriver;
 			sourceTree = "<group>";
@@ -304,7 +311,6 @@
 			children = (
 				C354338B1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift */,
 				C354338D1D1C4B6600DD56B4 /* UserHomeViewController.swift */,
-				C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */,
 				C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */,
 				C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */,
 				C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */,
@@ -609,7 +615,6 @@
 				76F12C8E1D463BB600C1E95D /* DriverAnnotation.swift in Sources */,
 				76EFDD941D3785DB00EC5109 /* SignUpViewController.swift in Sources */,
 				769688101D36911F00F360BE /* UserDataModel.swift in Sources */,
-				C33289AA1D1D9FD100EDF3DA /* TaxiStartViewController.swift in Sources */,
 				76F12C901D464C2500C1E95D /* DriversListResponseModel.swift in Sources */,
 				C3C176291D1F234100D37B70 /* ForgotPasswordViewController.swift in Sources */,
 				C35433921D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift in Sources */,
@@ -626,8 +631,11 @@
 				C33289A81D1D9F9300EDF3DA /* UserLongPressViewController.swift in Sources */,
 				76F7A6241D367AA300C81B51 /* BaseModel.swift in Sources */,
 				76F12C8C1D46243000C1E95D /* DriverInfoModel.swift in Sources */,
+				76F579BE1D520A26002417EB /* UserAnnotation.swift in Sources */,
+				76A2131B1D477EE2006AD36A /* GetOrderResponseModel.swift in Sources */,
 				76F7A6271D367EDF00C81B51 /* ApiManager.swift in Sources */,
 				76F7A6211D36548300C81B51 /* Tools.swift in Sources */,
+				76A2131D1D477F4D006AD36A /* GetOrderModel.swift in Sources */,
 				76F44EDF1D41034000CC9D57 /* OrderResponseModel.swift in Sources */,
 				76F12C921D464C7C00C1E95D /* DriversListDataModel.swift in Sources */,
 				C35433881D1C4B1200DD56B4 /* LoginViewController.swift in Sources */,

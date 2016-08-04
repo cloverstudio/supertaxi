@@ -1,8 +1,8 @@
 //
-//  DriverAnnotation.swift
+//  UserAnnotation.swift
 //  SuperTaxi
 //
-//  Created by Jurica Mlinarić on 25/07/16.
+//  Created by Jurica Mlinarić on 03/08/16.
 //  Copyright © 2016 Jensen Pich. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import Foundation
 import MapKit
 import CoreAudioKit
 
-public class DriverAnnotation: NSObject, MKAnnotation {
+public class UserAnnotation: NSObject, MKAnnotation {
     
     public var title: String?
     public var coordinate: CLLocationCoordinate2D
@@ -20,5 +20,5 @@ public class DriverAnnotation: NSObject, MKAnnotation {
         self.coordinate = coordinate
         
     }
-
+    
 }

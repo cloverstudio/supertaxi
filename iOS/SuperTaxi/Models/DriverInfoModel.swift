@@ -21,6 +21,14 @@ public class DriverInfoModel: Mappable {
         
     }
     
+    init(name: String, car_type: String, car_registration: String, fee_start: NSInteger, fee_km: NSInteger){
+        self.name = name
+        self.car_type = car_type
+        self.car_registration = car_registration
+        self.fee_start = fee_start
+        self.fee_km = fee_km
+    }
+    
     public func mapping(map: Map) {
         name <- map["name"]
         car_type <- map["car_type"]

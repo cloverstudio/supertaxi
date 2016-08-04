@@ -7,21 +7,54 @@
 //
 
 import UIKit
+import SwiftyJSON
+import MapKit
 
 class UserRequestReceivedViewController: UIViewController {
     
     @IBOutlet var contactView: UIView!
+    @IBOutlet var txtName: UILabel!
+    @IBOutlet var txtDistance: UILabel!
+    @IBOutlet var txtCarType: UILabel!
+    @IBOutlet var txtCarRegistraion: UILabel!
+    @IBOutlet var txtFeeStart: UILabel!
+    @IBOutlet var avatar: UIImageView!
     
+    var driver: DriverInfoModel!
+    var driverFileId: String!
+    var driverLocation: [JSON]!
+    var from: CLLocationCoordinate2D!
+    var to: CLLocationCoordinate2D!
     
+    var driverId: String!
+    
+    var orderId: String!
+    
+    let UserInformation = NSUserDefaults.standardUserDefaults()
+    var apiManager: ApiManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.hidden = true
-        
         contactView.layer.borderWidth = 1
         contactView.layer.borderColor = Colors.darkBlue(1).CGColor
+        
+        if driverFileId != nil {
+            avatar.load(Api.IMAGE_URL + driverFileId)
+        }
+        
+        avatar.layer.cornerRadius = avatar.frame.size.height/2
+        avatar.clipsToBounds = true
+        
+        if driver != nil {
+            txtName.text = driver.name
+            txtCarType.text = driver.car_type
+            txtCarRegistraion.text = driver.car_registration
+            txtFeeStart.text = String(driver.fee_start)
+        }
+        
+        apiManager = ApiManager()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,4 +62,20 @@ class UserRequestReceivedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func showOnMap(sender: AnyObject) {
+        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserMapWithTaxiID") as? UserLongPressViewController
+        viewController?.driver = driver
+        viewController?.driverFileId = driverFileId
+        viewController?.driverLocation = driverLocation
+        viewController?.from = from
+        viewController?.to = to
+        viewController?.orderId = orderId
+        viewController?.driverId = driverId
+        self.navigationController?.pushViewController(viewController!, animated: true)
+    }
+    
+    @IBAction func cancel(sender: AnyObject) {
+        apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
+        self.navigationController!.popViewControllerAnimated(true)
+    }
 }
