@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/parentView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/llMain"
+        android:gravity="center_vertical"
+        android:weightSum="101">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="40"
+            android:orientation="vertical"
+            android:id="@+id/leftView">
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/small_text_view_title_text_size"
+                android:textColor="@color/revert_devil_gray"
+                android:text="@string/max_size_capital_"
+                />
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/default_title_size"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:id="@+id/tvNumOfPeople"
+                android:paddingBottom="10dp"
+                android:text="1 passanger"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/border_gray" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="15"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="35"
+            android:orientation="vertical"
+            android:id="@+id/rightView">
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/small_text_view_title_text_size"
+                android:textColor="@color/revert_devil_gray"
+                android:text="@string/etc_capital_"
+                />
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/default_title_size"
+                android:textColor="@color/black"
+                android:id="@+id/tvMinValue"
+                android:paddingBottom="10dp"
+                android:text="35 min"
+                />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/transparent"
+            android:src="@drawable/arrow_blue"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/llMain"
+        android:background="@color/border_gray" />
+
+</RelativeLayout>

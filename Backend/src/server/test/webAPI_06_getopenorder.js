@@ -14,7 +14,7 @@ describe('WEB API', function () {
                 .post('/api/v1/order/getOpenOrder')
                 .set('access-token', global.user1.token)
                 .send({
-                    lat: 99.45454545,
+                    lat: 89.45454545,
                     lon: 70.45445
                 })
                 .end(function (err, res) {
@@ -25,7 +25,10 @@ describe('WEB API', function () {
 
                 res.body.code.should.be.exactly(1);
                 res.body.should.have.property('data');
+                res.body.data.should.have.property('order');
                 
+                global.order = res.body.data.order;
+
                 done();
             
             });   
@@ -61,7 +64,7 @@ describe('WEB API', function () {
                 .post('/api/v1/order/getOpenOrder')
                 .set('access-token', global.user1.token)
                 .send({
-                    lat: 99.45454545,
+                    lat: 67.45454545,
                     lon: 'test'
                 })
                 .end(function (err, res) {

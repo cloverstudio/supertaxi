@@ -16,19 +16,19 @@ User.prototype.init = function(mongoose){
     this.schema = new mongoose.Schema({
         email: String,
         password: String,
-        user:{
+        user: {
             name : String,
             age : Number,
             note : String
         },
-        driver:{
+        driver: {
             name : String,
             car_type : String,
             car_registration : String,
             fee_start : Number,
             fee_km : Number
         },
-        avatar:{
+        avatar: {
             fileid:String,
             thumbfileid:String
         },
@@ -36,7 +36,9 @@ User.prototype.init = function(mongoose){
         token_generated: Number,
         pushToken: String,
         created: Number,
-        telNum: String
+        telNum: String,
+        currentLocation: { type: [ Number ], index: '2dsphere' },   // [ longitude, latitude ]
+        averageRate: Number
     });
 
     this.model = mongoose.model(Config.dbCollectionPrefix + "User", this.schema);

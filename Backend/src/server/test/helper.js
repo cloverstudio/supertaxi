@@ -24,6 +24,8 @@ global.user1 = {
     password : "password"
 }
 
+global.order = {};
+
 before(function(doneMain){
     
     this.timeout(15000);

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CCFFFFFF">
+
+        <android.support.percent.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--suppress AndroidDomInspection -->
+            <RelativeLayout
+                android:id="@+id/rlSeat"
+                app:layout_widthPercent="50%"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:background="@drawable/shape_oval_white_selector"
+                app:layout_aspectRatio="100%">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/ivSeatImage"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/user_black_border"/>
+
+                    <clover_studio.com.supertaxi.view.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textAllCaps="true"
+                        android:id="@+id/tvSeatValue"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_view_bigger"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/devil_gray"
+                android:textSize="@dimen/bigger_text_view_title_text_size"
+                android:text="@string/request_sent_capital"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:id="@+id/requestSentLabel"
+                android:layout_below="@id/rlSeat"/>
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/devil_gray"
+                android:textSize="@dimen/text_view_bigger"
+                android:text="@string/please_wait_for_driver_confirmation"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:id="@+id/pleaseWaitLabel"
+                android:layout_below="@id/requestSentLabel"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/loading_background"
+                android:layout_margin="@dimen/default_margin"
+                android:layout_below="@id/pleaseWaitLabel">
+
+                <View
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/loading_progress"
+                    android:id="@+id/loadingProgressView"/>
+
+            </RelativeLayout>
+
+            <clover_studio.com.supertaxi.view.CustomButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_red_button_with_corners_selector"
+                android:text="@string/cancel_trip_capital"
+                android:textColor="@color/white"
+                android:id="@+id/buttonCancelTrip"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/default_margin"
+                android:textSize="@dimen/default_title_size"/>
+
+        </android.support.percent.PercentRelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

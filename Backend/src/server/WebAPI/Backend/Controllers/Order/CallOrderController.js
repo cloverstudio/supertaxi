@@ -30,15 +30,16 @@ CallOrderController.prototype.init = function(app){
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
-     * @apiParam {Decimal} latFrom (Required) From latitude
-     * @apiParam {Decimal} lonFrom (Required) From longitude
-     * @apiParam {String} addressFrom (Required) From address
-     * @apiParam {Decimal} latTo (Required) To latitude
-     * @apiParam {Decimal} lonTo (Required) To longitude
-     * @apiParam {String} addressTo (Required) To address
+     * @apiParam {Decimal} latFrom (Required) User start latitude
+     * @apiParam {Decimal} lonFrom (Required) User start longitude
+     * @apiParam {String} addressFrom (Required) User start address
+     * @apiParam {Decimal} latTo (Required) User destination latitude
+     * @apiParam {Decimal} lonTo (Required) User destination longitude
+     * @apiParam {String} addressTo (Required) User destination address
      * @apiParam {Number} crewNum (Required) Number of passengers
     
      * @apiError UnknownError 6000000
+     * @apiError TokenInvalid 6000009
      * @apiError ParamErrorLatitudeFrom 6000017
      * @apiError ParamErrorLongitudeFrom 6000018
      * @apiError ParamErrorNoAddressFrom 6000019
@@ -49,8 +50,27 @@ CallOrderController.prototype.init = function(app){
 
      * 
      * @apiSuccessExample Success-Response:
-
-    { code: 1, time: 1467125660699 }
+        { 
+            code: 1,
+            time: 1468314014075,
+            data: { 
+                order: { 
+                    userId: '5784a21a773cfd5e2d58e770',
+                    createOrderTs: 1468310044176,
+                    crewNum: 4,
+                    _id: 5784a21c773cfd5e2d58e771,
+                    __v: 0,
+                    to: { 
+                        location: [ 34.4344333, -44.5665333 ],
+                        address: 'Bučarova 13 Zagreb' 
+                    },
+                    from: { 
+                        location: [ 35.4344333, -44.7453333 ],
+                        address: 'Siget 11 Zagreb' 
+                    }
+                }
+            }
+        }
 
      **/
 
@@ -76,23 +96,22 @@ CallOrderController.prototype.init = function(app){
                 var insertParams = {                    
                     userId: user._id.toString(),
                     from: {
-                        lat: result.fields.latFrom,
-                        lon: result.fields.lonFrom,
+                        location: [ result.fields.lonFrom, result.fields.latFrom ],
                         address: result.fields.addressFrom
                     },
                     to: {
-                        lat: result.fields.latTo,
-                        lon: result.fields.lonTo,
+                        location: [ result.fields.lonTo, result.fields.latTo ],
                         address: result.fields.addressTo
                     },
-                    orderTs: Utils.now(),
+                    createOrderTs: Utils.now(),
                     crewNum: result.fields.crewNum
                 };                           
                 
                 // save new order           
                 var order = new orderModel(insertParams);
                 order.save((err, saveResult) => {
-
+                    
+                    result.order = saveResult.toObject();
                     done(err, result);
 
                 });  
@@ -117,7 +136,7 @@ CallOrderController.prototype.init = function(app){
 
             } else {
 
-                self.successResponse(response, Const.responsecodeSucceed, {});
+                self.successResponse(response, Const.responsecodeSucceed, { order: result.order });
 
             }
 
@@ -133,11 +152,11 @@ CallOrderController.prototype.init = function(app){
 CallOrderController.prototype.validation = function(fields) {
 
     // coordinates from
-    if (!_.isNumber(fields.latFrom)) {
+    if (!Utils.isNumeric(fields.latFrom)) {
         return { handledError: Const.responsecodeParamErrorLatitudeFrom };
     }
-    
-    if (!_.isNumber(fields.lonFrom)) {
+
+    if (!Utils.isNumeric(fields.lonFrom)) {
         return { handledError: Const.responsecodeParamErrorLongitudeFrom };
     }
     
@@ -146,11 +165,11 @@ CallOrderController.prototype.validation = function(fields) {
     }
 
     // coordinates to
-    if (!_.isNumber(fields.latTo)) {
+    if (!Utils.isNumeric(fields.latTo)) {
         return { handledError: Const.responsecodeParamErrorLatitudeTo };
     }
     
-    if (!_.isNumber(fields.lonTo)) {
+    if (!Utils.isNumeric(fields.lonTo)) {
         return { handledError: Const.responsecodeParamErrorLongitudeTo };
     }
     
@@ -159,7 +178,7 @@ CallOrderController.prototype.validation = function(fields) {
     }
 
      // passenger number
-    if (!_.isNumber(fields.crewNum)) {
+    if (!Utils.isNumeric(fields.crewNum)) {
         return { handledError: Const.responsecodeParamErrorCrewNumber };
     }
 

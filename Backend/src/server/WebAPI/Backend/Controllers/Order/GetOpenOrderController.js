@@ -27,7 +27,7 @@ GetOpenOrderController.prototype.init = function(app){
      * @api {post} /api/v1/order/getOpenOrder Get Open Order 
      * @apiName Get Open Order
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Get open order for taxi driver
+     * @apiDescription This API receives JSON request. Get closest open order for taxi driver
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
@@ -35,8 +35,9 @@ GetOpenOrderController.prototype.init = function(app){
      * @apiParam {Decimal} lon (Required) Current driver longitude
     
      * @apiError UnknownError 6000000
-     * @apiError ParamErrorLatitudeDriver 6000024
-     * @apiError ParamErrorLongitudeDriver 6000025
+     * @apiError TokenInvalid 6000009
+     * @apiError ParamErrorLatitude 6000024
+     * @apiError ParamErrorLongitude 6000025
 
      * 
      * @apiSuccessExample Success-Response:
@@ -46,18 +47,16 @@ GetOpenOrderController.prototype.init = function(app){
             data: { 
                 order: { 
                     userId: '5784a21a773cfd5e2d58e770',
-                    orderTs: 1468310044176,
+                    createOrderTs: 1468310044176,
                     crewNum: 4,
                     _id: 5784a21c773cfd5e2d58e771,
                     __v: 0,
                     to: { 
-                        lat: 235.45454545,
-                        lon: 100.45454545,
+                        location: [ 34.4344333, -44.5665333 ],
                         address: 'Bučarova 13 Zagreb' 
                     },
                     from: { 
-                        lat: 99.45454545, 
-                        lon: 70.45445, 
+                        location: [ 35.4344333, -44.7453333 ],
                         address: 'Siget 11 Zagreb' 
                     },
                     user: { 
@@ -104,17 +103,23 @@ GetOpenOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
-                // get open order
+                // get nearest open order
                 orderModel.findOne({
-                    acceptTs: { $exists: false },
-                    arriveTs: { $exists: false },
-                    finishTs: { $exists: false },
-                    cancel: { $exists: false }
+                    "from.location": { 
+                        $near: {
+                            $geometry: { 
+                                type: 'Point',
+                                coordinates: [ request.body.lon, request.body.lat ]
+                            }
+                        }
+                    },
+                    acceptOrderTs: { $exists: false },
+                    cancelOrderOrTrip: { $exists: false }
                 }, (err, findResult) => {
 
                     if (findResult) 
                         result.order = findResult.toObject();
-                    
+
                     done(err, result);
 
                 });
@@ -171,12 +176,12 @@ GetOpenOrderController.prototype.init = function(app){
 
 GetOpenOrderController.prototype.validation = function(fields) {
 
-    if (!_.isNumber(fields.lat)) {
-        return { handledError: Const.responsecodeParamErrorLatitudeDriver };
+    if (!Utils.isNumeric(fields.lat)) {
+        return { handledError: Const.responsecodeParamErrorLatitude };
     }
     
-    if (!_.isNumber(fields.lon)) {
-        return { handledError: Const.responsecodeParamErrorLongitudeDriver };
+    if (!Utils.isNumeric(fields.lon)) {
+        return { handledError: Const.responsecodeParamErrorLongitude };
     }
 
     return null;

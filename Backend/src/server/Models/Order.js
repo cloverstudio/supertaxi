@@ -17,20 +17,19 @@ Order.prototype.init = function(mongoose){
         userId: { type: String, index: true },
         driverId: { type: String, index: true },
         from: {
-            lat: Number,
-            lon: Number,
+            location: { type: [ Number ], index: '2dsphere' }, // [ longitude, latitude ]
             address: String
         },
         to: {
-            lat: Number,
-            lon: Number,
+            location: { type: [ Number ], index: '2dsphere' }, // [ longitude, latitude ]
             address: String
         },
-        orderTs: Number,
-        acceptTs: Number,
-        arriveTs: Number,
-        finishTs: Number,
-        cancel: {
+        createOrderTs: Number,
+        acceptOrderTs: Number,
+        arriveToStartLocationTs: Number,
+        startTripTs: Number,
+        finishTripTs: Number,
+        cancelOrderOrTrip: {
             userTs: Number, // if user canceled
             driverTs: Number, // if driver canceled
             reason: String

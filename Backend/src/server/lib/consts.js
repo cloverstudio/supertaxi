@@ -25,8 +25,17 @@
     Const.responsecodeParamErrorLongitudeTo = 6000021;
     Const.responsecodeParamErrorNoAddressTo = 6000022;
     Const.responsecodeParamErrorCrewNumber = 6000023;
-    Const.responsecodeParamErrorLatitudeDriver = 6000024;
-    Const.responsecodeParamErrorLongitudeDriver = 6000025;
+    Const.responsecodeParamErrorLatitude = 6000024;
+    Const.responsecodeParamErrorLongitude = 6000025;
+    Const.responsecodeParamErrorInvalidId = 6000026;
+    Const.responsecodeParamErrorOrderAlreadyAcceptedOrCanceled = 6000027;
+    Const.responsecodeParamErrorDriverAlreadyArrivedOrOrderIsCanceled = 6000028;
+    Const.responsecodeParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled = 6000029;
+    Const.responsecodeParamErrorDriverAlreadyFinishedDrive = 6000030;
+    Const.responsecodeParamErrorRateNumber = 6000031;
+    Const.responsecodeParamErrorUserNotFound = 6000032;
+    Const.responsecodeParamErrorDriverNotFound = 6000033;
+    Const.responsecodeParamErrorOrderNotFound = 6000034;
 
     Const.httpCodeSucceed = 200;
     Const.httpCodeForbidden = 403;
@@ -40,11 +49,25 @@
     Const.REPassword = /^[0-9A-Za-z._+-]{6,}$/;
     Const.RENumbers = /^[0-9]*$/;
 
-    Const.userTypeNormal = 'user';
-    Const.userTypeDriver = 'driver';
+    Const.userTypeNormal = 1; // user
+    Const.userTypeDriver = 2; // driver
+
+    Const.userRate = {
+        min: 1,
+        max: 5
+    };
 
     Const.tokenValidInteval = 60*60*24*1000;
 
     Const.thumbSize = 256;
+
+    Const.orderStatus = {
+        accepted: 1,
+        canceled: 2,
+        pending: 3,
+        arrivedToStartLocation: 4,
+        startedDrive: 5,
+        finishedDrive: 6
+    };
 
     module["exports"] = Const;

@@ -3,8 +3,9 @@ package clover_studio.com.supertaxi.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
-import clover_studio.com.supertaxi.models.MyUserModel;
+import clover_studio.com.supertaxi.models.UserModel;
 
 /**
  * Created by ubuntu_ivo on 22.07.15..
@@ -94,16 +95,36 @@ public class Preferences {
         return getCustomString(Const.PreferencesKey.PUSH_TOKEN);
     }
 
-    public void setUserData(MyUserModel user){
-        setCustomString(Const.PreferencesKey._ID, user.user._id);
-        setCustomString(Const.PreferencesKey.USER_ID, user.user._id);
-        setCustomString(Const.PreferencesKey.EMAIL, user.user.email);
-        setCustomLong(Const.PreferencesKey.CREATED, user.user.created);
+    public void setUserData(UserModel user){
+
+        setCustomString(Const.PreferencesKey._ID, user._id);
+        setCustomString(Const.PreferencesKey.EMAIL, user.email);
+        setCustomLong(Const.PreferencesKey.CREATED, user.created);
+        setCustomString(Const.PreferencesKey.TEL_NUM, user.telNum);
+
+        if(user.avatar != null){
+            setCustomString(Const.PreferencesKey.AVATAR_FILE_ID, user.avatar.fileid);
+            setCustomString(Const.PreferencesKey.AVATAR_THUMB_ID, user.avatar.thumbfileid);
+        }
+
+        if(user.driver != null){
+            if(!TextUtils.isEmpty(user.driver.name))setCustomString(Const.PreferencesKey.DRIVER_TYPE_NAME, user.driver.name);
+            if(!TextUtils.isEmpty(user.driver.car_type))setCustomString(Const.PreferencesKey.CAR_TYPE, user.driver.car_type);
+            if(!TextUtils.isEmpty(user.driver.car_registration))setCustomString(Const.PreferencesKey.CAR_REGISTRATION, user.driver.car_registration);
+            if(user.driver.fee_km != 0) setCustomInt(Const.PreferencesKey.FEE_KM, user.driver.fee_km);
+            if(user.driver.fee_start != 0) setCustomInt(Const.PreferencesKey.FEE_START, user.driver.fee_start);
+
+        }
+
+        if(user.user != null){
+            if(!TextUtils.isEmpty(user.user.name)) setCustomString(Const.PreferencesKey.USER_TYPE_NAME, user.user.name);
+            if(user.user.age != 0) setCustomInt(Const.PreferencesKey.AGE, user.user.age);
+            if(!TextUtils.isEmpty(user.user.note)) setCustomString(Const.PreferencesKey.NOTE, user.user.note);
+        }
     }
 
     public void signOut(){
         removePreference(Const.PreferencesKey._ID);
-        removePreference(Const.PreferencesKey.USER_ID);
         removePreference(Const.PreferencesKey.EMAIL);
         removePreference(Const.PreferencesKey.CREATED);
         removePreference(Const.PreferencesKey.TOKEN);

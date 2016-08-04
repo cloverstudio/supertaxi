@@ -6,18 +6,17 @@ describe('WEB API', function () {
 
     var req, res;
 
-    describe('/order/cancel POST', function () {
+    describe('/order/start POST', function () {
         
-        it('success user cancel order', (done) => {
+        it('success start trip', function (done) {
 
             request(app)
-                .post('/api/v1/order/cancel')
+                .post('/api/v1/order/start')
                 .set('access-token', global.user1.token)
                 .send({
-                    type: "user",
-                    reason: "Odustao"
+                    orderId: global.order._id
                 })
-                .end((err, res) => {
+                .end(function (err, res) {
 
     			if (err) {
     				throw err;
@@ -32,37 +31,13 @@ describe('WEB API', function () {
             
         });
 
-        it('success driver cancel order', (done) => {
+        it('wrong order id', function (done) {
 
             request(app)
-                .post('/api/v1/order/cancel')
+                .post('/api/v1/order/start')
                 .set('access-token', global.user1.token)
                 .send({
-                    type: "driver",
-                    reason: "Canceled"
-                })
-                .end((err, res) => {
-
-                if (err) {
-                    throw err;
-                }
-
-                res.body.code.should.be.exactly(1);
-                res.body.should.have.property('data');
-                
-                done();
-            
-            });   
-            
-        });
-
-        it('wrong type', function (done) {
-
-            request(app)
-                .post('/api/v1/order/cancel')
-                .set('access-token', global.user1.token)
-                .send({
-                    type: "test"
+                    orderId: "test"
                 })
                 .end(function (err, res) {
 
@@ -70,7 +45,29 @@ describe('WEB API', function () {
                     throw err;
                 }
 
-                res.body.code.should.be.exactly(6000011);
+                res.body.code.should.be.exactly(6000026);
+                
+                done();
+            
+            });   
+            
+        });
+
+        it('driver already started drive or order is canceled', function (done) {
+
+            request(app)
+                .post('/api/v1/order/start')
+                .set('access-token', global.user1.token)
+                .send({
+                    orderId: global.order._id
+                })
+                .end(function (err, res) {
+
+                if (err) {
+                    throw err;
+                }
+
+                res.body.code.should.be.exactly(6000029);
                 
                 done();
             

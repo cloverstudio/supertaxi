@@ -20,6 +20,9 @@
     <string name="OK">OK</string>
     <string name="try_again">Try again</string>
 
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id">1639880416329372</string>
+
     <!-- ERROR -->
     <string name="error_unknown">Unknown error</string>
     <string name="error_invalid_token">Invalid token</string>
@@ -48,6 +51,73 @@
     <string name="i_am">I am</string>
     <string name="user">User</string>
     <string name="taxi_driver">Taxi driver</string>
-
+    <string name="version">Version</string>
+    <string name="build">build</string>
+    <string name="create_user_profile">Create user profile</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
+    <string name="note">Note</string>
+    <string name="save_capital">SAVE</string>
+    <string name="waiting_to_response">Waiting for response</string>
+    <string name="tap_to_edit_upload_nyour_avatar_photo">Tap to edit / upload \nyour avatar photo</string>
+    <string name="uploading">Uploading...</string>
+    <string name="choose_camera_or_gallery">Choose camera or gallery</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="edit_your_photo">Edit your photo</string>
+    <string name="rotate">Rotate</string>
+    <string name="keyDone">Done</string>
+    <string name="profile_capital">PROFILE</string>
+    <string name="car_type">Car type</string>
+    <string name="car_registration">Cat reg number</string>
+    <string name="start_fee">Start fee</string>
+    <string name="fee_km">Fee / km</string>
+    <string name="user_canceled">User Canceled</string>
+    <string name="error_login_facebook">Failed to sign in with facebook</string>
+    <string name="failed_to_sing_in_with_google_plus">Failed to sign in with google+</string>
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    <string name="report_a_problem">Report a problem</string>
+    <string name="about">About</string>
+    <string name="home_capital">HOME</string>
+    <string name="request_taxi">Request taxi</string>
+    <string name="show_more">Show more</string>
+    <string name="from_">From:</string>
+    <string name="to_">To:</string>
+    <string name="min">min</string>
+    <string name="set_pickup_location_capital">SET PICKUP LOCATION</string>
+    <string name="max_size_capital_">MAX SIZE:</string>
+    <string name="etc_capital_">ETC:</string>
+    <string name="min_fare_capital_">MIN FARE:</string>
+    <string name="cars_available">cars available</string>
+    <string name="set_destination_location_capital">SET DESTINATION LOCATION</string>
+    <string name="cancel_trip_capital">CANCEL TRIP</string>
+    <string name="request_sent_capital">REQUEST SENT</string>
+    <string name="please_wait_for_driver_confirmation">Please wait for driver confirmation.</string>
+    <string name="please_set_pick_up_location">Please set pick up location</string>
+    <string name="please_set_destination_location">Please set destination location</string>
+    <string name="one_seat_available">1 SEAT AVAILABLE</string>
+    <string name="two_seats_available">2 SEATS AVAILABLE</string>
+    <string name="four_seats_available">4 SEATS AVAILABLE</string>
+    <string name="show_on_map">Show on map</string>
+    <string name="contact_driver">Contact driver</string>
+    <string name="car_">Car:</string>
+    <string name="car_reg_number_">Car reg number:</string>
+    <string name="start_fee_">Start fee:</string>
+    <string name="fee_per_km_">Fee per km:</string>
+    <string name="rating_">Rating:</string>
+    <string name="seat">seat</string>
+    <string name="seats">seats</string>
+    <string name="mobile_">Mobile:</string>
+    <string name="cancel_trip">Cancel Trip</string>
+    <string name="close_capital_first">Close</string>
+    <string name="your_last_trip">Your last trip</string>
+    <string name="price_">Price:</string>
+    <string name="rate_your_ride">Rate Your Ride</string>
+    <string name="note_">Note:</string>
+    <string name="you_ride_is_over">You ride is over!</string>
+    <string name="please_rate_our_passenger">Please rate our passenger :)</string>
+    <string name="i_ll_do_it_next_time">I\'ll do it next time..</string>
 
 </resources>

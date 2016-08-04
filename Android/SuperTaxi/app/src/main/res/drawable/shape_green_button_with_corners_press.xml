@@ -4,5 +4,5 @@
        android:useLevel="false">
     <solid android:color="@color/green_button_color_press"/>
     <corners
-        android:bottomRightRadius="5dp" android:bottomLeftRadius="5dp"/>
+        android:radius="5dp"/>
 </shape>

@@ -26,16 +26,19 @@ CancelOrderController.prototype.init = function(app){
      * @api {post} /api/v1/order/cancel Cancel Order
      * @apiName Cancel Order
      * @apiGroup WebAPI
-     * @apiDescription This API receives JSON request. Cancels open order
+     * @apiDescription This API receives JSON request. Cancels order
      * 
      * @apiHeader {String} access-token Users unique access-token.
      * 
-     * @apiParam {String} type (Required) User type should be "user" or "driver"
+     * @apiParam {String} orderId (Required) Accepted order id
+     * @apiParam {Number=1,2} type (Required) User type should be 1: user or 2: driver
      * @apiParam {String} [reason] Descriptive reason for canceling a order
     
      * @apiError UnknownError 6000000
+     * @apiError TokenInvalid 6000009
      * @apiError ParamErrorWrongType 6000011
-
+     * @apiError ParamErrorInvalidId 6000026
+     * @apiError ParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled 6000029
      * 
      * @apiSuccessExample Success-Response:
         { 
@@ -61,23 +64,35 @@ CancelOrderController.prototype.init = function(app){
                 var updateParams = {};
 
                 if (request.body.type == Const.userTypeNormal)
-                    updateParams.cancel = { userTs: Utils.now() };
+                    updateParams.cancelOrderOrTrip = { userTs: Utils.now() };
                 else
-                    updateParams.cancel = { driverTs: Utils.now() };
+                    updateParams.cancelOrderOrTrip = { driverTs: Utils.now() };
 
                 if (request.body.reason)
-                        updateParams.cancel.reason = request.body.reason;
+                    updateParams.cancelOrderOrTrip.reason = request.body.reason;
 
                 orderModel.update({
-                    acceptTs: { $exists: false },
-                    arriveTs: { $exists: false },
-                    finishTs: { $exists: false },
-                    cancel: { $exists: false }
+                    _id: request.body.orderId,
+                    startTripTs: { $exists: false },
+                    cancelOrderOrTrip: { $exists: false }
                 }, { 
                     $set: updateParams
                 }, (err, updateResult) => {
                     
-                    done(err, result);
+                    var error = null;
+
+                    if (err)
+
+                        error = err;
+
+                    else {
+                        // if order not found
+                        if (updateResult.n == 0)
+                            error = { handledError: Const.responsecodeParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled };
+
+                    }
+
+                    done(error, result);
 
                 });
 
@@ -114,6 +129,10 @@ CancelOrderController.prototype.init = function(app){
 }
 
 CancelOrderController.prototype.validation = function(fields) {
+
+    if (!Utils.isObjectId(fields.orderId)) {
+        return { handledError: Const.responsecodeParamErrorInvalidId };
+    }
 
     if (fields.type != Const.userTypeNormal && fields.type != Const.userTypeDriver) {
         return { handledError: Const.responsecodeParamErrorWrongType };

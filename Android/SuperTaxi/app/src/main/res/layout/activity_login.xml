@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/facebook"
@@ -86,6 +86,13 @@
                         android:drawableTop="@drawable/ic_facebook_selector"
                         android:id="@+id/tvFacebook"
                         android:drawablePadding="10dp"/>
+
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/login_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
 
@@ -97,7 +104,7 @@
                     android:layout_marginRight="40dp"
                     android:layout_marginEnd="40dp">
 
-                    <TextView
+                    <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/twitter"
@@ -112,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/g_plus"
