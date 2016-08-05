@@ -103,19 +103,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="jurica.mlinaric@clover-studio.com" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" id="wJ3-ph-swI">
-                                <rect key="frame" x="20" y="261" width="280" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
-                            </textField>
                             <view contentMode="scaleToFill" id="Ln5-rD-r3g">
                                 <rect key="frame" x="20" y="293" width="280" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="clover" placeholder="Password" textAlignment="natural" minimumFontSize="17" id="wR3-do-aQE">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" id="wR3-do-aQE">
                                 <rect key="frame" x="20" y="307" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -200,6 +193,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" id="wJ3-ph-swI">
+                                <rect key="frame" x="20" y="264" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1261,7 +1261,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" id="Vjg-Nq-hfe" userLabel="RatingView2">
+                            <view contentMode="scaleToFill" id="Vjg-Nq-hfe" userLabel="RatingView2">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -1429,11 +1429,15 @@
                         <outlet property="avatarImage2" destination="ZZx-p0-4k5" id="wtC-63-eTx"/>
                         <outlet property="avatarImage3" destination="qKW-Ic-RqP" id="hjq-Ic-yij"/>
                         <outlet property="cancelTripBottom" destination="4nb-eJ-KSK" id="jm5-Q7-jlK"/>
+                        <outlet property="fiveStars" destination="mzd-wC-wOI" id="YAX-RJ-9gS"/>
+                        <outlet property="fourStars" destination="147-bw-IRd" id="Qnj-hg-Wu6"/>
                         <outlet property="mapView" destination="0Vr-83-TmH" id="8JC-wH-oAL"/>
                         <outlet property="navView" destination="flk-av-1Ri" id="88s-VH-rcV"/>
                         <outlet property="ratingView" destination="fdB-q6-rMp" id="3qj-Jl-oUn"/>
                         <outlet property="ratingView2" destination="Vjg-Nq-hfe" id="woo-UK-q98"/>
                         <outlet property="routeImage" destination="mOe-aJ-S9C" id="YMX-3c-4Nw"/>
+                        <outlet property="threeStars" destination="XXM-Ga-f68" id="G5R-yB-ogU"/>
+                        <outlet property="twoStars" destination="i1k-wP-z8l" id="oxe-dD-voS"/>
                         <outlet property="txtDistance" destination="Kkl-f0-PAs" id="8kX-TZ-RiM"/>
                         <outlet property="txtDriverName" destination="IOS-p1-yNJ" id="kk6-TB-yHq"/>
                     </connections>
@@ -2404,9 +2408,13 @@
                         <outlet property="avatar" destination="mUI-cM-AUz" id="q0V-8f-JT1"/>
                         <outlet property="btnEndTrip" destination="t1V-y3-ZRr" id="cRq-Xl-QCW"/>
                         <outlet property="btnStartTrip" destination="zIp-kt-h12" id="WzW-1G-WAJ"/>
+                        <outlet property="fiveStars" destination="t1q-EB-7aa" id="Xtw-kD-fLg"/>
+                        <outlet property="fourStars" destination="7Oe-yH-zCO" id="WOh-Hc-LhZ"/>
                         <outlet property="mapImage" destination="w7d-Mg-lia" id="dUS-p4-Gs6"/>
                         <outlet property="mapView" destination="hjw-XK-f9O" id="pfh-Ql-Ucp"/>
                         <outlet property="ratingView" destination="HxI-qE-Sqw" id="5Bn-04-PGj"/>
+                        <outlet property="threeStars" destination="fkD-X2-iGu" id="VOC-Zy-A9c"/>
+                        <outlet property="twoStars" destination="TYu-lS-VYr" id="0J2-tG-NWr"/>
                         <outlet property="txtDistance" destination="len-6M-1b2" id="UWp-p1-MAa"/>
                         <outlet property="txtRateUserName" destination="uVP-Wz-OmJ" id="A0f-cf-ykC"/>
                         <outlet property="txtUserAge" destination="4uh-a8-NAW" id="oov-ZF-H7t"/>
@@ -2475,7 +2483,7 @@
                                 <rect key="frame" x="0.0" y="60" width="320" height="226"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image1" id="kna-ui-jhc">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" id="kna-ui-jhc">
                                         <rect key="frame" x="123" y="34" width="75" height="75"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -2613,8 +2621,8 @@
         <image name="yellow_star" width="13" height="13"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tZC-I8-Rd8"/>
         <segue reference="AiE-hp-6PV"/>
-        <segue reference="a5f-kP-aSG"/>
+        <segue reference="tZC-I8-Rd8"/>
+        <segue reference="bGu-PF-hL4"/>
     </inferredMetricsTieBreakers>
 </document>

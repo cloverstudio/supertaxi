@@ -28,6 +28,11 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     @IBOutlet var avatarImage2: UIImageView!
     @IBOutlet var avatarImage3: UIImageView!
     
+    @IBOutlet var twoStars: UIButton!
+    @IBOutlet var threeStars: UIButton!
+    @IBOutlet var fourStars: UIButton!
+    @IBOutlet var fiveStars: UIButton!
+    
     var locationManager: CLLocationManager!
     
     let userInformation = NSUserDefaults.standardUserDefaults()
@@ -138,18 +143,28 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     }
     
     @IBAction func twoStarRate(sender: AnyObject) {
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
         apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 2)
     }
     
     @IBAction func threeStarRate(sender: AnyObject) {
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
         apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 3)
     }
     
     @IBAction func fourStarRate(sender: AnyObject) {
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
         apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 4)
     }
     
     @IBAction func fiveStarRate(sender: AnyObject) {
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        fiveStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
         apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 5)
     }
     

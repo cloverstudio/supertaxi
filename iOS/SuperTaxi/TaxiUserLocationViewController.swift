@@ -33,6 +33,10 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     @IBOutlet var userRateAvatar: UIImageView!
     @IBOutlet var txtRateUserName: UILabel!
     
+    @IBOutlet var twoStars: UIButton!
+    @IBOutlet var threeStars: UIButton!
+    @IBOutlet var fourStars: UIButton!
+    @IBOutlet var fiveStars: UIButton!
     
     var locationManager: CLLocationManager!
     let UserInformation = NSUserDefaults.standardUserDefaults()
@@ -172,18 +176,28 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     
     @IBAction func twoStarRate(sender: AnyObject) {
         apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 2)
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
     }
     
     @IBAction func threeStarRate(sender: AnyObject) {
         apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 3)
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
     }
     
     @IBAction func fourStarRate(sender: AnyObject) {
         apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 4)
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
     }
     
     @IBAction func fiveStarRate(sender: AnyObject) {
         apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 5)
+        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
+        fiveStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
     }
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {

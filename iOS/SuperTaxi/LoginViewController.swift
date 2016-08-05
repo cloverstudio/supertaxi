@@ -69,12 +69,12 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         var parameters : NSDictionary!
         
         if (loginType == 1) {
-//            parameters = ["email" : txtEmail.text!,
-//                                             "password" : Tools().sha1(txtPassword.text! + Api.SALT),
-//                                             "secret": secret]
-            parameters = ["email" : "driver@clover.com",
-                          "password" : Tools().sha1("driver" + Api.SALT),
-                          "secret": secret]
+            parameters = ["email" : txtEmail.text!,
+                                             "password" : Tools().sha1(txtPassword.text! + Api.SALT),
+                                             "secret": secret]
+//            parameters = ["email" : "driver@clover.com",
+//                          "password" : Tools().sha1("driver" + Api.SALT),
+//                          "secret": secret]
             
         } else if(loginType == 2){
             parameters = ["email" : self.fbEmail,
