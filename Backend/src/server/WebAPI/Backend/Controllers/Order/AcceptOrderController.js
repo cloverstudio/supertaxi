@@ -36,7 +36,6 @@ AcceptOrderController.prototype.init = function(app){
      * @apiError TokenInvalid 6000009
      * @apiError ParamErrorInvalidId 6000026
      * @apiError ParamErrorOrderAlreadyAcceptedOrCanceled 6000027
-
      * 
      * @apiSuccessExample Success-Response:
         { 
