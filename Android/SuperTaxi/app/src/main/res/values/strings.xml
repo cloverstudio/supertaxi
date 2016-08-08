@@ -119,5 +119,7 @@
     <string name="you_ride_is_over">You ride is over!</string>
     <string name="please_rate_our_passenger">Please rate our passenger :)</string>
     <string name="i_ll_do_it_next_time">I\'ll do it next time..</string>
+    <string name="ignore">Ignore</string>
+    <string name="accept">Accept</string>
 
 </resources>

@@ -23,6 +23,7 @@ import com.balysv.materialmenu.MaterialMenuView;
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.base.BaseFragment;
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
+import clover_studio.com.supertaxi.fragments.DriverMainFragment;
 import clover_studio.com.supertaxi.fragments.DriverProfileFragment;
 import clover_studio.com.supertaxi.fragments.UserMainFragment;
 import clover_studio.com.supertaxi.fragments.UserProfileFragment;
@@ -258,7 +259,7 @@ public class HomeActivity extends BaseActivity {
         }
 
         if(UserSingleton.getInstance().getUserType() == Const.UserType.USER_TYPE_DRIVER){
-            mainFragment = new UserMainFragment();
+            mainFragment = new DriverMainFragment();
         }else{
             mainFragment = new UserMainFragment();
         }

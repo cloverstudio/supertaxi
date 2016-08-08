@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import clover_studio.com.supertaxi.base.BaseActivity;
@@ -117,14 +118,22 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
         this.googleMap = googleMap;
 
         if(startLocation != null && destinationLocation != null){
+
+            List<Double> latitudeAll = new ArrayList<>();
+            latitudeAll.add(startLocation.latitude);
+            latitudeAll.add(destinationLocation.latitude);
+
+            List<Double> longitudeAll = new ArrayList<>();
+            longitudeAll.add(startLocation.longitude);
+            longitudeAll.add(destinationLocation.longitude);
+
+            LatLng southWest = new LatLng(Collections.min(latitudeAll), Collections.min(longitudeAll));
+            LatLng northEast = new LatLng(Collections.max(latitudeAll), Collections.max(longitudeAll));
+            LatLngBounds bounds = new LatLngBounds(southWest, northEast);
+
             googleMap.addMarker(new MarkerOptions().position(startLocation));
             googleMap.addMarker(new MarkerOptions().position(destinationLocation));
-            LatLngBounds bounds = null;
-            if(startLocation.latitude < destinationLocation.latitude){
-                bounds = new LatLngBounds(startLocation, destinationLocation);
-            }else{
-                bounds = new LatLngBounds(destinationLocation, startLocation);
-            }
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
             googleMap.getUiSettings().setScrollGesturesEnabled(false);
             googleMap.getUiSettings().setZoomGesturesEnabled(false);
@@ -154,10 +163,10 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
         urlString.append(Double.toString(startLocation.latitude));
         urlString.append(",");
         urlString.append(Double.toString( startLocation.longitude));
-        urlString.append("&waypoints=");// from
-        urlString.append(Double.toString(45.787848));
-        urlString.append(",");
-        urlString.append(Double.toString(15.930355));
+//        urlString.append("&waypoints=");// from
+//        urlString.append(Double.toString(45.787848));
+//        urlString.append(",");
+//        urlString.append(Double.toString(15.930355));
         urlString.append("&destination=");// to
         urlString.append(Double.toString( destinationLocation.latitude));
         urlString.append(",");
