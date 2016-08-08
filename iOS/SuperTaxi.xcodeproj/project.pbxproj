@@ -407,7 +407,7 @@
 				TargetAttributes = {
 					C3B24AD61D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 5N5Z6YEX8D;
+						DevelopmentTeam = XJXX32P7NP;
 					};
 					C3B24AEA1D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
@@ -798,9 +798,9 @@
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SuperTaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d599d51b-32d1-4c8d-8d66-57b8e280fa16";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -821,9 +821,9 @@
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SuperTaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d599d51b-32d1-4c8d-8d66-57b8e280fa16";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 			};
 			name = Release;
