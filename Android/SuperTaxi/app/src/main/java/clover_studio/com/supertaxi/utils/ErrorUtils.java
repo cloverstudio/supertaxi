@@ -57,6 +57,10 @@ public class ErrorUtils {
                 return res.getString(R.string.error_wrong_secret);
             case Const.ErrorCodes.EMAIL_EXISTS:
                 return res.getString(R.string.error_email_exists);
+            case Const.ErrorCodes.ALREADY_ACCEPTED_OR_CANCELED:
+                return res.getString(R.string.error_already_accepted_or_canceled);
+            case Const.ErrorCodes.ALREADY_STARTED_OR_CANCELED:
+                return res.getString(R.string.error_already_started_or_canceled);
             default:
                 return res.getString(R.string.error_unknown);
         }

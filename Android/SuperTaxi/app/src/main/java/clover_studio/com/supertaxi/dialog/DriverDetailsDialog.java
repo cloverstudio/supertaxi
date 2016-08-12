@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -28,11 +29,13 @@ import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.models.BaseModel;
 import clover_studio.com.supertaxi.models.CallTaxiModel;
 import clover_studio.com.supertaxi.models.OrderModel;
+import clover_studio.com.supertaxi.models.UserModel;
 import clover_studio.com.supertaxi.models.post_models.PostCallTaxiModel;
 import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.AnimationUtils;
 import clover_studio.com.supertaxi.utils.Const;
+import clover_studio.com.supertaxi.utils.ImageUtils;
 import clover_studio.com.supertaxi.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -53,12 +56,13 @@ public class DriverDetailsDialog extends Dialog {
     private LinearLayout llStarLayout;
 
     private OrderModel order;
+    private UserModel driver;
 
-    public static DriverDetailsDialog startDialog(Context context, OrderModel order) {
-        return new DriverDetailsDialog(context, order);
+    public static DriverDetailsDialog startDialog(Context context, OrderModel order, UserModel driver) {
+        return new DriverDetailsDialog(context, order, driver);
     }
 
-    public DriverDetailsDialog(Context context, OrderModel order) {
+    public DriverDetailsDialog(Context context, OrderModel order, UserModel driver) {
         super(context, R.style.Theme_Dialog_no_dim);
 
         setOwnerActivity((Activity) context);
@@ -66,6 +70,7 @@ public class DriverDetailsDialog extends Dialog {
         setCanceledOnTouchOutside(true);
 
         this.order = order;
+        this.driver = driver;
 
         show();
 
@@ -86,8 +91,18 @@ public class DriverDetailsDialog extends Dialog {
         tvStartFee = (TextView) findViewById(R.id.tvStartFeeValue);
         tvKMFee = (TextView) findViewById(R.id.tvKMFeeValue);
         tvMobile = (TextView) findViewById(R.id.tvMobileValue);
-        tvRating = (TextView) findViewById(R.id.tvMobileValue);
+        tvRating = (TextView) findViewById(R.id.tvKRatingValue);
         llStarLayout = (LinearLayout) findViewById(R.id.ratingStars);
+
+        String urlAvatar = Utils.getAvatarUrl(driver);
+        ImageUtils.setImageWithPicasso(ivAvatar, urlAvatar);
+
+        tvName.setText(driver.driver.name);
+        tvCarReg.setText(driver.driver.car_registration);
+        tvCarType.setText(driver.driver.car_type);
+        tvStartFee.setText(String.valueOf(driver.driver.fee_start));
+        tvKMFee.setText(String.valueOf(driver.driver.fee_km));
+        tvMobile.setText(driver.telNum);
 
         int rating = 2;
         if (rating > llStarLayout.getChildCount()) {
@@ -114,12 +129,7 @@ public class DriverDetailsDialog extends Dialog {
         ((View) tvMobile.getParent()).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
-                if (ActivityCompat.checkSelfPermission(getOwnerActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getOwnerActivity(), new String[]{android.Manifest.permission.CALL_PHONE}, Const.PermissionCode.CALL);
-                    return;
-                }
-                getOwnerActivity().startActivity(intent);
+                Utils.contactUserWithNum(getOwnerActivity(), tvMobile.getText().toString());
             }
         });
 
@@ -158,6 +168,7 @@ public class DriverDetailsDialog extends Dialog {
                     super.onCustomSuccess(call, response);
 
                     DriverDetailsDialog.this.dismiss();
+                    LocalBroadcastManager.getInstance(getOwnerActivity()).sendBroadcast(new Intent(Const.ReceiverIntents.ON_CANCEL_TRIP).putExtra(Const.Extras.ORDER_MODEL, order));
 
                 }
 

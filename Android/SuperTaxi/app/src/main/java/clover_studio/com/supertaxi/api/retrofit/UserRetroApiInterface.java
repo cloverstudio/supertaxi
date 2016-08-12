@@ -1,8 +1,12 @@
 package clover_studio.com.supertaxi.api.retrofit;
 
 import clover_studio.com.supertaxi.models.BaseModel;
+import clover_studio.com.supertaxi.models.CheckOrderStatusModel;
 import clover_studio.com.supertaxi.models.SignInDataModel;
 import clover_studio.com.supertaxi.models.UpdateProfileResponse;
+import clover_studio.com.supertaxi.models.post_models.PostCheckOrderStatusModel;
+import clover_studio.com.supertaxi.models.post_models.PostLatLngModel;
+import clover_studio.com.supertaxi.models.post_models.PostRateModel;
 import clover_studio.com.supertaxi.models.post_models.PostSignUpModel;
 import clover_studio.com.supertaxi.utils.Const;
 import retrofit2.Call;
@@ -31,5 +35,12 @@ public interface UserRetroApiInterface {
                                               @Part(Const.PostParams.FEE_KM) int fee_km,
                                               @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
 
+    @POST(Const.Server.CHECK_ORDER_STATUS)
+    Call<CheckOrderStatusModel> checkOrderStatus(@Body PostCheckOrderStatusModel post, @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
 
+    @POST(Const.Server.UPDATE_COORDINATES)
+    Call<BaseModel> updateCoordinates(@Body PostLatLngModel post, @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
+
+    @POST(Const.Server.RATE_PROFILE)
+    Call<BaseModel> rateProfile(@Body PostRateModel post, @Header(Const.HeadersParams.ACCESS_TOKEN) String token);
 }

@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -19,12 +21,15 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,8 +37,13 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.squareup.picasso.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +54,9 @@ import clover_studio.com.supertaxi.LastTripDialogLikeActivity;
 import clover_studio.com.supertaxi.R;
 import clover_studio.com.supertaxi.RespondedDriverDetailsActivity;
 import clover_studio.com.supertaxi.adapters.AddressAdapter;
+import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
+import clover_studio.com.supertaxi.api.retrofit.DriverRetroApiInterface;
+import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseFragment;
 import clover_studio.com.supertaxi.dialog.BasicDialog;
 import clover_studio.com.supertaxi.dialog.DialogUserRequestDetails;
@@ -52,16 +65,31 @@ import clover_studio.com.supertaxi.dialog.RateUserDialog;
 import clover_studio.com.supertaxi.dialog.RequestSentDialog;
 import clover_studio.com.supertaxi.dialog.SeatsNumberDialog;
 import clover_studio.com.supertaxi.dialog.ShowMoreInMapDialog;
+import clover_studio.com.supertaxi.models.BaseModel;
+import clover_studio.com.supertaxi.models.CheckOrderStatusModel;
+import clover_studio.com.supertaxi.models.OrderModel;
+import clover_studio.com.supertaxi.models.UserModel;
+import clover_studio.com.supertaxi.models.post_models.PostAcceptOrderModel;
+import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
+import clover_studio.com.supertaxi.models.post_models.PostCheckOrderStatusModel;
+import clover_studio.com.supertaxi.models.post_models.PostLatLngModel;
+import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.AnimationUtils;
+import clover_studio.com.supertaxi.utils.Const;
+import clover_studio.com.supertaxi.utils.ImageUtils;
 import clover_studio.com.supertaxi.utils.LocationSourceListener;
+import clover_studio.com.supertaxi.utils.LogCS;
+import clover_studio.com.supertaxi.utils.MapsUtils;
 import clover_studio.com.supertaxi.utils.Utils;
 import clover_studio.com.supertaxi.view.touchable_map.MapStateListener;
 import clover_studio.com.supertaxi.view.touchable_map.TouchableMapFragment;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by ivoperic on 13/07/16.
  */
-public class UserMainFragment extends BaseFragment implements OnMapReadyCallback {
+public class UserMainFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     public static final int WAIT_FOR_SEARCH_WHILE_TYPING = 500;
 
@@ -82,6 +110,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     private TouchableMapFragment mapFragment;
     private View viewTimer;
     private View smallPin;
+    private Button buttonRequestTaxi;
+    private RelativeLayout rlCancelTripLayout;
 
     private RecyclerView rvFromSearch;
     private RelativeLayout rlForListFrom;
@@ -99,6 +129,13 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     private Location myLocation = null;
     private LocationSourceListener locationSourceListener;
     private Geocoder geocoder;
+
+    private OrderModel acceptedOrder = null;
+    private UserModel acceptedDriver = null;
+    private int screenStatus = Const.MainUserStatus.REQUEST_TAXI_SCREEN;
+    private Polyline lastPolyline = null;
+    private Marker driverMarker = null;
+    private Marker driverPickupMarker = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,6 +171,24 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
         if(googleMap != null){
             googleMap.setLocationSource(locationSourceListener);
         }
+        if(stopChecking == true){
+            stopChecking = false;
+            if(acceptedOrder != null){
+                checkOrderStatus(acceptedOrder);
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopChecking = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopChecking = true;
     }
 
     private void initViews(View rootView){
@@ -154,6 +209,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
         rlTo = (RelativeLayout) rootView.findViewById(R.id.rlTo);
         rlFrom = (RelativeLayout) rootView.findViewById(R.id.rlFrom);
         viewBlackedOut = rootView.findViewById(R.id.allBlackedOut);
+        buttonRequestTaxi = (Button) rootView.findViewById(R.id.requestTaxi);
+        rlCancelTripLayout = (RelativeLayout) rootView.findViewById(R.id.rlButtonsCancelTrip);
     }
 
     private void configureRecycler(){
@@ -172,7 +229,7 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
         ibMyLocation.setOnClickListener(onMyLocationClicked);
         etFrom.addTextChangedListener(onEtFromTextWatchListener);
         etTo.addTextChangedListener(onEtToTextWatchListener);
-        rootView.findViewById(R.id.requestTaxi).setOnClickListener(onRequestClicked);
+        buttonRequestTaxi.setOnClickListener(onRequestClicked);
     }
 
     @SuppressWarnings("MissingPermission")
@@ -185,6 +242,7 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
         googleMap.setLocationSource(locationSourceListener);
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        googleMap.setOnMarkerClickListener(this);
 
         new MapStateListener(googleMap, mapFragment, getActivity()) {
             @Override
@@ -203,7 +261,6 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             public void onMapUnsettled() {
                 // Map unsettled
                 Log.d("LOG", "MAP unsettled");
-//                rlParentOfMyCurrent.setVisibility(View.GONE);
                 hideElements(true);
             }
 
@@ -211,7 +268,6 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             public void onMapSettled() {
                 // Map settled
                 Log.d("LOG", "MAP settled");
-                LatLng current = googleMap.getCameraPosition().target;
                 showElements();
             }
 
@@ -258,11 +314,22 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
 
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(acceptedDriver != null){
+            if(marker.getSnippet() != null && marker.getSnippet().equals(acceptedDriver._id)){
+                DriverDetailsDialog.startDialog(getActivity(), acceptedOrder, acceptedDriver);
+            }
+        }
+        return false;
+    }
+
     private LocationSourceListener.OnMyLocationChangedListener onMyLocationChangedListener = new LocationSourceListener.OnMyLocationChangedListener() {
         @Override
         public void onLocationChanged(Location myLocationNew) {
             myLocation = myLocationNew;
             Log.d("LOG_IVO", "MY LOCATION: " + myLocation.getLatitude() + ", " + myLocation.getLongitude());
+            updateCoordinates(new LatLng(myLocation.getLatitude(), myLocationNew.getLongitude()));
         }
     };
 
@@ -286,10 +353,28 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
                 etTo.setText(address);
                 destinationLocation = current;
                 destinationAddress = address;
+
+                drawRoute();
             }
 
         }
     };
+
+    private void drawRoute(){
+        removeRoute();
+        MapsUtils.calculateRoute(pickupLocation, destinationLocation, new MapsUtils.OnRouteCalculated() {
+            @Override
+            public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                MapsUtils.drawPolyLines(list, googleMap, true);
+                googleMap.addMarker(new MarkerOptions().position(pickupLocation));
+                googleMap.addMarker(new MarkerOptions().position(destinationLocation));
+            }
+        }, getActivity());
+    }
+
+    private void removeRoute(){
+        googleMap.clear();
+    }
 
     private View.OnClickListener onMyLocationClicked = new View.OnClickListener() {
         @Override
@@ -313,6 +398,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             tvTextViewInMyCurrent.setText(getString(R.string.set_pickup_location_capital));
             hideRlFromList();
             hideRlToList();
+
+            removeRoute();
 
         }
     };
@@ -425,6 +512,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             destinationAddress = addressString;
             hideRlToList();
             Utils.hideKeyboard(etTo, getActivity());
+
+            drawRoute();
         }
     };
 
@@ -483,6 +572,9 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     private void hideElements(boolean showSmallPin){
+        if(screenStatus != Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+            return;
+        }
         if(showSmallPin) smallPin.setVisibility(View.VISIBLE);
         AnimationUtils.fade(rlParentOfMyCurrent, 1, 0, 300, new AnimatorListenerAdapter() {
             @Override
@@ -495,6 +587,9 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     }
 
     private void showElements(){
+        if(screenStatus != Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+            return;
+        }
         rlParentOfMyCurrent.setVisibility(View.VISIBLE);
         AnimationUtils.fade(rlParentOfMyCurrent, 0, 1, 300, new AnimatorListenerAdapter() {
             @Override
@@ -530,6 +625,223 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             }
         });
 
+    }
+
+    private void updateCoordinates(LatLng newLocation){
+        PostLatLngModel postModel = new PostLatLngModel(newLocation.latitude, newLocation.longitude);
+
+        UserRetroApiInterface retroApiInterface = getRetrofit().create(UserRetroApiInterface.class);
+        Call<BaseModel> call = retroApiInterface.updateCoordinates(postModel, UserSingleton.getInstance().getUser().token_new);
+        call.enqueue(new CustomResponse<BaseModel>(getActivity(), false, false) {});
+    }
+
+    public void cancelTripClearMap(){
+        screenStatus = Const.MainUserStatus.REQUEST_TAXI_SCREEN;
+        etFrom.setText("");
+        etTo.setText("");
+        pickupLocation = null;
+        pickupAddress = null;
+        destinationLocation = null;
+        destinationAddress = null;
+        tvTextViewInMyCurrent.setText(getString(R.string.set_pickup_location_capital));
+
+        acceptedDriver = null;
+        acceptedOrder = null;
+        driverMarker = null;
+        driverPickupMarker = null;
+        lastPolyline = null;
+        googleMap.clear();
+
+        hideRlFromList();
+        hideRlToList();
+
+        removeRoute();
+
+        MapsUtils.setMapParentLayoutParams(null, 0, layoutForMap);
+        AnimationUtils.translateY(rlCancelTripLayout, 0, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()), 300, new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                rlCancelTripLayout.setVisibility(View.GONE);
+
+                showRequestTaxiScreenElements();
+            }
+        });
+    }
+
+    private void hideRequestTaxiScreenElements(){
+        rlFromTo.setVisibility(View.GONE);
+        smallPin.setVisibility(View.GONE);
+        rlParentOfMyCurrent.setVisibility(View.GONE);
+        buttonRequestTaxi.setVisibility(View.GONE);
+        ibMyLocation.setVisibility(View.GONE);
+    }
+
+    private void showRequestTaxiScreenElements(){
+        rlFromTo.setVisibility(View.VISIBLE);
+        rlParentOfMyCurrent.setVisibility(View.VISIBLE);
+        smallPin.setVisibility(View.VISIBLE);
+        buttonRequestTaxi.setVisibility(View.VISIBLE);
+        ibMyLocation.setVisibility(View.VISIBLE);
+        AnimationUtils.fade(rlFromTo, 0, 1, 300, null);
+        AnimationUtils.fade(rlParentOfMyCurrent, 0, 1, 300, null);
+        AnimationUtils.fade(smallPin, 0, 1, 300, null);
+        AnimationUtils.fade(buttonRequestTaxi, 0, 1, 300, null);
+        AnimationUtils.fade(ibMyLocation, 0, 1, 300, null);
+    }
+
+    private void showTripLayout(){
+        rlCancelTripLayout.setVisibility(View.VISIBLE);
+        AnimationUtils.translateY(rlCancelTripLayout, 0, 0, 0, null);
+        MapsUtils.setMapParentLayoutParams(null, rlCancelTripLayout.getHeight(), layoutForMap);
+
+        rlCancelTripLayout.findViewById(R.id.buttonCancelTrip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ignoreOrder(acceptedOrder);
+            }
+        });
+    }
+
+    public void onTripAccepted(OrderModel order) {
+        screenStatus = Const.MainUserStatus.ORDER_ACCEPTED;
+        acceptedOrder = order;
+
+        googleMap.clear();
+        hideRequestTaxiScreenElements();
+        showTripLayout();
+
+        checkOrderStatus(order);
+    }
+
+    private boolean stopChecking = false;
+    private void checkOrderStatus(final OrderModel orderModel){
+        if(screenStatus == Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+            return;
+        }
+        if(stopChecking){
+            return;
+        }
+        PostCheckOrderStatusModel postModel = new PostCheckOrderStatusModel(orderModel._id);
+        UserRetroApiInterface retroApiInterface = getRetrofit().create(UserRetroApiInterface.class);
+        Call<CheckOrderStatusModel> call = retroApiInterface.checkOrderStatus(postModel, UserSingleton.getInstance().getUser().token_new);
+        call.enqueue(new CustomResponse<CheckOrderStatusModel>(getActivity(), false, false) {
+
+            @Override
+            public void onCustomSuccess(Call<CheckOrderStatusModel> call, Response<CheckOrderStatusModel> response) {
+                super.onCustomSuccess(call, response);
+
+                LogCS.i("LOG", "Order status: " + response.body().data.orderStatus);
+
+                if(screenStatus == Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+                    return;
+                }
+
+                if(response.body().data.orderStatus == Const.OrderStatusTypes.CANCELED){
+                    BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.info), getString(R.string.driver_canceled_order));
+                    cancelTripClearMap();
+                }else if(response.body().data.orderStatus == Const.OrderStatusTypes.FINISHED_DRIVE){
+                    LastTripDialogLikeActivity.startActivity(getActivity(), acceptedOrder, acceptedDriver);
+                    cancelTripClearMap();
+                }else{
+                    boolean withZoom = false;
+                    if(acceptedDriver == null){
+                        withZoom = true;
+                    }
+                    acceptedDriver = response.body().data.driver;
+                    if(acceptedDriver.currentLocation != null){
+
+                        final LatLng locationPickup = new LatLng(orderModel.from.location.get(1), orderModel.from.location.get(0));
+                        final LatLng driverLocation = new LatLng(acceptedDriver.currentLocation.get(1), acceptedDriver.currentLocation.get(0));
+
+                        final boolean finalWithZoom = withZoom;
+                        MapsUtils.calculateRoute(driverLocation, locationPickup, new MapsUtils.OnRouteCalculated() {
+                            @Override
+                            public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                                final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100);
+
+                                if(driverMarker != null){
+                                    driverMarker.setPosition(driverLocation);
+                                }else{
+                                    final ImageView ivTemp = new ImageView(getActivity());
+                                    ImageUtils.setImageWithPicassoWithListener(ivTemp, Utils.getAvatarUrl(acceptedDriver), new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Bitmap bitmap = MapsUtils.getBitmapWithGreenPinAndCar(getActivity(), ((BitmapDrawable)ivTemp.getDrawable()).getBitmap());
+                                            if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id));
+                                        }
+                                    });
+                                }
+
+                                if(driverPickupMarker == null){
+                                    driverPickupMarker = googleMap.addMarker(new MarkerOptions().position(locationPickup));
+                                }
+
+                                if(lastPolyline != null){
+                                    lastPolyline.remove();
+                                }
+                                lastPolyline = newPolyline;
+
+                                TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
+                                tvDistance.setText(distance);
+
+                            }
+                        }, getActivity());
+
+                    }
+                    checkAfterFiveSeconds();
+                }
+
+            }
+
+            @Override
+            public void onCustomFailed(Call<CheckOrderStatusModel> call, Response<CheckOrderStatusModel> response) {
+                super.onCustomFailed(call, response);
+                checkOrderStatus(orderModel);
+            }
+        });
+    }
+
+    private void ignoreOrder(final OrderModel order){
+
+        PostCancelTripModel postModelCancel = new PostCancelTripModel(order._id, Const.CancelTypes.USER_CANCELED, "");
+        final DriverRetroApiInterface retroApiInterface = getRetrofit().create(DriverRetroApiInterface.class);
+        Call<BaseModel> call = retroApiInterface.cancelTrip(postModelCancel, UserSingleton.getInstance().getUser().token_new);
+        call.enqueue(new CustomResponse<BaseModel>(getActivity(), true, true) {
+
+            @Override
+            public void onCustomSuccess(Call<BaseModel> call, Response<BaseModel> response) {
+                super.onCustomSuccess(call, response);
+
+                screenStatus = Const.MainUserStatus.REQUEST_TAXI_SCREEN;
+                cancelTripClearMap();
+
+            }
+
+            @Override
+            public void onTryAgain(Call<BaseModel> call, Response<BaseModel> response) {
+                super.onTryAgain(call, response);
+                ignoreOrder(order);
+            }
+
+        });
+    }
+
+    private void checkAfterFiveSeconds(){
+        LogCS.i("LOG", "Start checker screen: " + screenStatus);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(acceptedOrder != null){
+                    checkOrderStatus(acceptedOrder);
+                }
+            }
+        }, 5000);
     }
 
 }

@@ -68,7 +68,11 @@ public class CreateUserActivity extends BaseActivity {
 
     public void apiDone() {
         SuperTaxiApp.getPreferences().setCustomBoolean(Const.PreferencesKey.USER_CREATED, true);
-        UserHomeActivity.startActivity(getActivity());
+        if(userType == Const.UserType.USER_TYPE_DRIVER){
+            DriverHomeActivity.startActivity(getActivity());
+        }else{
+            UserHomeActivity.startActivity(getActivity());
+        }
         finish();
     }
 }

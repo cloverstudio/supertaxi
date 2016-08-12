@@ -97,8 +97,8 @@
                             android:layout_marginEnd="10dp"
                             android:paddingBottom="5dp"
                             android:textSize="@dimen/text_view_bigger"
+                            android:text="  "
                             android:layout_below="@id/tvLastTripLabel"
-                            android:text="$7,23"
                             android:textAllCaps="false"
                             android:layout_marginTop="5dp"/>
 
@@ -128,7 +128,6 @@
                         android:layout_centerVertical="true"
                         android:paddingBottom="5dp"
                         android:textSize="@dimen/text_view_bigger"
-                        android:text="Pavel Nedved"
                         android:textAllCaps="false"
                         android:layout_marginLeft="80dp"
                         android:layout_marginStart="80dp"
@@ -226,7 +225,6 @@
                     android:layout_marginBottom="15dp"
                     android:layout_alignBottom="@id/rlNameAndPrice"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/__nedved"
                     android:id="@+id/ivAvatarInDriverDetails"/>
 
             </RelativeLayout>

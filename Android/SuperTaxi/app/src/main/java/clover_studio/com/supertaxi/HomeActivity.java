@@ -1,12 +1,20 @@
 package clover_studio.com.supertaxi;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.http.HttpResponseCache;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -20,6 +28,9 @@ import android.widget.Toast;
 import com.balysv.materialmenu.MaterialMenuDrawable;
 import com.balysv.materialmenu.MaterialMenuView;
 
+import java.io.File;
+import java.io.IOException;
+
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.base.BaseFragment;
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
@@ -27,10 +38,12 @@ import clover_studio.com.supertaxi.fragments.DriverMainFragment;
 import clover_studio.com.supertaxi.fragments.DriverProfileFragment;
 import clover_studio.com.supertaxi.fragments.UserMainFragment;
 import clover_studio.com.supertaxi.fragments.UserProfileFragment;
+import clover_studio.com.supertaxi.models.OrderModel;
 import clover_studio.com.supertaxi.models.UpdateProfileResponse;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.Const;
 import clover_studio.com.supertaxi.utils.ImageUtils;
+import clover_studio.com.supertaxi.utils.LogCS;
 import clover_studio.com.supertaxi.utils.Utils;
 
 /**
@@ -75,7 +88,7 @@ public class HomeActivity extends BaseActivity {
     RelativeLayout rlForFragment;
 
     BaseFragment profileFragment;
-    BaseFragment mainFragment;
+    protected BaseFragment mainFragment;
     String activeFragmentTag;
 
     @Override
@@ -96,9 +109,7 @@ public class HomeActivity extends BaseActivity {
 
         initOtherFragments();
         setInitialFragment();
-//
-//        rightToolbarButton.setOnClickListener(onRightToolbarListener);
-//        subRightToolbarButton.setOnClickListener(onSubRightToolbarListener);
+
         menuHamburgerView.setOnClickListener(onLeftToolbarListener);
 //
         //SIDEBAR
@@ -114,135 +125,26 @@ public class HomeActivity extends BaseActivity {
 //        LogCS.d("LOG", "MY USER ID: " + UserSingleton.getInstance().getUser()._id);
 ////        LogCS.d("LOG", "MY PASSWORD: " + SpikaApp.getEnterpriseSharedPreferences().getCustomString(Const.PreferencesKeys.SHA1_PASSWORD));
 //
-////        MessageDB.removeAllMessagesAsync();
-//
-//        SocketManager.getInstance().initSocketManager();
-//        SocketManager.getInstance().connectToEnterpriseSocket();
-//
-//        if(getIntent().hasExtra(Const.Extras.PUSH_DATA)){
-//            NotificationModel pushData = (NotificationModel) getIntent().getSerializableExtra(Const.Extras.PUSH_DATA);
-//            if(pushData.group != null){
-//                getGroupDetailAndStartChat(pushData);
-//            }else if(pushData.room != null){
-//                getRoomDetailAndStartChat(pushData);
-//            }else if(pushData.from != null){
-//                getUserDetailAndStartChat(pushData);
-//            }
-//            getIntent().removeExtra(Const.Extras.PUSH_DATA);
-//        }else if(getIntent().getBooleanExtra(Const.Extras.MISSED_CALL, false)){
-//            if(homeFragment != null){
-//                homeFragment.gotoMissedCall();
-//            }
-//        }
-//
-//        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.PermissionCode.CHAT_STORAGE);
-//            return;
-//        }else{
-//            setCacheFolder();
-//        }
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.PermissionCode.CHAT_STORAGE);
+            return;
+        }else{
+            setCacheFolder();
+        }
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onCancelTripReceiver, new IntentFilter(Const.ReceiverIntents.ON_CANCEL_TRIP));
 
     }
 
-//    private void setCacheFolder(){
-//        try {
-//            File httpCacheDir = new File(Utils.getImageCacheFolderPath());
-//            long httpCacheSize = 50 * 1024 * 1024; // 50 MiB
-//            HttpResponseCache.install(httpCacheDir, httpCacheSize);
-//        } catch (IOException e) {
-//            LogCS.i("LOG", "HTTP response cache installation failed:" + e);
-//        }
-//    }
-
-//    private void getGroupDetailAndStartChat(final NotificationModel model){
-//        showProgress();
-//        RoomRetroApiInterface retroApiInterface = getRetrofit().create(RoomRetroApiInterface.class);
-//        Call<GroupDetailsDataModel> call = retroApiInterface.getGroupDetails(model.group.id, UserSingleton.getInstance().getUser().token);
-//        call.enqueue(new CustomResponse<GroupDetailsDataModel>(getActivity(), true, true){
-//            @Override
-//            public void onCustomSuccess(Call<GroupDetailsDataModel> call, Response<GroupDetailsDataModel> response) {
-//                super.onCustomSuccess(call, response);
-//                hideProgress();
-//                if(pinDialog != null) pinDialog.dismiss();
-//                String messageFromPushReply = getIntent().getStringExtra(Const.Extras.MESSAGE_STRING);
-//                if(TextUtils.isEmpty(messageFromPushReply)){
-//                    messageFromPushReply = null;
-//                }
-//                ChatActivity.startChatActivityWithGroupModel(getActivity(), response.body().data.group, null, null, true, messageFromPushReply);
-//            }
-//
-//            @Override
-//            public void onTryAgain(Call<GroupDetailsDataModel> call, Response<GroupDetailsDataModel> response) {
-//                super.onTryAgain(call, response);
-//                getGroupDetailAndStartChat(model);
-//            }
-//
-//            @Override
-//            public void onNewToken() {
-//                getGroupDetailAndStartChat(model);
-//            }
-//        });
-//    }
-//
-//    private void getRoomDetailAndStartChat(final NotificationModel model){
-//        showProgress();
-//        RoomRetroApiInterface retroApiInterface = getRetrofit().create(RoomRetroApiInterface.class);
-//        Call<RoomDataModel> call = retroApiInterface.getRoomDetails(model.room.id, UserSingleton.getInstance().getUser().token);
-//        call.enqueue(new CustomResponse<RoomDataModel>(getActivity(), true, true){
-//            @Override
-//            public void onCustomSuccess(Call<RoomDataModel> call, Response<RoomDataModel> response) {
-//                super.onCustomSuccess(call, response);
-//                hideProgress();
-//                if(pinDialog != null) pinDialog.dismiss();
-//                String messageFromPushReply = getIntent().getStringExtra(Const.Extras.MESSAGE_STRING);
-//                if(TextUtils.isEmpty(messageFromPushReply)){
-//                    messageFromPushReply = null;
-//                }
-//                ChatActivity.startChatActivityWithRoomModel(getActivity(), response.body().data.room, null, null, true, messageFromPushReply);
-//            }
-//
-//            @Override
-//            public void onTryAgain(Call<RoomDataModel> call, Response<RoomDataModel> response) {
-//                super.onTryAgain(call, response);
-//                getRoomDetailAndStartChat(model);
-//            }
-//
-//            @Override
-//            public void onNewToken() {
-//                getRoomDetailAndStartChat(model);
-//            }
-//        });
-//    }
-//
-//    private void getUserDetailAndStartChat(final NotificationModel model){
-//        showProgress();
-//        UsersRetroApiInterface retroApiInterface = getRetrofit().create(UsersRetroApiInterface.class);
-//        Call<UserDataModel> call = retroApiInterface.getUserDetail(model.from.id, UserSingleton.getInstance().getUser().token);
-//        call.enqueue(new CustomResponse<UserDataModel>(getActivity(), true, true){
-//            @Override
-//            public void onCustomSuccess(Call<UserDataModel> call, Response<UserDataModel> response) {
-//                super.onCustomSuccess(call, response);
-//                hideProgress();
-//                if(pinDialog != null) pinDialog.dismiss();
-//                String messageFromPushReply = getIntent().getStringExtra(Const.Extras.MESSAGE_STRING);
-//                if(TextUtils.isEmpty(messageFromPushReply)){
-//                    messageFromPushReply = null;
-//                }
-//                ChatActivity.startChatActivityWithTargetUser(getActivity(), response.body().data.user, null, null, true, messageFromPushReply);
-//            }
-//
-//            @Override
-//            public void onTryAgain(Call<UserDataModel> call, Response<UserDataModel> response) {
-//                super.onTryAgain(call, response);
-//                getUserDetailAndStartChat(model);
-//            }
-//
-//            @Override
-//            public void onNewToken() {
-//                getUserDetailAndStartChat(model);
-//            }
-//        });
-//    }
+    private void setCacheFolder(){
+        try {
+            File httpCacheDir = new File(Utils.getImageCacheFolderPath());
+            long httpCacheSize = 50 * 1024 * 1024; // 50 MiB
+            HttpResponseCache.install(httpCacheDir, httpCacheSize);
+        } catch (IOException e) {
+            LogCS.i("LOG", "HTTP response cache installation failed:" + e);
+        }
+    }
 
     private void setInitialFragment() {
 
@@ -265,57 +167,13 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-//
-//    public void manageToolbar(int type){
-//        if(type == Const.ToolbarTypes.NONE){
-//            hideWithoutMenuToolbarButton();
-//        } else if (type == Const.ToolbarTypes.BOTH) {
-//            showToolbarButton();
-//        } else if (type == Const.ToolbarTypes.ONE) {
-//            showToolbarButtonWithOneRight();
-//        } else {
-//            hideWithoutMenuToolbarButton();
-//        }
-//    }
-//
-//    public void changeImageOfRightToolbar(int resource){
-//        changeImageOfRightButton(resource);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(homeFragment != null){
-//            homeFragment.onActivityResult(requestCode, resultCode, data);
-//        }
-//
-//    }
-//
-//    private View.OnClickListener onRightToolbarListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            if(homeFragment != null){
-//                homeFragment.onRightToolbarClicked();
-//            }
-//        }
-//    };
-//
     private View.OnClickListener onLeftToolbarListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             dlDrawerLayout.openDrawer(llSidebarDrawer);
         }
     };
-//
-//    private View.OnClickListener onSubRightToolbarListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            if(homeFragment != null){
-//                homeFragment.onSubRightToolbarClicked();
-//            }
-//        }
-//    };
-//
+
     //***SIDEBAR***//
     DrawerLayout.DrawerListener sidebarDrawerListener = new DrawerLayout.DrawerListener() {
         @Override
@@ -419,15 +277,6 @@ public class HomeActivity extends BaseActivity {
         }
     };
 
-//    private void switchToMessages(boolean goToSettings){
-//        if(homeFragment == null){
-//            LogCS.e("LOG", "home fragment je null");
-//            homeFragment = HomeFragment.newInstance();
-//        }
-//        showToolbarButton();
-//        switchFragment(homeFragment, goToSettings);
-//    }
-//
     private void switchFragment (BaseFragment fragment){
         if(fragment.getClass().toString().equals(activeFragmentTag)){
             dlDrawerLayout.closeDrawer(llSidebarDrawer);
@@ -447,140 +296,36 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-//    //*****************DATA FOR FRAGMENT******//
-//    public void addDataForUsersFragment(List<UserModel> users, int currentPage){
-//        usersFragmentData.addAll(users);
-//        this.usersFragmentCurrentPage = currentPage;
-//    }
-//
-//    public List<UserModel> getUsersFragmentData(){
-//        return usersFragmentData;
-//    }
-//
-//    public int getUsersFragmentCurrentPage(){
-//        return usersFragmentCurrentPage;
-//    }
-//
-//    public void addDataForGroupsFragment(List<GroupModel> groups, int currentPage){
-//        groupsFragmentData.addAll(groups);
-//        this.groupsFragmentCurrentPage = currentPage;
-//    }
-//
-//    public List<GroupModel> getGroupsFragmentData(){
-//        return groupsFragmentData;
-//    }
-//
-//    public int getGroupsFragmentCurrentPage(){
-//        return groupsFragmentCurrentPage;
-//    }
-//
-//    @Override
-//    protected void receiveNewMessage(NewMessageEnterpriseModel model) {
-//        if(homeFragment != null){
-//            homeFragment.refreshData();
-//        }
-//        super.receiveNewMessage(model);
-//    }
-//
-//    @Override
-//    public void onBackPressed() {
-//        if(isDrawerOpened){
-//            dlDrawerLayout.closeDrawer(llSidebarDrawer);
-//        }else if(favoritesFragment != null && favoritesFragment.getClass().getName().equals(activeFragmentTag)){
-//            if(!favoritesFragment.isChooseUserOpened){
-//                checkForExit();
-//            }else{
-//                favoritesFragment.removeChooseView();
-//            }
-//        }else if(homeFragment != null && homeFragment.getClass().getName().equals(activeFragmentTag)){
-//            if(homeFragment.isSearchOpened()){
-//                homeFragment.closeSearch();
-//            }else if(homeFragment.isPickUserForCallOpened()){
-//                homeFragment.closePickCallUser();
-//            }else{
-//                checkForExit();
-//            }
-//        }else{
-//            checkForExit();
-//        }
-//    }
-//
-//    private void checkForExit(){
-//        if(HomeFragment.class.getName().equals(activeFragmentTag)){
-//            super.onBackPressed();
-//        }else{
-//            switchToMessages(false);
-//        }
-//    }
-//
-//    //reload recent user and groups
-//    public void reloadAllData(){
-//        if(homeFragment != null){
-//            homeFragment.reloadAllData();
-//        }
-//    }
-//
-//    //reload settings
-//    public void reloadSettings(){
-//        if(homeFragment != null){
-//            homeFragment.reloadSettings();
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        if(isDrawerOpened){
+            dlDrawerLayout.closeDrawer(llSidebarDrawer);
+        }else{
+            super.onBackPressed();
+        }
+    }
 
     public void refreshSidebar(){
         String url = Utils.getMyAvatarUrl();
         ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url);
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case Const.PermissionCode.CHAT_STORAGE: {
-//                if (grantResults.length > 0 && Utils.checkGrantResults(grantResults)) {
-//                    setCacheFolder();
-//                }else{
-//                    finish();
-//                }
-//                return;
-//            }
-//            // other 'case' lines to check for other
-//            // permissions this app might request
-//        }
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                UserSingleton.getInstance().checkForUserDetails(getRetrofit(), getActivity(), new UserSingleton.CheckForSettingComplete() {
-//                    @Override
-//                    public void finish() {
-//                        if(getActivity() != null && getActivity() instanceof HomeActivity){
-//                            ((HomeActivity)getActivity()).refreshSidebar();
-//                        }
-//                        if(getActivity() != null && getActivity() instanceof HomeActivity){
-//                            ((HomeActivity)getActivity()).reloadSettings();
-//                        }
-//                    }
-//                });
-//            }
-//        }, 200);
-//
-//        refreshMissedCallCount();
-//
-//    }
-//
-//    public void refreshMissedCallCount(){
-//        CallLogJsonDB.getMissedActiveCountAsync(new CallLogJsonDB.OnDatabaseFinish() {
-//            @Override
-//            public void onGetCallLogs(List<CallLogModel> callLogs) {
-//                if(homeFragment != null){
-//                    homeFragment.manageMissedCalls(callLogs.size());
-//                }
-//            }
-//        });
-//    }
+    private BroadcastReceiver onCancelTripReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            OrderModel orderModel = intent.getParcelableExtra(Const.Extras.ORDER_MODEL);
+            onTripCancel(orderModel);
+        }
+
+    };
+
+    protected void onTripCancel(OrderModel orderModel) {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onCancelTripReceiver);
+
+    }
 }

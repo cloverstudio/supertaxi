@@ -95,7 +95,7 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
             userInformation.setValue(data.data.user.user.note, forKey: UserDetails.NOTE)
             userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
 
-        } else {
+        } else if data.data.user.driver != nil {
             self.performSegueWithIdentifier("DriverSigInSegue", sender: nil)
             userInformation.setValue(data.data.user.driver.name, forKey: UserDetails.NAME)
             userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)

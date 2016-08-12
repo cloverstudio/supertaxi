@@ -3,10 +3,16 @@ package clover_studio.com.supertaxi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.sql.Driver;
+
 import clover_studio.com.supertaxi.base.BaseActivity;
+import clover_studio.com.supertaxi.fragments.DriverMainFragment;
+import clover_studio.com.supertaxi.fragments.UserMainFragment;
+import clover_studio.com.supertaxi.models.OrderModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 
 /**
@@ -55,6 +61,11 @@ public class DriverHomeActivity extends HomeActivity {
             tvSidebarMyName.setText(UserSingleton.getInstance().getUser().email);
         }
         super.refreshSidebar();
+    }
+
+    @Override
+    protected void onTripCancel(OrderModel orderModel) {
+        ((DriverMainFragment)mainFragment).cancelTripClearMap();
     }
 
 }
