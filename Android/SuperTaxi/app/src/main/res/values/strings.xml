@@ -125,7 +125,8 @@
     <string name="ignore">Ignore</string>
     <string name="accept">Accept</string>
     <string name="distance_between_driver_and_you">Distance between driver and you: %s</string>
-    <string name="distance_between__user_and_you_">Distance between \n user and you:</string>
+    <string name="distance_between__user_and_you_">Distance between\nuser and you:</string>
+    <string name="distance_between__driver_and_you_">Distance between\ndriver and you:</string>
     <string name="user_canceled_order">User canceled order</string>
     <string name="driver_canceled_order">Driver canceled order</string>
     <string name="info">Info</string>

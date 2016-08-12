@@ -381,7 +381,7 @@
                 android:id="@+id/tvDistanceLabel"
                 android:textColor="@color/revert_devil_gray"
                 android:textSize="@dimen/small_text_view_title_text_size"
-                android:text="@string/distance_between__user_and_you_"
+                android:text="@string/distance_between__driver_and_you_"
                 android:textAllCaps="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="2dp"/>

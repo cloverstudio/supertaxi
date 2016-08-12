@@ -136,6 +136,9 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     private Polyline lastPolyline = null;
     private Marker driverMarker = null;
     private Marker driverPickupMarker = null;
+    private Marker drivingMarker = null;
+    private Marker driverDestinationMarker = null;
+    private Polyline lastOfDrivePolyline = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -650,6 +653,9 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
         driverMarker = null;
         driverPickupMarker = null;
         lastPolyline = null;
+        drivingMarker = null;
+        driverDestinationMarker = null;
+        lastOfDrivePolyline = null;
         googleMap.clear();
 
         hideRlFromList();
@@ -692,6 +698,11 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
 
     private void showTripLayout(){
         rlCancelTripLayout.setVisibility(View.VISIBLE);
+        TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistanceLabel);
+        tvDistance.setText(getString(R.string.distance_between__driver_and_you_));
+        TextView tvDistanceValue = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
+        tvDistanceValue.setText("");
+        rlCancelTripLayout.findViewById(R.id.buttonCancelTrip).setVisibility(View.VISIBLE);
         AnimationUtils.translateY(rlCancelTripLayout, 0, 0, 0, null);
         MapsUtils.setMapParentLayoutParams(null, rlCancelTripLayout.getHeight(), layoutForMap);
 
@@ -741,8 +752,63 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
                     BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.info), getString(R.string.driver_canceled_order));
                     cancelTripClearMap();
                 }else if(response.body().data.orderStatus == Const.OrderStatusTypes.FINISHED_DRIVE){
+                    if(acceptedDriver == null){
+                        acceptedDriver = response.body().data.driver;
+                    }
                     LastTripDialogLikeActivity.startActivity(getActivity(), acceptedOrder, acceptedDriver);
                     cancelTripClearMap();
+                }else if(response.body().data.orderStatus == Const.OrderStatusTypes.STARTED_DRIVE){
+                    final LatLng myLocationLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                    final LatLng destinationLatLng = new LatLng(orderModel.to.location.get(1), orderModel.to.location.get(0));
+                    final LatLng startedLatLng = new LatLng(orderModel.from.location.get(1), orderModel.from.location.get(0));
+
+                    if(acceptedDriver == null){
+                        acceptedDriver = response.body().data.driver;
+                    }
+
+                    boolean withZoom = false;
+                    if(lastOfDrivePolyline == null){
+                        withZoom = true;
+                        googleMap.clear();
+                        TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistanceLabel);
+                        tvDistance.setText(getString(R.string.mileage_));
+                        rlCancelTripLayout.findViewById(R.id.buttonCancelTrip).setVisibility(View.INVISIBLE);
+                    }
+
+                    final boolean finalWithZoom = withZoom;
+                    MapsUtils.calculateRoute(myLocationLatLng, destinationLatLng, new MapsUtils.OnRouteCalculated() {
+                        @Override
+                        public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                            final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100);
+
+                            if(drivingMarker != null){
+                                drivingMarker.setPosition(myLocationLatLng);
+                            }else{
+                                drivingMarker = googleMap.addMarker(new MarkerOptions().position(myLocationLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)));
+                            }
+
+                            if(driverDestinationMarker == null){
+                                driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(destinationLatLng));
+                            }
+
+                            if(lastOfDrivePolyline != null){
+                                lastOfDrivePolyline.remove();
+                            }
+                            lastOfDrivePolyline = newPolyline;
+
+                        }
+                    }, getActivity());
+
+                    MapsUtils.getDistanceBetween(startedLatLng, myLocationLatLng, new MapsUtils.OnDistanceCalculated() {
+                        @Override
+                        public void onSuccessCalculate(String distance) {
+                            TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
+                            tvDistance.setText(distance);
+                        }
+                    }, getActivity());
+
+                    checkAfterFiveSeconds();
+
                 }else{
                     boolean withZoom = false;
                     if(acceptedDriver == null){
