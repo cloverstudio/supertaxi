@@ -146,21 +146,33 @@ public class MapsUtils {
             final JSONObject json = new JSONObject(result);
             JSONArray routeArray = json.getJSONArray("routes");
             final List<List<LatLng>> list = new ArrayList<>();
+            String distanceString = null;
+            long distanceValue = 0;
             for(int i = 0; i < routeArray.length(); i++){
 
                 JSONObject routes = routeArray.getJSONObject(i);
                 JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
                 String encodedString = overviewPolylines.getString("points");
+                JSONArray legs = routes.getJSONArray("legs");
+                JSONObject leg = legs.getJSONObject(0);
+                JSONObject distance = leg.getJSONObject("distance");
+                if (distanceString == null) {
+                    distanceString = distance.getString("text");
+                    distanceValue = distance.getLong("value");
+                }
                 List<LatLng> inner = decodePoly(encodedString);
                 list.add(inner);
 
             }
 
+            final String finalDistanceString = distanceString;
+            final long finalDistanceValue = distanceValue;
+
             if(listener != null){
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onSuccessCalculate(list);
+                        listener.onSuccessCalculate(list, finalDistanceString, finalDistanceValue);
                     }
                 });
             }
@@ -283,7 +295,7 @@ public class MapsUtils {
            */
     }
 
-    public static void drawPolyLinesAlternative(final List<LatLng> list, final GoogleMap googleMap, boolean withZoom, int paddingMaps){
+    public static Polyline drawPolyLinesAlternative(final List<LatLng> list, final GoogleMap googleMap, boolean withZoom, int paddingMaps){
         Polyline line = googleMap.addPolyline(new PolylineOptions()
                 .addAll(list)
                 .width(6)
@@ -295,6 +307,8 @@ public class MapsUtils {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(getSouthWestAndNorthEast(list), paddingMaps));
 
         }
+
+        return line;
 
          /*
            for(int z = 0; z<list.size()-1;z++){
@@ -330,7 +344,7 @@ public class MapsUtils {
     }
 
     public interface OnRouteWithAlternativesCalculated{
-        void onSuccessCalculate(List<List<LatLng>> list);
+        void onSuccessCalculate(List<List<LatLng>> list, String firstRouteDistance, long firstRouteDistanceValue);
     }
 
     public interface OnDistanceCalculated{

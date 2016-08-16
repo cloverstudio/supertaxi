@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.squareup.picasso.Callback;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
 import clover_studio.com.supertaxi.api.retrofit.DriverRetroApiInterface;
 import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseFragment;
+import clover_studio.com.supertaxi.base.SuperTaxiApp;
 import clover_studio.com.supertaxi.dialog.BasicDialog;
 import clover_studio.com.supertaxi.dialog.DialogUserRequestDetails;
 import clover_studio.com.supertaxi.dialog.RateUserDialog;
@@ -67,6 +69,7 @@ import clover_studio.com.supertaxi.utils.LocationSourceListener;
 import clover_studio.com.supertaxi.utils.LogCS;
 import clover_studio.com.supertaxi.utils.MapsUtils;
 import clover_studio.com.supertaxi.utils.Utils;
+import clover_studio.com.supertaxi.view.cropper.cropwindow.handle.Handle;
 import clover_studio.com.supertaxi.view.touchable_map.MapStateListener;
 import clover_studio.com.supertaxi.view.touchable_map.TouchableMapFragment;
 import retrofit2.Call;
@@ -85,6 +88,7 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
     private RelativeLayout rlUserDetails;
     private LinearLayout llButtons;
     private RelativeLayout rlStartEndTripLayout;
+    private TextView tvDistance;
 
     private Location myLocation = null;
     private List<Marker> otherTaxiMarkers = new ArrayList<>();
@@ -93,6 +97,16 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
 
     private int screenStatus = Const.MainDriverStatus.PENDING;
     private OrderModel acceptedOrder = null;
+
+    private Polyline lastPolyline = null;
+    private List<Polyline> alternativesPolyline = null;
+    private Marker driverMarker = null;
+    private Marker driverDestinationMarker = null;
+    private Polyline onAcceptLastPolyline = null;
+    private Marker onAcceptDriverMarker = null;
+    private Marker onAcceptDestinationMarker = null;
+
+    private Handler handlerForCheck = new Handler();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,15 +142,20 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
             googleMap.setLocationSource(locationSourceListener);
         }
         if(stopChecking == true){
+            stopChecking = false;
             checkAfterFiveSeconds();
+            if(acceptedOrder != null){
+                checkOrderStatus(acceptedOrder);
+            }
         }
-        stopChecking = false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        locationSourceListener.deactivate();
         stopChecking = true;
+        handlerForCheck.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -151,6 +170,7 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
         rlUserDetails = (RelativeLayout) rootView.findViewById(R.id.rlUserDetails);
         llButtons = (LinearLayout) rootView.findViewById(R.id.llButtons);
         rlStartEndTripLayout = (RelativeLayout) rootView.findViewById(R.id.rlButtonsStartEndTrip);
+        tvDistance = (TextView) rootView.findViewById(R.id.tvDistance);
 
         ImageView avatar = (ImageView) rootView.findViewById(R.id.ivAvatar);
         int sizeForAvatar = getResources().getDisplayMetrics().widthPixels / 2;
@@ -233,7 +253,7 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
         });
         AnimationUtils.translateY(llButtons, 0, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()), 300, null);
 
-        drawRoute(Const.DrawRouteDriverTypes.DRAW_ROUTE_BIG_WITH_IMAGE_PIN, model, 100);
+        drawRoute(Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER, model, 100);
     }
 
     private void setStartTripLayout(){
@@ -248,14 +268,6 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
 
         Button startTrip = (Button) rlStartEndTripLayout.findViewById(R.id.buttonStartTrip);
         startTrip.setOnClickListener(onStartTripButtonClicked);
-
-        final TextView tvDistance = (TextView) rlStartEndTripLayout.findViewById(R.id.tvDistance);
-        MapsUtils.getDistanceBetween(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), new LatLng(acceptedOrder.to.location.get(1), acceptedOrder.to.location.get(0)), new MapsUtils.OnDistanceCalculated() {
-            @Override
-            public void onSuccessCalculate(String distance) {
-                tvDistance.setText(distance);
-            }
-        }, getActivity());
 
         TextView tvDistanceLabel = (TextView) rlStartEndTripLayout.findViewById(R.id.tvDistanceLabel);
         tvDistanceLabel.setText(getString(R.string.distance_between__user_and_you_));
@@ -296,7 +308,6 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
         TextView tvDistanceLabel = (TextView) rlStartEndTripLayout.findViewById(R.id.tvDistanceLabel);
         tvDistanceLabel.setText(getString(R.string.mileage_));
 
-        TextView tvDistance = (TextView) rlStartEndTripLayout.findViewById(R.id.tvDistance);
         tvDistance.setText("0 km");
     }
 
@@ -409,6 +420,14 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
             myLocation = myLocationNew;
             Log.d("LOG_IVO", "MY LOCATION: " + myLocation.getLatitude() + ", " + myLocation.getLongitude());
             updateCoordinates(new LatLng(myLocation.getLatitude(), myLocationNew.getLongitude()));
+
+            if(screenStatus == Const.MainDriverStatus.START_TRIP){
+                LogCS.i("LOG", "UPDATE START TRIP");
+                drawRoute(Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES, acceptedOrder, 100);
+            }if(screenStatus == Const.MainDriverStatus.ORDER_ACCEPTED){
+                LogCS.i("LOG", "UPDATE ORDER ACCEPTED");
+                drawRoute(Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER, acceptedOrder, 100);
+            }
         }
     };
 
@@ -445,7 +464,7 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
                     screenStatus = Const.MainDriverStatus.OPEN_ORDER_SHOWED;
 
                     fillWithUserRequestInfo(model.data.order);
-                    drawRoute(Const.DrawRouteDriverTypes.DRAW_ROUTE_SMALL, model.data.order, 50);
+                    drawRoute(Const.DrawRouteDriverTypes.ON_OPEN_ORDER_SHOWED, model.data.order, 50);
 
                     checkOrderStatus(model.data.order);
 
@@ -510,9 +529,12 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
 
                 for(DriverListResponse.DriverData item : response.body().data.drivers){
                     if(item.currentLocation != null && item.currentLocation.length > 1){
-                        Marker newMarker = googleMap.addMarker(new MarkerOptions()
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).rotation(90).position(new LatLng(item.currentLocation[1], item.currentLocation[0])));
-                        otherTaxiMarkers.add(newMarker);
+
+                        if(!item._id.equals(Utils.getMyId())){
+                            Marker newMarker = googleMap.addMarker(new MarkerOptions()
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).rotation(90).position(new LatLng(item.currentLocation[1], item.currentLocation[0])));
+                            otherTaxiMarkers.add(newMarker);
+                        }
                     }
                 }
 
@@ -569,57 +591,127 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
     }
 
     private void drawRoute(final int type, OrderModel model, final int paddingMap){
-        googleMap.clear();
+        if(type != Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES
+                && type != Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER){
+            googleMap.clear();
+        }
         if(myLocation != null){
 
             final LatLng locationFrom = new LatLng(model.from.location.get(1), model.from.location.get(0));
             final LatLng locationTo = new LatLng(model.to.location.get(1), model.to.location.get(0));
             final LatLng myLocationLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
-            if(type == Const.DrawRouteDriverTypes.DRAW_ROUTE_START_TRIP){
+            if(type == Const.DrawRouteDriverTypes.STARTED_DRIVE_WITH_ALTERNATIVES){
                 MapsUtils.calculateRouteWithAlternatives(myLocationLatLng, locationTo, new MapsUtils.OnRouteWithAlternativesCalculated() {
                     @Override
-                    public void onSuccessCalculate(List<List<LatLng>> list) {
+                    public void onSuccessCalculate(List<List<LatLng>> list, String distance, long distanceValue) {
 
+                        tvDistance.setText(distance);
+
+                        alternativesPolyline = new ArrayList<>();
                         int i = 1;
                         for(List<LatLng> item : list){
+                            Polyline itemPoly = null;
                             if(i == 1){
-                                MapsUtils.drawPolyLines(item, googleMap, true, paddingMap);
+                                itemPoly = MapsUtils.drawPolyLines(item, googleMap, true, paddingMap);
                             }else{
-                                MapsUtils.drawPolyLinesAlternative(item, googleMap, true, paddingMap);
+                                itemPoly = MapsUtils.drawPolyLinesAlternative(item, googleMap, true, paddingMap);
                             }
                             i ++;
+                            if(itemPoly != null) alternativesPolyline.add(itemPoly);
                         }
 
-                        googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
-                        googleMap.addMarker(new MarkerOptions().position(locationTo).snippet(""));
+                        if(driverMarker != null){
+                            driverMarker.setPosition(myLocationLatLng);
+                        }else{
+                            driverMarker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
+                        }
+                        if(driverDestinationMarker == null){
+                            driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(locationTo).snippet(""));
+                        }
+                    }
+                }, getActivity());
+            }else if(type == Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES){
+                MapsUtils.calculateRoute(myLocationLatLng, locationTo, new MapsUtils.OnRouteCalculated() {
+
+                    @Override
+                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+
+                        tvDistance.setText(distance);
+
+                        final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, false, paddingMap);
+
+                        if(driverMarker != null){
+                            driverMarker.setPosition(myLocationLatLng);
+                        }else{
+                            driverMarker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
+                        }
+                        if(driverDestinationMarker == null){
+                            driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(locationTo).snippet(""));
+                        }
+
+                        if(alternativesPolyline != null && alternativesPolyline.size() > 0){
+                            for(Polyline item : alternativesPolyline){
+                                item.remove();
+                            }
+                            alternativesPolyline.clear();
+                        }
+
+                        if(lastPolyline != null){
+                            lastPolyline.remove();
+                        }
+                        lastPolyline = newPolyline;
+                    }
+                }, getActivity());
+            }else if(type == Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER){
+                MapsUtils.calculateRoute(myLocationLatLng, locationFrom, new MapsUtils.OnRouteCalculated() {
+                    @Override
+                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+
+                        tvDistance.setText(distance);
+
+                        if(onAcceptDriverMarker == null){
+                            googleMap.clear();
+                            onAcceptDriverMarker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
+                        }else{
+                            onAcceptDriverMarker.setPosition(myLocationLatLng);
+                        }
+
+                        Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, true, paddingMap);
+
+                        if(acceptedOrder != null){
+                            if(onAcceptDestinationMarker == null){
+                                final ImageView ivTemp = new ImageView(getActivity());
+                                ImageUtils.setImageWithPicassoWithListener(ivTemp, Utils.getAvatarUrl(acceptedOrder.user), new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Bitmap bitmap = MapsUtils.getBitmapWithGreenPin(getActivity(), ((BitmapDrawable)ivTemp.getDrawable()).getBitmap());
+                                        onAcceptDestinationMarker = googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(acceptedOrder._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        onAcceptDestinationMarker = googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(acceptedOrder._id));
+                                    }
+                                });
+                            }
+                        }
+
+                        if(onAcceptLastPolyline != null){
+                            onAcceptLastPolyline.remove();
+                        }
+                        onAcceptLastPolyline = newPolyline;
+
                     }
                 }, getActivity());
             }else {
                 MapsUtils.calculateRoute(myLocationLatLng, locationFrom, new MapsUtils.OnRouteCalculated() {
                     @Override
                     public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                        googleMap.clear();
                         MapsUtils.drawPolyLines(list, googleMap, true, paddingMap);
+                        googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(""));
                         googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
-                        if(type == Const.DrawRouteDriverTypes.DRAW_ROUTE_BIG_WITH_IMAGE_PIN){
-                            if(acceptedOrder != null){
-                                final ImageView ivTemp = new ImageView(getActivity());
-                                ImageUtils.setImageWithPicassoWithListener(ivTemp, Utils.getAvatarUrl(acceptedOrder.user), new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        Bitmap bitmap = MapsUtils.getBitmapWithGreenPin(getActivity(), ((BitmapDrawable)ivTemp.getDrawable()).getBitmap());
-                                        googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(acceptedOrder._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(acceptedOrder._id));
-                                    }
-                                });
-                            }
-                        }else{
-                            googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(""));
-                        }
                     }
                 }, getActivity());
             }
@@ -629,7 +721,7 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
 
     private void checkAfterFiveSeconds(){
         LogCS.i("LOG", "Start checker screen: " + screenStatus);
-        new Handler().postDelayed(new Runnable() {
+        handlerForCheck.postDelayed(new Runnable() {
             @Override
             public void run() {
                 checkForOpenOrder();
@@ -723,10 +815,17 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
         setEndTripButton();
         screenStatus = Const.MainDriverStatus.START_TRIP;
 
-        drawRoute(Const.DrawRouteDriverTypes.DRAW_ROUTE_START_TRIP, acceptedOrder, 100);
+        drawRoute(Const.DrawRouteDriverTypes.STARTED_DRIVE_WITH_ALTERNATIVES, acceptedOrder, 100);
     }
 
     private void onUpdateFinishedTimeSuccess(OrderModel order){
+        driverDestinationMarker = null;
+        driverMarker = null;
+        lastPolyline = null;
+        alternativesPolyline.clear();
+        onAcceptDestinationMarker = null;
+        onAcceptDriverMarker = null;
+        onAcceptLastPolyline = null;
         googleMap.clear();
         gotoMyLocation();
         screenStatus = Const.MainDriverStatus.PENDING;
@@ -744,6 +843,13 @@ public class DriverMainFragment extends BaseFragment implements OnMapReadyCallba
 
     public void cancelTripClearMap(){
         if(acceptedOrder != null){
+            driverDestinationMarker = null;
+            driverMarker = null;
+            lastPolyline = null;
+            alternativesPolyline.clear();
+            onAcceptDestinationMarker = null;
+            onAcceptDriverMarker = null;
+            onAcceptLastPolyline = null;
             screenStatus = Const.MainDriverStatus.PENDING;
             manageOrder(Const.ManageOrderType.IGNORE_ORDER, acceptedOrder);
             if(rlStartEndTripLayout.getVisibility() == View.VISIBLE){

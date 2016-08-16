@@ -140,6 +140,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     private Marker driverDestinationMarker = null;
     private Polyline lastOfDrivePolyline = null;
 
+    private Handler handlerForCheck = new Handler();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +188,8 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
     public void onPause() {
         super.onPause();
         stopChecking = true;
+        handlerForCheck.removeCallbacksAndMessages(null);
+        locationSourceListener.deactivate();
     }
 
     @Override
@@ -333,6 +337,10 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             myLocation = myLocationNew;
             Log.d("LOG_IVO", "MY LOCATION: " + myLocation.getLatitude() + ", " + myLocation.getLongitude());
             updateCoordinates(new LatLng(myLocation.getLatitude(), myLocationNew.getLongitude()));
+
+            if(screenStatus == Const.MainUserStatus.START_TRIP){
+                drawRoute(Const.DrawRouteUserTypes.STARTED_DRIVE, acceptedOrder, 100);
+            }
         }
     };
 
@@ -357,22 +365,123 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
                 destinationLocation = current;
                 destinationAddress = address;
 
-                drawRoute();
+                drawRoute(Const.DrawRouteUserTypes.PICKUP_AND_DESTINATION_ROUTE, null, null);
             }
 
         }
     };
 
-    private void drawRoute(){
-        removeRoute();
-        MapsUtils.calculateRoute(pickupLocation, destinationLocation, new MapsUtils.OnRouteCalculated() {
-            @Override
-            public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
-                MapsUtils.drawPolyLines(list, googleMap, true);
-                googleMap.addMarker(new MarkerOptions().position(pickupLocation));
-                googleMap.addMarker(new MarkerOptions().position(destinationLocation));
+    private void drawRoute(final int type, OrderModel model, final Integer paddingMap){
+        if(type == Const.DrawRouteUserTypes.PICKUP_AND_DESTINATION_ROUTE){
+            removeRoute();
+            MapsUtils.calculateRoute(pickupLocation, destinationLocation, new MapsUtils.OnRouteCalculated() {
+                @Override
+                public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                    MapsUtils.drawPolyLines(list, googleMap, true);
+                    googleMap.addMarker(new MarkerOptions().position(pickupLocation));
+                    googleMap.addMarker(new MarkerOptions().position(destinationLocation));
+                }
+            }, getActivity());
+        }else if(type == Const.DrawRouteUserTypes.STARTED_DRIVE){
+            final LatLng myLocationLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            final LatLng destinationLatLng = new LatLng(model.to.location.get(1), model.to.location.get(0));
+            final LatLng startedLatLng = new LatLng(model.from.location.get(1), model.from.location.get(0));
+
+            boolean withZoom = false;
+            if(lastOfDrivePolyline == null){
+                withZoom = true;
+                googleMap.clear();
+                TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistanceLabel);
+                tvDistance.setText(getString(R.string.mileage_));
+                rlCancelTripLayout.findViewById(R.id.buttonCancelTrip).setVisibility(View.INVISIBLE);
             }
-        }, getActivity());
+
+            final boolean finalWithZoom = withZoom;
+
+            MapsUtils.calculateRoute(myLocationLatLng, destinationLatLng, new MapsUtils.OnRouteCalculated() {
+                @Override
+                public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                    final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100);
+
+                    if(drivingMarker != null){
+                        drivingMarker.setPosition(myLocationLatLng);
+                    }else{
+                        drivingMarker = googleMap.addMarker(new MarkerOptions().position(myLocationLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)));
+                    }
+
+                    if(driverDestinationMarker == null){
+                        driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(destinationLatLng));
+                    }
+
+                    if(lastOfDrivePolyline != null){
+                        lastOfDrivePolyline.remove();
+                    }
+                    lastOfDrivePolyline = newPolyline;
+
+                }
+            }, getActivity());
+
+            MapsUtils.getDistanceBetween(startedLatLng, myLocationLatLng, new MapsUtils.OnDistanceCalculated() {
+                @Override
+                public void onSuccessCalculate(String distance) {
+                    TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
+                    tvDistance.setText(distance);
+                }
+            }, getActivity());
+        }else if(type == Const.DrawRouteUserTypes.ACCEPTED_DRIVE){
+
+            boolean withZoom = false;
+            if(acceptedDriver == null){
+                withZoom = true;
+            }
+
+            if(acceptedDriver.currentLocation != null){
+
+                final LatLng locationPickup = new LatLng(model.from.location.get(1), model.from.location.get(0));
+                final LatLng driverLocation = new LatLng(acceptedDriver.currentLocation.get(1), acceptedDriver.currentLocation.get(0));
+
+                final boolean finalWithZoom = withZoom;
+                MapsUtils.calculateRoute(driverLocation, locationPickup, new MapsUtils.OnRouteCalculated() {
+                    @Override
+                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                        final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100);
+
+                        if(driverMarker != null){
+                            driverMarker.setPosition(driverLocation);
+                        }else{
+                            final ImageView ivTemp = new ImageView(getActivity());
+                            ImageUtils.setImageWithPicassoWithListener(ivTemp, Utils.getAvatarUrl(acceptedDriver), new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    Bitmap bitmap = MapsUtils.getBitmapWithGreenPinAndCar(getActivity(), ((BitmapDrawable)ivTemp.getDrawable()).getBitmap());
+                                    if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
+                                }
+
+                                @Override
+                                public void onError() {
+                                    if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id));
+                                }
+                            });
+                        }
+
+                        if(driverPickupMarker == null){
+                            driverPickupMarker = googleMap.addMarker(new MarkerOptions().position(locationPickup));
+                        }
+
+                        if(lastPolyline != null){
+                            lastPolyline.remove();
+                        }
+                        lastPolyline = newPolyline;
+
+                        TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
+                        tvDistance.setText(distance);
+
+                    }
+                }, getActivity());
+
+            }
+        }
+
     }
 
     private void removeRoute(){
@@ -516,7 +625,7 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
             hideRlToList();
             Utils.hideKeyboard(etTo, getActivity());
 
-            drawRoute();
+            drawRoute(Const.DrawRouteUserTypes.PICKUP_AND_DESTINATION_ROUTE, null, null);
         }
     };
 
@@ -758,108 +867,19 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
                     LastTripDialogLikeActivity.startActivity(getActivity(), acceptedOrder, acceptedDriver);
                     cancelTripClearMap();
                 }else if(response.body().data.orderStatus == Const.OrderStatusTypes.STARTED_DRIVE){
-                    final LatLng myLocationLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                    final LatLng destinationLatLng = new LatLng(orderModel.to.location.get(1), orderModel.to.location.get(0));
-                    final LatLng startedLatLng = new LatLng(orderModel.from.location.get(1), orderModel.from.location.get(0));
 
                     if(acceptedDriver == null){
                         acceptedDriver = response.body().data.driver;
                     }
 
-                    boolean withZoom = false;
-                    if(lastOfDrivePolyline == null){
-                        withZoom = true;
-                        googleMap.clear();
-                        TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistanceLabel);
-                        tvDistance.setText(getString(R.string.mileage_));
-                        rlCancelTripLayout.findViewById(R.id.buttonCancelTrip).setVisibility(View.INVISIBLE);
-                    }
-
-                    final boolean finalWithZoom = withZoom;
-                    MapsUtils.calculateRoute(myLocationLatLng, destinationLatLng, new MapsUtils.OnRouteCalculated() {
-                        @Override
-                        public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
-                            final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100);
-
-                            if(drivingMarker != null){
-                                drivingMarker.setPosition(myLocationLatLng);
-                            }else{
-                                drivingMarker = googleMap.addMarker(new MarkerOptions().position(myLocationLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)));
-                            }
-
-                            if(driverDestinationMarker == null){
-                                driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(destinationLatLng));
-                            }
-
-                            if(lastOfDrivePolyline != null){
-                                lastOfDrivePolyline.remove();
-                            }
-                            lastOfDrivePolyline = newPolyline;
-
-                        }
-                    }, getActivity());
-
-                    MapsUtils.getDistanceBetween(startedLatLng, myLocationLatLng, new MapsUtils.OnDistanceCalculated() {
-                        @Override
-                        public void onSuccessCalculate(String distance) {
-                            TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
-                            tvDistance.setText(distance);
-                        }
-                    }, getActivity());
+                    drawRoute(Const.DrawRouteUserTypes.STARTED_DRIVE, orderModel, 100);
 
                     checkAfterFiveSeconds();
 
                 }else{
-                    boolean withZoom = false;
-                    if(acceptedDriver == null){
-                        withZoom = true;
-                    }
                     acceptedDriver = response.body().data.driver;
-                    if(acceptedDriver.currentLocation != null){
+                    drawRoute(Const.DrawRouteUserTypes.ACCEPTED_DRIVE, orderModel, 100);
 
-                        final LatLng locationPickup = new LatLng(orderModel.from.location.get(1), orderModel.from.location.get(0));
-                        final LatLng driverLocation = new LatLng(acceptedDriver.currentLocation.get(1), acceptedDriver.currentLocation.get(0));
-
-                        final boolean finalWithZoom = withZoom;
-                        MapsUtils.calculateRoute(driverLocation, locationPickup, new MapsUtils.OnRouteCalculated() {
-                            @Override
-                            public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
-                                final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100);
-
-                                if(driverMarker != null){
-                                    driverMarker.setPosition(driverLocation);
-                                }else{
-                                    final ImageView ivTemp = new ImageView(getActivity());
-                                    ImageUtils.setImageWithPicassoWithListener(ivTemp, Utils.getAvatarUrl(acceptedDriver), new Callback() {
-                                        @Override
-                                        public void onSuccess() {
-                                            Bitmap bitmap = MapsUtils.getBitmapWithGreenPinAndCar(getActivity(), ((BitmapDrawable)ivTemp.getDrawable()).getBitmap());
-                                            if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
-                                        }
-
-                                        @Override
-                                        public void onError() {
-                                            if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id));
-                                        }
-                                    });
-                                }
-
-                                if(driverPickupMarker == null){
-                                    driverPickupMarker = googleMap.addMarker(new MarkerOptions().position(locationPickup));
-                                }
-
-                                if(lastPolyline != null){
-                                    lastPolyline.remove();
-                                }
-                                lastPolyline = newPolyline;
-
-                                TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
-                                tvDistance.setText(distance);
-
-                            }
-                        }, getActivity());
-
-                    }
                     checkAfterFiveSeconds();
                 }
 
@@ -900,7 +920,7 @@ public class UserMainFragment extends BaseFragment implements OnMapReadyCallback
 
     private void checkAfterFiveSeconds(){
         LogCS.i("LOG", "Start checker screen: " + screenStatus);
-        new Handler().postDelayed(new Runnable() {
+        handlerForCheck.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if(acceptedOrder != null){

@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 
+import clover_studio.com.supertaxi.base.SuperTaxiApp;
 import clover_studio.com.supertaxi.file.LocalFilesManagement;
 import clover_studio.com.supertaxi.models.ImageAvatarModel;
 import clover_studio.com.supertaxi.models.UserModel;
@@ -184,6 +185,10 @@ public class Utils {
             }
         }
         return "";
+    }
+
+    public static String getMyId(){
+        return SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey._ID);
     }
 
     public static String getAvatarUrl(UserModel userModel){

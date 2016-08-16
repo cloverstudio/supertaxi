@@ -196,8 +196,15 @@ public class Const {
     }
 
     public static final class DrawRouteDriverTypes{
-        public static final int DRAW_ROUTE_SMALL = 1;
-        public static final int DRAW_ROUTE_BIG_WITH_IMAGE_PIN = 2;
-        public static final int DRAW_ROUTE_START_TRIP = 3;
+        public static final int ON_OPEN_ORDER_SHOWED = 1;
+        public static final int ON_ACCEPTED_ORDER = 2;
+        public static final int STARTED_DRIVE_WITH_ALTERNATIVES = 3;
+        public static final int STARTED_DRIVE_WITHOUT_ALTERNATIVES = 4;
+    }
+
+    public static final class DrawRouteUserTypes{
+        public static final int PICKUP_AND_DESTINATION_ROUTE = 1;
+        public static final int STARTED_DRIVE = 2;
+        public static final int ACCEPTED_DRIVE = 3;
     }
 }

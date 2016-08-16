@@ -308,6 +308,7 @@ public class HomeActivity extends BaseActivity {
     public void refreshSidebar(){
         String url = Utils.getMyAvatarUrl();
         ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url);
+        setToolbarRightImage(url);
     }
 
     private BroadcastReceiver onCancelTripReceiver = new BroadcastReceiver() {
