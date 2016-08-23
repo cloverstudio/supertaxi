@@ -1,24 +1,4 @@
 <resources>
-    <string name="app_name">Super Taxi</string>
-    <string name="sign_in_with">Sign in with</string>
-    <string name="facebook">Facebook</string>
-    <string name="twitter">Twitter</string>
-    <string name="g_plus">Google +</string>
-    <string name="or_user_email">Or user email</string>
-    <string name="email_address">Email Address</string>
-    <string name="password">Password</string>
-    <string name="remember_me">Remember me</string>
-    <string name="sign_in_capital">SIGN IN</string>
-    <string name="forgot_password">Forgot password?</string>
-    <string name="dont_have_account">Don\'t have an account?</string>
-    <string name="sign_up">Sign up</string>
-    <string name="username">Username</string>
-    <string name="sign_up_capital">SIGN UP</string>
-    <string name="cancel">Cancel</string>
-    <string name="error">Error</string>
-    <string name="close">close</string>
-    <string name="OK">OK</string>
-    <string name="try_again">Try again</string>
 
     <!-- FACEBOOK -->
     <string name="facebook_app_id">1639880416329372</string>
@@ -47,7 +27,39 @@
     <string name="error_wrong_email">Wrong email</string>
     <string name="error_wrong_password">Wrong password</string>
     <string name="error_email_exists">Email already exists</string>
+    <string name="error_already_accepted_or_canceled">Order is already accepted or canceled</string>
+    <string name="error_already_started_or_canceled">Order is already started or canceled</string>
     <string name="error_wrong_secret">Wrong secret</string>
+    <string name="error_param_invalid_id">Invalid id</string>
+    <string name="error_param_latitude">No latitude</string>
+    <string name="error_param_longitude">No longitude</string>
+    <string name="error_already_arrived_or_canceled">Order is already arrived or canceled</string>
+    <string name="error_already_finished">Order is already finished</string>
+    <string name="error_param_rate_number">Invalid rate number</string>
+    <string name="error_param_user_not_found">User not found</string>
+    <string name="error_param_driver_not_found">Driver not found</string>
+    <string name="error_param_order_not_found">Order not found</string>
+
+    <string name="app_name">Super Taxi</string>
+    <string name="sign_in_with">Sign in with</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="g_plus">Google +</string>
+    <string name="or_user_email">Or user email</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="sign_in_capital">SIGN IN</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="username">Username</string>
+    <string name="sign_up_capital">SIGN UP</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="close">close</string>
+    <string name="OK">OK</string>
+    <string name="try_again">Try again</string>
     <string name="i_am">I am</string>
     <string name="user">User</string>
     <string name="taxi_driver">Taxi driver</string>
@@ -119,5 +131,20 @@
     <string name="you_ride_is_over">You ride is over!</string>
     <string name="please_rate_our_passenger">Please rate our passenger :)</string>
     <string name="i_ll_do_it_next_time">I\'ll do it next time..</string>
+    <string name="ignore">Ignore</string>
+    <string name="accept">Accept</string>
+    <string name="distance_between_driver_and_you">Distance between driver and you: %s</string>
+    <string name="distance_between__user_and_you_">Distance between\nuser and you:</string>
+    <string name="distance_between__driver_and_you_">Distance between\ndriver and you:</string>
+    <string name="user_canceled_order">User canceled order</string>
+    <string name="driver_canceled_order">Driver canceled order</string>
+    <string name="info">Info</string>
+    <string name="start_trip">Start trip</string>
+    <string name="end_trip">End trip</string>
+    <string name="mileage_">Mileage:</string>
+    <string name="log_out">Log out</string>
+    <string name="failed_to_get_google_plus_data">Failed to get google plus data</string>
+    <string name="failed_to_get_twitter_data">Failed to get twitter data</string>
+    <string name="failed_to_get_address">Failed to get address.</string>
 
 </resources>

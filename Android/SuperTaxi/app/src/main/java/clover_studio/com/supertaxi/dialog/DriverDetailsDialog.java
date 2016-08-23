@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -27,12 +28,15 @@ import clover_studio.com.supertaxi.api.retrofit.DriverRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.models.BaseModel;
 import clover_studio.com.supertaxi.models.CallTaxiModel;
+import clover_studio.com.supertaxi.models.DriverListResponse;
 import clover_studio.com.supertaxi.models.OrderModel;
+import clover_studio.com.supertaxi.models.UserModel;
 import clover_studio.com.supertaxi.models.post_models.PostCallTaxiModel;
 import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.AnimationUtils;
 import clover_studio.com.supertaxi.utils.Const;
+import clover_studio.com.supertaxi.utils.ImageUtils;
 import clover_studio.com.supertaxi.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -53,12 +57,18 @@ public class DriverDetailsDialog extends Dialog {
     private LinearLayout llStarLayout;
 
     private OrderModel order;
+    private UserModel driver;
+    private DriverListResponse.DriverData driverData;
 
-    public static DriverDetailsDialog startDialog(Context context, OrderModel order) {
-        return new DriverDetailsDialog(context, order);
+    public static DriverDetailsDialog startDialog(Context context, OrderModel order, UserModel driver) {
+        return new DriverDetailsDialog(context, order, driver, null);
     }
 
-    public DriverDetailsDialog(Context context, OrderModel order) {
+    public static DriverDetailsDialog startDialog(Context context, DriverListResponse.DriverData driverData) {
+        return new DriverDetailsDialog(context, null, null, driverData);
+    }
+
+    public DriverDetailsDialog(Context context, OrderModel order, UserModel driver, DriverListResponse.DriverData driverData) {
         super(context, R.style.Theme_Dialog_no_dim);
 
         setOwnerActivity((Activity) context);
@@ -66,6 +76,8 @@ public class DriverDetailsDialog extends Dialog {
         setCanceledOnTouchOutside(true);
 
         this.order = order;
+        this.driver = driver;
+        this.driverData = driverData;
 
         show();
 
@@ -86,42 +98,86 @@ public class DriverDetailsDialog extends Dialog {
         tvStartFee = (TextView) findViewById(R.id.tvStartFeeValue);
         tvKMFee = (TextView) findViewById(R.id.tvKMFeeValue);
         tvMobile = (TextView) findViewById(R.id.tvMobileValue);
-        tvRating = (TextView) findViewById(R.id.tvMobileValue);
+        tvRating = (TextView) findViewById(R.id.tvKRatingValue);
         llStarLayout = (LinearLayout) findViewById(R.id.ratingStars);
 
-        int rating = 2;
-        if (rating > llStarLayout.getChildCount()) {
-            rating = llStarLayout.getChildCount();
-        }
-        for (int i = 0; i < rating; i++) {
-            llStarLayout.getChildAt(i).setSelected(true);
-        }
+        if(driverData != null){
+            String urlAvatar = Utils.getAvatarUrl(driverData);
+            ImageUtils.setImageWithPicasso(ivAvatar, urlAvatar);
 
-        findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DriverDetailsDialog.this.dismiss();
+            tvName.setText(driverData.driver.name);
+            tvCarReg.setText(driverData.driver.car_registration);
+            tvCarType.setText(driverData.driver.car_type);
+            tvStartFee.setText(String.valueOf(driverData.driver.fee_start));
+            tvKMFee.setText(String.valueOf(driverData.driver.fee_km));
+            tvMobile.setText(driverData.telNum);
+            tvRating.setText(String.format("%.1f", driverData.averageRate));
+
+            int rating = (int) Math.round(driverData.averageRate);
+            if (rating > llStarLayout.getChildCount()) {
+                rating = llStarLayout.getChildCount();
             }
-        });
-
-        findViewById(R.id.buttonCancelTrip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelTripApi();
+            for (int i = 0; i < rating; i++) {
+                llStarLayout.getChildAt(i).setSelected(true);
             }
-        });
 
-        ((View) tvMobile.getParent()).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
-                if (ActivityCompat.checkSelfPermission(getOwnerActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getOwnerActivity(), new String[]{android.Manifest.permission.CALL_PHONE}, Const.PermissionCode.CALL);
-                    return;
+            findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DriverDetailsDialog.this.dismiss();
                 }
-                getOwnerActivity().startActivity(intent);
+            });
+
+            findViewById(R.id.buttonCancelTrip).setVisibility(View.INVISIBLE);
+
+            ((View) tvMobile.getParent()).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.contactUserWithNum(getOwnerActivity(), tvMobile.getText().toString());
+                }
+            });
+
+        }else{
+            String urlAvatar = Utils.getAvatarUrl(driver);
+            ImageUtils.setImageWithPicasso(ivAvatar, urlAvatar);
+
+            tvName.setText(driver.driver.name);
+            tvCarReg.setText(driver.driver.car_registration);
+            tvCarType.setText(driver.driver.car_type);
+            tvStartFee.setText(String.valueOf(driver.driver.fee_start));
+            tvKMFee.setText(String.valueOf(driver.driver.fee_km));
+            tvMobile.setText(driver.telNum);
+            tvRating.setText(String.format("%.1f", driver.averageRate));
+
+            int rating = (int) Math.round(driver.averageRate);;
+            if (rating > llStarLayout.getChildCount()) {
+                rating = llStarLayout.getChildCount();
             }
-        });
+            for (int i = 0; i < rating; i++) {
+                llStarLayout.getChildAt(i).setSelected(true);
+            }
+
+            findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DriverDetailsDialog.this.dismiss();
+                }
+            });
+
+            findViewById(R.id.buttonCancelTrip).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cancelTripApi();
+                }
+            });
+
+            ((View) tvMobile.getParent()).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.contactUserWithNum(getOwnerActivity(), tvMobile.getText().toString());
+                }
+            });
+        }
 
     }
 
@@ -158,6 +214,7 @@ public class DriverDetailsDialog extends Dialog {
                     super.onCustomSuccess(call, response);
 
                     DriverDetailsDialog.this.dismiss();
+                    LocalBroadcastManager.getInstance(getOwnerActivity()).sendBroadcast(new Intent(Const.ReceiverIntents.ON_CANCEL_TRIP).putExtra(Const.Extras.ORDER_MODEL, order));
 
                 }
 

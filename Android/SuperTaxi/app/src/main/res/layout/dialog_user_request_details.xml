@@ -29,7 +29,7 @@
                     android:layout_height="80dp"
                     android:layout_margin="20dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/__nedved"
+                    android:src="@drawable/user_type"
                     android:id="@+id/ivAvatarInUserDetails"/>
 
                 <LinearLayout
@@ -58,7 +58,6 @@
                         android:id="@+id/tvAge"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_view_bigger"
-                        android:text="@string/taxi_driver"
                         android:layout_below="@id/tvName"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"/>

@@ -10,13 +10,13 @@ import UIKit
 
 class MenuViewController: UIViewController {
 
-    @IBOutlet weak var imgPhoto: UIImageView!
-    @IBOutlet weak var lblName: UILabel!
-    @IBOutlet weak var lblAddress: UILabel!
+    @IBOutlet var imgPhoto: UIImageView!
+    @IBOutlet var txtFirstName: UILabel!
     
     var slideOutAnimationEnabled: Bool!
     var settingsVC: SettingsViewController!
     
+    let UserInformation = NSUserDefaults.standardUserDefaults()
     
     required init?(coder aDecoder: NSCoder) {
         self.slideOutAnimationEnabled = true
@@ -28,19 +28,27 @@ class MenuViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         self.slideOutAnimationEnabled = true
+        
+        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
+            imgPhoto.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!)
+        }
+        
+        imgPhoto.layer.cornerRadius = imgPhoto.frame.size.height/2
+        imgPhoto.clipsToBounds = true
+        
+        txtFirstName.text = UserInformation.stringForKey(UserDetails.NAME)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.prepareForSegue(segue, sender: sender)
-        
-        if(segue.identifier == "settings_segue")
-        {
-        }
-    }
 
+   
+    @IBAction func onHome(sender: AnyObject) {
+        
+        self.revealViewController().revealToggleAnimated(true)
+        
+    }
+    
 }

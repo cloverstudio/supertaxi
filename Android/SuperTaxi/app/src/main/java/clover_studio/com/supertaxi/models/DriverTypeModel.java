@@ -48,4 +48,15 @@ public class DriverTypeModel extends BaseModel implements Parcelable{
             return new DriverTypeModel[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "DriverTypeModel{" +
+                "name='" + name + '\'' +
+                ", car_type='" + car_type + '\'' +
+                ", car_registration='" + car_registration + '\'' +
+                ", fee_start=" + fee_start +
+                ", fee_km=" + fee_km +
+                '}';
+    }
 }

@@ -7,75 +7,26 @@
 //
 
 import UIKit
-import Fabric
-import TwitterKit
-import GoogleSignIn
+import IQKeyboardManagerSwift
+import FBSDKCoreKit
+import FBSDKShareKit
+import FBSDKLoginKit
+import Google
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    var string: String!
-    var imgSave: UIImage!
-    
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        IQKeyboardManager.sharedManager().enable = true
         
-        // Facebook
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        // Twitter
-        Fabric.with([Twitter.self])
-        
-        // Google+
-//            var configureError: NSError?
-//            GGLContext.sharedInstance().configureWithError(&configureError)
-//            assert(configureError == nil, "Error configuring Google services: \(configureError)")
-//    
-//            GIDSignIn.sharedInstance().delegate = self
-        
-        return true
-    }
-
-    func application(application: UIApplication,
-                     openURL url: NSURL,
-                             sourceApplication: String?,
-                             annotation: AnyObject) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(
-            application,
-            openURL: url,
-            sourceApplication: sourceApplication,
-            annotation: annotation)
+        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
-    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-        if Twitter.sharedInstance().application(app, openURL:url, options: options) {
-            return true
-        }
-        
-        // If you handle other (non Twitter Kit) URLs elsewhere in your app, return true. Otherwise
-        return false
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
-    
-//    func googleapplication(application: UIApplication,
-//                     openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-//        if #available(iOS 9.0, *) {
-//            let options: [String: AnyObject] = [UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication!,
-//                                                UIApplicationOpenURLOptionsAnnotationKey: annotation!]
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//        return GIDSignIn.sharedInstance().handleURL(url,
-//                                                    sourceApplication: sourceApplication,
-//                                                    annotation: annotation)
-//    }
-//    
-//    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
-//                withError error: NSError!) {
-//        // Perform any operations when the user disconnects from app here.
-//        // ...
-//    }
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

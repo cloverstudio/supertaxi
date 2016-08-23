@@ -42,4 +42,13 @@ public class UserTypeModel extends BaseModel implements Parcelable{
             return new UserTypeModel[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "UserTypeModel{" +
+                "name='" + name + '\'' +
+                ", note='" + note + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }

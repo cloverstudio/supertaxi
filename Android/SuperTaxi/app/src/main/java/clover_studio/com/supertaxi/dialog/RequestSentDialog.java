@@ -5,7 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,13 +29,16 @@ import clover_studio.com.supertaxi.RespondedDriverDetailsActivity;
 import clover_studio.com.supertaxi.adapters.ShowMoreAdapter;
 import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
 import clover_studio.com.supertaxi.api.retrofit.DriverRetroApiInterface;
+import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.models.BaseModel;
 import clover_studio.com.supertaxi.models.CallTaxiModel;
+import clover_studio.com.supertaxi.models.CheckOrderStatusModel;
 import clover_studio.com.supertaxi.models.DriverListResponse;
 import clover_studio.com.supertaxi.models.OrderModel;
 import clover_studio.com.supertaxi.models.post_models.PostCallTaxiModel;
 import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
+import clover_studio.com.supertaxi.models.post_models.PostCheckOrderStatusModel;
 import clover_studio.com.supertaxi.models.post_models.PostLatLngModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.AnimationUtils;
@@ -59,6 +64,9 @@ public class RequestSentDialog extends Dialog {
     private OrderModel orderModel = null;
 
     private Button cancelTripButton;
+
+    private boolean stopChecking = false;
+    private boolean dismissWithoutCancel = false;
 
     public static RequestSentDialog startDialog(Context context, LatLng pickUpLocation, LatLng destinationLocation, String pickUpAddress, String destinationAddress, int numberOfSeats){
         return new RequestSentDialog(context, pickUpLocation, destinationLocation, pickUpAddress, destinationAddress, numberOfSeats);
@@ -113,7 +121,7 @@ public class RequestSentDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if(orderModel != null){
-                    cancelTripApi();
+                    cancelTripApi(true);
                 }
             }
         });
@@ -150,6 +158,10 @@ public class RequestSentDialog extends Dialog {
     @Override
     public void dismiss() {
         stopAnimation = true;
+        stopChecking = true;
+        if(!dismissWithoutCancel){
+            cancelTripApi(false);
+        }
         AnimationUtils.fade(parentLayout, 1, 0, 200, 300, null);
         int to = parentLayout.getContext().getResources().getDisplayMetrics().heightPixels;
         AnimationUtils.translateY(parentLayout, 0, to, 500, new AnimatorListenerAdapter() {
@@ -188,6 +200,8 @@ public class RequestSentDialog extends Dialog {
                     orderModel = response.body().data.order;
                     cancelTripButton.setEnabled(true);
 
+                    checkOrderStatus(orderModel);
+
                 }
 
                 @Override
@@ -201,27 +215,69 @@ public class RequestSentDialog extends Dialog {
 
     }
 
-    private void cancelTripApi(){
+    private void cancelTripApi(final boolean toDismiss){
         PostCancelTripModel postModel = new PostCancelTripModel(orderModel._id, Const.UserType.USER_TYPE_USER, "");
 
         if(getOwnerActivity() instanceof BaseActivity){
 
+            boolean showError = toDismiss;
+
             DriverRetroApiInterface retroApiInterface = ((BaseActivity)getOwnerActivity()).getRetrofit().create(DriverRetroApiInterface.class);
             Call<BaseModel> call = retroApiInterface.cancelTrip(postModel, UserSingleton.getInstance().getUser().token_new);
-            call.enqueue(new CustomResponse<BaseModel>(getOwnerActivity(), true, true) {
+            call.enqueue(new CustomResponse<BaseModel>(getOwnerActivity(), showError, showError) {
 
                 @Override
                 public void onCustomSuccess(Call<BaseModel> call, Response<BaseModel> response) {
                     super.onCustomSuccess(call, response);
 
-                    RequestSentDialog.this.dismiss();
+                    if(toDismiss){
+                        RequestSentDialog.this.dismiss();
+                    }
+                    LocalBroadcastManager.getInstance(getOwnerActivity()).sendBroadcast(new Intent(Const.ReceiverIntents.ON_CANCEL_TRIP).putExtra(Const.Extras.ORDER_MODEL, orderModel));
 
                 }
 
                 @Override
                 public void onTryAgain(Call<BaseModel> call, Response<BaseModel> response) {
                     super.onTryAgain(call, response);
-                    cancelTripApi();
+                    cancelTripApi(toDismiss);
+                }
+            });
+
+        }
+    }
+
+    private void checkOrderStatus(final OrderModel orderModel){
+        if(stopChecking){
+            return;
+        }
+        PostCheckOrderStatusModel postModel = new PostCheckOrderStatusModel(orderModel._id);
+        if(getOwnerActivity() instanceof BaseActivity){
+
+            UserRetroApiInterface retroApiInterface = ((BaseActivity)getOwnerActivity()).getRetrofit().create(UserRetroApiInterface.class);
+            Call<CheckOrderStatusModel> call = retroApiInterface.checkOrderStatus(postModel, UserSingleton.getInstance().getUser().token_new);
+            call.enqueue(new CustomResponse<CheckOrderStatusModel>(getOwnerActivity(), false, false) {
+
+                @Override
+                public void onCustomSuccess(Call<CheckOrderStatusModel> call, Response<CheckOrderStatusModel> response) {
+                    super.onCustomSuccess(call, response);
+
+                    LogCS.i("LOG", "Order status: " + response.body().data.orderStatus);
+
+                    if(response.body().data.orderStatus == Const.OrderStatusTypes.ACCEPTED){
+                        RespondedDriverDetailsActivity.startActivity(getOwnerActivity(), response.body().data.driver, pickUpLocation, orderModel);
+                        dismissWithoutCancel = true;
+                        dismiss();
+                    }else{
+                        checkOrderStatus(orderModel);
+                    }
+
+                }
+
+                @Override
+                public void onCustomFailed(Call<CheckOrderStatusModel> call, Response<CheckOrderStatusModel> response) {
+                    super.onCustomFailed(call, response);
+                    checkOrderStatus(orderModel);
                 }
             });
 

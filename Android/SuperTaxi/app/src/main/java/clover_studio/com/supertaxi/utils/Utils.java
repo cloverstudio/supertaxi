@@ -1,14 +1,21 @@
 package clover_studio.com.supertaxi.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Address;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,10 +26,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Driver;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
+import clover_studio.com.supertaxi.base.SuperTaxiApp;
 import clover_studio.com.supertaxi.file.LocalFilesManagement;
+import clover_studio.com.supertaxi.models.DriverListResponse;
 import clover_studio.com.supertaxi.models.ImageAvatarModel;
+import clover_studio.com.supertaxi.models.UserModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 
 /**
@@ -178,6 +193,32 @@ public class Utils {
         return "";
     }
 
+    public static String getMyId(){
+        return SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey._ID);
+    }
+
+    public static String getAvatarUrl(UserModel userModel){
+        if(userModel != null && userModel.avatar != null){
+            if(userModel.avatar.thumbfileid != null){
+                return Const.BASE_URL + Const.Server.UPLOADS + "/" + userModel.avatar.thumbfileid;
+            }else if(userModel.avatar.fileid != null){
+                return Const.BASE_URL + Const.Server.UPLOADS + "/" + userModel.avatar.fileid;
+            }
+        }
+        return "";
+    }
+
+    public static String getAvatarUrl(DriverListResponse.DriverData userModel){
+        if(userModel != null && userModel.avatar != null){
+            if(userModel.avatar.thumbfileid != null){
+                return Const.BASE_URL + Const.Server.UPLOADS + "/" + userModel.avatar.thumbfileid;
+            }else if(userModel.avatar.fileid != null){
+                return Const.BASE_URL + Const.Server.UPLOADS + "/" + userModel.avatar.fileid;
+            }
+        }
+        return "";
+    }
+
     public static String formatAddress(Address address){
         StringBuilder returnString = new StringBuilder();
         returnString.append(address.getAddressLine(0));
@@ -187,6 +228,101 @@ public class Utils {
             returnString.append(", " + address.getLocality());
         }
         return returnString.toString();
+    }
+
+    public static String getImageCacheFolderPath() {
+        File folder = new File(getFilesFolderPath(), Const.CacheFolder.IMAGE_CACHE_FOLDER);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder.getAbsolutePath();
+    }
+
+    public static String getTempFolderPath() {
+        File folder = new File(getFilesFolderPath(), Const.CacheFolder.TEMP_FOLDER);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder.getAbsolutePath();
+    }
+
+    public static String getFilesFolderPath() {
+        File folder = new File(Environment.getExternalStorageDirectory(), Const.CacheFolder.APP_FOLDER);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder.getAbsolutePath();
+    }
+
+    public static void contactUserWithNum(Activity activity, String number){
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.CALL_PHONE}, Const.PermissionCode.CALL);
+            return;
+        }
+        activity.startActivity(intent);
+    }
+
+    public static Bitmap rotateResource(Resources res, int resId, int angle){
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        Bitmap source = BitmapFactory.decodeResource(res, resId);
+        Bitmap rotated = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+        source.recycle();
+        return rotated;
+    }
+
+    public static boolean checkForOrderType(int type){
+        if(type == Const.ManageOrderType.IGNORE_ORDER
+                || type == Const.ManageOrderType.ACCEPT_ORDER
+                || type == Const.ManageOrderType.ARRIVED_TIME
+                || type == Const.ManageOrderType.FINISHED_TIME
+                || type == Const.ManageOrderType.STARTED_TIME){
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean saveBitmapToFile(Bitmap bitmap, String path) {
+
+        File file = new File(path);
+        FileOutputStream fOut;
+
+        try {
+
+            fOut = new FileOutputStream(file);
+            if(path.endsWith(".png")){
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            }else{
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            }
+            fOut.flush();
+            fOut.close();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+
+    public static String getDate(long time, String format){
+        try {
+
+            Timestamp stamp = new Timestamp(time);
+            Date date = new Date(stamp.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+
+            return sdf.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
 }

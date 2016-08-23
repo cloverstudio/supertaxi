@@ -21,6 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/big_close_white"
+                android:id="@+id/ibClose"
                 android:background="@color/transparent"
                 android:padding="20dp"/>
 
@@ -31,7 +32,7 @@
                 app:layout_widthPercent="45%"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/__nedved"
+                android:src="@drawable/taxi_driver_type"
                 android:id="@+id/ivAvatarInDriverDetails"/>
 
             <clover_studio.com.supertaxi.view.CustomTextView
@@ -239,10 +240,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/devil_gray"
-                        android:text="4,9"
+                        android:text=""
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/tvKRatingValue"
+                        android:id="@+id/tvRatingValue"
                         android:textSize="@dimen/text_view_default"/>
 
                 </LinearLayout>
@@ -284,6 +285,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
                         android:text="@string/contact_driver"
+                        android:clickable="false"
                         android:textColor="@color/colorPrimary"
                         android:id="@+id/buttonContactDriver"
                         android:enabled="false"
@@ -310,7 +312,7 @@
                     android:background="@drawable/shape_red_button_with_corners_selector"
                     android:text="@string/cancel_trip_capital"
                     android:textColor="@color/white"
-                    android:id="@+id/buttonSignIn"
+                    android:id="@+id/buttonCancelTrip"
                     android:paddingLeft="10dp"
                     android:paddingStart="10dp"
                     android:paddingRight="10dp"
@@ -321,7 +323,7 @@
                 <clover_studio.com.supertaxi.view.CustomButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/requestTaxi"
+                    android:id="@+id/buttonShowOnMap"
                     android:background="@drawable/rounded_primary_button_selector"
                     android:text="@string/show_on_map"
                     android:textAllCaps="true"

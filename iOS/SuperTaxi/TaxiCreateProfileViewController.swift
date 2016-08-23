@@ -7,19 +7,31 @@
 //
 
 import UIKit
+import SwiftyJSON
+import AssetsLibrary
 
-class TaxiCreateProfileViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIApplicationDelegate, UITextFieldDelegate {
+class TaxiCreateProfileViewController: UIViewController, UINavigationControllerDelegate,
+                UIImagePickerControllerDelegate, UIApplicationDelegate, UITextFieldDelegate, SetUserDetailsDelegate {
 
     @IBOutlet weak var txtTaxiDriverName: UITextField!
     @IBOutlet weak var txtCartype: UITextField!
     @IBOutlet weak var txtCarRegnumber: UITextField!
     @IBOutlet weak var txtStartfee: UITextField!
     @IBOutlet weak var txtFeekm: UITextField!
-    @IBOutlet weak var btnSave: UIButton!
+    @IBOutlet var txtPhoneNumber: UITextField!
+    @IBOutlet var btnSave: UIButton!
     
     @IBOutlet weak var imgTaxiDriverPhoto: UIImageView!
     @IBOutlet weak var imgDriver: UIImageView!
     let picker = UIImagePickerController()
+    
+    let userInformation = NSUserDefaults.standardUserDefaults()
+    var apiManager: ApiManager!
+    
+    var imageData: NSData!
+    var mime: String!
+    
+    var goNext = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +39,6 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         // Do any additional setup after loading the view.
         picker.delegate = self
         imgTaxiDriverPhoto.layer.masksToBounds = false
-        imgTaxiDriverPhoto.layer.cornerRadius = imgTaxiDriverPhoto.frame.size.height / 2
         imgTaxiDriverPhoto.clipsToBounds = true
         
         btnSave.enabled = false
@@ -43,6 +54,15 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         txtCarRegnumber.delegate = self
         txtStartfee.delegate = self
         txtFeekm.delegate = self
+        
+        apiManager = ApiManager()
+        apiManager.setUserDetailsDelegate = self
+        
+        let status:ALAuthorizationStatus = ALAssetsLibrary.authorizationStatus()
+        
+        if status != ALAuthorizationStatus.Authorized{
+            print("User has not given authorization for the camera roll")
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,20 +91,65 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         
     }
 
-    @IBAction func onSaveClick(sender: AnyObject) {
+    @IBAction func onSaveDetails(sender: AnyObject) {
         
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.prepareForSegue(segue, sender: sender)
+        if txtTaxiDriverName.text == "" {
+            let alert = UIAlertController(title: "Alert", message: "Please enter your Name", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+            goNext = false
+        } else {
+            goNext = true
+        }
         
-        if(segue.identifier == "taxiprofile_segue")
-        {
-            if (imgTaxiDriverPhoto.image == nil) {
-                let alert = UIAlertController(title: "Alert", message: "Please upload your avatar photo", preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-            }
+        if txtCartype.text == "" {
+            let alert = UIAlertController(title: "Alert", message: "Please enter your car type.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+            goNext = false
+        } else {
+            goNext = true
+        }
+        
+        if txtCarRegnumber.text == "" {
+            let alert = UIAlertController(title: "Alert", message: "Please enter your car register number.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+            goNext = false
+        } else {
+            goNext = true
+        }
+        
+        if txtStartfee.text == "" {
+            let alert = UIAlertController(title: "Alert", message: "Please enter your start fee.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+            goNext = false
+        } else {
+            goNext = true
+        }
+        
+        if txtFeekm.text == "" {
+            let alert = UIAlertController(title: "Alert", message: "Please enter your km fee.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+            goNext = false
+        } else {
+            goNext = true
+        }
+        
+        if (goNext) {
+            apiManager.setUserDetails(userInformation.objectForKey(UserDetails.TOKEN) as! String, name: txtTaxiDriverName.text!, type: "2", telNum: txtPhoneNumber.text!, age: "", note: "", car_type: txtCartype.text!, car_registration: txtCarRegnumber.text!, fee_start: txtStartfee.text!, fee_km: txtFeekm.text!, fileData: imageData, fileName: "file", mime: mime)
         }
     }
     
@@ -92,14 +157,38 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let choosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         imgTaxiDriverPhoto.image = choosenImage
+        
+        let imageURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        
+        mime = imageURL.pathExtension
+        imageData = UIImagePNGRepresentation(choosenImage)
+        
         dismissViewControllerAnimated(true, completion: nil)
         
-        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
-        appDelegate?.imgSave = imgTaxiDriverPhoto.image
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func onSetUserDetailsSuccess(json: JSON) {
+        print("*****")
+        print(json)
+        self.performSegueWithIdentifier("SetDriverDetailsSegue", sender: nil)
+    }
+    
+    func onSetUserDetailsError(error: NSInteger) {
+        print(error)
+    }
+    
+    func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
+        let indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        indicator.frame = CGRectMake(0.0, 30, 40.0, 40.0);
+        indicator.center = view.center
+        view.addSubview(indicator)
+        indicator.bringSubviewToFront(view)
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        indicator.startAnimating()
     }
 
 }

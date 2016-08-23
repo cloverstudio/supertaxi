@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentView"
+    android:layout_width="24dp"
+    android:layout_height="45dp">
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="30dp"
+        android:src="@drawable/map_car"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="24dp"
+        android:layout_height="30dp"
+        android:background="@drawable/green_pin">
+
+        <clover_studio.com.supertaxi.view.roundimage.RoundImageView
+            android:id="@+id/ivAvatarPin"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="2dp"
+            android:scaleType="centerCrop"
+            app:border_color="@color/transparent"
+            app:border_width="0dp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

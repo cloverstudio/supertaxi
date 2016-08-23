@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/update_profile_almost_white">
+
+    <FrameLayout
+        android:id="@+id/frameForMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarLoading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlUserDetails"
+        android:visibility="gone"
+        android:background="#000000"
+        >
+
+        <clover_studio.com.supertaxi.view.roundimage.RoundImageView
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/user_type"
+            android:id="@+id/ivAvatar"
+            android:layout_height="200dp"
+            android:layout_width="200dp"/>
+
+        <clover_studio.com.supertaxi.view.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvName"
+            android:textColor="@color/white"
+            android:textSize="@dimen/bigger_text_view_title_text_size"
+            android:text="NAME"
+            android:layout_below="@id/ivAvatar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
+
+        <clover_studio.com.supertaxi.view.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvAddressFrom"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_view_bigger"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:text=""
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_below="@id/tvName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"/>
+
+        <clover_studio.com.supertaxi.view.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvAddressTo"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_view_bigger"
+            android:text=""
+            android:layout_below="@id/tvAddressFrom"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="@dimen/default_margin"
+            android:layout_marginTop="2dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#ffffff"
+        android:id="@+id/llButtons"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true">
+
+        <clover_studio.com.supertaxi.view.CustomButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_red_button_with_corners_selector"
+            android:text="@string/ignore"
+            android:textColor="@color/white"
+            android:id="@+id/buttonIgnore"
+            android:textAllCaps="true"
+            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
+            android:paddingRight="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="@dimen/default_title_size"/>
+
+        <clover_studio.com.supertaxi.view.CustomButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonAccept"
+            android:background="@drawable/shape_green_button_with_corners_selector"
+            android:text="@string/accept"
+            android:textAllCaps="true"
+            android:textSize="@dimen/default_title_size"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#ffffff"
+        android:id="@+id/rlButtonsStartEndTrip"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/rlForButtonsEndAndStart"
+            android:layout_alignParentRight="true">
+
+            <clover_studio.com.supertaxi.view.CustomButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_green_button_with_corners_selector"
+                android:text="@string/start_trip"
+                android:textColor="@color/white"
+                android:id="@+id/buttonStartTrip"
+                android:textAllCaps="true"
+                android:paddingLeft="15dp"
+                android:paddingStart="15dp"
+                android:paddingRight="15dp"
+                android:paddingEnd="15dp"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:textSize="@dimen/default_title_size"/>
+
+            <clover_studio.com.supertaxi.view.CustomButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_red_button_with_corners_selector"
+                android:text="@string/end_trip"
+                android:textColor="@color/white"
+                android:id="@+id/buttonEndTrip"
+                android:textAllCaps="true"
+                android:layout_alignTop="@id/buttonStartTrip"
+                android:layout_alignBottom="@id/buttonStartTrip"
+                android:layout_alignLeft="@id/buttonStartTrip"
+                android:layout_alignStart="@id/buttonStartTrip"
+                android:layout_alignEnd="@id/buttonStartTrip"
+                android:visibility="gone"
+                android:layout_alignRight="@id/buttonStartTrip"
+                android:textSize="@dimen/default_title_size"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/rlForButtonsEndAndStart"
+            android:layout_toStartOf="@+id/rlForButtonsEndAndStart">
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvDistanceLabel"
+                android:textColor="@color/revert_devil_gray"
+                android:textSize="@dimen/small_text_view_title_text_size"
+                android:text="@string/distance_between__user_and_you_"
+                android:textAllCaps="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"/>
+
+            <clover_studio.com.supertaxi.view.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvDistance"
+                android:textColor="@color/revert_devil_gray"
+                android:textSize="@dimen/text_view_default"
+                android:text="0 km"
+                android:layout_marginTop="2dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+
+</RelativeLayout>

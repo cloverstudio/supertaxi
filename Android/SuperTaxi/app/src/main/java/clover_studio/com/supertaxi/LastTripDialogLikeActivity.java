@@ -31,18 +31,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
+import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseActivity;
+import clover_studio.com.supertaxi.models.BaseModel;
+import clover_studio.com.supertaxi.models.OrderModel;
+import clover_studio.com.supertaxi.models.UserModel;
+import clover_studio.com.supertaxi.models.post_models.PostRateModel;
+import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.AnimationUtils;
 import clover_studio.com.supertaxi.utils.Const;
+import clover_studio.com.supertaxi.utils.ImageUtils;
+import clover_studio.com.supertaxi.utils.MapsUtils;
+import clover_studio.com.supertaxi.utils.Utils;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapReadyCallback {
 
-    public static void startActivity(Activity activity, LatLng startLocation, LatLng destinationLocation){
+    public static void startActivity(Activity activity, OrderModel order, UserModel driver){
         activity.startActivity(new Intent(activity, LastTripDialogLikeActivity.class)
-                .putExtra(Const.Extras.START_LOCATION, startLocation)
-                .putExtra(Const.Extras.DESTINATION_LOCATION, destinationLocation));
+                .putExtra(Const.Extras.ORDER_MODEL, order)
+                .putExtra(Const.Extras.USER_MODEL, driver));
     }
 
     RelativeLayout parentLayout;
@@ -56,8 +69,9 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
 
     GoogleMap googleMap;
     private FrameLayout layoutForMap;
-    private LatLng startLocation;
-    private LatLng destinationLocation;
+    private OrderModel order;
+    private UserModel driver;
+    private boolean startClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +83,14 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
 
         ivAvatar = (ImageView) findViewById(R.id.ivAvatarInDriverDetails);
         tvName = (TextView) findViewById(R.id.tvName);
+        tvDate = (TextView) findViewById(R.id.tvLastTripDate);
         tvPrice = (TextView) findViewById(R.id.tvPriceValue);
         tvDate = (TextView) findViewById(R.id.tvLastTripDate);
         llStarLayout = (LinearLayout) findViewById(R.id.bigStarsLayout);
         layoutForMap = (FrameLayout) findViewById(R.id.frameForMapInDialog);
 
-        startLocation = getIntent().getParcelableExtra(Const.Extras.START_LOCATION);
-        destinationLocation = getIntent().getParcelableExtra(Const.Extras.DESTINATION_LOCATION);
+        order = getIntent().getParcelableExtra(Const.Extras.ORDER_MODEL);
+        driver = getIntent().getParcelableExtra(Const.Extras.USER_MODEL);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -89,22 +104,34 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
         animateLayout();
 
         for(int i = 0; i < llStarLayout.getChildCount(); i++){
-            llStarLayout.getChildAt(i).setTag(i);
+            llStarLayout.getChildAt(i).setTag(i + 1);
             llStarLayout.getChildAt(i).setOnClickListener(onStarsClicked);
         }
+
+        String url = Utils.getAvatarUrl(driver);
+        ImageUtils.setImageWithPicasso(ivAvatar, url);
+
+        tvName.setText(driver.driver.name);
+        tvDate.setText(Utils.getDate(System.currentTimeMillis(), Const.DateFormat.DAY_WITH_TIME_FORMAT));
 
     }
 
     private View.OnClickListener onStarsClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if(startClicked) {
+                return;
+            }
+            startClicked = true;
             Integer tag = (Integer) v.getTag();
-            for(int i = 0; i <= tag; i++){
-                llStarLayout.getChildAt(i).setSelected(true);
+            for(int i = 0; i < tag; i++){
+                if(i < llStarLayout.getChildCount()){
+                    llStarLayout.getChildAt(i).setSelected(true);
+                }
             }
-            for(int i = tag + 1; i < llStarLayout.getChildCount(); i++){
-                llStarLayout.getChildAt(i).setSelected(false);
-            }
+            rateProfileApi(tag, driver._id);
+
         }
     };
 
@@ -113,125 +140,74 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
 
+        LatLng startLocation = new LatLng(order.from.location.get(1), order.from.location.get(0));
+        LatLng destinationLocation = new LatLng(order.to.location.get(1), order.to.location.get(0));
+
         if(startLocation != null && destinationLocation != null){
+
+            List<LatLng> listLocation = new ArrayList<>();
+            listLocation.add(startLocation);
+            listLocation.add(destinationLocation);
+
+            LatLngBounds bounds = MapsUtils.getSouthWestAndNorthEast(listLocation);
+
             googleMap.addMarker(new MarkerOptions().position(startLocation));
             googleMap.addMarker(new MarkerOptions().position(destinationLocation));
-            LatLngBounds bounds = null;
-            if(startLocation.latitude < destinationLocation.latitude){
-                bounds = new LatLngBounds(startLocation, destinationLocation);
-            }else{
-                bounds = new LatLngBounds(destinationLocation, startLocation);
-            }
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
             googleMap.getUiSettings().setScrollGesturesEnabled(false);
             googleMap.getUiSettings().setZoomGesturesEnabled(false);
             googleMap.getUiSettings().setZoomControlsEnabled(false);
 
-            String url = makeUrl();
-            JsonParser parser = new JsonParser();
-            parser.getJSONFromUrl(url, new JsonParser.OnResult() {
+            MapsUtils.calculateRoute(startLocation, destinationLocation, new MapsUtils.OnRouteCalculated() {
                 @Override
-                public void onResult(final String json) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            drawPath(json);
-                        }
-                    });
+                public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest) {
+                    MapsUtils.drawPolyLines(list, googleMap, false);
+
+                    double price = 0;
+                    int pricePerKm = driver.driver.fee_km;
+                    int startPrice = driver.driver.fee_start;
+
+                    if(distanceValue < 1000){
+                        price = pricePerKm + startPrice;
+                    }else{
+                        double pricePerMeter = (double) pricePerKm / 1000.0;
+                        price = (double) startPrice + (pricePerMeter * distanceValue);
+                    }
+
+                    tvPrice.setText(String.format("$%.2f", price));
+
                 }
-            });
+            }, getActivity());
+
         }
 
     }
 
-    private String makeUrl(){
-        StringBuilder urlString = new StringBuilder();
-        urlString.append("https://maps.googleapis.com/maps/api/directions/json");
-        urlString.append("?origin=");// from
-        urlString.append(Double.toString(startLocation.latitude));
-        urlString.append(",");
-        urlString.append(Double.toString( startLocation.longitude));
-        urlString.append("&waypoints=");// from
-        urlString.append(Double.toString(45.787848));
-        urlString.append(",");
-        urlString.append(Double.toString(15.930355));
-        urlString.append("&destination=");// to
-        urlString.append(Double.toString( destinationLocation.latitude));
-        urlString.append(",");
-        urlString.append(Double.toString( destinationLocation.longitude));
-        urlString.append("&sensor=false&mode=driving&alternatives=true");
-        urlString.append("&key=AIzaSyBONAsYG4Pq-Sx9obbuHxlDaj4aa872kvs");
-        Log.d("LOG", "URL: " + urlString.toString());
-        return urlString.toString();
-    }
+    private void rateProfileApi(final int rate, final String userId){
+        PostRateModel postModel = new PostRateModel(userId, Const.UserType.USER_TYPE_DRIVER, rate);
+        UserRetroApiInterface retroApiInterface = getRetrofit().create(UserRetroApiInterface.class);
+        Call<BaseModel> call = retroApiInterface.rateProfile(postModel, UserSingleton.getInstance().getUser().token_new);
+        call.enqueue(new CustomResponse<BaseModel>(getActivity(), true, true) {
 
-    public void drawPath(String  result) {
+            @Override
+            public void onCustomSuccess(Call<BaseModel> call, Response<BaseModel> response) {
+                super.onCustomSuccess(call, response);
 
-        try {
-            //Tranform the string into a json object
-            final JSONObject json = new JSONObject(result);
-            JSONArray routeArray = json.getJSONArray("routes");
-            JSONObject routes = routeArray.getJSONObject(0);
-            JSONObject overviewPolylines = routes.getJSONObject("overview_polyline");
-            String encodedString = overviewPolylines.getString("points");
-            List<LatLng> list = decodePoly(encodedString);
-            Polyline line = googleMap.addPolyline(new PolylineOptions()
-                    .addAll(list)
-                    .width(12)
-                    .color(Color.parseColor("#05b1fb"))//Google maps blue color
-                    .geodesic(true)
-            );
-           /*
-           for(int z = 0; z<list.size()-1;z++){
-                LatLng src= list.get(z);
-                LatLng dest= list.get(z+1);
-                Polyline line = mMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude,   dest.longitude))
-                .width(2)
-                .color(Color.BLUE).geodesic(true));
+                finish();
+
             }
-           */
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private List<LatLng> decodePoly(String encoded) {
+            @Override
+            public void onTryAgain(Call<BaseModel> call, Response<BaseModel> response) {
+                super.onTryAgain(call, response);
+                rateProfileApi(rate, userId);
+            }
 
-        List<LatLng> poly = new ArrayList<LatLng>();
-        int index = 0, len = encoded.length();
-        int lat = 0, lng = 0;
-
-        while (index < len) {
-            int b, shift = 0, result = 0;
-            do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lat += dlat;
-
-            shift = 0;
-            result = 0;
-            do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lng += dlng;
-
-            LatLng p = new LatLng( (((double) lat / 1E5)),
-                    (((double) lng / 1E5) ));
-            poly.add(p);
-        }
-
-        return poly;
+        });
     }
 
 }
