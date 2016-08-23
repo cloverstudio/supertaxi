@@ -144,12 +144,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         getFragmentManager().beginTransaction().add(layoutForMap.getId(), mapFragment, "TAG").commit();
         mapFragment.getMapAsync(UserMainFragment.this);
 
-        LogCS.e("LOG_TTT", "DEFAULT LOCALE: " + Locale.getDefault());
-        for(Locale item : Locale.getAvailableLocales()){
-            LogCS.e("LOG_TTT", "LOCALE: " + item);
-        }
-
-        geocoder = new Geocoder(getActivity(), new Locale("hr_HR"));//Locale.getDefault());
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
         return rootView;
     }
