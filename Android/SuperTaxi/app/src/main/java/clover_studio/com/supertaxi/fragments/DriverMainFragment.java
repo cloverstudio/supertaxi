@@ -561,7 +561,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
                 MapsUtils.calculateRoute(myLocationLatLng, locationTo, new MapsUtils.OnRouteCalculated() {
 
                     @Override
-                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest) {
+                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
 
                         tvDistance.setText(distance);
 
@@ -593,9 +593,9 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
             }else if(type == Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER){
                 MapsUtils.calculateRoute(myLocationLatLng, locationFrom, new MapsUtils.OnRouteCalculated() {
                     @Override
-                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest) {
+                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
 
-                        tvDistance.setText(distance);
+                        tvDistance.setText(distance + " (" + duration + ")");
 
                         if(onAcceptDriverMarker == null){
                             clearMapAndDriversMarkers();
@@ -635,7 +635,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
             }else {
                 MapsUtils.calculateRoute(myLocationLatLng, locationFrom, new MapsUtils.OnRouteCalculated() {
                     @Override
-                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest) {
+                    public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
                         clearMapAndDriversMarkers();
                         MapsUtils.drawPolyLines(list, googleMap, true, paddingMap, northeast, southwest);
                         googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(""));

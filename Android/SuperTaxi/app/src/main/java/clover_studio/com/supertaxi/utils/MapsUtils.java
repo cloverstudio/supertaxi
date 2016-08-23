@@ -82,6 +82,17 @@ public class MapsUtils {
         });
     }
 
+    public static void getTimeBetween(LatLng startLocation, LatLng destinationLocation, final OnTimeCalculated distanceListener, final Activity activity){
+        String url = makeUrl(startLocation, destinationLocation);
+        JsonParser parser = new JsonParser();
+        parser.getJSONFromUrl(url, new JsonParser.OnResult() {
+            @Override
+            public void onResult(final String json) {
+                getTime(json, distanceListener, activity);
+            }
+        });
+    }
+
     private static String makeUrl(LatLng startLocation, LatLng destinationLocation){
         return makeUrl(startLocation, destinationLocation, null);
     }
@@ -125,6 +136,9 @@ public class MapsUtils {
             JSONObject distance = leg.getJSONObject("distance");
             final String distanceString = distance.getString("text");
             final long distanceValue = distance.getLong("value");
+            JSONObject duration = leg.getJSONObject("duration");
+            final String durationString = duration.getString("text");
+            final long durationValue = duration.getLong("value");
             final List<LatLng> list = decodePoly(encodedString);
             JSONObject bounds = routes.getJSONObject("bounds");
             JSONObject northeast = bounds.getJSONObject("northeast");
@@ -135,7 +149,7 @@ public class MapsUtils {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onSuccessCalculate(list, distanceString, distanceValue, northeastLatLng, southwestLatLng);
+                        listener.onSuccessCalculate(list, distanceString, distanceValue, durationString, durationValue, northeastLatLng, southwestLatLng);
                     }
                 });
             }
@@ -206,6 +220,33 @@ public class MapsUtils {
                     @Override
                     public void run() {
                         listener.onSuccessCalculate(distanceString);
+                    }
+                });
+            }
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void getTime(String result, final OnTimeCalculated listener, Activity activity) {
+
+        try {
+            //Tranform the string into a json object
+            final JSONObject json = new JSONObject(result);
+            JSONArray routeArray = json.getJSONArray("routes");
+            JSONObject routes = routeArray.getJSONObject(0);
+            JSONArray legs = routes.getJSONArray("legs");
+            JSONObject leg = legs.getJSONObject(0);
+            JSONObject duration = leg.getJSONObject("duration");
+            final String durationString = duration.getString("text");
+            final long durationValue = duration.getLong("value");
+            if(listener != null){
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onSuccessCalculate(durationString, durationValue);
                     }
                 });
             }
@@ -349,7 +390,7 @@ public class MapsUtils {
     }
 
     public interface OnRouteCalculated{
-        void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest);
+        void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest);
     }
 
     public interface OnRouteWithAlternativesCalculated{
@@ -358,6 +399,10 @@ public class MapsUtils {
 
     public interface OnDistanceCalculated{
         void onSuccessCalculate(String distance);
+    }
+
+    public interface OnTimeCalculated{
+        void onSuccessCalculate(String timeString, long timeSeconds);
     }
 
     public static Bitmap getBitmapWithGreenPin(Context context, Bitmap avatarBitmap){

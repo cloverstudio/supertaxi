@@ -76,7 +76,7 @@
                 <clover_studio.com.supertaxi.view.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="19"
+                    android:text="-"
                     android:textColor="@color/white"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="4dp"

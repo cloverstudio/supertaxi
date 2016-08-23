@@ -164,7 +164,7 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
 
             MapsUtils.calculateRoute(startLocation, destinationLocation, new MapsUtils.OnRouteCalculated() {
                 @Override
-                public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest) {
+                public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
                     MapsUtils.drawPolyLines(list, googleMap, false);
 
                     double price = 0;

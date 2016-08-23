@@ -163,9 +163,16 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 updateCoordinates(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
             }
+
+            if(myLocation != null){
+                onMyLocationFound();
+            }
+
         }
 
     }
+
+    protected void onMyLocationFound(){}
 
     private LocationSourceListener.OnMyLocationChangedListener onMyLocationChangedListener = new LocationSourceListener.OnMyLocationChangedListener() {
         @Override
@@ -176,9 +183,17 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
 
     // Override this
     protected void onMyLocationChanged(Location myLocationNew){
+        boolean isMyLocationAlreadyFound = true;
+        if(myLocation == null){
+            isMyLocationAlreadyFound = false;
+        }
         myLocation = myLocationNew;
         Log.d("LOG_IVO", "MY LOCATION: " + myLocation.getLatitude() + ", " + myLocation.getLongitude());
         updateCoordinates(new LatLng(myLocation.getLatitude(), myLocationNew.getLongitude()));
+
+        if(!isMyLocationAlreadyFound){
+            onMyLocationFound();
+        }
     }
 
     private void updateCoordinates(LatLng newLocation){
