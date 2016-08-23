@@ -20,6 +20,8 @@
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
+        <meta-data android:name="io.fabric.ApiKey" android:value="49ed1a7380e5df875c8892fe84398629465e5d8c"/>
+
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBONAsYG4Pq-Sx9obbuHxlDaj4aa872kvs"/>
 
         <activity android:name=".SplashActivity">

@@ -61,6 +61,24 @@ public class ErrorUtils {
                 return res.getString(R.string.error_already_accepted_or_canceled);
             case Const.ErrorCodes.ALREADY_STARTED_OR_CANCELED:
                 return res.getString(R.string.error_already_started_or_canceled);
+            case Const.ErrorCodes.PARAM_INVALID_ID:
+                return res.getString(R.string.error_param_invalid_id);
+            case Const.ErrorCodes.PARAM_ERROR_LATITUDE:
+                return res.getString(R.string.error_param_latitude);
+            case Const.ErrorCodes.PARAM_ERROR_LONGITUDE:
+                return res.getString(R.string.error_param_longitude);
+            case Const.ErrorCodes.ALREADY_ARRIVED_OR_CANCELED:
+                return res.getString(R.string.error_already_arrived_or_canceled);
+            case Const.ErrorCodes.ALREADY_FINISHED:
+                return res.getString(R.string.error_already_finished);
+            case Const.ErrorCodes.PARAM_ERROR_RATE_NUMBER:
+                return res.getString(R.string.error_param_rate_number);
+            case Const.ErrorCodes.PARAM_ERROR_USER_NOT_FOUND:
+                return res.getString(R.string.error_param_user_not_found);
+            case Const.ErrorCodes.PARAM_ERROR_DRIVER_NOT_FOUND:
+                return res.getString(R.string.error_param_driver_not_found);
+            case Const.ErrorCodes.PARAM_ERROR_ORDER_NOT_FOUND:
+                return res.getString(R.string.error_param_order_not_found);
             default:
                 return res.getString(R.string.error_unknown);
         }

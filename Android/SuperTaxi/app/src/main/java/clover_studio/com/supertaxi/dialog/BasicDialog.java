@@ -175,6 +175,11 @@ public class BasicDialog extends Dialog{
         buttonLeft.setText(leftButton);
     }
 
+    public void setButtonText(String text){
+        Button button = (Button) findViewById(R.id.oneButton);
+        button.setText(text);
+    }
+
     public interface OneButtonDialogListener{
         void onOkClicked(BasicDialog dialog);
     }

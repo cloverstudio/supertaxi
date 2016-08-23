@@ -82,7 +82,7 @@
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
                     android:id="@+id/tvMinValue"
-                    android:textSize="11dp"
+                    android:textSize="11sp"
                     tools:ignore="SpUsage" />
 
                 <clover_studio.com.supertaxi.view.CustomTextView
@@ -118,6 +118,14 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
                 />
+
+            <ProgressBar
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/pbInMarker"
+                android:visibility="gone"
+                android:layout_alignBottom="@id/tvInMarker"
+                android:layout_centerHorizontal="true"/>
 
             <ImageButton
                 android:layout_width="30dp"
@@ -405,5 +413,11 @@
         android:focusableInTouchMode="true"
         android:layout_width="0px"
         android:layout_height="0px"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewForBlockAllClick"
+        android:visibility="gone"/>
 
 </RelativeLayout>

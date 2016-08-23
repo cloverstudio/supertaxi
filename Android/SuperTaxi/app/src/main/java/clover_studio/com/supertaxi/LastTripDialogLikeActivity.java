@@ -83,6 +83,7 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
 
         ivAvatar = (ImageView) findViewById(R.id.ivAvatarInDriverDetails);
         tvName = (TextView) findViewById(R.id.tvName);
+        tvDate = (TextView) findViewById(R.id.tvLastTripDate);
         tvPrice = (TextView) findViewById(R.id.tvPriceValue);
         tvDate = (TextView) findViewById(R.id.tvLastTripDate);
         llStarLayout = (LinearLayout) findViewById(R.id.bigStarsLayout);
@@ -111,6 +112,7 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
         ImageUtils.setImageWithPicasso(ivAvatar, url);
 
         tvName.setText(driver.driver.name);
+        tvDate.setText(Utils.getDate(System.currentTimeMillis(), Const.DateFormat.DAY_WITH_TIME_FORMAT));
 
     }
 
@@ -162,7 +164,7 @@ public class LastTripDialogLikeActivity extends BaseActivity  implements OnMapRe
 
             MapsUtils.calculateRoute(startLocation, destinationLocation, new MapsUtils.OnRouteCalculated() {
                 @Override
-                public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue) {
+                public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest) {
                     MapsUtils.drawPolyLines(list, googleMap, false);
 
                     double price = 0;

@@ -2,6 +2,9 @@ package clover_studio.com.supertaxi.fragments;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -19,6 +22,9 @@ import android.widget.LinearLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +39,7 @@ import clover_studio.com.supertaxi.api.UploadFileManagement;
 import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
 import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseFragment;
+import clover_studio.com.supertaxi.base.SuperTaxiApp;
 import clover_studio.com.supertaxi.dialog.BasicDialog;
 import clover_studio.com.supertaxi.dialog.CustomDialog;
 import clover_studio.com.supertaxi.dialog.UploadFileDialog;
@@ -63,6 +70,7 @@ public class UserProfileFragment extends BaseFragment{
     private LinearLayout llForChangeImage;
     private ImageView ivAvatarImage;
     private String imagePath = null;
+    private String imageFromSignUpUrl = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,7 +111,21 @@ public class UserProfileFragment extends BaseFragment{
             if(myUser.user.age != 0){
                 etAge.setText(String.valueOf(myUser.user.age));
             }
+        }else{
+            if(SuperTaxiApp.getPreferences().hasPreferences(Const.PreferencesKey.FROM_SIGN_UP_NAME)){
+                etName.setText(SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.FROM_SIGN_UP_NAME));
+                SuperTaxiApp.getPreferences().removePreference(Const.PreferencesKey.FROM_SIGN_UP_NAME);
+            }
+            if(SuperTaxiApp.getPreferences().hasPreferences(Const.PreferencesKey.FROM_SIGN_UP_IMAGE)){
+                String avatarUrl = SuperTaxiApp.getPreferences().getCustomString(Const.PreferencesKey.FROM_SIGN_UP_IMAGE);
+                llForChangeImage.setVisibility(View.GONE);
+                ivAvatarImage.setVisibility(View.VISIBLE);
+                ImageUtils.setImageWithPicasso(ivAvatarImage, avatarUrl);
+                SuperTaxiApp.getPreferences().removePreference(Const.PreferencesKey.FROM_SIGN_UP_IMAGE);
+                imageFromSignUpUrl = avatarUrl;
+            }
         }
+
         String avatarUrl = Utils.getMyAvatarUrl();
         if(!TextUtils.isEmpty(avatarUrl)){
             llForChangeImage.setVisibility(View.GONE);
@@ -142,6 +164,8 @@ public class UserProfileFragment extends BaseFragment{
         public void onClick(View v) {
             if(imagePath != null){
                 uploadImage(imagePath);
+            }else if(imageFromSignUpUrl != null){
+                uploadImageFromSignUp(imageFromSignUpUrl);
             }else{
                 updateProfileWithoutImage();
             }
@@ -203,6 +227,45 @@ public class UserProfileFragment extends BaseFragment{
                 updateProfileWithoutImage();
             }
         });
+    }
+
+    private void uploadImageFromSignUp(final String imageFromSignUpUrl) {
+
+        showProgress();
+
+        new AsyncTask<Void, Void, Boolean>(){
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+
+                URL imageURL = null;
+                try {
+                    imageURL = new URL(imageFromSignUpUrl);
+                    Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                    imagePath = Utils.getTempFolderPath() + "/temp_sign_up";
+                    Utils.saveBitmapToFile(bitmap, imagePath);
+
+                    return true;
+                }  catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+
+                if(result){
+                    uploadImage(imagePath);
+                }else{
+                    updateProfileWithoutImage();
+                }
+
+            }
+        }.execute();
+
     }
 
     private void uploadImage(final String path) {

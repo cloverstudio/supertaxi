@@ -26,10 +26,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Driver;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
 import clover_studio.com.supertaxi.file.LocalFilesManagement;
+import clover_studio.com.supertaxi.models.DriverListResponse;
 import clover_studio.com.supertaxi.models.ImageAvatarModel;
 import clover_studio.com.supertaxi.models.UserModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
@@ -202,6 +208,17 @@ public class Utils {
         return "";
     }
 
+    public static String getAvatarUrl(DriverListResponse.DriverData userModel){
+        if(userModel != null && userModel.avatar != null){
+            if(userModel.avatar.thumbfileid != null){
+                return Const.BASE_URL + Const.Server.UPLOADS + "/" + userModel.avatar.thumbfileid;
+            }else if(userModel.avatar.fileid != null){
+                return Const.BASE_URL + Const.Server.UPLOADS + "/" + userModel.avatar.fileid;
+            }
+        }
+        return "";
+    }
+
     public static String formatAddress(Address address){
         StringBuilder returnString = new StringBuilder();
         returnString.append(address.getAddressLine(0));
@@ -215,6 +232,14 @@ public class Utils {
 
     public static String getImageCacheFolderPath() {
         File folder = new File(getFilesFolderPath(), Const.CacheFolder.IMAGE_CACHE_FOLDER);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        return folder.getAbsolutePath();
+    }
+
+    public static String getTempFolderPath() {
+        File folder = new File(getFilesFolderPath(), Const.CacheFolder.TEMP_FOLDER);
         if (!folder.exists()) {
             folder.mkdirs();
         }
@@ -257,6 +282,47 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static boolean saveBitmapToFile(Bitmap bitmap, String path) {
+
+        File file = new File(path);
+        FileOutputStream fOut;
+
+        try {
+
+            fOut = new FileOutputStream(file);
+            if(path.endsWith(".png")){
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            }else{
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            }
+            fOut.flush();
+            fOut.close();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+
+    }
+
+    public static String getDate(long time, String format){
+        try {
+
+            Timestamp stamp = new Timestamp(time);
+            Date date = new Date(stamp.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+
+            return sdf.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
 }

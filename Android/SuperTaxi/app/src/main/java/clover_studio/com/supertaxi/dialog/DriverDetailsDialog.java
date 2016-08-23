@@ -28,6 +28,7 @@ import clover_studio.com.supertaxi.api.retrofit.DriverRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.models.BaseModel;
 import clover_studio.com.supertaxi.models.CallTaxiModel;
+import clover_studio.com.supertaxi.models.DriverListResponse;
 import clover_studio.com.supertaxi.models.OrderModel;
 import clover_studio.com.supertaxi.models.UserModel;
 import clover_studio.com.supertaxi.models.post_models.PostCallTaxiModel;
@@ -57,12 +58,17 @@ public class DriverDetailsDialog extends Dialog {
 
     private OrderModel order;
     private UserModel driver;
+    private DriverListResponse.DriverData driverData;
 
     public static DriverDetailsDialog startDialog(Context context, OrderModel order, UserModel driver) {
-        return new DriverDetailsDialog(context, order, driver);
+        return new DriverDetailsDialog(context, order, driver, null);
     }
 
-    public DriverDetailsDialog(Context context, OrderModel order, UserModel driver) {
+    public static DriverDetailsDialog startDialog(Context context, DriverListResponse.DriverData driverData) {
+        return new DriverDetailsDialog(context, null, null, driverData);
+    }
+
+    public DriverDetailsDialog(Context context, OrderModel order, UserModel driver, DriverListResponse.DriverData driverData) {
         super(context, R.style.Theme_Dialog_no_dim);
 
         setOwnerActivity((Activity) context);
@@ -71,6 +77,7 @@ public class DriverDetailsDialog extends Dialog {
 
         this.order = order;
         this.driver = driver;
+        this.driverData = driverData;
 
         show();
 
@@ -94,44 +101,83 @@ public class DriverDetailsDialog extends Dialog {
         tvRating = (TextView) findViewById(R.id.tvKRatingValue);
         llStarLayout = (LinearLayout) findViewById(R.id.ratingStars);
 
-        String urlAvatar = Utils.getAvatarUrl(driver);
-        ImageUtils.setImageWithPicasso(ivAvatar, urlAvatar);
+        if(driverData != null){
+            String urlAvatar = Utils.getAvatarUrl(driverData);
+            ImageUtils.setImageWithPicasso(ivAvatar, urlAvatar);
 
-        tvName.setText(driver.driver.name);
-        tvCarReg.setText(driver.driver.car_registration);
-        tvCarType.setText(driver.driver.car_type);
-        tvStartFee.setText(String.valueOf(driver.driver.fee_start));
-        tvKMFee.setText(String.valueOf(driver.driver.fee_km));
-        tvMobile.setText(driver.telNum);
+            tvName.setText(driverData.driver.name);
+            tvCarReg.setText(driverData.driver.car_registration);
+            tvCarType.setText(driverData.driver.car_type);
+            tvStartFee.setText(String.valueOf(driverData.driver.fee_start));
+            tvKMFee.setText(String.valueOf(driverData.driver.fee_km));
+            tvMobile.setText(driverData.telNum);
+            tvRating.setText(String.format("%.1f", driverData.averageRate));
 
-        int rating = 2;
-        if (rating > llStarLayout.getChildCount()) {
-            rating = llStarLayout.getChildCount();
+            int rating = (int) Math.round(driverData.averageRate);
+            if (rating > llStarLayout.getChildCount()) {
+                rating = llStarLayout.getChildCount();
+            }
+            for (int i = 0; i < rating; i++) {
+                llStarLayout.getChildAt(i).setSelected(true);
+            }
+
+            findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DriverDetailsDialog.this.dismiss();
+                }
+            });
+
+            findViewById(R.id.buttonCancelTrip).setVisibility(View.INVISIBLE);
+
+            ((View) tvMobile.getParent()).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.contactUserWithNum(getOwnerActivity(), tvMobile.getText().toString());
+                }
+            });
+
+        }else{
+            String urlAvatar = Utils.getAvatarUrl(driver);
+            ImageUtils.setImageWithPicasso(ivAvatar, urlAvatar);
+
+            tvName.setText(driver.driver.name);
+            tvCarReg.setText(driver.driver.car_registration);
+            tvCarType.setText(driver.driver.car_type);
+            tvStartFee.setText(String.valueOf(driver.driver.fee_start));
+            tvKMFee.setText(String.valueOf(driver.driver.fee_km));
+            tvMobile.setText(driver.telNum);
+            tvRating.setText(String.format("%.1f", driver.averageRate));
+
+            int rating = (int) Math.round(driver.averageRate);;
+            if (rating > llStarLayout.getChildCount()) {
+                rating = llStarLayout.getChildCount();
+            }
+            for (int i = 0; i < rating; i++) {
+                llStarLayout.getChildAt(i).setSelected(true);
+            }
+
+            findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DriverDetailsDialog.this.dismiss();
+                }
+            });
+
+            findViewById(R.id.buttonCancelTrip).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cancelTripApi();
+                }
+            });
+
+            ((View) tvMobile.getParent()).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.contactUserWithNum(getOwnerActivity(), tvMobile.getText().toString());
+                }
+            });
         }
-        for (int i = 0; i < rating; i++) {
-            llStarLayout.getChildAt(i).setSelected(true);
-        }
-
-        findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DriverDetailsDialog.this.dismiss();
-            }
-        });
-
-        findViewById(R.id.buttonCancelTrip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelTripApi();
-            }
-        });
-
-        ((View) tvMobile.getParent()).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.contactUserWithNum(getOwnerActivity(), tvMobile.getText().toString());
-            }
-        });
 
     }
 

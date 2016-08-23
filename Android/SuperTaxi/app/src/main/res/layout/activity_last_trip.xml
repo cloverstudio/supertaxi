@@ -37,8 +37,8 @@
                 android:textColor="@color/devil_gray"
                 android:textSize="@dimen/text_view_bigger"
                 android:layout_below="@id/tvLastTripLabel"
-                android:text="DATE"
-                android:textAllCaps="true"
+                android:text=""
+                android:textAllCaps="false"
                 android:layout_centerHorizontal="true"/>
 
             <View
@@ -225,6 +225,7 @@
                     android:layout_marginBottom="15dp"
                     android:layout_alignBottom="@id/rlNameAndPrice"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/user_type"
                     android:id="@+id/ivAvatarInDriverDetails"/>
 
             </RelativeLayout>

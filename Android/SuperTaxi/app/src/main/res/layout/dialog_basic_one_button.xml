@@ -74,6 +74,7 @@
                 android:layout_below="@id/info_layout"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:textAllCaps="true"
                 android:background="@color/transparent"
                 android:text="@string/close"/>
 

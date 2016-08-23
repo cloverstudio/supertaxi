@@ -16,6 +16,7 @@ public class UserModel extends BaseModel implements Parcelable{
     public String email;
     public long created;
     public String telNum;
+    public double averageRate;
     public ImageAvatarModel avatar;
     public DriverTypeModel driver;
     public UserTypeModel user;
@@ -32,6 +33,7 @@ public class UserModel extends BaseModel implements Parcelable{
         email = in.readString();
         created = in.readLong();
         telNum = in.readString();
+        averageRate = in.readDouble();
         avatar = (ImageAvatarModel) in.readValue(ImageAvatarModel.class.getClassLoader());
         driver = (DriverTypeModel) in.readValue(DriverTypeModel.class.getClassLoader());
         user = (UserTypeModel) in.readValue(UserTypeModel.class.getClassLoader());
@@ -56,6 +58,7 @@ public class UserModel extends BaseModel implements Parcelable{
         dest.writeString(email);
         dest.writeLong(created);
         dest.writeString(telNum);
+        dest.writeDouble(averageRate);
         dest.writeValue(avatar);
         dest.writeValue(driver);
         dest.writeValue(user);
@@ -89,6 +92,7 @@ public class UserModel extends BaseModel implements Parcelable{
                 ", email='" + email + '\'' +
                 ", created=" + created +
                 ", telNum='" + telNum + '\'' +
+                ", averageRate='" + averageRate + '\'' +
                 ", avatar=" + avatar +
                 ", driver=" + driver +
                 ", user=" + user +

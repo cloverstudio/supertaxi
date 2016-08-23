@@ -32,7 +32,7 @@
                 app:layout_widthPercent="45%"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/__nedved"
+                android:src="@drawable/taxi_driver_type"
                 android:id="@+id/ivAvatarInDriverDetails"/>
 
             <clover_studio.com.supertaxi.view.CustomTextView
@@ -240,10 +240,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/devil_gray"
-                        android:text="4,9"
+                        android:text=""
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/tvKRatingValue"
+                        android:id="@+id/tvRatingValue"
                         android:textSize="@dimen/text_view_default"/>
 
                 </LinearLayout>

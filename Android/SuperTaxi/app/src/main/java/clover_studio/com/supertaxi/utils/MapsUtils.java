@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -124,11 +126,16 @@ public class MapsUtils {
             final String distanceString = distance.getString("text");
             final long distanceValue = distance.getLong("value");
             final List<LatLng> list = decodePoly(encodedString);
+            JSONObject bounds = routes.getJSONObject("bounds");
+            JSONObject northeast = bounds.getJSONObject("northeast");
+            JSONObject southwest = bounds.getJSONObject("southwest");
+            final LatLng northeastLatLng = new LatLng(northeast.getDouble("lat"), northeast.getDouble("lng"));
+            final LatLng southwestLatLng = new LatLng(southwest.getDouble("lat"), southwest.getDouble("lng"));
             if(listener != null){
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onSuccessCalculate(list, distanceString, distanceValue);
+                        listener.onSuccessCalculate(list, distanceString, distanceValue, northeastLatLng, southwestLatLng);
                     }
                 });
             }
@@ -268,7 +275,7 @@ public class MapsUtils {
            */
     }
 
-    public static Polyline drawPolyLines(final List<LatLng> list, final GoogleMap googleMap, boolean withZoom, int paddingMaps){
+    public static Polyline drawPolyLines(final List<LatLng> list, final GoogleMap googleMap, boolean withZoom, int paddingMaps, LatLng northeast, LatLng southwest){
         Polyline line = googleMap.addPolyline(new PolylineOptions()
                 .addAll(list)
                 .width(12)
@@ -276,9 +283,11 @@ public class MapsUtils {
                 .geodesic(true)
         );
 
-        if(withZoom){
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(getSouthWestAndNorthEast(list), paddingMaps));
+        if(withZoom && northeast != null && southwest != null){
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds(southwest, northeast), paddingMaps));
 
+        }else if(withZoom){
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(getSouthWestAndNorthEast(list), paddingMaps));
         }
 
         return line;
@@ -340,7 +349,7 @@ public class MapsUtils {
     }
 
     public interface OnRouteCalculated{
-        void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue);
+        void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, LatLng northeast, LatLng southwest);
     }
 
     public interface OnRouteWithAlternativesCalculated{
@@ -406,6 +415,51 @@ public class MapsUtils {
             params.bottomMargin = bottomMargin;
         }
         layoutForMap.setLayoutParams(params);
+    }
+
+    public static float getBearingForLocation(LatLng lastLocation, Location newLocation){
+        Location lastPositionLocation = new Location(LocationManager.GPS_PROVIDER);
+        lastPositionLocation.setLatitude(lastLocation.latitude);
+        lastPositionLocation.setLongitude(lastLocation.longitude);
+        return getBearingForLocation(lastPositionLocation, newLocation);
+    }
+
+    public static float getBearingForLocation(LatLng lastLocation, LatLng newLocation){
+        Location lastPositionLocation = new Location(LocationManager.GPS_PROVIDER);
+        lastPositionLocation.setLatitude(lastLocation.latitude);
+        lastPositionLocation.setLongitude(lastLocation.longitude);
+
+        Location newPositionLocation = new Location(LocationManager.GPS_PROVIDER);
+        newPositionLocation.setLatitude(newLocation.latitude);
+        newPositionLocation.setLongitude(newLocation.longitude);
+        return getBearingForLocation(lastPositionLocation, newPositionLocation);
+    }
+
+    public static float getBearingForLocation(Location lastLocation, LatLng newLocation){
+        Location newPositionLocation = new Location(LocationManager.GPS_PROVIDER);
+        newPositionLocation.setLatitude(newLocation.latitude);
+        newPositionLocation.setLongitude(newLocation.longitude);
+        return getBearingForLocation(lastLocation, newPositionLocation);
+    }
+
+    public static float getBearingForLocation(Location lastLocation, Location newLocation){
+        return lastLocation.bearingTo(newLocation);
+    }
+
+    public static boolean isSameLocation(LatLng firstLocation, LatLng secondLocation){
+        return firstLocation.latitude == secondLocation.latitude && firstLocation.longitude == secondLocation.longitude;
+    }
+
+    public static boolean isSameLocation(Location firstLocation, LatLng secondLocation){
+        return firstLocation.getLatitude() == secondLocation.latitude && firstLocation.getLongitude() == secondLocation.longitude;
+    }
+
+    public static boolean isSameLocation(LatLng firstLocation, Location secondLocation){
+        return firstLocation.latitude == secondLocation.getLatitude() && firstLocation.longitude == secondLocation.getLongitude();
+    }
+
+    public static boolean isSameLocation(Location firstLocation, Location secondLocation){
+        return firstLocation.getLatitude() == secondLocation.getLatitude() && firstLocation.getLongitude() == secondLocation.getLongitude();
     }
 
 }

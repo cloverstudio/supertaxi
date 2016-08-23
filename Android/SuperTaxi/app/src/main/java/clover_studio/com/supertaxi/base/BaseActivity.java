@@ -1,10 +1,13 @@
 package clover_studio.com.supertaxi.base;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -12,11 +15,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Locale;
-
+import clover_studio.com.supertaxi.LoginActivity;
 import clover_studio.com.supertaxi.R;
+import clover_studio.com.supertaxi.dialog.BasicDialog;
 import clover_studio.com.supertaxi.dialog.BasicProgressDialog;
+import clover_studio.com.supertaxi.models.BaseModel;
 import clover_studio.com.supertaxi.utils.Const;
+import clover_studio.com.supertaxi.utils.ErrorUtils;
 import clover_studio.com.supertaxi.utils.ImageUtils;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,8 +34,8 @@ public class BaseActivity extends AppCompatActivity{
 
     protected Toolbar toolbar;
     private BasicProgressDialog basicDialog;
+    private BasicDialog invalidTokenDialog;
     protected Retrofit client;
-
 
     public Activity getActivity(){
         return this;
@@ -53,6 +58,14 @@ public class BaseActivity extends AppCompatActivity{
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiverFinishActivity, new IntentFilter(Const.ReceiverIntents.FINISH_ALL_ACTIVITY));
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiverFinishActivity);
+        super.onDestroy();
     }
 
     /**
@@ -145,6 +158,28 @@ public class BaseActivity extends AppCompatActivity{
 
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private BroadcastReceiver receiverFinishActivity = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
+
+    public void showInvalidToken(){
+        if(invalidTokenDialog == null){
+            invalidTokenDialog = BasicDialog.startOneButtonDialog(getActivity(), getActivity().getString(R.string.error), getString(R.string.error_invalid_token));
+            invalidTokenDialog.setButtonText(getString(R.string.log_out));
+            invalidTokenDialog.setOneButtonListener(new BasicDialog.OneButtonDialogListener() {
+                @Override
+                public void onOkClicked(BasicDialog dialog) {
+                    dialog.dismiss();
+                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent(Const.ReceiverIntents.FINISH_ALL_ACTIVITY));
+                    LoginActivity.startActivity(getActivity());
+                }
+            });
         }
     }
 }

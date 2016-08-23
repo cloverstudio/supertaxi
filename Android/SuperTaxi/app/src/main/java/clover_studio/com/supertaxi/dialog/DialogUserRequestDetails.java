@@ -83,7 +83,13 @@ public class DialogUserRequestDetails extends Dialog {
         tvNote = (TextView) findViewById(R.id.tvNoteValue);
         llStarLayout = (LinearLayout) findViewById(R.id.ratingStars);
 
-        int rating = 2;
+
+        int rating = 0;
+
+        if(order.user != null){
+            rating = (int) Math.round(order.user.averageRate);
+        }
+
         if (rating > llStarLayout.getChildCount()) {
             rating = llStarLayout.getChildCount();
         }

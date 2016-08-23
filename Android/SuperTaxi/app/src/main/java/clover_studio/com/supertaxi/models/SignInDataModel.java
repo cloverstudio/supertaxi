@@ -5,13 +5,18 @@ package clover_studio.com.supertaxi.models;
  */
 public class SignInDataModel extends BaseModel{
 
-    public UserModel data;
+    public SignInDataInsideModel data;
 
     @Override
     public String toString() {
         return "SignInDataModel{" +
                 "data=" + data +
                 '}';
+    }
+
+    public class SignInDataInsideModel{
+        public UserModel user;
+        public String token_new;
     }
 
 }

@@ -87,7 +87,7 @@ public class RespondedDriverDetailsActivity extends BaseActivity {
         TextView tvReg = (TextView) findViewById(R.id.tvCarRegValue);
         TextView tvStartFee = (TextView) findViewById(R.id.tvStartFeeValue);
         TextView tvKMFee = (TextView) findViewById(R.id.tvKMFeeValue);
-
+        TextView tvRating = (TextView) findViewById(R.id.tvRatingValue);
 
         tvDriverName.setText(userModel.driver.name);
         String url = Utils.getAvatarUrl(userModel);
@@ -96,6 +96,7 @@ public class RespondedDriverDetailsActivity extends BaseActivity {
         tvKMFee.setText("$" + userModel.driver.fee_km);
         tvCar.setText(userModel.driver.car_type);
         tvReg.setText(userModel.driver.car_registration);
+        tvRating.setText(String.format("%.1f", userModel.averageRate));
 
         LatLng myLocation = getIntent().getParcelableExtra(Const.Extras.START_LOCATION);
 

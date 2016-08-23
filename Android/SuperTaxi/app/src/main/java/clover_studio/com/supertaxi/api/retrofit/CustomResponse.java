@@ -69,6 +69,14 @@ public abstract class CustomResponse<T> implements CustomResponseListener<T>{
         if(context instanceof BaseActivity){
             ((BaseActivity)context).hideProgress();
         }
+
+        //invalid token
+        if(response.body() instanceof BaseModel && context != null && context instanceof BaseActivity){
+            if(((BaseModel) response.body()).code == Const.ErrorCodes.INVALID_TOKEN){
+                ((BaseActivity)context).showInvalidToken();
+            }
+        }
+
         if(response.body() instanceof BaseModel){
             LogCS.e("LOG", "CUSTOM RESPONSE ERROR, CODE => " + ((BaseModel) response.body()).code + " || API URL => " + call.request().url());
 

@@ -49,6 +49,7 @@
                     android:layout_margin="20dp"
                     android:layout_centerHorizontal="true"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/user_type"
                     android:id="@+id/ivAvatarInUserDetails"/>
 
                 <clover_studio.com.supertaxi.view.CustomTextView

@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ import com.balysv.materialmenu.MaterialMenuView;
 import java.io.File;
 import java.io.IOException;
 
+import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
+import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.base.BaseFragment;
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
@@ -38,13 +41,17 @@ import clover_studio.com.supertaxi.fragments.DriverMainFragment;
 import clover_studio.com.supertaxi.fragments.DriverProfileFragment;
 import clover_studio.com.supertaxi.fragments.UserMainFragment;
 import clover_studio.com.supertaxi.fragments.UserProfileFragment;
+import clover_studio.com.supertaxi.models.GetUserProfileModel;
 import clover_studio.com.supertaxi.models.OrderModel;
 import clover_studio.com.supertaxi.models.UpdateProfileResponse;
+import clover_studio.com.supertaxi.models.UserModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.Const;
 import clover_studio.com.supertaxi.utils.ImageUtils;
 import clover_studio.com.supertaxi.utils.LogCS;
 import clover_studio.com.supertaxi.utils.Utils;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by ubuntu_ivo on 08.02.16..
@@ -131,6 +138,8 @@ public class HomeActivity extends BaseActivity {
         }else{
             setCacheFolder();
         }
+
+        getMyUserProfile();
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onCancelTripReceiver, new IntentFilter(Const.ReceiverIntents.ON_CANCEL_TRIP));
 
@@ -327,6 +336,22 @@ public class HomeActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onCancelTripReceiver);
+
+    }
+
+    public void getMyUserProfile() {
+        UserRetroApiInterface retro = getRetrofit().create(UserRetroApiInterface.class);
+        Call<GetUserProfileModel> call = retro.getMyUserProfile(UserSingleton.getInstance().getUser().token_new);
+        call.enqueue(new CustomResponse<GetUserProfileModel>(getActivity(), false, false) {
+            @Override
+            public void onCustomSuccess(Call<GetUserProfileModel> call, Response<GetUserProfileModel> response) {
+                super.onCustomSuccess(call, response);
+
+                UserModel user = response.body().data.user;
+                UserSingleton.getInstance().updateUser(user);
+
+            }
+        });
 
     }
 }

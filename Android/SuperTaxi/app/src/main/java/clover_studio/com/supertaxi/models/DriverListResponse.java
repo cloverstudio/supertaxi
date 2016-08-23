@@ -18,6 +18,7 @@ public class DriverListResponse extends BaseModel{
         public String email;
         public long created;
         public String telNum;
+        public double averageRate;
         public ImageAvatarModel avatar;
         public DriverTypeModel driver;
         public double[] currentLocation;
