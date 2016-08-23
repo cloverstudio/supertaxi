@@ -22,6 +22,7 @@ var BackendMain ={
         router.use("/profile/getDriverList", require("./Controllers/Profile/GetDriverListProfileController").init(app));
         router.use("/profile/detail", require("./Controllers/Profile/GetUserDetailProfileController").init(app));
         router.use("/profile/rate", require("./Controllers/Profile/RateProfileController").init(app));
+        router.use("/profile/getNearestDriver", require("./Controllers/Profile/GetNearestDriverProfileController").init(app));
 
         router.use("/order/call", require("./Controllers/Order/CallOrderController").init(app));
         router.use("/order/getOpenOrder", require("./Controllers/Order/GetOpenOrderController").init(app));

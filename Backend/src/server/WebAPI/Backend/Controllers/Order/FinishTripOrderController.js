@@ -13,6 +13,8 @@ var BackendBase = require('../BackendBase');
 
 var OrderModel = require(pathTop + 'Models/Order');
 
+var UpdateDriverStatusLogic = require(pathTop + 'Logics/UpdateDriverStatus');
+
 var FinishTripOrderController = function(){
 }
 
@@ -49,6 +51,7 @@ FinishTripOrderController.prototype.init = function(app){
     router.post('', tokenChecker, (request, response) => {
 
         var orderModel = OrderModel.get();
+        var user = request.user;
 
         async.waterfall([
 
@@ -88,6 +91,14 @@ FinishTripOrderController.prototype.init = function(app){
 
                 });
 
+            },
+            (result, done) => {
+
+                // update driver status
+                UpdateDriverStatusLogic(user._id.toString(), Const.driverStatus.available, (err) => {
+                    done(err, result);
+                });
+                
             }
         ],
         (err, result) => {

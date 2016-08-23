@@ -70,4 +70,9 @@
         finishedDrive: 6
     };
 
+    Const.driverStatus = {
+        available: 1,
+        busy: 2
+    };
+
     module["exports"] = Const;

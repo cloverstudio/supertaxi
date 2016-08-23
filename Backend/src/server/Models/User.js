@@ -26,7 +26,8 @@ User.prototype.init = function(mongoose){
             car_type : String,
             car_registration : String,
             fee_start : Number,
-            fee_km : Number
+            fee_km : Number,
+            status: Number // 1: available, 2: busy
         },
         avatar: {
             fileid:String,
