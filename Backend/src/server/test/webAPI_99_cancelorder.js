@@ -50,13 +50,13 @@ describe('WEB API', function () {
                     
                     global.order = res.body.data.order;
 
+                    // ignore order by driver
                     request(app)
                         .post('/api/v1/order/cancel')
                         .set('access-token', global.user1.token)
                         .send({
                             orderId: global.order._id,
-                            type: 1,
-                            reason: "Odustao"
+                            type: 2
                         })
                         .end((err, res) => {
 
@@ -67,7 +67,27 @@ describe('WEB API', function () {
                         res.body.code.should.be.exactly(1);
                         res.body.should.have.property('data');
                         
-                        done();
+                        // cancel order
+                        request(app)
+                            .post('/api/v1/order/cancel')
+                            .set('access-token', global.user1.token)
+                            .send({
+                                orderId: global.order._id,
+                                type: 1,
+                                reason: "Canceled"
+                            })
+                            .end((err, res) => {
+
+                            if (err) {
+                                throw err;
+                            }
+
+                            res.body.code.should.be.exactly(1);
+                            res.body.should.have.property('data');
+                            
+                            done();
+                        
+                        });  
                     
                     });  
                 
@@ -122,28 +142,28 @@ describe('WEB API', function () {
             
         });
 
-        it('driver already started drive or order is canceled', function (done) {
+        // it('driver already started drive or order is canceled', function (done) {
 
-            request(app)
-                .post('/api/v1/order/cancel')
-                .set('access-token', global.user1.token)
-                .send({
-                    orderId: global.order._id,
-                    type: 1
-                })
-                .end(function (err, res) {
+        //     request(app)
+        //         .post('/api/v1/order/cancel')
+        //         .set('access-token', global.user1.token)
+        //         .send({
+        //             orderId: global.order._id,
+        //             type: 1
+        //         })
+        //         .end(function (err, res) {
 
-                if (err) {
-                    throw err;
-                }
+        //         if (err) {
+        //             throw err;
+        //         }
 
-                res.body.code.should.be.exactly(6000029);
+        //         res.body.code.should.be.exactly(6000029);
                 
-                done();
+        //         done();
             
-            });   
+        //     });   
             
-        });
+        // });
 
     });
 

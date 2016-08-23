@@ -88,6 +88,7 @@ GetOpenOrderController.prototype.init = function(app){
 
         var orderModel = OrderModel.get();
         var userModel = UserModel.get();
+        var user = request.user;
 
         async.waterfall([
 
@@ -114,7 +115,8 @@ GetOpenOrderController.prototype.init = function(app){
                         }
                     },
                     acceptOrderTs: { $exists: false },
-                    cancelOrderOrTrip: { $exists: false }
+                    cancelOrderOrTrip: { $exists: false },
+                    driversIgnoreOrder: { $ne: user._id.toString() }
                 }, (err, findResult) => {
 
                     if (findResult) 
