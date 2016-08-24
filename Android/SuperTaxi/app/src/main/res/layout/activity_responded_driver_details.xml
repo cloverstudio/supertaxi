@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvDistance"
-                android:textColor="@color/revert_devil_gray"
+                android:textColor="@color/second_best_gray"
                 android:textSize="@dimen/small_text_view_title_text_size"
                 android:text="distance"
                 android:textAllCaps="true"
@@ -97,7 +97,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="@string/car_"
                         android:id="@+id/tvCarTypeLabel"
                         android:textSize="@dimen/text_view_default"/>
@@ -105,7 +105,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="Golf VII"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
@@ -128,7 +128,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="@string/car_reg_number_"
                         android:id="@+id/tvCarRegLabel"
                         android:textSize="@dimen/text_view_default"/>
@@ -136,7 +136,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="ZT-1234-AV"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
@@ -159,7 +159,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="@string/start_fee_"
                         android:id="@+id/tvStartFeeLabel"
                         android:textSize="@dimen/text_view_default"/>
@@ -167,7 +167,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="$4"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
@@ -190,7 +190,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="@string/fee_per_km_"
                         android:id="@+id/tvKMFeeLabel"
                         android:textSize="@dimen/text_view_default"/>
@@ -198,7 +198,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="$4"
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
@@ -222,7 +222,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="@string/rating_"
                         android:id="@+id/tvRatingLabel"
                         android:textSize="@dimen/text_view_default"/>
@@ -239,7 +239,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text=""
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"

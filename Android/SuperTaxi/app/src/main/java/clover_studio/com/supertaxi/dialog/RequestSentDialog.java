@@ -162,7 +162,7 @@ public class RequestSentDialog extends Dialog {
         if(!dismissWithoutCancel){
             cancelTripApi(false);
         }
-        AnimationUtils.fade(parentLayout, 1, 0, 200, 300, null);
+        AnimationUtils.fade((View)parentLayout.getParent(), 1, 0, 200, 300, null);
         int to = parentLayout.getContext().getResources().getDisplayMetrics().heightPixels;
         AnimationUtils.translateY(parentLayout, 0, to, 500, new AnimatorListenerAdapter() {
             @Override

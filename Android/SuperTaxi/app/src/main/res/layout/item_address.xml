@@ -13,6 +13,6 @@
         android:padding="15dp"
         android:id="@+id/tvAddress"
         android:textSize="@dimen/text_view_default"
-        android:textColor="@color/revert_devil_gray" />
+        android:textColor="@color/second_best_gray" />
 
 </RelativeLayout>

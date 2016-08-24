@@ -42,7 +42,7 @@
                     android:paddingRight="5dp"
                     android:paddingTop="10dp"
                     android:text=""
-                    android:textColor="@color/devil_gray"
+                    android:textColor="@color/best_gray"
                     android:textSize="@dimen/default_text_view_title_text_size"/>
 
 
@@ -56,7 +56,7 @@
                     android:paddingRight="5dp"
                     android:text=""
                     android:textSize="@dimen/text_view_default"
-                    android:textColor="@color/revert_devil_gray"
+                    android:textColor="@color/second_best_gray"
                     />
             </LinearLayout>
 

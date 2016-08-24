@@ -56,6 +56,6 @@
             android:background="@drawable/rounded_white_button_selector"
             android:text="@string/keyDone"
             android:textAllCaps="false"
-            android:textColor="@color/default_to_devil_gray"/>
+            android:textColor="@color/default_to_best_gray"/>
     </LinearLayout>
 </RelativeLayout>

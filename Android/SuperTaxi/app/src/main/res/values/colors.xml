@@ -4,8 +4,8 @@
     <color name="colorPrimary_0_5_a">#8018105F</color>
     <color name="colorPrimaryDark">#18105F</color>
     <color name="colorAccent">#CCCCCC</color>
-    <color name="devil_gray">#666666</color>
-    <color name="revert_devil_gray">#999999</color>
+    <color name="best_gray">#666666</color>
+    <color name="second_best_gray">#999999</color>
     <color name="white">@android:color/white</color>
     <color name="white_press">#DADADA</color>
     <color name="transparent">@android:color/transparent</color>
@@ -19,6 +19,7 @@
     <color name="dim_dark_black">#aa000000</color>
     <color name="menu_separator_background">#061940</color>
     <color name="trans_white">#55FFFFFF</color>
+    <color name="trans_black">#CC000000</color>
     <color name="light_light_gray">#EFEFEF</color>
     <color name="light_light_gray_back">#F0F0F0</color>
     <color name="white_0_5_a">#80ffffff</color>

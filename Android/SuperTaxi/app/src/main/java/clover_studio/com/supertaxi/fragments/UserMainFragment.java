@@ -90,6 +90,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
     private RelativeLayout rlParentOfMyCurrent;
     private TextView tvTextViewInMyCurrent;
     private TextView tvTextViewNearestDriverMinutes;
+    private TextView tvTextViewNearestDriverLabelMinutes;
     private ProgressBar pbViewInMyCurrent;
     private View viewForBlockAllClick;
     private RelativeLayout rlFromTo;
@@ -180,6 +181,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         rlParentOfMyCurrent = (RelativeLayout) rootView.findViewById(R.id.rlParentOfMyCurrentLocationInside);
         tvTextViewInMyCurrent = (TextView) rootView.findViewById(R.id.tvInMarker);
         tvTextViewNearestDriverMinutes = (TextView) rootView.findViewById(R.id.tvMinValue);
+        tvTextViewNearestDriverLabelMinutes = (TextView) rootView.findViewById(R.id.tvMinLabel);
         pbViewInMyCurrent = (ProgressBar) rootView.findViewById(R.id.pbInMarker);
         viewForBlockAllClick = rootView.findViewById(R.id.viewForBlockAllClick);
         viewTimer = rootView.findViewById(R.id.viewTimer);
@@ -350,6 +352,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                         pickupAddress = address;
 
                         tvTextViewInMyCurrent.setText(getString(R.string.set_destination_location_capital));
+                        tvTextViewNearestDriverMinutes.setVisibility(View.INVISIBLE);
+                        tvTextViewNearestDriverLabelMinutes.setVisibility(View.INVISIBLE);
                     }else{
                         etTo.setText(address);
                         destinationLocation = current;
@@ -361,38 +365,6 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                 }
 
             }.execute();
-
-//            if(pickupLocation == null){
-//                isUserSetLocationFromWithPin = true;
-//                LatLng current = googleMap.getCameraPosition().target;
-//                String address = getAddress(current.latitude, current.longitude);
-//                if(address == null){
-//                    BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.failed_to_get_address));
-//                    isUserSetLocationFromWithPin = false;
-//                    return;
-//                }
-//                etFrom.setText(address);
-//                pickupLocation = current;
-//                pickupAddress = address;
-//
-//                tvTextViewInMyCurrent.setVisibility(View.VISIBLE);
-//                pbViewInMyCurrent.setVisibility(View.GONE);
-//                tvTextViewInMyCurrent.setText(getString(R.string.set_destination_location_capital));
-//            }else{
-//                isUserSetLocationToWithPin = true;
-//                LatLng current = googleMap.getCameraPosition().target;
-//                String address = getAddress(current.latitude, current.longitude);
-//                if(address == null){
-//                    BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.failed_to_get_address));
-//                    isUserSetLocationToWithPin = false;
-//                    return;
-//                }
-//                etTo.setText(address);
-//                destinationLocation = current;
-//                destinationAddress = address;
-//
-//                drawRoute(Const.DrawRouteUserTypes.PICKUP_AND_DESTINATION_ROUTE, null, null);
-//            }
 
         }
     };
@@ -543,6 +515,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
             destinationLocation = null;
             destinationAddress = null;
             tvTextViewInMyCurrent.setText(getString(R.string.set_pickup_location_capital));
+            tvTextViewNearestDriverMinutes.setVisibility(View.VISIBLE);
+            tvTextViewNearestDriverLabelMinutes.setVisibility(View.VISIBLE);
             hideRlFromList();
             hideRlToList();
 
@@ -644,6 +618,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
             pickupLocation = new LatLng(item.getLatitude(), item.getLongitude());
             pickupAddress = addressString;
             tvTextViewInMyCurrent.setText(getString(R.string.set_destination_location_capital));
+            tvTextViewNearestDriverMinutes.setVisibility(View.INVISIBLE);
+            tvTextViewNearestDriverLabelMinutes.setVisibility(View.INVISIBLE);
             hideRlFromList();
             Utils.hideKeyboard(etFrom, getActivity());
         }
@@ -778,6 +754,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         destinationLocation = null;
         destinationAddress = null;
         tvTextViewInMyCurrent.setText(getString(R.string.set_pickup_location_capital));
+        tvTextViewNearestDriverMinutes.setVisibility(View.VISIBLE);
+        tvTextViewNearestDriverLabelMinutes.setVisibility(View.VISIBLE);
 
         acceptedDriver = null;
         acceptedOrder = null;

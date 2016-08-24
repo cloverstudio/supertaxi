@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_view_bigger"
-                    android:textColor="@color/devil_gray"
+                    android:textColor="@color/best_gray"
                     android:text="@string/sign_in_with"
                     android:id="@+id/tvSignInWith"
                     android:layout_centerHorizontal="true"/>
@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_view_bigger"
-                    android:textColor="@color/devil_gray"
+                    android:textColor="@color/best_gray"
                     android:text="@string/or_user_email"
                     android:id="@+id/tvOrUserEmail"
                     android:layout_centerHorizontal="true"/>
@@ -191,12 +191,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_view_bigger"
-                    android:textColor="@color/devil_gray"
+                    android:textColor="@color/best_gray"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:textColorHint="@color/revert_devil_gray"
+                    android:textColorHint="@color/second_best_gray"
                     android:hint="@string/email_address"
                     android:background="@color/transparent"
                     android:id="@+id/etEmailAddress"/>
@@ -210,8 +210,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_view_bigger"
-                    android:textColor="@color/devil_gray"
-                    android:textColorHint="@color/revert_devil_gray"
+                    android:textColor="@color/best_gray"
+                    android:textColorHint="@color/second_best_gray"
                     android:hint="@string/password"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
@@ -240,7 +240,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="@string/remember_me"
                     android:textSize="@dimen/text_view_bigger"
-                    android:textColor="@color/default_to_devil_gray"/>
+                    android:textColor="@color/default_to_best_gray"/>
 
             </RelativeLayout>
 
@@ -279,7 +279,7 @@
                     android:id="@+id/tvForgotPassword"
                     android:text="@string/forgot_password"
                     android:textSize="@dimen/text_view_bigger"
-                    android:textColor="@color/default_to_devil_gray"/>
+                    android:textColor="@color/default_to_best_gray"/>
 
                 <LinearLayout
                     android:layout_below="@id/tvForgotPassword"
@@ -294,7 +294,7 @@
                         android:gravity="center"
                         android:text="@string/dont_have_account"
                         android:textSize="@dimen/text_view_bigger"
-                        android:textColor="@color/devil_gray"/>
+                        android:textColor="@color/best_gray"/>
 
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
@@ -307,7 +307,7 @@
                         android:id="@+id/tvSignUp"
                         android:text="@string/sign_up"
                         android:textSize="@dimen/text_view_bigger"
-                        android:textColor="@color/default_to_devil_gray"/>
+                        android:textColor="@color/default_to_best_gray"/>
 
                 </LinearLayout>
 

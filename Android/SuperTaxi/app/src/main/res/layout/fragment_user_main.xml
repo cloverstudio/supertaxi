@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parentAll"
     android:background="@color/update_profile_almost_white">
 
     <FrameLayout
@@ -213,7 +214,7 @@
                 android:id="@+id/tvToLabel"
                 android:text="@string/to_"
                 android:textSize="@dimen/text_view_default"
-                android:textColor="@color/revert_devil_gray"
+                android:textColor="@color/second_best_gray"
                 android:paddingBottom="15dp"
                 />
 
@@ -229,7 +230,7 @@
                 android:background="@color/transparent"
                 android:id="@+id/etTo"
                 android:textSize="@dimen/text_view_default"
-                android:textColor="@color/revert_devil_gray"/>
+                android:textColor="@color/second_best_gray"/>
 
         </RelativeLayout>
 
@@ -249,7 +250,7 @@
                 android:id="@+id/tvFromLabel"
                 android:text="@string/from_"
                 android:textSize="@dimen/text_view_default"
-                android:textColor="@color/revert_devil_gray"
+                android:textColor="@color/second_best_gray"
                 android:paddingBottom="15dp"
                 />
 
@@ -269,7 +270,7 @@
                 android:maxLines="1"
                 android:inputType="text"
                 android:textSize="@dimen/text_view_default"
-                android:textColor="@color/revert_devil_gray"/>
+                android:textColor="@color/second_best_gray"/>
 
             <ImageButton
                 android:layout_width="40dp"
@@ -387,7 +388,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvDistanceLabel"
-                android:textColor="@color/revert_devil_gray"
+                android:textColor="@color/second_best_gray"
                 android:textSize="@dimen/small_text_view_title_text_size"
                 android:text="@string/distance_between__driver_and_you_"
                 android:textAllCaps="true"
@@ -398,7 +399,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvDistance"
-                android:textColor="@color/revert_devil_gray"
+                android:textColor="@color/second_best_gray"
                 android:textSize="@dimen/text_view_default"
                 android:text="0 km"
                 android:layout_marginTop="2dp"/>
