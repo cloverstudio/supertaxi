@@ -146,5 +146,9 @@
     <string name="failed_to_get_google_plus_data">Failed to get google plus data</string>
     <string name="failed_to_get_twitter_data">Failed to get twitter data</string>
     <string name="failed_to_get_address">Failed to get address.</string>
+    <string name="history_capital">HISTORY</string>
+    <string name="settings_capital">SETTINGS</string>
+    <string name="report_a_problem_capital">REPORT A PROBLEM</string>
+    <string name="about_capital">ABOUT</string>
 
 </resources>

@@ -37,8 +37,13 @@ import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseActivity;
 import clover_studio.com.supertaxi.base.BaseFragment;
 import clover_studio.com.supertaxi.base.SuperTaxiApp;
+import clover_studio.com.supertaxi.fragments.AboutFragment;
 import clover_studio.com.supertaxi.fragments.DriverMainFragment;
 import clover_studio.com.supertaxi.fragments.DriverProfileFragment;
+import clover_studio.com.supertaxi.fragments.HistoryFragment;
+import clover_studio.com.supertaxi.fragments.MainFragment;
+import clover_studio.com.supertaxi.fragments.ReportAProblemFragment;
+import clover_studio.com.supertaxi.fragments.SettingsFragment;
 import clover_studio.com.supertaxi.fragments.UserMainFragment;
 import clover_studio.com.supertaxi.fragments.UserProfileFragment;
 import clover_studio.com.supertaxi.models.GetUserProfileModel;
@@ -93,9 +98,14 @@ public class HomeActivity extends BaseActivity {
     MaterialMenuView menuHamburgerView;
     TextView tvSidebarMyName;
     RelativeLayout rlForFragment;
+    RelativeLayout rlForMainFragment;
 
-    BaseFragment profileFragment;
+    protected BaseFragment profileFragment;
     protected BaseFragment mainFragment;
+    protected BaseFragment historyFragment;
+    protected BaseFragment settingsFragment;
+    protected BaseFragment reportAProblemFragment;
+    protected BaseFragment aboutFragment;
     String activeFragmentTag;
 
     @Override
@@ -111,6 +121,7 @@ public class HomeActivity extends BaseActivity {
         menuHamburgerView = (MaterialMenuView) findViewById(R.id.sidebarBtnMaterial);
         tvSidebarMyName = (TextView) findViewById(R.id.tvSidebarMyName);
         rlForFragment = (RelativeLayout) findViewById(R.id.rlForFragment);
+        rlForMainFragment = (RelativeLayout) findViewById(R.id.rlForMainFragment);
 
         frManager = getSupportFragmentManager();
 
@@ -158,7 +169,7 @@ public class HomeActivity extends BaseActivity {
     private void setInitialFragment() {
 
         activeFragmentTag = mainFragment.getClass().getName();
-        frManager.beginTransaction().add(rlForFragment.getId(), mainFragment, activeFragmentTag).commit();
+        frManager.beginTransaction().add(rlForMainFragment.getId(), mainFragment, activeFragmentTag).commit();
 
     }
 
@@ -174,6 +185,11 @@ public class HomeActivity extends BaseActivity {
         }else{
             mainFragment = new UserMainFragment();
         }
+
+        historyFragment = new HistoryFragment();
+        settingsFragment = new SettingsFragment();
+        reportAProblemFragment = new ReportAProblemFragment();
+        aboutFragment = new AboutFragment();
     }
 
     private View.OnClickListener onLeftToolbarListener = new View.OnClickListener() {
@@ -263,19 +279,23 @@ public class HomeActivity extends BaseActivity {
                     break;
 
                 case R.id.tvHistory:
-                    Toast.makeText(getActivity(), "HISTORY", Toast.LENGTH_SHORT).show();
+                    setToolbarTitle(getString(R.string.history_capital));
+                    switchFragment(historyFragment);
                     break;
 
                 case R.id.tvSettings:
-                    Toast.makeText(getActivity(), "tvSettings", Toast.LENGTH_SHORT).show();
+                    setToolbarTitle(getString(R.string.settings_capital));
+                    switchFragment(settingsFragment);
                     break;
 
                 case R.id.tvReportAProblem:
-                    Toast.makeText(getActivity(), "tvReportAProblem", Toast.LENGTH_SHORT).show();
+                    setToolbarTitle(getString(R.string.report_a_problem_capital));
+                    switchFragment(reportAProblemFragment);
                     break;
 
                 case R.id.tvAbout:
-                    Toast.makeText(getActivity(), "tvAbout", Toast.LENGTH_SHORT).show();
+                    setToolbarTitle(getString(R.string.about_capital));
+                    switchFragment(aboutFragment);
                     break;
 
                 case R.id.myDataContent:
@@ -291,8 +311,12 @@ public class HomeActivity extends BaseActivity {
             dlDrawerLayout.closeDrawer(llSidebarDrawer);
         }else{
 
+            if(fragment instanceof MainFragment){
+                frManager.beginTransaction().remove(frManager.findFragmentById(rlForFragment.getId())).commit();
+            }else{
+                frManager.beginTransaction().replace(rlForFragment.getId(), fragment, activeFragmentTag).commit();
+            }
             activeFragmentTag = fragment.getClass().getName();
-            frManager.beginTransaction().replace(rlForFragment.getId(), fragment, activeFragmentTag).commit();
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -310,7 +334,12 @@ public class HomeActivity extends BaseActivity {
         if(isDrawerOpened){
             dlDrawerLayout.closeDrawer(llSidebarDrawer);
         }else{
-            super.onBackPressed();
+            if(activeFragmentTag.equals(mainFragment.getClass().getName())){
+                super.onBackPressed();
+            }else{
+                setToolbarTitle(getString(R.string.home_capital));
+                switchFragment(mainFragment);
+            }
         }
     }
 

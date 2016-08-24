@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -71,6 +72,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
     private LinearLayout llButtons;
     private RelativeLayout rlStartEndTripLayout;
     private TextView tvDistance;
+    private ImageButton ibMyLocation;
 
     private HashMap<String, Marker> otherTaxiMarkers = new HashMap<>();
     private HashMap<String, DriverListResponse.DriverData> otherTaxiData = new HashMap<>();
@@ -132,6 +134,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
     }
 
     private void initViews(View rootView){
+        ibMyLocation = (ImageButton) rootView.findViewById(R.id.ibMyLocation);
         layoutForMap = (FrameLayout) rootView.findViewById(R.id.frameForMap);
         loadingProgress = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
         rlUserDetails = (RelativeLayout) rootView.findViewById(R.id.rlUserDetails);
@@ -143,6 +146,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         int sizeForAvatar = getResources().getDisplayMetrics().widthPixels / 2;
         avatar.getLayoutParams().height = sizeForAvatar;
         avatar.getLayoutParams().width = sizeForAvatar;
+        ibMyLocation.setOnClickListener(onMyLocationClicked);
     }
 
     private void fillWithUserRequestInfo(OrderModel model){
@@ -293,13 +297,22 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         }
     };
 
+    private View.OnClickListener onMyLocationClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            gotoMyLocation();
+
+        }
+    };
+
     @SuppressWarnings("MissingPermission")
     @Override
     protected void onMapReadyForOverride() {
         super.onMapReadyForOverride();
 
         googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.setOnMarkerClickListener(this);
 
         new MapStateListener(googleMap, mapFragment, getActivity()) {

@@ -11,6 +11,16 @@
 
     </FrameLayout>
 
+    <ImageButton
+        android:id="@+id/ibMyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_my_location_selector" />
+
     <ProgressBar
         android:id="@+id/progressBarLoading"
         style="?android:attr/progressBarStyleLarge"
@@ -130,7 +140,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:background="#ffffff"
         android:id="@+id/rlButtonsStartEndTrip"
@@ -146,8 +156,8 @@
             android:layout_alignParentRight="true">
 
             <clover_studio.com.supertaxi.view.CustomButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
                 android:background="@drawable/shape_green_button_with_corners_selector"
                 android:text="@string/start_trip"
                 android:textColor="@color/white"
@@ -185,11 +195,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:orientation="vertical"
-            android:paddingBottom="5dp"
+            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_toLeftOf="@+id/rlForButtonsEndAndStart"

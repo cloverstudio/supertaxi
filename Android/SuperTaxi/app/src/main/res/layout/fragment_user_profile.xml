@@ -139,6 +139,7 @@
                         android:paddingTop="20dp"
                         android:paddingBottom="10dp"
                         android:maxLines="1"
+                        android:inputType="phone"
                         android:singleLine="true"
                         android:textColorHint="@color/second_best_gray"
                         android:hint="Tel num (eg. +385981231234)"

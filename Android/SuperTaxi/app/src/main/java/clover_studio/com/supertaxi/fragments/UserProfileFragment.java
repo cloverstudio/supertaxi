@@ -320,7 +320,6 @@ public class UserProfileFragment extends BaseFragment{
                     @Override
                     public void run() {
                         dialog.dismiss();
-                        new File(path).delete();
                         if (!isSuccess) {
                             BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.error_unknown));
                         } else {
@@ -372,6 +371,7 @@ public class UserProfileFragment extends BaseFragment{
 
     private void afterApi(UpdateProfileResponse response){
         UserSingleton.getInstance().updateUser(response.data.user);
+        if(imagePath != null) new File(imagePath).delete();
 
         hideProgress();
         Utils.hideKeyboard(etNote, getActivity());

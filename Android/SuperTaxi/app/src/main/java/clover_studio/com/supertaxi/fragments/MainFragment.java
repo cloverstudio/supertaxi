@@ -1,13 +1,8 @@
 package clover_studio.com.supertaxi.fragments;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -16,62 +11,28 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.squareup.picasso.Callback;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 import clover_studio.com.supertaxi.R;
 import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
-import clover_studio.com.supertaxi.api.retrofit.DriverRetroApiInterface;
 import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
 import clover_studio.com.supertaxi.base.BaseFragment;
-import clover_studio.com.supertaxi.dialog.BasicDialog;
-import clover_studio.com.supertaxi.dialog.DialogUserRequestDetails;
-import clover_studio.com.supertaxi.dialog.RateUserDialog;
 import clover_studio.com.supertaxi.models.BaseModel;
-import clover_studio.com.supertaxi.models.CheckOrderStatusModel;
-import clover_studio.com.supertaxi.models.DriverListResponse;
-import clover_studio.com.supertaxi.models.GetOpenOrderModel;
-import clover_studio.com.supertaxi.models.OrderModel;
-import clover_studio.com.supertaxi.models.post_models.PostAcceptOrderModel;
-import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
-import clover_studio.com.supertaxi.models.post_models.PostCheckOrderStatusModel;
 import clover_studio.com.supertaxi.models.post_models.PostLatLngModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
-import clover_studio.com.supertaxi.utils.AnimationUtils;
-import clover_studio.com.supertaxi.utils.Const;
-import clover_studio.com.supertaxi.utils.ImageUtils;
 import clover_studio.com.supertaxi.utils.LocationSourceListener;
-import clover_studio.com.supertaxi.utils.LogCS;
-import clover_studio.com.supertaxi.utils.MapsUtils;
-import clover_studio.com.supertaxi.utils.Utils;
-import clover_studio.com.supertaxi.view.touchable_map.MapStateListener;
 import clover_studio.com.supertaxi.view.touchable_map.TouchableMapFragment;
 import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by ivoperic on 13/07/16.
@@ -87,6 +48,8 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
     protected LocationSourceListener locationSourceListener;
     protected Handler handlerForCheck = new Handler();
     protected boolean stopChecking = false;
+
+    protected Marker myLocationTempMarker;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -162,6 +125,10 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
                 LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 updateCoordinates(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+
+                if(myLocationTempMarker == null){
+                    myLocationTempMarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
+                }
             }
 
             if(myLocation != null){
@@ -190,6 +157,10 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
         myLocation = myLocationNew;
         Log.d("LOG_IVO", "MY LOCATION: " + myLocation.getLatitude() + ", " + myLocation.getLongitude());
         updateCoordinates(new LatLng(myLocation.getLatitude(), myLocationNew.getLongitude()));
+
+        if(myLocationTempMarker != null){
+            myLocationTempMarker.remove();
+        }
 
         if(!isMyLocationAlreadyFound){
             onMyLocationFound();

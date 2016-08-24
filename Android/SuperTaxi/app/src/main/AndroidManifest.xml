@@ -46,14 +46,17 @@
 
         <activity android:name=".HomeActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             />
 
         <activity android:name=".UserHomeActivity"
             android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             />
 
         <activity android:name=".DriverHomeActivity"
             android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             />
 
         <activity android:name=".CreateUserActivity"
