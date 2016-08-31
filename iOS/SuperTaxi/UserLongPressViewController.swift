@@ -13,25 +13,17 @@ import CoreLocation
 import SWRevealViewController
 import SwiftyJSON
 
-class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, RateDelegate, ProfileDelegate {
+class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, ProfileDelegate, RateViewDelegate {
     
     @IBOutlet var ratingView: UIView!
     @IBOutlet var navView: UIView!
     @IBOutlet var mapView: MKMapView!
-    @IBOutlet var ratingView2: UIView!
-    @IBOutlet var routeImage: UIImageView!
     @IBOutlet var txtDistance: UILabel!
     @IBOutlet var cancelTripBottom: UIButton!
     
     @IBOutlet var avatarImage: UIImageView!
     @IBOutlet var txtDriverName: UILabel!
-    @IBOutlet var avatarImage2: UIImageView!
     @IBOutlet var avatarImage3: UIImageView!
-    
-    @IBOutlet var twoStars: UIButton!
-    @IBOutlet var threeStars: UIButton!
-    @IBOutlet var fourStars: UIButton!
-    @IBOutlet var fiveStars: UIButton!
     
     var locationManager: CLLocationManager!
     
@@ -46,18 +38,20 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     var from: CLLocationCoordinate2D!
     var to: CLLocationCoordinate2D!
+    var helperLocation: CLLocationCoordinate2D!
     
     var orderId: String!
     
     var tripStarted = false
     var tripEnded = false
     
+    var angle: Float! = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         apiManager = ApiManager()
         apiManager.orderStatusDelegate = self
-        apiManager.rateDelegate = self
         apiManager.profileDelegate = self
         
         locationManager = CLLocationManager()
@@ -77,7 +71,6 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         mapView.showsUserLocation = true;
 
         ratingView.layer.cornerRadius = 5
-        ratingView2.layer.backgroundColor = Colors.darkTransparent(0.5).CGColor
         navView.layer.borderColor = Colors.darkBlue(1).CGColor
         navView.layer.borderWidth = 1
         
@@ -87,10 +80,6 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         
         avatarImage.layer.cornerRadius = avatarImage.frame.size.height/2
         avatarImage.clipsToBounds = true
-        
-        avatarImage2.load(Api.IMAGE_URL + driverFileId)
-        avatarImage2.layer.cornerRadius = avatarImage2.frame.size.height/2
-        avatarImage2.clipsToBounds = true
         
         avatarImage3.load(Api.IMAGE_URL + driverFileId)
         avatarImage3.layer.cornerRadius = avatarImage3.frame.size.height/2
@@ -137,37 +126,6 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         self.revealViewController().revealToggle(sender)
     }
     
-    
-    @IBAction func oneStarRate(sender: AnyObject) {
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 1)
-    }
-    
-    @IBAction func twoStarRate(sender: AnyObject) {
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 2)
-    }
-    
-    @IBAction func threeStarRate(sender: AnyObject) {
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 3)
-    }
-    
-    @IBAction func fourStarRate(sender: AnyObject) {
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 4)
-    }
-    
-    @IBAction func fiveStarRate(sender: AnyObject) {
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        fiveStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: driverId, type: 2, rate: 5)
-    }
-    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 //        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         
@@ -183,6 +141,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
         if annotation is MKPointAnnotation {
             return nil
             
@@ -195,6 +154,10 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
                 anView!.canShowCallout = true
                 anView!.image = UIImage(named: "black_car_icon")
             }
+         
+            var rotationTransform: CGAffineTransform = CGAffineTransformIdentity;
+            rotationTransform = CGAffineTransformMakeRotation(CGFloat(angle));
+            anView!.transform = rotationTransform;
             
             return anView
             
@@ -211,7 +174,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
                 pinImage.load(Api.IMAGE_URL + userInformation.stringForKey(UserDetails.THUMBNAIL)!)
                 pinImage.layer.cornerRadius = pinImage.layer.frame.size.width / 2
                 pinImage.layer.borderWidth = 2
-                pinImage.layer.borderColor = Colors.greyBorder(1).CGColor
+                pinImage.layer.borderColor = Colors.greenTransparent(1).CGColor
                 pinImage.layer.masksToBounds = true
                 
                 UIGraphicsBeginImageContext(pinImage.bounds.size);
@@ -229,6 +192,15 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     }
     
     func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+        
+        if helperLocation != nil {
+            let delatLongitude = Float(helperLocation.longitude - startLocation.longitude)
+            let deltaLatitude = Float(helperLocation.latitude - startLocation.latitude)
+            self.angle = atan2f(delatLongitude, deltaLatitude)
+            
+        }
+        
+        helperLocation = startLocation
         
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
@@ -288,33 +260,10 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             
             let route = response.routes[0]
             self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
-            
             self.txtDistance.text = String(route.distance / 1000) + " km"
             
         }
         
-    }
-    
-    func createMapSnapshot (){
-        
-        let options = MKMapSnapshotOptions()
-        options.region = mapView.region
-        options.size = mapView.frame.size
-        options.scale = UIScreen.mainScreen().scale
-        
-        let snapshotter = MKMapSnapshotter(options: options)
-        snapshotter.startWithCompletionHandler { snapshot, error in
-            guard let snapshot = snapshot else {
-                print("Snapshot error: \(error)")
-                return
-            }
-            
-            for annotation in self.mapView.annotations {
-                snapshot.pointForCoordinate(annotation.coordinate)
-            }
-            
-            self.routeImage.image = snapshot.image
-        }
     }
     
     func getOrderStatus(){
@@ -369,21 +318,26 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func onOrderStatusDriveEnded(json: JSON){
         if !tripEnded {
-            ratingView2.hidden = false
+            let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: driver.name, start: from, end: to, type: 1, image: driverFileId, id: driverId)
+            customView.rateViewDelegate = self
+            self.view.addSubview(customView)
         }
         
         tripEnded = true
-        createMapSnapshot()
         
     }
     
-    func onRateSuccess() {
+    func onDriveRated() {
+        helperLocation = nil
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
+
     }
     
-    func onRateError() {
-        
+    func onDriveRatedError(){
+        helperLocation = nil
+        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
+        self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
     func onProfileDetailsSuccess(json: JSON){
@@ -393,6 +347,5 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         } else {
             createRoute(driverLoc, endLocation: from)
         }
-        
     }
 }

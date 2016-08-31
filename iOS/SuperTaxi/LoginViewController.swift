@@ -12,7 +12,11 @@ import AlamofireObjectMapper
 import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
-import Google
+import AddressBook
+import MediaPlayer
+import AssetsLibrary
+import CoreLocation
+import CoreMotion
 
 @available(iOS 9.0, *)
 class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate {
@@ -20,6 +24,7 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet var switchRememberMe: UISwitch!
+    @IBOutlet var googleSingInBtn: UIButton!
     
     let facebookReadPermissions = ["public_profile", "email", "user_friends"]
     var dict : NSDictionary!
@@ -94,14 +99,22 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
             userInformation.setValue(data.data.user.user.age, forKey: UserDetails.AGE)
             userInformation.setValue(data.data.user.user.note, forKey: UserDetails.NOTE)
             userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
+            userInformation.setValue(data.data.user.avatar["fileid"].string!, forKey: UserDetails.THUMBNAIL)
+            userInformation.setValue("1", forKey: UserDetails.TYPE)
 
         } else {
-            self.performSegueWithIdentifier("DriverSigInSegue", sender: nil)
             userInformation.setValue(data.data.user.driver.name, forKey: UserDetails.NAME)
+            userInformation.setValue(data.data.user.driver.car_registration, forKey: UserDetails.CAR_REGISTRATION)
+            userInformation.setValue(data.data.user.driver.car_type, forKey: UserDetails.CAR_TYPE)
+            userInformation.setValue(data.data.user.driver.fee_km, forKey: UserDetails.FEE_KM)
+            userInformation.setValue(data.data.user.driver.fee_start, forKey: UserDetails.FEE_START)
             userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
-    
+            userInformation.setValue(data.data.user.avatar["fileid"].string!, forKey: UserDetails.AVATAR)
+            userInformation.setValue("2", forKey: UserDetails.TYPE)
+            self.performSegueWithIdentifier("DriverSigInSegue", sender: nil)
         }
         
+        userInformation.setValue(data.data.user.telNum, forKey: UserDetails.TEL_NUM)
         userInformation.setValue(data.data.token_new, forKey: UserDetails.TOKEN)
         userInformation.setValue(data.data.user.email, forKey: UserDetails.EMAIL)
         userInformation.setValue(data.data.user._id, forKey: UserDetails._ID)
@@ -109,6 +122,8 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         if (switchRememberMe.on) {
             userInformation.setBool(true, forKey: UserDetails.REMEMBER_ME)
         }
+        
+        userInformation.setBool(true, forKey: UserDetails.IS_LOGGED_IN)
     }
     
     func onLoginError(errocCode: NSInteger){
@@ -218,9 +233,10 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     }
 
     // MARK: Google+ Login
-    @IBAction func btnGoogleLoginPressed(sender: AnyObject) {
+    @IBAction func btnGooglePlusSignIn(sender: AnyObject) {
        
-        
     }
-
+    
+    
+    
 }

@@ -80,10 +80,10 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "googleplus-ios-sdk/google-plus-ios-sdk-1.7.1/GooglePlus.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
+  install_resource "googleplus-ios-sdk/google-plus-ios-sdk-1.7.1/GooglePlus.bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

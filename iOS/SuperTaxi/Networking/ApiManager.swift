@@ -71,6 +71,10 @@ protocol ProfileDelegate {
     func onProfileDetailsSuccess(json: JSON)
 }
 
+protocol NearestDriverDelegate {
+    func onNearestDriverSuccess(latitude: Double, longitude: Double)
+}
+
 public class ApiManager {
     
     var loginDelegate: LoginApiDelegate!
@@ -83,6 +87,7 @@ public class ApiManager {
     var orderStatusDelegate: OrderStatusDelegate!
     var rateDelegate: RateDelegate!
     var profileDelegate: ProfileDelegate!
+    var nearestDriverDelegate: NearestDriverDelegate!
 
     func getTimeForSecret(type: NSInteger) {
         
@@ -455,6 +460,9 @@ public class ApiManager {
                 
                 let json = JSON(response.result.value!)
                 
+                print("****")
+                print(json)
+                
                 if(json["code"].number == 1){
                     self.rateDelegate.onRateSuccess()
                 } else {
@@ -480,6 +488,27 @@ public class ApiManager {
                 if response.result.value != nil {
                     let json = JSON(response.result.value!)
                     self.profileDelegate.onProfileDetailsSuccess(json)
+                }
+        }
+        
+    }
+    
+    func getNearestDriver(token: String, lat: Double, lon: Double){
+        
+        let url : String = Api.SERVER_BASE_URL + Api.NEAREST_DRIVER
+        
+        let headers = ["access-token": token]
+        
+        let parameters: NSDictionary = [
+            "lat": lat,
+            "lon": lon]
+        
+        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+            .responseJSON { response in
+                
+                if response.result.value != nil {
+                    let json = JSON(response.result.value!)
+                    self.nearestDriverDelegate.onNearestDriverSuccess(json["data"]["driver"]["currentLocation"][1].double!, longitude: json["data"]["driver"]["currentLocation"][0].double!)
                 }
         }
         

@@ -22,6 +22,7 @@ public class UserModel: Mappable {
     var avatar: JSON!
     var driver: DriverInfoModel!
     var user: UserInfoModel!
+    var telNum: String!
     
     required public init?(_ map: Map) {
         
@@ -38,6 +39,7 @@ public class UserModel: Mappable {
         avatar <- map["avatar"]
         driver <- map["driver"]
         user <- map["user"]
+        telNum <- map["telNum"]
         
     }
 

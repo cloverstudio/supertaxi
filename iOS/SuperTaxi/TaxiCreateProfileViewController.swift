@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import AssetsLibrary
+import ImageLoader
 
 class TaxiCreateProfileViewController: UIViewController, UINavigationControllerDelegate,
                 UIImagePickerControllerDelegate, UIApplicationDelegate, UITextFieldDelegate, SetUserDetailsDelegate {
@@ -31,7 +32,14 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
     var imageData: NSData!
     var mime: String!
     
-    var goNext = true
+    var isNameOk = false
+    var isCarTypeOk = false
+    var isCarRegOk = false
+    var isStartFeeOk = false
+    var isFeeKnOk = false
+    var isPhoneNumberOk = false
+    
+    var isEditingProfile = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +71,19 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         if status != ALAuthorizationStatus.Authorized{
             print("User has not given authorization for the camera roll")
         }
+        
+        if (isEditingProfile){
+            txtTaxiDriverName.text = userInformation.stringForKey(UserDetails.NAME)
+            txtCartype.text = userInformation.stringForKey(UserDetails.CAR_TYPE)
+            txtCarRegnumber.text = userInformation.stringForKey(UserDetails.CAR_REGISTRATION)
+            txtFeekm.text = userInformation.stringForKey(UserDetails.FEE_KM)
+            txtStartfee.text = userInformation.stringForKey(UserDetails.FEE_START)
+            txtPhoneNumber.text = userInformation.stringForKey(UserDetails.TEL_NUM)
+            
+            if (userInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
+                imgTaxiDriverPhoto.load(Api.IMAGE_URL + userInformation.stringForKey(UserDetails.THUMBNAIL)!)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,7 +101,12 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
     
     // MARK: - UIAction Methods
     @IBAction func onCancelClick(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+        if isEditingProfile {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+        
     }
 
     @IBAction func onUploadPhotoClick(sender: AnyObject) {
@@ -99,9 +125,8 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isNameOk = true
         }
         
         if txtCartype.text == "" {
@@ -110,9 +135,8 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isCarTypeOk = true
         }
         
         if txtCarRegnumber.text == "" {
@@ -121,9 +145,8 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isCarRegOk = true
         }
         
         if txtStartfee.text == "" {
@@ -132,9 +155,8 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isStartFeeOk = true
         }
         
         if txtFeekm.text == "" {
@@ -143,13 +165,39 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isFeeKnOk = true
         }
         
-        if (goNext) {
+        if txtPhoneNumber.text == "" {
+            let alert = UIAlertController(title: "Alert", message: "Please enter your phone number.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+        } else {
+            isPhoneNumberOk = true
+        }
+        
+        if imageData == nil {
+            let alert = UIAlertController(title: "Alert", message: "Please choose image.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        
+        if (isNameOk && isCarTypeOk && isCarRegOk && isStartFeeOk && isFeeKnOk && isPhoneNumberOk && imageData != nil) {
             apiManager.setUserDetails(userInformation.objectForKey(UserDetails.TOKEN) as! String, name: txtTaxiDriverName.text!, type: "2", telNum: txtPhoneNumber.text!, age: "", note: "", car_type: txtCartype.text!, car_registration: txtCarRegnumber.text!, fee_start: txtStartfee.text!, fee_km: txtFeekm.text!, fileData: imageData, fileName: "file", mime: mime)
+            
+            let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .Alert)
+            
+            alert.view.tintColor = UIColor.blackColor()
+            let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(10, 5, 50, 50)) as UIActivityIndicatorView
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+            loadingIndicator.startAnimating();
+            
+            alert.view.addSubview(loadingIndicator)
+            presentViewController(alert, animated: true, completion: nil)
         }
     }
     
@@ -172,23 +220,36 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
     }
     
     func onSetUserDetailsSuccess(json: JSON) {
-        print("*****")
-        print(json)
-        self.performSegueWithIdentifier("SetDriverDetailsSegue", sender: nil)
+        if isEditingProfile{
+            self.dismissViewControllerAnimated(true, completion: nil)
+            btnSave.enabled = true
+            btnSave.alpha = 1
+        } else {
+            userInformation.setValue(json["data"]["user"]["telNum"].string, forKey: UserDetails.TEL_NUM)
+            userInformation.setValue(json["data"]["user"]["driver"]["fee_km"].number, forKey: UserDetails.FEE_KM)
+            userInformation.setValue(json["data"]["user"]["driver"]["car_registration"].string, forKey: UserDetails.CAR_REGISTRATION)
+            userInformation.setValue(json["data"]["user"]["driver"]["car_type"].string, forKey: UserDetails.CAR_TYPE)
+            userInformation.setValue(json["data"]["user"]["driver"]["name"].string, forKey: UserDetails.NAME)
+            userInformation.setValue(json["data"]["user"]["driver"]["fee_start"].number, forKey: UserDetails.FEE_START)
+            userInformation.setValue(json["data"]["user"]["avatar"]["fileid"].string, forKey: UserDetails.AVATAR)
+            userInformation.setValue(json["data"]["user"]["avatar"]["thumbfileid"].string, forKey: UserDetails.THUMBNAIL)
+            userInformation.setValue("2", forKey: UserDetails.TYPE)
+            self.performSegueWithIdentifier("SetDriverDetailsSegue", sender: nil)
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        
     }
     
     func onSetUserDetailsError(error: NSInteger) {
-        print(error)
+        dismissViewControllerAnimated(true, completion: nil)
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
-        let indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        indicator.frame = CGRectMake(0.0, 30, 40.0, 40.0);
-        indicator.center = view.center
-        view.addSubview(indicator)
-        indicator.bringSubviewToFront(view)
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        indicator.startAnimating()
+
     }
 
 }

@@ -11,8 +11,9 @@ import IQKeyboardManagerSwift
 import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
-import Google
+import CoreData
 
+@available(iOS 9.0, *)
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -20,6 +21,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         IQKeyboardManager.sharedManager().enable = true
+        
+//        let userInformation = NSUserDefaults.standardUserDefaults()
+        
+//        if userInformation.boolForKey(UserDetails.IS_LOGGED_IN){
+//            
+//            if(!userInformation.boolForKey(UserDetails.REMEMBER_ME)){
+//                self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LoginVC") as? LoginViewController
+//            } else {
+//                self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+//            }
+//        }
         
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -50,7 +62,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 

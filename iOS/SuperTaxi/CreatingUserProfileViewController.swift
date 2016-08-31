@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import AssetsLibrary
+import ImageLoader
 
 class CreatingUserProfileViewController: UIViewController, UIImagePickerControllerDelegate,
                     UINavigationControllerDelegate, UIApplicationDelegate, UITextFieldDelegate,
@@ -27,10 +28,16 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     let userInformation = NSUserDefaults.standardUserDefaults()
     var apiManager: ApiManager!
     
-    var imageData: NSData!
+    var imageData: NSData! = nil
     var mime: String!
     
-    var goNext = true
+    var goNext = false
+    var isNameOk = false
+    var isAgeOk = false
+    var isNoteOK = false
+    var isPhoneNumOK = false
+    
+    var isEditingProfile = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,8 +46,11 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         picker.delegate = self
         imgUserPhoto.clipsToBounds = true
         
-        btnSave.enabled = false
-        btnSave.alpha = 0.4
+        if !isEditingProfile{
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+        }
+        
         txtName.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
         txtAge.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
         txtNote.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
@@ -57,6 +67,22 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         if status != ALAuthorizationStatus.Authorized{
             print("User has not given authorization for the camera roll")
         }
+        
+        if isEditingProfile {
+            txtName.text = userInformation.stringForKey(UserDetails.NAME)
+            txtAge.text = userInformation.stringForKey(UserDetails.AGE)
+            txtNote.text = userInformation.stringForKey(UserDetails.NOTE)
+            txtPhoneNumber.text = userInformation.stringForKey(UserDetails.TEL_NUM)
+            
+            if (userInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
+                imgUserPhoto.load(Api.IMAGE_URL + userInformation.stringForKey(UserDetails.THUMBNAIL)!)
+            }
+            
+            imageData = NSData()
+            mime = ""
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,7 +100,12 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     
     // MARK: - UIAction Methods
     @IBAction func onCancelClick(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+        if isEditingProfile {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+        
     }
     
     @IBAction func onUploadAvatarClick(sender: AnyObject) {
@@ -94,9 +125,8 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isNameOk = true
         }
         
         if txtAge.text == ""  {
@@ -105,17 +135,17 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isAgeOk = true
         }
         
-        if age > 150  {
+        if age > 100  {
             let alert = UIAlertController(title: "Alert", message: "Age can't be bigger than 150", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
+            isAgeOk = false
         } else {
-            goNext = true
+            isAgeOk = true
         }
         
         if txtNote.text == "" {
@@ -124,22 +154,41 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             self.presentViewController(alert, animated: true, completion: nil)
             btnSave.enabled = false
             btnSave.alpha = 0.4
-            goNext = false
         } else {
-            goNext = true
+            isNoteOK = true
         }
         
         if (imgUserPhoto.image == nil) {
             let alert = UIAlertController(title: "Alert", message: "Please upload your avatar photo", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
-            goNext = false
         } else {
             goNext = true
         }
+        
+        if txtPhoneNumber.text == "" {
+            let alert = UIAlertController(title: "Alert", message: "Please enter your phone number!", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            btnSave.enabled = false
+            btnSave.alpha = 0.4
+        } else {
+            isPhoneNumOK = true
+        }
     
         if (goNext) {
-            apiManager.setUserDetails(userInformation.objectForKey(UserDetails.TOKEN) as! String, name: txtName.text!, type: "1", telNum: txtPhoneNumber.text!, age: txtAge.text!, note: txtNote.text!, car_type: "Taxi", car_registration: "KR-1234-ZG", fee_start: "10", fee_km: "10", fileData: imageData, fileName: "file", mime: mime)
+            apiManager.setUserDetails(userInformation.objectForKey(UserDetails.TOKEN) as! String, name: txtName.text!, type: "1", telNum: txtPhoneNumber.text!, age: txtAge.text!, note: txtNote.text!, car_type: "", car_registration: "", fee_start: "", fee_km: "", fileData: imageData, fileName: "file", mime: mime)
+            
+            let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .Alert)
+            
+            alert.view.tintColor = UIColor.blackColor()
+            let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(10, 5, 50, 50)) as UIActivityIndicatorView
+            loadingIndicator.hidesWhenStopped = true
+            loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
+            loadingIndicator.startAnimating();
+            
+            alert.view.addSubview(loadingIndicator)
+            presentViewController(alert, animated: true, completion: nil)
         }
         
         
@@ -164,25 +213,32 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     }
     
     func onSetUserDetailsSuccess(json: JSON) {
-        self.performSegueWithIdentifier("SetUSerDetailsSegue", sender: nil)
-        print(json)
         
-        userInformation.setValue(json["data"]["user"]["avatar"]["thumbfileid"].string, forKey: UserDetails.THUMBNAIL)
-        userInformation.setValue(json["data"]["user"]["avatar"]["fileid"].string, forKey: UserDetails.AVATAR)
+        if isEditingProfile{
+            self.dismissViewControllerAnimated(true, completion: nil)
+            btnSave.enabled = true
+            btnSave.alpha = 1
+        } else {
+            userInformation.setValue(json["data"]["user"]["telNum"].string, forKey: UserDetails.TEL_NUM)
+            userInformation.setValue(json["data"]["user"]["user"]["name"].string, forKey: UserDetails.NAME)
+            userInformation.setValue(json["data"]["user"]["user"]["age"].number, forKey: UserDetails.AGE)
+            userInformation.setValue(json["data"]["user"]["user"]["note"].string, forKey: UserDetails.NOTE)
+            userInformation.setValue(json["data"]["user"]["avatar"]["thumbfileid"].string, forKey: UserDetails.THUMBNAIL)
+            userInformation.setValue(json["data"]["user"]["avatar"]["fileid"].string, forKey: UserDetails.AVATAR)
+            userInformation.setValue("1", forKey: UserDetails.TYPE)
+            self.performSegueWithIdentifier("SetUSerDetailsSegue", sender: nil)
+            dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     func onSetUserDetailsError(error: NSInteger) {
-        print(error)
+        dismissViewControllerAnimated(true, completion: nil)
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
-        let indicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        indicator.frame = CGRectMake(0.0, 30, 40.0, 40.0);
-        indicator.center = view.center
-        view.addSubview(indicator)
-        indicator.bringSubviewToFront(view)
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        indicator.startAnimating()
+        
     }
-    
 }

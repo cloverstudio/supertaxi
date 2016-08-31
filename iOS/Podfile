@@ -16,7 +16,7 @@ target 'SuperTaxi' do
 	pod 'FBSDKCoreKit'
 	pod 'FBSDKShareKit'
 	pod 'FBSDKLoginKit'
-	pod 'Google/SignIn'
+	pod 'googleplus-ios-sdk'
 	pod 'ImageLoader'
 	pod 'SWRevealViewController', '~> 2.3'
 
