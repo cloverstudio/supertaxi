@@ -39,6 +39,8 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     
     var isEditingProfile = false
     
+    let progressHUD = ProgressHUD(text: "")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -82,7 +84,8 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             mime = ""
         }
         
-        
+        self.view.addSubview(progressHUD)
+        progressHUD.hide()
     }
 
     override func didReceiveMemoryWarning() {
@@ -179,16 +182,7 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         if (goNext) {
             apiManager.setUserDetails(userInformation.objectForKey(UserDetails.TOKEN) as! String, name: txtName.text!, type: "1", telNum: txtPhoneNumber.text!, age: txtAge.text!, note: txtNote.text!, car_type: "", car_registration: "", fee_start: "", fee_km: "", fileData: imageData, fileName: "file", mime: mime)
             
-            let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .Alert)
-            
-            alert.view.tintColor = UIColor.blackColor()
-            let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(10, 5, 50, 50)) as UIActivityIndicatorView
-            loadingIndicator.hidesWhenStopped = true
-            loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-            loadingIndicator.startAnimating();
-            
-            alert.view.addSubview(loadingIndicator)
-            presentViewController(alert, animated: true, completion: nil)
+            progressHUD.show()
         }
         
         
@@ -227,7 +221,6 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             userInformation.setValue(json["data"]["user"]["avatar"]["fileid"].string, forKey: UserDetails.AVATAR)
             userInformation.setValue("1", forKey: UserDetails.TYPE)
             self.performSegueWithIdentifier("SetUSerDetailsSegue", sender: nil)
-            dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
@@ -236,6 +229,7 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+        progressHUD.hide()
     }
     
     func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){

@@ -66,6 +66,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     var getOrderStatus = false
     
     var driverId = ""
+    var driverPhoneNumber: String!
     
     var matchingItems:[MKMapItem] = []
     
@@ -157,9 +158,6 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
-        
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -187,6 +185,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         orderId = ""
 
         rotateView(groupImage)
+        self.removeFromBtn.hidden = false
     }
     
     @IBAction func onLocationSet(sender: AnyObject) {
@@ -469,6 +468,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         let location = json["data"]["driver"]["currentLocation"].array!
         
         driverId = json["data"]["driver"]["_id"].string!
+        driverPhoneNumber = json["data"]["driver"]["telNum"].string!
         
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiDriverDetailsID") as? UserRequestReceivedViewController
         viewController!.driver = driver
@@ -478,6 +478,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         viewController?.to = CLLocationCoordinate2D(latitude: latTo, longitude: lonTo)
         viewController?.orderId = orderId
         viewController?.driverId = driverId
+        viewController?.driverPhoneNumber = driverPhoneNumber
         self.navigationController?.pushViewController(viewController!, animated: true)
         
         viewRequest.hidden = true

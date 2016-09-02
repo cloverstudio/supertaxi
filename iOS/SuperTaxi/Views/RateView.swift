@@ -216,15 +216,10 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         fourStars.setImage(UIImage(named: "star_active"), forState: .Normal)
         fiveStars.setImage(UIImage(named: "star_active"), forState: .Normal)
         
-        print(id)
-        print(userInformation.stringForKey(UserDetails.TOKEN))
-        print(type)
-        
         apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: id, type: type, rate: 5)
     }
     
     func onRateSuccess() {
-        print("rate success")
         rateViewDelegate.onDriveRated()
     }
     

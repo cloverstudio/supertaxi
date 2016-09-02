@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Api {
     static let SERVER_BASE_URL = "http://107.170.147.230/api/v1/"

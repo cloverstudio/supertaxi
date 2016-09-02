@@ -40,6 +40,8 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
     var isPhoneNumberOk = false
     
     var isEditingProfile = false
+
+    let progressHUD = ProgressHUD(text: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,6 +86,9 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
                 imgTaxiDriverPhoto.load(Api.IMAGE_URL + userInformation.stringForKey(UserDetails.THUMBNAIL)!)
             }
         }
+        
+        self.view.addSubview(progressHUD)
+        progressHUD.hide()
     }
 
     override func didReceiveMemoryWarning() {
@@ -188,16 +193,7 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         if (isNameOk && isCarTypeOk && isCarRegOk && isStartFeeOk && isFeeKnOk && isPhoneNumberOk && imageData != nil) {
             apiManager.setUserDetails(userInformation.objectForKey(UserDetails.TOKEN) as! String, name: txtTaxiDriverName.text!, type: "2", telNum: txtPhoneNumber.text!, age: "", note: "", car_type: txtCartype.text!, car_registration: txtCarRegnumber.text!, fee_start: txtStartfee.text!, fee_km: txtFeekm.text!, fileData: imageData, fileName: "file", mime: mime)
             
-            let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .Alert)
-            
-            alert.view.tintColor = UIColor.blackColor()
-            let loadingIndicator: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(10, 5, 50, 50)) as UIActivityIndicatorView
-            loadingIndicator.hidesWhenStopped = true
-            loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-            loadingIndicator.startAnimating();
-            
-            alert.view.addSubview(loadingIndicator)
-            presentViewController(alert, animated: true, completion: nil)
+            progressHUD.show()
         }
     }
     
@@ -235,7 +231,6 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
             userInformation.setValue(json["data"]["user"]["avatar"]["thumbfileid"].string, forKey: UserDetails.THUMBNAIL)
             userInformation.setValue("2", forKey: UserDetails.TYPE)
             self.performSegueWithIdentifier("SetDriverDetailsSegue", sender: nil)
-            dismissViewControllerAnimated(true, completion: nil)
         }
         
         
@@ -246,6 +241,7 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+        progressHUD.hide()
     }
     
     func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){

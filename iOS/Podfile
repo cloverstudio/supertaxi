@@ -16,9 +16,9 @@ target 'SuperTaxi' do
 	pod 'FBSDKCoreKit'
 	pod 'FBSDKShareKit'
 	pod 'FBSDKLoginKit'
-	pod 'googleplus-ios-sdk'
 	pod 'ImageLoader'
 	pod 'SWRevealViewController', '~> 2.3'
+	pod 'Google/SignIn'
 
   target 'SuperTaxiTests' do
     inherit! :search_paths

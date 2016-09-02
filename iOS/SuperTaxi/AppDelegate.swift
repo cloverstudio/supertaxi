@@ -12,6 +12,7 @@ import FBSDKCoreKit
 import FBSDKShareKit
 import FBSDKLoginKit
 import CoreData
+import Google
 
 @available(iOS 9.0, *)
 @UIApplicationMain
@@ -22,22 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         IQKeyboardManager.sharedManager().enable = true
         
-//        let userInformation = NSUserDefaults.standardUserDefaults()
-        
-//        if userInformation.boolForKey(UserDetails.IS_LOGGED_IN){
-//            
-//            if(!userInformation.boolForKey(UserDetails.REMEMBER_ME)){
-//                self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LoginVC") as? LoginViewController
-//            } else {
-//                self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
-//            }
-//        }
-        
+        var configureError: NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+    
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+            || GIDSignIn.sharedInstance().handleURL(url,sourceApplication: sourceApplication,annotation: annotation)
     }
     
     func applicationWillResignActive(application: UIApplication) {

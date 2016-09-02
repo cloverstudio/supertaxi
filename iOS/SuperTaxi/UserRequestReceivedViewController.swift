@@ -26,7 +26,7 @@ class UserRequestReceivedViewController: UIViewController {
     var from: CLLocationCoordinate2D!
     var to: CLLocationCoordinate2D!
     var distance: String!
-    
+    var driverPhoneNumber: String!
     var driverId: String!
     
     var orderId: String!
@@ -81,4 +81,11 @@ class UserRequestReceivedViewController: UIViewController {
         apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
         self.navigationController!.popViewControllerAnimated(true)
     }
+    
+    @IBAction func btnCallDriver(sender: AnyObject) {
+        UIApplication.sharedApplication().openURL(NSURL(string: "telprompt://" + driverPhoneNumber)!)
+    }
+    
+    
+    
 }

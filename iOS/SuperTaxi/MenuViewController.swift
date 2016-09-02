@@ -33,8 +33,7 @@ class MenuViewController: UIViewController {
             imgPhoto.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!, placeholder: UIImage(named: "user"))
         }
         
-        imgPhoto.layer.masksToBounds = false
-        imgPhoto.layer.cornerRadius = (imgPhoto.frame.height / 2)
+        imgPhoto.layer.cornerRadius = imgPhoto.frame.size.width / 2
         imgPhoto.clipsToBounds = true
         
         txtFirstName.text = UserInformation.stringForKey(UserDetails.NAME)

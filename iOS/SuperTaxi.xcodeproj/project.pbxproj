@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		272D2A3A887D5D91381445D7 /* Pods_SuperTaxiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6A37D9CB12FB2F5F3DDE01 /* Pods_SuperTaxiUITests.framework */; };
+		760172621D78424200C4CDEE /* Pods_SuperTaxi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01798284D2602AAD29ABC078 /* Pods_SuperTaxi.framework */; };
 		760602541D7481970076BFED /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760602531D7481970076BFED /* HistoryViewController.swift */; };
 		760602561D7482050076BFED /* ReportProblemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760602551D7482050076BFED /* ReportProblemViewController.swift */; };
 		760602581D74821B0076BFED /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760602571D74821B0076BFED /* AboutViewController.swift */; };
 		7606025B1D757A2F0076BFED /* RateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7606025A1D757A2F0076BFED /* RateView.xib */; };
 		7606025D1D757A950076BFED /* RateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7606025C1D757A950076BFED /* RateView.swift */; };
+		762A28DA1D79A9B000DAB726 /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762A28D91D79A9B000DAB726 /* ProgressHUD.swift */; };
 		7696880E1D368FDB00F360BE /* UserLoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7696880D1D368FDB00F360BE /* UserLoginModel.swift */; };
 		769688101D36911F00F360BE /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7696880F1D36911F00F360BE /* UserDataModel.swift */; };
 		769688121D36926C00F360BE /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769688111D36926C00F360BE /* UserModel.swift */; };
@@ -34,7 +36,6 @@
 		76F7A6271D367EDF00C81B51 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6261D367EDF00C81B51 /* ApiManager.swift */; };
 		76F7A6291D36813500C81B51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6281D36813500C81B51 /* Constants.swift */; };
 		76F934951D6AFBF90048A3AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76F934941D6AFBF90048A3AD /* GoogleService-Info.plist */; };
-		836D862676DFA9953EB10413 /* Pods_SuperTaxi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01798284D2602AAD29ABC078 /* Pods_SuperTaxi.framework */; };
 		C33289A21D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A11D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift */; };
 		C33289A41D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */; };
 		C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */; };
@@ -80,11 +81,15 @@
 		5C72AFE959EEA0F8B239E2AE /* Pods-SuperTaxi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperTaxi.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperTaxi/Pods-SuperTaxi.release.xcconfig"; sourceTree = "<group>"; };
 		62D185447F57D06489E6BD8C /* Pods-SuperTaxi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperTaxi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperTaxi/Pods-SuperTaxi.debug.xcconfig"; sourceTree = "<group>"; };
 		69D38736789C7C467B402AAA /* Pods_SuperTaxiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SuperTaxiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7601725C1D783C0600C4CDEE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		7601725E1D783C1000C4CDEE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		760172601D783C1B00C4CDEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		760602531D7481970076BFED /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		760602551D7482050076BFED /* ReportProblemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProblemViewController.swift; sourceTree = "<group>"; };
 		760602571D74821B0076BFED /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		7606025A1D757A2F0076BFED /* RateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateView.xib; sourceTree = "<group>"; };
 		7606025C1D757A950076BFED /* RateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateView.swift; sourceTree = "<group>"; };
+		762A28D91D79A9B000DAB726 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		7696880D1D368FDB00F360BE /* UserLoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoginModel.swift; sourceTree = "<group>"; };
 		7696880F1D36911F00F360BE /* UserDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		769688111D36926C00F360BE /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -143,7 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				836D862676DFA9953EB10413 /* Pods_SuperTaxi.framework in Frameworks */,
+				760172621D78424200C4CDEE /* Pods_SuperTaxi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +187,7 @@
 				76F7A6281D36813500C81B51 /* Constants.swift */,
 				76F12C8D1D463BB600C1E95D /* DriverAnnotation.swift */,
 				76F579BD1D520A26002417EB /* UserAnnotation.swift */,
+				762A28D91D79A9B000DAB726 /* ProgressHUD.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -346,6 +352,9 @@
 		C6BEC74D673A06045713227F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				760172601D783C1B00C4CDEE /* AddressBook.framework */,
+				7601725E1D783C1000C4CDEE /* StoreKit.framework */,
+				7601725C1D783C0600C4CDEE /* SystemConfiguration.framework */,
 				01798284D2602AAD29ABC078 /* Pods_SuperTaxi.framework */,
 				69D38736789C7C467B402AAA /* Pods_SuperTaxiTests.framework */,
 				8B6A37D9CB12FB2F5F3DDE01 /* Pods_SuperTaxiUITests.framework */,
@@ -634,6 +643,7 @@
 			files = (
 				C33289A41D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift in Sources */,
 				C354338C1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift in Sources */,
+				762A28DA1D79A9B000DAB726 /* ProgressHUD.swift in Sources */,
 				C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */,
 				C35433A61D1C6C3A00DD56B4 /* MenuViewController.swift in Sources */,
 				76F12C8E1D463BB600C1E95D /* DriverAnnotation.swift in Sources */,
@@ -827,6 +837,33 @@
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"AlamofireImage\"",
+					"-framework",
+					"\"AlamofireObjectMapper\"",
+					"-framework",
+					"\"Bolts\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKLoginKit\"",
+					"-framework",
+					"\"FBSDKShareKit\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"ImageLoader\"",
+					"-framework",
+					"\"ObjectMapper\"",
+					"-framework",
+					"\"SWRevealViewController\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d599d51b-32d1-4c8d-8d66-57b8e280fa16";
@@ -851,6 +888,33 @@
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"AlamofireImage\"",
+					"-framework",
+					"\"AlamofireObjectMapper\"",
+					"-framework",
+					"\"Bolts\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKLoginKit\"",
+					"-framework",
+					"\"FBSDKShareKit\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"ImageLoader\"",
+					"-framework",
+					"\"ObjectMapper\"",
+					"-framework",
+					"\"SWRevealViewController\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d599d51b-32d1-4c8d-8d66-57b8e280fa16";

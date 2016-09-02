@@ -3,5 +3,4 @@
 //
 
 #import <CommonCrypto/CommonCrypto.h>
-#import <GooglePlus/GooglePlus.h>
-#import <GoogleOpenSource/GoogleOpenSource.h>
+#import <GoogleSignIn/GoogleSignIn.h>

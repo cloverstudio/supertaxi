@@ -16,11 +16,15 @@ public class SignUpViewController: UIViewController, SignUpApiDelegate {
     var apiManager: ApiManager!
     
     let userInformation = NSUserDefaults.standardUserDefaults()
+    let progressHUD = ProgressHUD(text: "")
     
     public override func viewDidLoad() {
         
         apiManager = ApiManager()
         apiManager.signUpDelegate = self
+        
+        self.view.addSubview(progressHUD)
+        progressHUD.hide()
         
     }
     
@@ -34,16 +38,14 @@ public class SignUpViewController: UIViewController, SignUpApiDelegate {
             let alert = UIAlertController(title: "Alert", message: "Please enter your Email Address", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
-        }
-        
-        if txtPassword.text == "" {
+        } else if txtPassword.text == "" {
             let alert = UIAlertController(title: "Alert", message: "Please enter your Password", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            apiManager.getTimeForSecret(2)
+            progressHUD.show()
         }
-        
-        apiManager.getTimeForSecret(2)
-        
     }
     
     func onSignUpTimeSuccess(secret: String) {
@@ -68,6 +70,8 @@ public class SignUpViewController: UIViewController, SignUpApiDelegate {
         let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(errorCode), preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+        
+        progressHUD.hide()
     }
     
     @IBAction func onCancel(sender: AnyObject) {

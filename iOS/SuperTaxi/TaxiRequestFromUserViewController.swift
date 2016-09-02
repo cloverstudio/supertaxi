@@ -81,7 +81,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
             
             if (json["data"]["order"]["user"]["avatar"].exists()){
                 userFileId = json["data"]["order"]["user"]["avatar"]["fileid"].string!
-                avatar.load(Api.IMAGE_URL + userFileId)
+                avatar.load(Api.IMAGE_URL + userFileId, placeholder: UIImage(named: "user"))
             }
         }
         

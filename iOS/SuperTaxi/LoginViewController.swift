@@ -17,14 +17,13 @@ import MediaPlayer
 import AssetsLibrary
 import CoreLocation
 import CoreMotion
+import Google
 
-@available(iOS 9.0, *)
-class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate {
+class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
 
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet var switchRememberMe: UISwitch!
-    @IBOutlet var googleSingInBtn: UIButton!
     
     let facebookReadPermissions = ["public_profile", "email", "user_friends"]
     var dict : NSDictionary!
@@ -37,13 +36,20 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     
     let userInformation = NSUserDefaults.standardUserDefaults()
     
+    let progressHUD = ProgressHUD(text: "")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         apiManager = ApiManager()
         apiManager.loginDelegate = self
         apiManager.signUpDelegate = self
-    
+        
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        
+        self.view.addSubview(progressHUD)
+        progressHUD.hide()
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,17 +62,14 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
             let alert = UIAlertController(title: "Alert", message: "Please enter your Email Address", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
-        }
-        
-        if txtPassword.text == "" {
+        } else if txtPassword.text == "" {
             let alert = UIAlertController(title: "Alert", message: "Please enter your Password", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            apiManager.getTimeForSecret(1)
+            progressHUD.show()
         }
-        
-        apiManager.getTimeForSecret(1)
-    
-    
     }
     
     func onLoginTimeSuccess(secret: String) {
@@ -103,13 +106,19 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
             userInformation.setValue("1", forKey: UserDetails.TYPE)
 
         } else {
-            userInformation.setValue(data.data.user.driver.name, forKey: UserDetails.NAME)
-            userInformation.setValue(data.data.user.driver.car_registration, forKey: UserDetails.CAR_REGISTRATION)
-            userInformation.setValue(data.data.user.driver.car_type, forKey: UserDetails.CAR_TYPE)
-            userInformation.setValue(data.data.user.driver.fee_km, forKey: UserDetails.FEE_KM)
-            userInformation.setValue(data.data.user.driver.fee_start, forKey: UserDetails.FEE_START)
-            userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
-            userInformation.setValue(data.data.user.avatar["fileid"].string!, forKey: UserDetails.AVATAR)
+            if data.data.user.driver != nil {
+                userInformation.setValue(data.data.user.driver.name, forKey: UserDetails.NAME)
+                userInformation.setValue(data.data.user.driver.car_registration, forKey: UserDetails.CAR_REGISTRATION)
+                userInformation.setValue(data.data.user.driver.car_type, forKey: UserDetails.CAR_TYPE)
+                userInformation.setValue(data.data.user.driver.fee_km, forKey: UserDetails.FEE_KM)
+                userInformation.setValue(data.data.user.driver.fee_start, forKey: UserDetails.FEE_START)
+            }
+            
+            if data.data.user.avatar != nil {
+                userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
+                userInformation.setValue(data.data.user.avatar["fileid"].string!, forKey: UserDetails.AVATAR)
+            }
+            
             userInformation.setValue("2", forKey: UserDetails.TYPE)
             self.performSegueWithIdentifier("DriverSigInSegue", sender: nil)
         }
@@ -136,12 +145,13 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         } else {
             apiManager.getTimeForSecret(2)
         }
+        
+        progressHUD.hide()
     }
     
     // Background Sign Up
     
     func onSignUpTimeSuccess(secret: String) {
-        print(secret)
         let parameters : NSDictionary = ["email" : fbEmail,
                                          "password" : Tools().sha1(fbId + Api.SALT),
                                          "secret": secret]
@@ -172,6 +182,8 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         self.presentViewController(alert, animated: true, completion: nil)
         
         self.loginType = 1
+        
+        progressHUD.hide()
     }
     
     @IBAction func onForgotPasswordClick(sender: AnyObject) {
@@ -180,6 +192,9 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     
     // MARK: Facebook Login
     @IBAction func btnFBLoginPressed(sender: AnyObject) {
+        
+        progressHUD.show()
+        
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
         fbLoginManager.logInWithReadPermissions(["email"], handler: { (result, error) -> Void in
             if (error == nil){
@@ -229,14 +244,55 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     // MARK: Twitter Login
     @IBAction func btnTwitterLoginPressed(sender: AnyObject) {
         
-       
     }
 
     // MARK: Google+ Login
-    @IBAction func btnGooglePlusSignIn(sender: AnyObject) {
-       
+    
+    @IBAction func gSignIn(sender: AnyObject) {
+        GIDSignIn.sharedInstance().signIn()
+        self.loginType = 2
+        
+        progressHUD.show()
     }
     
+    // Present a view that prompts the user to sign in with Google
+    func signIn(signIn: GIDSignIn!,
+                presentViewController viewController: UIViewController!) {
+        self.presentViewController(viewController, animated: true, completion: nil)
+    }
     
+    // Dismiss the "Sign in with Google" view
+    func signIn(signIn: GIDSignIn!,
+                dismissViewController viewController: UIViewController!) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
+                withError error: NSError!) {
+        if (error == nil) {
+
+            let userId = user.userID
+            let email = user.profile.email
+            
+            fbEmail = email
+            txtEmail.text = email
+            
+            fbId = userId
+            txtPassword.text = userId
+            
+            self.apiManager.getTimeForSecret(1)
+            
+            
+        } else {
+            print("\(error.localizedDescription)")
+        }
+    }
+    
+    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
+                withError error: NSError!) {
+        // Perform any operations when the user disconnects from app here.
+        // ...
+        
+        progressHUD.hide()
+    }
 }

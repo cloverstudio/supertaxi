@@ -460,9 +460,6 @@ public class ApiManager {
                 
                 let json = JSON(response.result.value!)
                 
-                print("****")
-                print(json)
-                
                 if(json["code"].number == 1){
                     self.rateDelegate.onRateSuccess()
                 } else {
