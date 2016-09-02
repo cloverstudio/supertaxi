@@ -99,7 +99,7 @@ public class CustomDialog extends Dialog {
     }
 
     public void addTextAndClickListener(boolean withLineBelow, String text, final OnItemClickedListener onClickListener){
-        addTextAndClickListener(withLineBelow, text, ContextCompat.getColor(getContext(), R.color.devil_gray), onClickListener);
+        addTextAndClickListener(withLineBelow, text, ContextCompat.getColor(getContext(), R.color.best_gray), onClickListener);
     }
 
     public void dismissWithListener(final OnItemClickedListener listener){

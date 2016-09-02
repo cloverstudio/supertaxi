@@ -2,6 +2,7 @@ package clover_studio.com.supertaxi.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 /**
  * Created by ubuntu_ivo on 10.02.16..
@@ -15,6 +16,8 @@ public class OrderModel extends BaseModel implements Parcelable{
     public OrderLocationModel to;
     public OrderLocationModel from;
 
+    @Nullable  public UserModel user;
+
     public OrderModel(){};
 
     protected OrderModel(Parcel in) {
@@ -24,6 +27,8 @@ public class OrderModel extends BaseModel implements Parcelable{
         crewNum = in.readInt();
         to = (OrderLocationModel) in.readValue(OrderLocationModel.class.getClassLoader());
         from = (OrderLocationModel) in.readValue(OrderLocationModel.class.getClassLoader());
+        user = (UserModel) in.readValue(UserModel.class.getClassLoader());
+
     }
 
     @Override
@@ -39,6 +44,7 @@ public class OrderModel extends BaseModel implements Parcelable{
         dest.writeInt(crewNum);
         dest.writeValue(to);
         dest.writeValue(from);
+        dest.writeValue(user);
     }
 
     @SuppressWarnings("unused")
@@ -63,6 +69,7 @@ public class OrderModel extends BaseModel implements Parcelable{
                 ", crewNum=" + crewNum +
                 ", to=" + to +
                 ", from=" + from +
+                ", user=" + user +
                 '}';
     }
 }

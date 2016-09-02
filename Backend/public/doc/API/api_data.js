@@ -733,6 +733,89 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/api/v1/profile/getNearestDriver",
+    "title": "Get Nearest Driver",
+    "name": "Get_Nearest_Driver",
+    "group": "WebAPI",
+    "description": "<p>This API receives JSON request. Get nearest driver to current user</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "access-token",
+            "description": "<p>Users unique access-token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "lat",
+            "description": "<p>(Required) Current user latitude</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Decimal",
+            "optional": false,
+            "field": "lon",
+            "description": "<p>(Required) Current user longitude</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UnknownError",
+            "description": "<p>6000000</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "TokenInvalid",
+            "description": "<p>6000009</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLatitude",
+            "description": "<p>6000024</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ParamErrorLongitude",
+            "description": "<p>6000025</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \n    code: 1,\n    time: 1468314014075,\n    data: { \n        driver: {\n            __v: 0,\n            _id: 5788dc42d92859ee355119d6,\n            created: 1468587074518,\n            currentLocation: [ 10, -19.999907 ],\n            email: 'testwjwrO@test.com',\n            password: '*****',\n            telNum: '+385981234567',\n            token: '*****',\n            token_generated: 1468587074837,\n            avatar: { \n                fileid: 'rpOMhKHbp1vxkAZM4iToBE5YFX321tB0',\n                thumbfileid: 'UMttVkf3XzxLLaSJVH9QH77zbELnjvNx' \n            },\n            driver: { \n                name: 'test',\n                car_type: 'Caravan',\n                car_registration: 'ZG2344HR',\n                fee_start: 30,\n                fee_km: 5,\n                status: 1\n            },\n            averageRate: 4.34\n        }\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/server/WebAPI/Backend/Controllers/Profile/GetNearestDriverProfileController.js",
+    "groupTitle": "WebAPI"
+  },
+  {
+    "type": "post",
     "url": "/api/v1/order/getOpenOrder",
     "title": "Get Open Order",
     "name": "Get_Open_Order",

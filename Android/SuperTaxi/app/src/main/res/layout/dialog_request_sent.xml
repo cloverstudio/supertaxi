@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
+    android:background="@color/trans_black"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CCFFFFFF">
+        >
 
         <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
@@ -54,7 +55,7 @@
             <clover_studio.com.supertaxi.view.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/devil_gray"
+                android:textColor="@color/white"
                 android:textSize="@dimen/bigger_text_view_title_text_size"
                 android:text="@string/request_sent_capital"
                 android:layout_centerHorizontal="true"
@@ -65,7 +66,7 @@
             <clover_studio.com.supertaxi.view.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/devil_gray"
+                android:textColor="@color/white"
                 android:textSize="@dimen/text_view_bigger"
                 android:text="@string/please_wait_for_driver_confirmation"
                 android:layout_centerHorizontal="true"

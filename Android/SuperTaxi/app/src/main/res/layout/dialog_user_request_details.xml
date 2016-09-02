@@ -29,7 +29,7 @@
                     android:layout_height="80dp"
                     android:layout_margin="20dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/__nedved"
+                    android:src="@drawable/user_type"
                     android:id="@+id/ivAvatarInUserDetails"/>
 
                 <LinearLayout
@@ -58,7 +58,6 @@
                         android:id="@+id/tvAge"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_view_bigger"
-                        android:text="@string/taxi_driver"
                         android:layout_below="@id/tvName"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="2dp"/>
@@ -73,7 +72,7 @@
                         <clover_studio.com.supertaxi.view.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/devil_gray"
+                            android:textColor="@color/best_gray"
                             android:text="@string/rating_"
                             android:id="@+id/tvRatingLabel"
                             android:textSize="@dimen/text_view_default"/>
@@ -162,7 +161,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="@string/from_"
                         android:id="@+id/tvFromLabel"
                         android:textSize="@dimen/text_view_bigger"/>
@@ -170,7 +169,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text=""
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
@@ -228,7 +227,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text="@string/note_"
                         android:id="@+id/tvNoteLabel"
                         android:textSize="@dimen/text_view_bigger"/>
@@ -236,7 +235,7 @@
                     <clover_studio.com.supertaxi.view.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/devil_gray"
+                        android:textColor="@color/best_gray"
                         android:text=""
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
@@ -267,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
                     android:background="@color/transparent"
-                    android:textColor="@color/devil_gray_to_revert"
+                    android:textColor="@color/best_gray_to_second_best"
                     android:textAllCaps="false"
                     android:textSize="@dimen/default_title_size"
                     android:id="@+id/buttonCancelTrip"

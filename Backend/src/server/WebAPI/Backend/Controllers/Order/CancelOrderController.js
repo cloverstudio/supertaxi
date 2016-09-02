@@ -13,6 +13,8 @@ var BackendBase = require('../BackendBase');
 
 var OrderModel = require(pathTop + 'Models/Order');
 
+var UpdateDriverStatusLogic = require(pathTop + 'Logics/UpdateDriverStatus');
+
 var CancelOrderController = function(){
 }
 
@@ -51,6 +53,7 @@ CancelOrderController.prototype.init = function(app){
     router.post('', tokenChecker, (request, response) => {
 
         var orderModel = OrderModel.get();
+        var user = request.user;
 
         async.waterfall([
 
@@ -61,41 +64,89 @@ CancelOrderController.prototype.init = function(app){
             },
             (result, done) => {
 
+                orderModel.findOne({ _id: request.body.orderId }, (err, findResult) => {
+
+                    if (err) {
+                        done(err, result);
+                        return;
+                    }
+
+                    if (!findResult) {
+                        done({ handledError: Const.responsecodeParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled }, result);
+                        return;
+                    }
+
+                    result.order = findResult;
+                    done(null, result);
+
+                });
+
+            },
+            (result, done) => {
+
                 var updateParams = {};
 
-                if (request.body.type == Const.userTypeNormal)
-                    updateParams.cancelOrderOrTrip = { userTs: Utils.now() };
-                else
-                    updateParams.cancelOrderOrTrip = { driverTs: Utils.now() };
+                // user canceled
+                if (request.body.type == Const.userTypeNormal) {
 
-                if (request.body.reason)
-                    updateParams.cancelOrderOrTrip.reason = request.body.reason;
+                    updateParams.$set = { 
+                        cancelOrderOrTrip: { 
+                            userTs: Utils.now() 
+                        } 
+                    };
+
+                } else {
+                    // if order is not accepted, then just ignore order by driver, not canceled it
+                    if (!result.order.acceptOrderTs) 
+                        updateParams.$push = { driversIgnoreOrder: user._id.toString() };
+                    else
+                        updateParams.$set = { 
+                            cancelOrderOrTrip: { 
+                                driverTs: Utils.now() 
+                            } 
+                        };
+                        
+                }
+
+                if (updateParams.$set && request.body.reason)
+                    updateParams.$set.cancelOrderOrTrip.reason = request.body.reason;
 
                 orderModel.update({
                     _id: request.body.orderId,
                     startTripTs: { $exists: false },
                     cancelOrderOrTrip: { $exists: false }
-                }, { 
-                    $set: updateParams
-                }, (err, updateResult) => {
+                }, updateParams, (err, updateResult) => {
                     
-                    var error = null;
-
-                    if (err)
-
-                        error = err;
-
-                    else {
-                        // if order not found
-                        if (updateResult.n == 0)
-                            error = { handledError: Const.responsecodeParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled };
-
+                    if (err) {
+                        done(err, result);
+                        return;
                     }
 
-                    done(error, result);
+                    // if order not found
+                    if (updateResult.n == 0) {
+                        done({ handledError: Const.responsecodeParamErrorDriverAlreadyStartedDriveOrOrderIsCanceled }, result);
+                        return;
+                    }
+
+                    done(null, result);
 
                 });
 
+            },
+            (result, done) => {
+
+                // if driver canceled order, then update driver status
+                if (request.body.type == Const.userTypeDriver) {
+
+                    // update driver status
+                    UpdateDriverStatusLogic(user._id.toString(), Const.driverStatus.available, (err) => {
+                        done(err, result);
+                    });
+
+                } else {
+                    done(null, result);
+                }
+                
             }
         ],
         (err, result) => {

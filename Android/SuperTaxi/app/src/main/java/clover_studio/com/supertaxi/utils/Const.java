@@ -32,10 +32,25 @@ public class Const {
         public static final int LONGITUDE_TO = 6000021;
         public static final int NO_ADDRESS_TO = 6000022;
         public static final int CREW_NUMBER = 6000023;
+        public static final int PARAM_INVALID_ID = 6000026;
+        public static final int ALREADY_ACCEPTED_OR_CANCELED = 6000027;
+        public static final int ALREADY_STARTED_OR_CANCELED = 6000029;
+
+        public static final int PARAM_ERROR_LATITUDE = 6000024;
+        public static final int PARAM_ERROR_LONGITUDE = 6000025;
+        public static final int ALREADY_ARRIVED_OR_CANCELED = 6000028;
+        public static final int ALREADY_FINISHED = 6000030;
+        public static final int PARAM_ERROR_RATE_NUMBER = 6000031;
+        public static final int PARAM_ERROR_USER_NOT_FOUND = 6000032;
+        public static final int PARAM_ERROR_DRIVER_NOT_FOUND = 6000033;
+        public static final int PARAM_ERROR_ORDER_NOT_FOUND = 6000034;
     }
 
     public class ReceiverIntents {
         public static final String INVALID_TOKEN_BROADCAST = "INVALID TOKEN";
+        public static final String ON_CANCEL_TRIP = "ON_CANCEL_TRIP";
+        public static final String ON_DRIVER_RESPONDED_TRIP = "ON_DRIVER_RESPONDED_TRIP";
+        public static final String FINISH_ALL_ACTIVITY = "FINISH_ALL_ACTIVITY";
     }
 
     public class PreferencesKey {
@@ -63,6 +78,11 @@ public class Const {
         public static final String USER_TYPE_NAME = "USER_TYPE_NAME";
 
         public static final String USER_CREATED = "USER_CREATED";
+
+        //FROM SIGN UP TEMP
+        public static final String FROM_SIGN_UP_NAME = "FROM_SIGN_UP_NAME";
+        public static final String FROM_SIGN_UP_IMAGE = "FROM_SIGN_UP_IMAGE";
+
     }
 
     public class Server {
@@ -72,8 +92,19 @@ public class Const {
         public static final String UPDATE_USER_API = "/api/v1/profile/update";
         public static final String UPLOADS = "/uploads";
         public static final String GET_DRIVER_LIST = "/api/v1/profile/getDriverList";
+        public static final String GET_NEAREST_DRIVER = "/api/v1/profile/getNearestDriver";
         public static final String CALL_TAXI = "/api/v1/order/call";
         public static final String CANCEL_TRIP = "/api/v1/order/cancel";
+        public static final String CHECK_ORDER_STATUS = "/api/v1/order/status";
+        public static final String GET_OPEN_ORDER = "/api/v1/order/getOpenOrder";
+        public static final String ACCEPT_ORDER = "/api/v1/order/accept";
+        public static final String UPDATE_COORDINATES = "/api/v1/profile/updateCoordinates";
+        public static final String UPDATE_ARRIVE_TIME = "/api/v1/order/arrive";
+        public static final String UPDATE_FINISH_TIME = "/api/v1/order/finish";
+        public static final String UPDATE_START_TIME = "/api/v1/order/start";
+        public static final String RATE_PROFILE = "/api/v1/profile/rate";
+        public static final String GET_PROFILE_DETAILS = "/api/v1/profile/detail";
+
     }
 
     public class Secrets {
@@ -89,6 +120,8 @@ public class Const {
         public static final String USER_TYPE = "USER_TYPE";
         public static final String START_LOCATION = "START_LOCATION";
         public static final String DESTINATION_LOCATION = "DESTINATION_LOCATION";
+        public static final String ORDER_MODEL = "ORDER_MODEL";
+        public static final String USER_MODEL = "USER_MODEL";
     }
 
     public class PostParams {
@@ -139,4 +172,68 @@ public class Const {
         public static final int CHAT_STORAGE = 99;
         public static final int CALL = 99;
     }
+
+    public class OrderStatusTypes{
+        public static final int ACCEPTED = 1;
+        public static final int CANCELED = 2;
+        public static final int PENDING = 3;
+        public static final int ARRIVED_TO_START_LOCATION = 4;
+        public static final int STARTED_DRIVE = 5;
+        public static final int FINISHED_DRIVE = 6;
+    }
+
+    public class CancelTypes{
+        public static final int USER_CANCELED = 1;
+        public static final int DRIVER_CANCELED = 2;
+    }
+
+    public class MainDriverStatus{
+        public static final int PENDING = 1;
+        public static final int OPEN_ORDER_SHOWED = 2;
+        public static final int ORDER_ACCEPTED = 3;
+        public static final int START_TRIP = 4;
+    }
+
+    public class MainUserStatus{
+        public static final int REQUEST_TAXI_SCREEN = 1;
+        public static final int ORDER_ACCEPTED = 2;
+        public static final int START_TRIP = 4;
+    }
+
+    public static final class CacheFolder{
+        public static final String APP_FOLDER = "SuperTaxi";
+        public static final String TEMP_FOLDER = "temp";
+        public static final String IMAGE_CACHE_FOLDER = "Image_cache";
+    }
+
+    public static final class ManageOrderType{
+        public static final int ARRIVED_TIME = 1;
+        public static final int STARTED_TIME = 2;
+        public static final int FINISHED_TIME = 3;
+        public static final int ACCEPT_ORDER = 4;
+        public static final int IGNORE_ORDER = 5;
+    }
+
+    public static final class DrawRouteDriverTypes{
+        public static final int ON_OPEN_ORDER_SHOWED = 1;
+        public static final int ON_ACCEPTED_ORDER = 2;
+        public static final int STARTED_DRIVE_WITH_ALTERNATIVES = 3;
+        public static final int STARTED_DRIVE_WITHOUT_ALTERNATIVES = 4;
+    }
+
+    public static final class DrawRouteUserTypes{
+        public static final int PICKUP_AND_DESTINATION_ROUTE = 1;
+        public static final int STARTED_DRIVE = 2;
+        public static final int ACCEPTED_DRIVE = 3;
+    }
+
+    public static final class ApiKeys{
+        public static final String TWITTER_CONSUMER_KEY = "fiHB5xfw6DhMPxhkTSQM8ahUv";
+        public static final String TWITTER_CONSUMER_SECRET = "cwQR2obnjB53HByEFKCcRc6gdQYPT6qgI2mFs4yP4KXhtRNCMQ";
+    }
+
+    public static final class DateFormat{
+        public static final String DAY_WITH_TIME_FORMAT = "EEEE, HH:mm";
+    }
+
 }

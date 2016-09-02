@@ -20,16 +20,25 @@ public class ImageUtils {
         setImageWithPicasso(imageView, url, null);
     }
 
+    public static void setImageWithPicassoWithListener(final ImageView imageView, final String url, Callback listener){
+        setImageWithPicasso(imageView, url, null, -1, listener);
+    }
+
     public static void setImageWithPicasso(final ImageView imageView, final String url, final ProgressBar loading){
         setImageWithPicasso(imageView, url, loading, -1);
     }
 
     public static void setImageWithPicasso(final ImageView imageView, final String url, final ProgressBar loading, final int resourceId){
+        setImageWithPicasso(imageView, url, loading, resourceId, null);
+    }
+
+    public static void setImageWithPicasso(final ImageView imageView, final String url, final ProgressBar loading, final int resourceId, final Callback listener){
         if(!TextUtils.isEmpty(url)){
             Picasso.with(imageView.getContext()).load(url).networkPolicy(NetworkPolicy.OFFLINE).into(imageView, new Callback() {
                 @Override
                 public void onSuccess() {
                     if(loading != null) loading.setVisibility(View.GONE);
+                    if(listener != null) listener.onSuccess();
                 }
 
                 @Override
@@ -38,11 +47,13 @@ public class ImageUtils {
                         @Override
                         public void onSuccess() {
                             if(loading != null) loading.setVisibility(View.GONE);
+                            if(listener != null) listener.onSuccess();
                         }
 
                         @Override
                         public void onError() {
                             if(loading != null) loading.setVisibility(View.GONE);
+                            if(listener != null) listener.onError();
                             if(resourceId != -1){
                                 imageView.setImageResource(resourceId);
                             }
@@ -52,6 +63,7 @@ public class ImageUtils {
             });
         }else{
             if(loading != null) loading.setVisibility(View.GONE);
+            if(listener != null) listener.onError();
             if(resourceId != -1){
                 imageView.setImageResource(resourceId);
             }

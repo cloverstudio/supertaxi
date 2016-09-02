@@ -29,7 +29,7 @@
                 android:paddingTop="10dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/small_text_view_title_text_size"
-                android:textColor="@color/revert_devil_gray"
+                android:textColor="@color/second_best_gray"
                 android:text="@string/max_size_capital_"
                 />
 
@@ -71,7 +71,7 @@
                 android:paddingTop="10dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/small_text_view_title_text_size"
-                android:textColor="@color/revert_devil_gray"
+                android:textColor="@color/second_best_gray"
                 android:text="@string/etc_capital_"
                 />
 

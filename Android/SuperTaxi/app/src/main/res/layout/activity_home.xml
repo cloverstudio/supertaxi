@@ -30,6 +30,12 @@
                     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
                 <RelativeLayout
+                    android:id="@+id/rlForMainFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/tToolbar"/>
+
+                <RelativeLayout
                     android:id="@+id/rlForFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

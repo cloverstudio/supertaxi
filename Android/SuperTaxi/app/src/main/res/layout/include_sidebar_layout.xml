@@ -82,7 +82,7 @@
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:textColor="@color/white_to_devil_gray"
+                    android:textColor="@color/white_to_best_gray"
                     android:textSize="@dimen/default_text_view_title_text_size"/>
 
                 <View
@@ -99,7 +99,7 @@
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:textColor="@color/white_to_devil_gray"
+                    android:textColor="@color/white_to_best_gray"
                     android:textSize="@dimen/default_text_view_title_text_size"/>
 
                 <View
@@ -115,7 +115,7 @@
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:textColor="@color/white_to_devil_gray"
+                    android:textColor="@color/white_to_best_gray"
                     android:textSize="@dimen/default_text_view_title_text_size"/>
 
                 <View
@@ -131,7 +131,7 @@
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:textColor="@color/white_to_devil_gray"
+                    android:textColor="@color/white_to_best_gray"
                     android:textSize="@dimen/default_text_view_title_text_size"/>
 
                 <View
@@ -147,7 +147,7 @@
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:textColor="@color/white_to_devil_gray"
+                    android:textColor="@color/white_to_best_gray"
                     android:textSize="@dimen/default_text_view_title_text_size"/>
 
                 <View

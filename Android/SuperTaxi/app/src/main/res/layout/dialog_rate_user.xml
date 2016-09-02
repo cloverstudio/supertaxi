@@ -49,7 +49,7 @@
                     android:layout_margin="20dp"
                     android:layout_centerHorizontal="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/__nedved"
+                    android:src="@drawable/user_type"
                     android:id="@+id/ivAvatarInUserDetails"/>
 
                 <clover_studio.com.supertaxi.view.CustomTextView
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:text="@string/please_rate_our_passenger"
-                    android:textColor="@color/devil_gray"
+                    android:textColor="@color/best_gray"
                     android:id="@+id/tvPleaseRateLabel"
                     android:layout_below="@id/ivAvatarInUserDetails"
                     android:textSize="@dimen/text_view_default"/>
@@ -131,9 +131,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_view_bigger"
+                android:id="@+id/buttonDoItNextTime"
                 android:text="@string/i_ll_do_it_next_time"
                 android:background="@color/transparent"
-                android:textColor="@color/default_to_devil_gray"
+                android:textColor="@color/default_to_best_gray"
                 android:textAllCaps="false"
                 android:layout_below="@id/rlUserData"/>
 

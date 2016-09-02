@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +28,8 @@ import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
 import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.AnimationUtils;
 import clover_studio.com.supertaxi.utils.Const;
+import clover_studio.com.supertaxi.utils.ImageUtils;
+import clover_studio.com.supertaxi.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -44,12 +47,13 @@ public class DialogUserRequestDetails extends Dialog {
     private LinearLayout llStarLayout;
 
     private OrderModel order;
+    private int mainDriverStatus;
 
-    public static DialogUserRequestDetails startDialog(Context context, OrderModel order) {
-        return new DialogUserRequestDetails(context, order);
+    public static DialogUserRequestDetails startDialog(Context context, OrderModel order, int driverStatus) {
+        return new DialogUserRequestDetails(context, order, driverStatus);
     }
 
-    public DialogUserRequestDetails(Context context, OrderModel order) {
+    public DialogUserRequestDetails(Context context, OrderModel order, int driverStatus) {
         super(context, R.style.Theme_Dialog_no_dim);
 
         setOwnerActivity((Activity) context);
@@ -57,6 +61,7 @@ public class DialogUserRequestDetails extends Dialog {
         setCanceledOnTouchOutside(true);
 
         this.order = order;
+        this.mainDriverStatus = driverStatus;
 
         show();
 
@@ -70,7 +75,7 @@ public class DialogUserRequestDetails extends Dialog {
         parentLayout = (RelativeLayout) findViewById(R.id.parentLayout);
         mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
 
-        ivAvatar = (ImageView) findViewById(R.id.ivAvatarInDriverDetails);
+        ivAvatar = (ImageView) findViewById(R.id.ivAvatarInUserDetails);
         tvName = (TextView) findViewById(R.id.tvName);
         tvAge = (TextView) findViewById(R.id.tvAge);
         tvFrom = (TextView) findViewById(R.id.tvFromValue);
@@ -78,7 +83,13 @@ public class DialogUserRequestDetails extends Dialog {
         tvNote = (TextView) findViewById(R.id.tvNoteValue);
         llStarLayout = (LinearLayout) findViewById(R.id.ratingStars);
 
-        int rating = 2;
+
+        int rating = 0;
+
+        if(order.user != null){
+            rating = (int) Math.round(order.user.averageRate);
+        }
+
         if (rating > llStarLayout.getChildCount()) {
             rating = llStarLayout.getChildCount();
         }
@@ -99,6 +110,22 @@ public class DialogUserRequestDetails extends Dialog {
                 cancelTripApi();
             }
         });
+
+        if(mainDriverStatus == Const.MainDriverStatus.START_TRIP){
+            findViewById(R.id.buttonCancelTrip).setVisibility(View.INVISIBLE);
+        }
+
+        if(order.user != null){
+            ImageUtils.setImageWithPicasso(ivAvatar, Utils.getAvatarUrl(order.user));
+            if(order.user.user != null){
+                tvName.setText(order.user.user.name);
+                tvAge.setText(getOwnerActivity().getResources().getString(R.string.age) + ": " + order.user.user.age);
+                tvNote.setText(order.user.user.note);
+            }
+        }
+
+        tvFrom.setText(order.from.address);
+        tvTo.setText(order.from.address);
 
     }
 
@@ -134,6 +161,7 @@ public class DialogUserRequestDetails extends Dialog {
                 public void onCustomSuccess(Call<BaseModel> call, Response<BaseModel> response) {
                     super.onCustomSuccess(call, response);
 
+                    LocalBroadcastManager.getInstance(getOwnerActivity()).sendBroadcast(new Intent(Const.ReceiverIntents.ON_CANCEL_TRIP).putExtra(Const.Extras.ORDER_MODEL, order));
                     DialogUserRequestDetails.this.dismiss();
 
                 }

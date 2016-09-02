@@ -13,6 +13,8 @@ var BackendBase = require('../BackendBase');
 
 var OrderModel = require(pathTop + 'Models/Order');
 
+var UpdateDriverStatusLogic = require(pathTop + 'Logics/UpdateDriverStatus');
+
 var AcceptOrderController = function(){
 }
 
@@ -88,6 +90,14 @@ AcceptOrderController.prototype.init = function(app){
 
                     done(error, result);
 
+                });
+
+            },
+            (result, done) => {
+
+                // update driver status
+                UpdateDriverStatusLogic(user._id.toString(), Const.driverStatus.busy, (err) => {
+                    done(err, result);
                 });
 
             }

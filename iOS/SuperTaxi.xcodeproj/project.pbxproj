@@ -830,6 +830,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ivo Peric (PZG7J4XTVX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ivo Peric (PZG7J4XTVX)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -865,8 +867,10 @@
 					"\"SwiftyJSON\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.towncars;
+>>>>>>> be12715b1b093ca875abf042620853586b6e89fe
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d599d51b-32d1-4c8d-8d66-57b8e280fa16";
+				PROVISIONING_PROFILE = "b707f962-bfb8-4dff-b518-78ec0495a462";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -881,6 +885,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Studio Djetelina d.o.o.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Studio Djetelina d.o.o.";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -916,8 +922,11 @@
 					"\"SwiftyJSON\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
+=======
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.towncars;
+>>>>>>> be12715b1b093ca875abf042620853586b6e89fe
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d599d51b-32d1-4c8d-8d66-57b8e280fa16";
+				PROVISIONING_PROFILE = "b8f8f0fa-cc2c-4118-9cd8-dd6248249eb6";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 			};
 			name = Release;

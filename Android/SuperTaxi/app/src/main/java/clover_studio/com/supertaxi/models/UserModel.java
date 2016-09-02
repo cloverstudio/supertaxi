@@ -2,6 +2,10 @@ package clover_studio.com.supertaxi.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ubuntu_ivo on 10.02.16..
@@ -12,9 +16,12 @@ public class UserModel extends BaseModel implements Parcelable{
     public String email;
     public long created;
     public String telNum;
+    public double averageRate;
     public ImageAvatarModel avatar;
     public DriverTypeModel driver;
     public UserTypeModel user;
+
+    @Nullable public List<Double> currentLocation;
 
     public int type;
     public String token_new;
@@ -26,11 +33,18 @@ public class UserModel extends BaseModel implements Parcelable{
         email = in.readString();
         created = in.readLong();
         telNum = in.readString();
+        averageRate = in.readDouble();
         avatar = (ImageAvatarModel) in.readValue(ImageAvatarModel.class.getClassLoader());
         driver = (DriverTypeModel) in.readValue(DriverTypeModel.class.getClassLoader());
         user = (UserTypeModel) in.readValue(UserTypeModel.class.getClassLoader());
         type = in.readInt();
         token_new = in.readString();
+        if (in.readByte() == 0x01) {
+            currentLocation = new ArrayList<Double>();
+            in.readList(currentLocation, Double.class.getClassLoader());
+        } else {
+            currentLocation = null;
+        }
     }
 
     @Override
@@ -44,11 +58,18 @@ public class UserModel extends BaseModel implements Parcelable{
         dest.writeString(email);
         dest.writeLong(created);
         dest.writeString(telNum);
+        dest.writeDouble(averageRate);
         dest.writeValue(avatar);
         dest.writeValue(driver);
         dest.writeValue(user);
         dest.writeInt(type);
         dest.writeString(token_new);
+        if (currentLocation == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(currentLocation);
+        }
     }
 
     @SuppressWarnings("unused")
@@ -64,4 +85,20 @@ public class UserModel extends BaseModel implements Parcelable{
         }
     };
 
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "_id='" + _id + '\'' +
+                ", email='" + email + '\'' +
+                ", created=" + created +
+                ", telNum='" + telNum + '\'' +
+                ", averageRate='" + averageRate + '\'' +
+                ", avatar=" + avatar +
+                ", driver=" + driver +
+                ", user=" + user +
+                ", currentLocation=" + currentLocation +
+                ", type=" + type +
+                ", token_new='" + token_new + '\'' +
+                '}';
+    }
 }

@@ -34,7 +34,8 @@ Order.prototype.init = function(mongoose){
             driverTs: Number, // if driver canceled
             reason: String
         },
-        crewNum: Number
+        crewNum: Number,
+        driversIgnoreOrder: [ String ] // array of drivers who ignores order
     });
 
     this.model = mongoose.model(Config.dbCollectionPrefix + "Order", this.schema);
