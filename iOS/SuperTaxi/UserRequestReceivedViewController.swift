@@ -56,6 +56,7 @@ class UserRequestReceivedViewController: UIViewController {
         
         apiManager = ApiManager()
         
+        distance = "3.34 km"
         txtDistance.text = distance
         
     }
