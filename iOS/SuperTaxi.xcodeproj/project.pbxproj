@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		272D2A3A887D5D91381445D7 /* Pods_SuperTaxiUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6A37D9CB12FB2F5F3DDE01 /* Pods_SuperTaxiUITests.framework */; };
+		760172621D78424200C4CDEE /* Pods_SuperTaxi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01798284D2602AAD29ABC078 /* Pods_SuperTaxi.framework */; };
+		760602541D7481970076BFED /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760602531D7481970076BFED /* HistoryViewController.swift */; };
+		760602561D7482050076BFED /* ReportProblemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760602551D7482050076BFED /* ReportProblemViewController.swift */; };
+		760602581D74821B0076BFED /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760602571D74821B0076BFED /* AboutViewController.swift */; };
+		7606025B1D757A2F0076BFED /* RateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7606025A1D757A2F0076BFED /* RateView.xib */; };
+		7606025D1D757A950076BFED /* RateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7606025C1D757A950076BFED /* RateView.swift */; };
+		762A28DA1D79A9B000DAB726 /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762A28D91D79A9B000DAB726 /* ProgressHUD.swift */; };
 		7696880E1D368FDB00F360BE /* UserLoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7696880D1D368FDB00F360BE /* UserLoginModel.swift */; };
 		769688101D36911F00F360BE /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7696880F1D36911F00F360BE /* UserDataModel.swift */; };
 		769688121D36926C00F360BE /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769688111D36926C00F360BE /* UserModel.swift */; };
@@ -28,7 +35,7 @@
 		76F7A6241D367AA300C81B51 /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6231D367AA300C81B51 /* BaseModel.swift */; };
 		76F7A6271D367EDF00C81B51 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6261D367EDF00C81B51 /* ApiManager.swift */; };
 		76F7A6291D36813500C81B51 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76F7A6281D36813500C81B51 /* Constants.swift */; };
-		836D862676DFA9953EB10413 /* Pods_SuperTaxi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01798284D2602AAD29ABC078 /* Pods_SuperTaxi.framework */; };
+		76F934951D6AFBF90048A3AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76F934941D6AFBF90048A3AD /* GoogleService-Info.plist */; };
 		C33289A21D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A11D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift */; };
 		C33289A41D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A31D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift */; };
 		C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */; };
@@ -41,7 +48,6 @@
 		C35433921D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433911D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift */; };
 		C35433A61D1C6C3A00DD56B4 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */; };
 		C35433F71D1D6A4100DD56B4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */; };
-		C366E7391D33410A0010BCCB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C366E7381D33410A0010BCCB /* GoogleService-Info.plist */; };
 		C3B24ADB1D1C236F00508611 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B24ADA1D1C236F00508611 /* AppDelegate.swift */; };
 		C3B24AE21D1C236F00508611 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3B24AE11D1C236F00508611 /* Assets.xcassets */; };
 		C3B24AE51D1C236F00508611 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3B24AE31D1C236F00508611 /* LaunchScreen.storyboard */; };
@@ -75,6 +81,15 @@
 		5C72AFE959EEA0F8B239E2AE /* Pods-SuperTaxi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperTaxi.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperTaxi/Pods-SuperTaxi.release.xcconfig"; sourceTree = "<group>"; };
 		62D185447F57D06489E6BD8C /* Pods-SuperTaxi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperTaxi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SuperTaxi/Pods-SuperTaxi.debug.xcconfig"; sourceTree = "<group>"; };
 		69D38736789C7C467B402AAA /* Pods_SuperTaxiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SuperTaxiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7601725C1D783C0600C4CDEE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		7601725E1D783C1000C4CDEE /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		760172601D783C1B00C4CDEE /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		760602531D7481970076BFED /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		760602551D7482050076BFED /* ReportProblemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportProblemViewController.swift; sourceTree = "<group>"; };
+		760602571D74821B0076BFED /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		7606025A1D757A2F0076BFED /* RateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RateView.xib; sourceTree = "<group>"; };
+		7606025C1D757A950076BFED /* RateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RateView.swift; sourceTree = "<group>"; };
+		762A28D91D79A9B000DAB726 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		7696880D1D368FDB00F360BE /* UserLoginModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoginModel.swift; sourceTree = "<group>"; };
 		7696880F1D36911F00F360BE /* UserDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		769688111D36926C00F360BE /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
@@ -95,6 +110,7 @@
 		76F7A6231D367AA300C81B51 /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 		76F7A6261D367EDF00C81B51 /* ApiManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		76F7A6281D36813500C81B51 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		76F934941D6AFBF90048A3AD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8B6A37D9CB12FB2F5F3DDE01 /* Pods_SuperTaxiUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SuperTaxiUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4304338D1CE0F72FC2A1EF8 /* Pods-SuperTaxiUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SuperTaxiUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SuperTaxiUITests/Pods-SuperTaxiUITests.release.xcconfig"; sourceTree = "<group>"; };
 		C33289A11D1D9E5000EDF3DA /* TaxiRequestFromUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiRequestFromUserViewController.swift; sourceTree = "<group>"; };
@@ -110,7 +126,6 @@
 		C35433911D1C4BA700DD56B4 /* TaxiProfileMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaxiProfileMapViewController.swift; sourceTree = "<group>"; };
 		C35433A51D1C6C3A00DD56B4 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		C366E7381D33410A0010BCCB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C3B24AD71D1C236F00508611 /* SuperTaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperTaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3B24ADA1D1C236F00508611 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3B24AE11D1C236F00508611 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -133,7 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				836D862676DFA9953EB10413 /* Pods_SuperTaxi.framework in Frameworks */,
+				760172621D78424200C4CDEE /* Pods_SuperTaxi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +171,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		760602591D757A120076BFED /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7606025A1D757A2F0076BFED /* RateView.xib */,
+				7606025C1D757A950076BFED /* RateView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		76F7A61F1D36547100C81B51 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -163,6 +187,7 @@
 				76F7A6281D36813500C81B51 /* Constants.swift */,
 				76F12C8D1D463BB600C1E95D /* DriverAnnotation.swift */,
 				76F579BD1D520A26002417EB /* UserAnnotation.swift */,
+				762A28D91D79A9B000DAB726 /* ProgressHUD.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -241,14 +266,15 @@
 		C3B24AD91D1C236F00508611 /* SuperTaxi */ = {
 			isa = PBXGroup;
 			children = (
+				760602591D757A120076BFED /* Views */,
 				C354335A1D1C4A1E00DD56B4 /* SuperTaxi-Bridging-Header.h */,
-				C366E7381D33410A0010BCCB /* GoogleService-Info.plist */,
 				C3B24AE61D1C236F00508611 /* Info.plist */,
 				C3B24B0A1D1C23A700508611 /* Controllers */,
 				76F7A6221D367A9500C81B51 /* Models */,
 				76F7A6251D367ECE00C81B51 /* Networking */,
 				76F7A61F1D36547100C81B51 /* Tools */,
 				C3B24B091D1C23A200508611 /* View */,
+				76F934941D6AFBF90048A3AD /* GoogleService-Info.plist */,
 			);
 			path = SuperTaxi;
 			sourceTree = "<group>";
@@ -291,6 +317,10 @@
 				C35433871D1C4B1200DD56B4 /* LoginViewController.swift */,
 				C35433891D1C4B3C00DD56B4 /* SelectProfileViewController.swift */,
 				76EFDD931D3785DB00EC5109 /* SignUpViewController.swift */,
+				C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */,
+				760602531D7481970076BFED /* HistoryViewController.swift */,
+				760602551D7482050076BFED /* ReportProblemViewController.swift */,
+				760602571D74821B0076BFED /* AboutViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -311,7 +341,6 @@
 			children = (
 				C354338B1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift */,
 				C354338D1D1C4B6600DD56B4 /* UserHomeViewController.swift */,
-				C35433F61D1D6A4100DD56B4 /* SettingsViewController.swift */,
 				C33289A51D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift */,
 				C33289A71D1D9F9300EDF3DA /* UserLongPressViewController.swift */,
 				C3C176281D1F234100D37B70 /* ForgotPasswordViewController.swift */,
@@ -323,6 +352,9 @@
 		C6BEC74D673A06045713227F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				760172601D783C1B00C4CDEE /* AddressBook.framework */,
+				7601725E1D783C1000C4CDEE /* StoreKit.framework */,
+				7601725C1D783C0600C4CDEE /* SystemConfiguration.framework */,
 				01798284D2602AAD29ABC078 /* Pods_SuperTaxi.framework */,
 				69D38736789C7C467B402AAA /* Pods_SuperTaxiTests.framework */,
 				8B6A37D9CB12FB2F5F3DDE01 /* Pods_SuperTaxiUITests.framework */,
@@ -407,7 +439,6 @@
 				TargetAttributes = {
 					C3B24AD61D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = XJXX32P7NP;
 					};
 					C3B24AEA1D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
@@ -444,8 +475,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C366E7391D33410A0010BCCB /* GoogleService-Info.plist in Resources */,
+				7606025B1D757A2F0076BFED /* RateView.xib in Resources */,
 				C3B24AE51D1C236F00508611 /* LaunchScreen.storyboard in Resources */,
+				76F934951D6AFBF90048A3AD /* GoogleService-Info.plist in Resources */,
 				C3B24AE21D1C236F00508611 /* Assets.xcassets in Resources */,
 				76F0CF221D3D1F6C0034AF05 /* Main.storyboard in Resources */,
 			);
@@ -610,6 +642,7 @@
 			files = (
 				C33289A41D1D9EF600EDF3DA /* TaxiUserLocationViewController.swift in Sources */,
 				C354338C1D1C4B5700DD56B4 /* CreatingUserProfileViewController.swift in Sources */,
+				762A28DA1D79A9B000DAB726 /* ProgressHUD.swift in Sources */,
 				C33289A61D1D9F3A00EDF3DA /* UserRequestReceivedViewController.swift in Sources */,
 				C35433A61D1C6C3A00DD56B4 /* MenuViewController.swift in Sources */,
 				76F12C8E1D463BB600C1E95D /* DriverAnnotation.swift in Sources */,
@@ -632,6 +665,7 @@
 				76F7A6241D367AA300C81B51 /* BaseModel.swift in Sources */,
 				76F12C8C1D46243000C1E95D /* DriverInfoModel.swift in Sources */,
 				76F579BE1D520A26002417EB /* UserAnnotation.swift in Sources */,
+				760602561D7482050076BFED /* ReportProblemViewController.swift in Sources */,
 				76A2131B1D477EE2006AD36A /* GetOrderResponseModel.swift in Sources */,
 				76F7A6271D367EDF00C81B51 /* ApiManager.swift in Sources */,
 				76F7A6211D36548300C81B51 /* Tools.swift in Sources */,
@@ -641,6 +675,9 @@
 				C35433881D1C4B1200DD56B4 /* LoginViewController.swift in Sources */,
 				76F44ED91D40FF0000CC9D57 /* OrderModel.swift in Sources */,
 				C35433F71D1D6A4100DD56B4 /* SettingsViewController.swift in Sources */,
+				760602581D74821B0076BFED /* AboutViewController.swift in Sources */,
+				760602541D7481970076BFED /* HistoryViewController.swift in Sources */,
+				7606025D1D757A950076BFED /* RateView.swift in Sources */,
 				76F7A6291D36813500C81B51 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -789,8 +826,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ivo Peric (PZG7J4XTVX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ivo Peric (PZG7J4XTVX)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -798,9 +836,36 @@
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.towncars;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"AlamofireImage\"",
+					"-framework",
+					"\"AlamofireObjectMapper\"",
+					"-framework",
+					"\"Bolts\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKLoginKit\"",
+					"-framework",
+					"\"FBSDKShareKit\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"ImageLoader\"",
+					"-framework",
+					"\"ObjectMapper\"",
+					"-framework",
+					"\"SWRevealViewController\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b707f962-bfb8-4dff-b518-78ec0495a462";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -812,8 +877,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Studio Djetelina d.o.o.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Studio Djetelina d.o.o.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -821,9 +887,36 @@
 				INFOPLIST_FILE = SuperTaxi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.towncars;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"AlamofireImage\"",
+					"-framework",
+					"\"AlamofireObjectMapper\"",
+					"-framework",
+					"\"Bolts\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKLoginKit\"",
+					"-framework",
+					"\"FBSDKShareKit\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"ImageLoader\"",
+					"-framework",
+					"\"ObjectMapper\"",
+					"-framework",
+					"\"SWRevealViewController\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b8f8f0fa-cc2c-4118-9cd8-dd6248249eb6";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 			};
 			name = Release;

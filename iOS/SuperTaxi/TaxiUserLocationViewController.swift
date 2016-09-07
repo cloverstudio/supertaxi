@@ -13,7 +13,7 @@ import SWRevealViewController
 import SwiftyJSON
 import ImageLoader
 
-class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, RateDelegate {
+class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, RateViewDelegate {
 
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var btnStartTrip: UIButton!
@@ -27,16 +27,6 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     @IBOutlet var addressTo: UILabel!
     @IBOutlet var txtUserNote: UILabel!
     @IBOutlet var txtUserName: UILabel!
-    @IBOutlet var ratingView: UIView!
-    
-    @IBOutlet var mapImage: UIImageView!
-    @IBOutlet var userRateAvatar: UIImageView!
-    @IBOutlet var txtRateUserName: UILabel!
-    
-    @IBOutlet var twoStars: UIButton!
-    @IBOutlet var threeStars: UIButton!
-    @IBOutlet var fourStars: UIButton!
-    @IBOutlet var fiveStars: UIButton!
     
     var locationManager: CLLocationManager!
     let UserInformation = NSUserDefaults.standardUserDefaults()
@@ -45,6 +35,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     var from: CLLocationCoordinate2D!
     var to: CLLocationCoordinate2D!
     var driverLocation: CLLocationCoordinate2D!
+    var helperLocation: CLLocationCoordinate2D!
     
     var tripStarted = false
     
@@ -58,6 +49,8 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     var userId: String!
     
     var orderStatus = false
+    
+    var angle: Float! = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +73,6 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
         apiManager = ApiManager()
         apiManager.orderStatusDelegate = self
-        apiManager.rateDelegate = self
 
         viewAlert.layer.cornerRadius = 5
         
@@ -93,7 +85,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
         createRoute(driverLocation, endLocation: from)
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(TaxiUserLocationViewController.updateMyLocation), userInfo: nil, repeats: true)
+//        _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(TaxiUserLocationViewController.updateMyLocation), userInfo: nil, repeats: true)
         
         txtUserName.text = userName
         txtUserAge.text = String(userAge)
@@ -105,15 +97,6 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         userAvatar.load(Api.IMAGE_URL + userFileId)
         userAvatar.layer.cornerRadius = userAvatar.frame.size.height/2
         userAvatar.clipsToBounds = true
-        
-        userRateAvatar.load(Api.IMAGE_URL + userFileId)
-        userRateAvatar.layer.cornerRadius = userRateAvatar.frame.size.height/2
-        userRateAvatar.clipsToBounds = true
-        
-        txtRateUserName.text = userName
-        
-        ratingView.layer.backgroundColor = Colors.darkTransparent(0.5).CGColor
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -144,9 +127,11 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     }
     
     @IBAction func onEndTrip(sender: AnyObject) {
-        ratingView.hidden = false
+        let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: userName, start: from, end: to, type: 2, image: userFileId, id: userId)
+        customView.rateViewDelegate = self
+        self.view.addSubview(customView)
         apiManager.updateFinishTime(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: orderId)
-        createMapSnapshot()
+        
         
     }
     
@@ -168,36 +153,6 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     
     @IBAction func onClose(sender: AnyObject) {
         viewAlert.hidden = true
-    }
-    
-    @IBAction func oneStarRate(sender: AnyObject) {
-        apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 1)
-    }
-    
-    @IBAction func twoStarRate(sender: AnyObject) {
-        apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 2)
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-    }
-    
-    @IBAction func threeStarRate(sender: AnyObject) {
-        apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 3)
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-    }
-    
-    @IBAction func fourStarRate(sender: AnyObject) {
-        apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 4)
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-    }
-    
-    @IBAction func fiveStarRate(sender: AnyObject) {
-        apiManager.rateProfile(UserInformation.stringForKey(UserDetails.TOKEN)!, id: userId, type: 1, rate: 5)
-        twoStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        threeStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        fourStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
-        fiveStars.setBackgroundImage(UIImage(named: "small_star_active"), forState: .Normal)
     }
     
     func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
@@ -239,6 +194,10 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
                 anView!.image = UIImage(named: "black_car_icon")
             }
             
+            var rotationTransform: CGAffineTransform = CGAffineTransformIdentity;
+            rotationTransform = CGAffineTransformMakeRotation(CGFloat(angle));
+            anView!.transform = rotationTransform;
+            
             return anView
             
         } else if annotation is UserAnnotation {
@@ -254,7 +213,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
                 pinImage.load(Api.IMAGE_URL + userFileId)
                 pinImage.layer.cornerRadius = pinImage.layer.frame.size.width / 2
                 pinImage.layer.borderWidth = 2
-                pinImage.layer.borderColor = Colors.greyBorder(1).CGColor
+                pinImage.layer.borderColor = Colors.greenTransparent(1).CGColor
                 pinImage.layer.masksToBounds = true
                 
                 UIGraphicsBeginImageContext(pinImage.bounds.size);
@@ -279,6 +238,13 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     }
     
     func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+        
+        if helperLocation != nil {
+            let delatLongitude = Float(helperLocation.longitude - startLocation.longitude)
+            let deltaLatitude = Float(helperLocation.latitude - startLocation.latitude)
+            self.angle = atan2f(delatLongitude, deltaLatitude)
+            
+        }
         
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
@@ -345,28 +311,6 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
     }
     
-    func createMapSnapshot (){
-        
-        let options = MKMapSnapshotOptions()
-        options.region = mapView.region
-        options.size = mapView.frame.size
-        options.scale = UIScreen.mainScreen().scale
-        
-        let snapshotter = MKMapSnapshotter(options: options)
-        snapshotter.startWithCompletionHandler { snapshot, error in
-            guard let snapshot = snapshot else {
-                print("Snapshot error: \(error)")
-                return
-            }
-            
-            for annotation in self.mapView.annotations {
-                snapshot.pointForCoordinate(annotation.coordinate)
-            }
-            
-            self.mapImage.image = snapshot.image
-        }
-    }
-    
     func getOrderStatus(){
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -421,12 +365,14 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
     }
     
-    func onRateSuccess() {
+    func onDriveRated() {
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
+        
     }
     
-    func onRateError() {
-        
+    func onDriveRatedError(){
+        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+        self.navigationController?.pushViewController(viewController!, animated: true)
     }
 }

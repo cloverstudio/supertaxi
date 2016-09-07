@@ -3,13 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>563054939309-gg4vg5l13ssmhd4dajjinfjsgci04ute.apps.googleusercontent.com</string>
+	<string>563054939309-b9lhb4gbkvbknldj5u8titqerao9pb9j.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.563054939309-gg4vg5l13ssmhd4dajjinfjsgci04ute</string>
-	<key>PLIST_VERSION</key>
-	<string>1</string>
+	<string>com.googleusercontent.apps.563054939309-b9lhb4gbkvbknldj5u8titqerao9pb9j</string>
 	<key>BUNDLE_ID</key>
-	<string>mobile.SuperTaxi</string>
+	<string>com.cloverstudio.supertaxi</string>
 	<key>PROJECT_ID</key>
 	<string>supertaxi-97311</string>
 	<key>IS_ADS_ENABLED</key>
@@ -23,6 +21,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:563054939309:ios:65c3683f11a721aa</string>
+	<string>1:563054939309:ios:b44ec60feaa17025</string>
 </dict>
 </plist>

@@ -81,7 +81,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
             
             if (json["data"]["order"]["user"]["avatar"].exists()){
                 userFileId = json["data"]["order"]["user"]["avatar"]["fileid"].string!
-                avatar.load(Api.IMAGE_URL + userFileId)
+                avatar.load(Api.IMAGE_URL + userFileId, placeholder: UIImage(named: "user"))
             }
         }
         
@@ -106,6 +106,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     // MARK: - UIAction Methods
     @IBAction func onIgnoreClick(sender: AnyObject) {
         apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: self.orderId, type: 2, reason: "Neznam jos")
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     @IBAction func onAcceptClick(sender: AnyObject) {
@@ -141,11 +142,6 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         return renderer
     }
     
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-       
-        
-    }
-    
     func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
         
         mapView.removeOverlays(mapView.overlays)
@@ -161,15 +157,12 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
         
         let sourceAnnotation = MKPointAnnotation()
-        sourceAnnotation.title = "Times Square"
         
         if let location = sourcePlacemark.location {
             sourceAnnotation.coordinate = location.coordinate
         }
         
-        
         let destinationAnnotation = MKPointAnnotation()
-        destinationAnnotation.title = "Empire State Building"
         
         if let location = destinationPlacemark.location {
             destinationAnnotation.coordinate = location.coordinate

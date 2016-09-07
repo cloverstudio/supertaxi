@@ -10,8 +10,6 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,4 +22,7 @@ class SettingsViewController: UIViewController {
         
     }
 
+    @IBAction func back(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }

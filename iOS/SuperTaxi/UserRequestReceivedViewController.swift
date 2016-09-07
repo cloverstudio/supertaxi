@@ -25,7 +25,8 @@ class UserRequestReceivedViewController: UIViewController {
     var driverLocation: [JSON]!
     var from: CLLocationCoordinate2D!
     var to: CLLocationCoordinate2D!
-    
+    var distance: String!
+    var driverPhoneNumber: String!
     var driverId: String!
     
     var orderId: String!
@@ -40,7 +41,7 @@ class UserRequestReceivedViewController: UIViewController {
         contactView.layer.borderColor = Colors.darkBlue(1).CGColor
         
         if driverFileId != nil {
-            avatar.load(Api.IMAGE_URL + driverFileId)
+            avatar.load(Api.IMAGE_URL + driverFileId, placeholder: UIImage(named: "taxi_driver"))
         }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
@@ -54,6 +55,9 @@ class UserRequestReceivedViewController: UIViewController {
         }
         
         apiManager = ApiManager()
+        
+        distance = "3.34 km"
+        txtDistance.text = distance
         
     }
 
@@ -78,4 +82,11 @@ class UserRequestReceivedViewController: UIViewController {
         apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
         self.navigationController!.popViewControllerAnimated(true)
     }
+    
+    @IBAction func btnCallDriver(sender: AnyObject) {
+        UIApplication.sharedApplication().openURL(NSURL(string: "telprompt://" + driverPhoneNumber)!)
+    }
+    
+    
+    
 }

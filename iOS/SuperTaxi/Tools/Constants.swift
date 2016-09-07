@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Api {
     static let SERVER_BASE_URL = "http://107.170.147.230/api/v1/"
@@ -26,6 +27,7 @@ struct Api {
     static let GET_OPEN_ORDER = "order/getOpenOrder"
     static let ACCEPT_ORDER = "order/accept"
     static let ORDER_STATUS = "order/status"
+    static let NEAREST_DRIVER = "profile/getNearestDriver"
     
     static let ARRIVE_TIME = "order/arrive"
     static let FINISH_TIME = "order/finish"
@@ -80,6 +82,10 @@ struct Colors {
     
     static func darkTransparent(alpha:CGFloat) -> UIColor {
         return UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: alpha)
+    }
+    
+    static func greenTransparent(alpha:CGFloat) -> UIColor {
+        return UIColor.init(red: 53/255, green: 222/255, blue: 59/255, alpha: alpha)
     }
     
 }

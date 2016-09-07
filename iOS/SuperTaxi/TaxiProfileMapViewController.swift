@@ -68,7 +68,6 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     override func viewDidAppear(animated: Bool) {
-        n = 0
         getOpenOrders()
     }
     
@@ -201,26 +200,25 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             let route = response.routes[0]
             self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
             
+            
         }
     
     }
     
     func getOpenOrders(){
-        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.apiManager.getOpenOrder(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+            if (self.lat != nil && self.lon != nil){
+                self.apiManager.getOpenOrder(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+            }
+            
         })
     }
     
     func onOpenOrderNoOrders() {
-        if n < 1 {
             getOpenOrders()
-        }
     }
     
     func onOpenOrderSuccess(json: JSON) {
-        
-        self.n += 1
         
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiRequestMapView") as? TaxiRequestFromUserViewController
         viewController!.json = json

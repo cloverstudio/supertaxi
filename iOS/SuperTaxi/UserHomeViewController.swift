@@ -12,7 +12,8 @@ import CoreLocation
 import SWRevealViewController
 import SwiftyJSON
 
-class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CallOrderDelegate, OrderStatusDelegate {
+
+class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CallOrderDelegate, OrderStatusDelegate, NearestDriverDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var viewFrom: UIView!
     @IBOutlet var viewTo: UIView!
@@ -30,11 +31,17 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     @IBOutlet var fourSeatsView: UIView!
     @IBOutlet var navView: UIView!
     @IBOutlet var seatImage: UIImageView!
+    @IBOutlet var minutesLabel: UILabel!
+    @IBOutlet var removeFromBtn: UIButton!
+    @IBOutlet var groupImage: UIImageView!
 
     @IBOutlet var setLocationButton: UIButton!
     @IBOutlet var avatarView: UIImageView!
+    @IBOutlet var tableBackView: UIView!
+    @IBOutlet var tableView: UITableView!
 
     var flag: Bool = true
+    var isLocSet = false
     
     let UserInformation = NSUserDefaults.standardUserDefaults()
     var apiManager: ApiManager!
@@ -59,6 +66,11 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     var getOrderStatus = false
     
     var driverId = ""
+    var driverPhoneNumber: String!
+    
+    var matchingItems:[MKMapItem] = []
+    
+    let cellReuseIdentifier = "cell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,12 +98,18 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         fourSeatsView.layer.cornerRadius = 2
         fourSeatsView.layer.borderWidth = 1
         fourSeatsView.layer.borderColor = Colors.greyBorder(1).CGColor
-        
-        pickUpLocationView.layer.cornerRadius = pickUpLocationView.frame.height / 2
-        pickUpLocationView.clipsToBounds = true
-        
+
         navView.layer.borderColor = Colors.darkBlue(1).CGColor
         navView.layer.borderWidth = 1
+        
+        tableBackView.backgroundColor = Colors.greyBorder(0.1)
+        tableView.layer.borderWidth = 1
+        tableView.layer.cornerRadius = 2
+        tableView.layer.borderColor = Colors.greyBorder(1).CGColor
+        tableView.layer.shadowColor = Colors.greyBorder(1).CGColor
+        tableView.layer.shadowOffset = CGSizeMake(0, 5);
+        tableView.layer.shadowOpacity = 1;
+        tableView.layer.shadowRadius = 1.0;
         
         seatImage.layer.cornerRadius = seatImage.frame.width / 2
         
@@ -110,11 +128,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         blurEffect1.alpha = 0.9
         viewRequest.insertSubview(blurEffect1, atIndex: 0)
         
-        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
-            avatarView.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!)
-        }
         
-        print(UserInformation.stringForKey(UserDetails.THUMBNAIL))
         
         avatarView.layer.cornerRadius = avatarView.frame.size.height/2
         avatarView.clipsToBounds = true
@@ -122,6 +136,10 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         apiManager = ApiManager()
         apiManager.callOrderDelegate = self
         apiManager.orderStatusDelegate = self
+        apiManager.nearestDriverDelegate = self
+        
+        fromTextView.addTarget(self, action: #selector(UserHomeViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
+        toTextView.addTarget(self, action: #selector(UserHomeViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -137,6 +155,9 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
             mapView.setCenterCoordinate(coor, animated: true)
         }
         
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -150,15 +171,21 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         }
         
         mapView.showsUserLocation = true;
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        getOrderStatus = false
-        orderId = ""
         
         if let coor = mapView.userLocation.location?.coordinate{
             centerMap(coor)
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
+            avatarView.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!, placeholder: UIImage(named: "user"))
+        }
+        getOrderStatus = false
+        orderId = ""
+
+        rotateView(groupImage)
+        self.removeFromBtn.hidden = false
     }
     
     @IBAction func onLocationSet(sender: AnyObject) {
@@ -200,6 +227,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
             
         } else {
             seatNumberView.hidden = false
+            removeFromBtn.hidden = true
         }
         
     }
@@ -260,6 +288,12 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         self.revealViewController().revealToggle(sender)
     }
     
+    @IBAction func bntRemoveSeatView(sender: AnyObject) {
+        seatNumberView.hidden = true
+        removeFromBtn.hidden = false
+    }
+    
+    
     func getOrderResult(){
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -267,10 +301,13 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         })
     }
     
-    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-//        centerMap(locValue)
+        if(!isLocSet){
+            let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+            centerMap(locValue)
+            isLocSet = true
+        }
+        
     }
     
     func centerMap(center:CLLocationCoordinate2D){
@@ -291,6 +328,10 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         
         lat = center.latitude
         lon = center.longitude
+        
+        if (!isPickUpLocationSet) {
+            apiManager.getNearestDriver(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
+        }
         
         geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
             
@@ -323,6 +364,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         pickUpLocationView.hidden = false
         viewTo.hidden = false
         viewFrom.hidden = false
+        
     }
     
     func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
@@ -417,10 +459,16 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
             fee_start: json["data"]["driver"]["driver"]["fee_start"].int!,
             fee_km: json["data"]["driver"]["driver"]["fee_km"].int!)
         
-        let driverFileId = json["data"]["driver"]["avatar"]["fileid"].string!
+        var driverFileId = ""
+        
+        if json["data"]["driver"]["avatar"]["fileid"].string != nil {
+            driverFileId = json["data"]["driver"]["avatar"]["fileid"].string!
+        }
+        
         let location = json["data"]["driver"]["currentLocation"].array!
         
         driverId = json["data"]["driver"]["_id"].string!
+        driverPhoneNumber = json["data"]["driver"]["telNum"].string!
         
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiDriverDetailsID") as? UserRequestReceivedViewController
         viewController!.driver = driver
@@ -430,6 +478,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         viewController?.to = CLLocationCoordinate2D(latitude: latTo, longitude: lonTo)
         viewController?.orderId = orderId
         viewController?.driverId = driverId
+        viewController?.driverPhoneNumber = driverPhoneNumber
         self.navigationController?.pushViewController(viewController!, animated: true)
         
         viewRequest.hidden = true
@@ -471,4 +520,124 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     func onOrderStatusDriveEnded(json: JSON){
         
     }
+    
+    func onNearestDriverSuccess(latitude: Double, longitude: Double) {
+        
+        let sourceLocation = CLLocationCoordinate2D(latitude: self.lat, longitude: self.lon)
+        let destinationLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
+        let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
+        
+        let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
+        let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
+    
+        let directionRequest = MKDirectionsRequest()
+        directionRequest.source = sourceMapItem
+        directionRequest.destination = destinationMapItem
+        directionRequest.transportType = .Automobile
+        
+        let directions = MKDirections(request: directionRequest)
+        
+        directions.calculateDirectionsWithCompletionHandler {
+            (response, error) -> Void in
+            
+            guard let response = response else {
+                if let error = error {
+                    print("Error: \(error)")
+                }
+                
+                return
+            }
+            
+            for route in response.routes {
+                self.minutesLabel.text = String(NSInteger(route.expectedTravelTime / 60))
+            }
+        }
+    }
+    
+    func textFieldDidChange(textField: UITextField) {
+        if(textField.text != ""){
+            
+            tableBackView.hidden = false
+            
+            let request = MKLocalSearchRequest()
+            request.naturalLanguageQuery = textField.text
+            request.region = mapView.region
+            
+            let search = MKLocalSearch(request: request)
+            search.startWithCompletionHandler { response, error in
+                guard let response = response else {
+                    print("There was an error searching for: \(request.naturalLanguageQuery) error: \(error)")
+                    return
+                }
+                
+                self.matchingItems = response.mapItems
+                self.tableView.reloadData()
+            }
+        } else {
+            tableBackView.hidden = true
+        }
+    }
+    
+    // number of rows in table view
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.matchingItems.count
+    }
+    
+    // create a cell for each table view row
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        // create a new cell if needed or reuse an old one
+        let cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier) as UITableViewCell!
+        
+        // set the text from the data model
+        cell.textLabel?.text = self.matchingItems[indexPath.row].placemark.title
+        
+        return cell
+    }
+    
+    // method to run when table view cell is tapped
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (!isPickUpLocationSet){
+            addressFrom = self.matchingItems[indexPath.row].placemark.title!
+            fromTextView.text = self.matchingItems[indexPath.row].placemark.title!
+            latFrom = self.matchingItems[indexPath.row].placemark.coordinate.latitude
+            lonFrom = self.matchingItems[indexPath.row].placemark.coordinate.longitude
+            isPickUpLocationSet = true
+            pickUpLocationLabel.text = "SET DESTINATION LOCATION"
+            matchingItems.removeAll()
+            tableBackView.hidden = true
+        } else {
+            addressTo = self.matchingItems[indexPath.row].placemark.title!
+            toTextView.text = self.matchingItems[indexPath.row].placemark.title!
+            latTo = self.matchingItems[indexPath.row].placemark.coordinate.latitude
+            lonTo = self.matchingItems[indexPath.row].placemark.coordinate.longitude
+            matchingItems.removeAll()
+            tableBackView.hidden = true
+            createRoute(CLLocationCoordinate2D(latitude: latFrom, longitude: lonFrom), endLocation: CLLocationCoordinate2D(latitude: latTo, longitude: lonTo))
+        }
+    }
+    
+    private func rotateView(targetView: UIView, duration: Double = 1.0) {
+        UIView.animateWithDuration(duration, delay: 0.0, options: .CurveLinear, animations: {
+            targetView.transform = CGAffineTransformRotate(targetView.transform, CGFloat(M_PI))
+        }) { finished in
+            self.rotateView(targetView, duration: duration)
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
