@@ -73,6 +73,8 @@ public class DriverProfileFragment extends BaseFragment{
 
         View rootView = inflater.inflate(R.layout.fragment_driver_profile, container, false);
 
+        imagePath = null;
+
         etName = (EditText) rootView.findViewById(R.id.etName);
         etTelNum = (EditText) rootView.findViewById(R.id.etTelNum);
         etCarType = (EditText) rootView.findViewById(R.id.etCarType);

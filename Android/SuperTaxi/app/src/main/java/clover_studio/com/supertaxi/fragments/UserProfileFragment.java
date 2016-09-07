@@ -83,6 +83,8 @@ public class UserProfileFragment extends BaseFragment{
 
         View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
+        imagePath = null;
+
         etName = (EditText) rootView.findViewById(R.id.etName);
         etAge = (EditText) rootView.findViewById(R.id.etAge);
         etNote = (EditText) rootView.findViewById(R.id.etNote);

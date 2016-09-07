@@ -33,7 +33,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:paddingBottom="20dp"
                     android:id="@+id/oneSeatIV"
                     android:src="@drawable/car_one_seat_available"/>
 
@@ -64,7 +64,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:paddingBottom="20dp"
                     android:id="@+id/twoSeatIV"
                     android:src="@drawable/car_two_seats_available"/>
 
@@ -95,7 +95,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
+                    android:paddingBottom="20dp"
                     android:id="@+id/threeSeatIV"
                     android:src="@drawable/car_three_seats_available"/>
 
