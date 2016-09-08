@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "clover_studio.com.supertaxi"
+        applicationId "com.clover_studio.com.viptowncars"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1

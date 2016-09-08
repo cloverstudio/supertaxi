@@ -307,7 +307,7 @@ public class HomeActivity extends BaseActivity {
     };
 
     private void switchFragment (BaseFragment fragment){
-        if(fragment.getClass().toString().equals(activeFragmentTag)){
+        if(fragment.getClass().getName().equals(activeFragmentTag)){
             dlDrawerLayout.closeDrawer(llSidebarDrawer);
         }else{
 

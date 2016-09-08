@@ -295,9 +295,9 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
     @Override
     protected void onMyLocationChanged(Location myLocationNew) {
         super.onMyLocationChanged(myLocationNew);
-        if(screenStatus == Const.MainUserStatus.START_TRIP){
-            drawRoute(Const.DrawRouteUserTypes.STARTED_DRIVE, acceptedOrder, 100);
-        }
+//        if(screenStatus == Const.MainUserStatus.START_TRIP){
+//            drawRoute(Const.DrawRouteUserTypes.STARTED_DRIVE, acceptedOrder, 100);
+//        }
     }
 
     private View.OnClickListener onCurrentPinListener = new View.OnClickListener() {
@@ -384,6 +384,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
             final LatLng myLocationLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
             final LatLng destinationLatLng = new LatLng(model.to.location.get(1), model.to.location.get(0));
             final LatLng startedLatLng = new LatLng(model.from.location.get(1), model.from.location.get(0));
+            final LatLng driverLatLng = new LatLng(acceptedDriver.currentLocation.get(1), acceptedDriver.currentLocation.get(0));
 
             boolean withZoom = false;
             if(lastOfDrivePolyline == null){
@@ -396,18 +397,18 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
             final boolean finalWithZoom = withZoom;
 
-            MapsUtils.calculateRoute(myLocationLatLng, destinationLatLng, new MapsUtils.OnRouteCalculated() {
+            MapsUtils.calculateRoute(driverLatLng, destinationLatLng, new MapsUtils.OnRouteCalculated() {
                 @Override
                 public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
                     final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100, northeast, southwest);
 
                     if(drivingMarker != null){
-                        if(!MapsUtils.isSameLocation(drivingMarker.getPosition(), myLocationLatLng)){
+                        if(!MapsUtils.isSameLocation(drivingMarker.getPosition(), driverLatLng)){
                             drivingMarker.setRotation(MapsUtils.getBearingForLocation(drivingMarker.getPosition(), myLocation));
                         }
-                        drivingMarker.setPosition(myLocationLatLng);
+                        drivingMarker.setPosition(driverLatLng);
                     }else{
-                        drivingMarker = googleMap.addMarker(new MarkerOptions().position(myLocationLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)));
+                        drivingMarker = googleMap.addMarker(new MarkerOptions().position(driverLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)));
                     }
 
                     if(driverDestinationMarker == null){
@@ -425,13 +426,6 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                 }
             }, getActivity());
 
-//            MapsUtils.getDistanceBetween(startedLatLng, myLocationLatLng, new MapsUtils.OnDistanceCalculated() {
-//                @Override
-//                public void onSuccessCalculate(String distance) {
-//                    TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistance);
-//                    tvDistance.setText(distance);
-//                }
-//            }, getActivity());
         }else if(type == Const.DrawRouteUserTypes.ACCEPTED_DRIVE){
 
             boolean withZoom = false;
@@ -868,9 +862,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                     cancelTripClearMap();
                 }else if(response.body().data.orderStatus == Const.OrderStatusTypes.STARTED_DRIVE){
 
-                    if(acceptedDriver == null){
-                        acceptedDriver = response.body().data.driver;
-                    }
+                    acceptedDriver = response.body().data.driver;
 
                     drawRoute(Const.DrawRouteUserTypes.STARTED_DRIVE, orderModel, 100);
 
@@ -932,6 +924,9 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     private Call<NearestDriverResponse> call = null;
     private void getNearestDriver(final LatLng startLatLng){
+        if(myLocation == null){
+            return;
+        }
         tvTextViewNearestDriverMinutes.setText("-");
         if(call != null){
             call.cancel();
