@@ -262,8 +262,7 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     }
     
     // Dismiss the "Sign in with Google" view
-    func signIn(signIn: GIDSignIn!,
-                dismissViewController viewController: UIViewController!) {
+    func signIn(signIn: GIDSignIn!, dismissViewController viewController: UIViewController!) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -293,6 +292,10 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         // Perform any operations when the user disconnects from app here.
         // ...
         
+        progressHUD.hide()
+    }
+    
+    func signInWillDispatch(signIn: GIDSignIn!, error: NSError!) {
         progressHUD.hide()
     }
 }
