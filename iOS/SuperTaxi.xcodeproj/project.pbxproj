@@ -439,6 +439,7 @@
 				TargetAttributes = {
 					C3B24AD61D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = XJXX32P7NP;
 					};
 					C3B24AEA1D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
@@ -863,7 +864,7 @@
 					"-framework",
 					"\"SwiftyJSON\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.viptowncars;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
@@ -914,7 +915,7 @@
 					"-framework",
 					"\"SwiftyJSON\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.viptowncars;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
