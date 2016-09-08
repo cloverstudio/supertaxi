@@ -41,7 +41,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.cloverstudio.supertaxi</string>
+				<string>com.cloverstudio.viptowncars</string>
 			</array>
 		</dict>
 	</array>
