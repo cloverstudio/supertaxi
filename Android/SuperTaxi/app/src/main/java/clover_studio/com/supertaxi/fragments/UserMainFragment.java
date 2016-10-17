@@ -535,12 +535,14 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
         @Override
         public void afterTextChanged(final Editable s) {
+
             if(isUserSetLocationFromWithPin){
                 isUserSetLocationFromWithPin = false;
                 return;
             }
             nowCharacterFromLength = s.toString().length();
             if(s.toString().length() > 3){
+                Log.d("text changed","text changed");
                 final int lastCharacterLength = s.toString().length();
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -650,11 +652,46 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         return result.toString();
     }
 
-    private void showRlToList(String search){
-        ((AddressAdapter)rvToSearch.getAdapter()).setData(searchAddresses(search));
-        rlForListTo.setVisibility(View.VISIBLE);
-        viewBlackedOut.setVisibility(View.VISIBLE);
-        rlFrom.setVisibility(View.INVISIBLE);
+    private void showRlToList(final String search){
+        new AsyncTask<Void, Void, List<Address>>(){
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                viewForBlockAllClick.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            protected List<Address> doInBackground(Void... params) {
+                List<Address> address = searchAddresses(search);
+                return address;
+            }
+
+            @Override
+            protected void onPostExecute(List<Address> addresses) {
+                super.onPostExecute(addresses);
+
+                tvTextViewInMyCurrent.setVisibility(View.VISIBLE);
+                pbViewInMyCurrent.setVisibility(View.GONE);
+                viewForBlockAllClick.setVisibility(View.GONE);
+
+                if (addresses == null) {
+                    BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.failed_to_get_address));
+                    viewForBlockAllClick.setVisibility(View.GONE);
+                    return;
+                } else {
+                    viewForBlockAllClick.setVisibility(View.GONE);
+                    ((AddressAdapter)rvToSearch.getAdapter()).setData(searchAddresses(search));
+                    rlForListTo.setVisibility(View.VISIBLE);
+                    viewBlackedOut.setVisibility(View.VISIBLE);
+                    rlFrom.setVisibility(View.INVISIBLE);
+                }
+
+            }
+
+        }.execute();
+
     }
 
     private void hideRlToList(){
@@ -664,11 +701,46 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         rlFrom.setVisibility(View.VISIBLE);
     }
 
-    private void showRlFromList(String search){
-        ((AddressAdapter)rvFromSearch.getAdapter()).setData(searchAddresses(search));
-        rlForListFrom.setVisibility(View.VISIBLE);
-        viewBlackedOut.setVisibility(View.VISIBLE);
-        rlTo.setVisibility(View.GONE);
+    private void showRlFromList(final String search){
+        new AsyncTask<Void, Void, List<Address>>(){
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                viewForBlockAllClick.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            protected List<Address> doInBackground(Void... params) {
+                List<Address> address = searchAddresses(search);
+                return address;
+            }
+
+            @Override
+            protected void onPostExecute(List<Address> addresses) {
+                super.onPostExecute(addresses);
+
+                tvTextViewInMyCurrent.setVisibility(View.VISIBLE);
+                pbViewInMyCurrent.setVisibility(View.GONE);
+                viewForBlockAllClick.setVisibility(View.GONE);
+
+                if (addresses == null) {
+                    BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.failed_to_get_address));
+                    viewForBlockAllClick.setVisibility(View.GONE);
+                    return;
+                } else {
+                    viewForBlockAllClick.setVisibility(View.GONE);
+                    ((AddressAdapter)rvFromSearch.getAdapter()).setData(searchAddresses(search));
+                    rlForListFrom.setVisibility(View.VISIBLE);
+                    viewBlackedOut.setVisibility(View.VISIBLE);
+                    rlTo.setVisibility(View.GONE);
+                }
+
+            }
+
+        }.execute();
+
     }
 
     private void hideRlFromList(){
@@ -684,9 +756,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
             return addresses;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return new ArrayList<>();
     }
 
     private void hideElements(final boolean showSmallPin){
