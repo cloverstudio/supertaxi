@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -63,25 +64,25 @@ import retrofit2.Response;
  */
 public class HomeActivity extends BaseActivity {
 
-    public static void startActivity(Activity activity){
+    public static void startActivity(Activity activity) {
         Intent startActivity = new Intent(activity, HomeActivity.class);
-        if(activity instanceof BaseActivity){
-            ((BaseActivity)activity).startActivity(startActivity);
-        }else{
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).startActivity(startActivity);
+        } else {
             activity.startActivity(startActivity);
         }
     }
 
-    public static void startActivity(Activity activity, int type){
+    public static void startActivity(Activity activity, int type) {
         Intent startActivity;
-        if(type == Const.UserType.USER_TYPE_DRIVER){
+        if (type == Const.UserType.USER_TYPE_DRIVER) {
             startActivity = new Intent(activity, DriverHomeActivity.class);
-        }else{
+        } else {
             startActivity = new Intent(activity, UserHomeActivity.class);
         }
-        if(activity instanceof BaseActivity){
-            ((BaseActivity)activity).startActivity(startActivity);
-        }else{
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).startActivity(startActivity);
+        } else {
             activity.startActivity(startActivity);
         }
     }
@@ -128,6 +129,7 @@ public class HomeActivity extends BaseActivity {
         initOtherFragments();
         setInitialFragment();
 
+
         menuHamburgerView.setOnClickListener(onLeftToolbarListener);
 //
         //SIDEBAR
@@ -146,7 +148,7 @@ public class HomeActivity extends BaseActivity {
         if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.PermissionCode.CHAT_STORAGE);
             return;
-        }else{
+        } else {
             setCacheFolder();
         }
 
@@ -156,7 +158,7 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    private void setCacheFolder(){
+    private void setCacheFolder() {
         try {
             File httpCacheDir = new File(Utils.getImageCacheFolderPath());
             long httpCacheSize = 50 * 1024 * 1024; // 50 MiB
@@ -173,16 +175,16 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    private void initOtherFragments(){
-        if(UserSingleton.getInstance().getUserType() == Const.UserType.USER_TYPE_DRIVER){
+    private void initOtherFragments() {
+        if (UserSingleton.getInstance().getUserType() == Const.UserType.USER_TYPE_DRIVER) {
             profileFragment = new DriverProfileFragment();
-        }else{
+        } else {
             profileFragment = new UserProfileFragment();
         }
 
-        if(UserSingleton.getInstance().getUserType() == Const.UserType.USER_TYPE_DRIVER){
+        if (UserSingleton.getInstance().getUserType() == Const.UserType.USER_TYPE_DRIVER) {
             mainFragment = new DriverMainFragment();
-        }else{
+        } else {
             mainFragment = new UserMainFragment();
         }
 
@@ -206,12 +208,9 @@ public class HomeActivity extends BaseActivity {
 
             float moveFactor = (llSidebarDrawer.getWidth() * slideOffset);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                 llMainContent.setTranslationX(moveFactor);
-            }
-            else
-            {
+            } else {
                 TranslateAnimation anim = new TranslateAnimation(lastTranslate, moveFactor, 0.0f, 0.0f);
                 anim.setDuration(0);
                 anim.setFillAfter(true);
@@ -229,6 +228,8 @@ public class HomeActivity extends BaseActivity {
 
         @Override
         public void onDrawerOpened(View drawerView) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             isDrawerOpened = true;
         }
 
@@ -239,8 +240,8 @@ public class HomeActivity extends BaseActivity {
 
         @Override
         public void onDrawerStateChanged(int newState) {
-            if(newState == DrawerLayout.STATE_IDLE) {
-                if(isDrawerOpened) menuHamburgerView.setState(MaterialMenuDrawable.IconState.X);
+            if (newState == DrawerLayout.STATE_IDLE) {
+                if (isDrawerOpened) menuHamburgerView.setState(MaterialMenuDrawable.IconState.X);
                 else menuHamburgerView.setState(MaterialMenuDrawable.IconState.BURGER);
             }
         }
@@ -251,21 +252,21 @@ public class HomeActivity extends BaseActivity {
         ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url, (ProgressBar) findViewById(R.id.myAvatarProgressBar), R.drawable.user);
 
         LinearLayout menuListLayout = (LinearLayout) findViewById(R.id.menuListLayout);
-        if(menuListLayout != null){
-            for(int i = 0; i < menuListLayout.getChildCount(); i++){
+        if (menuListLayout != null) {
+            for (int i = 0; i < menuListLayout.getChildCount(); i++) {
                 menuListLayout.getChildAt(i).setOnClickListener(onSideBarItemClickListener);
             }
         }
 
         View rlMyData = findViewById(R.id.myDataContent);
-        if(rlMyData != null) rlMyData.setOnClickListener(onSideBarItemClickListener);
+        if (rlMyData != null) rlMyData.setOnClickListener(onSideBarItemClickListener);
 
         TextView tvTitle = (TextView) findViewById(R.id.tvInformationTitle);
         String text = getString(R.string.app_name);
-        if(tvTitle != null) tvTitle.setText(text);
+        if (tvTitle != null) tvTitle.setText(text);
         TextView tvSubtitle = (TextView) findViewById(R.id.tvInformationSubtitle);
         String text2 = getString(R.string.version) + ": " + BuildConfig.VERSION_NAME + ", " + getString(R.string.build) + ": " + BuildConfig.VERSION_CODE;
-        if(tvSubtitle != null) tvSubtitle.setText(text2);
+        if (tvSubtitle != null) tvSubtitle.setText(text2);
     }
 
     private View.OnClickListener onSideBarItemClickListener = new View.OnClickListener() {
@@ -306,14 +307,14 @@ public class HomeActivity extends BaseActivity {
         }
     };
 
-    private void switchFragment (BaseFragment fragment){
-        if(fragment.getClass().getName().equals(activeFragmentTag)){
+    private void switchFragment(BaseFragment fragment) {
+        if (fragment.getClass().getName().equals(activeFragmentTag)) {
             dlDrawerLayout.closeDrawer(llSidebarDrawer);
-        }else{
+        } else {
 
-            if(fragment instanceof MainFragment){
+            if (fragment instanceof MainFragment) {
                 frManager.beginTransaction().remove(frManager.findFragmentById(rlForFragment.getId())).commit();
-            }else{
+            } else {
                 frManager.beginTransaction().replace(rlForFragment.getId(), fragment, activeFragmentTag).commit();
             }
             activeFragmentTag = fragment.getClass().getName();
@@ -331,19 +332,19 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(isDrawerOpened){
+        if (isDrawerOpened) {
             dlDrawerLayout.closeDrawer(llSidebarDrawer);
-        }else{
-            if(activeFragmentTag.equals(mainFragment.getClass().getName())){
+        } else {
+            if (activeFragmentTag.equals(mainFragment.getClass().getName())) {
                 super.onBackPressed();
-            }else{
+            } else {
                 setToolbarTitle(getString(R.string.home_capital));
                 switchFragment(mainFragment);
             }
         }
     }
 
-    public void refreshSidebar(){
+    public void refreshSidebar() {
         String url = Utils.getMyAvatarUrl();
         ImageUtils.setImageWithPicasso((ImageView) findViewById(R.id.myAvatar), url);
         setToolbarRightImage(url);
