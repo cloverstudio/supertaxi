@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 import clover_studio.com.supertaxi.R;
 import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
 import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
@@ -33,6 +35,9 @@ import clover_studio.com.supertaxi.singletons.UserSingleton;
 import clover_studio.com.supertaxi.utils.LocationSourceListener;
 import clover_studio.com.supertaxi.view.touchable_map.TouchableMapFragment;
 import retrofit2.Call;
+
+import static android.content.Context.LOCATION_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by ivoperic on 13/07/16.
@@ -54,15 +59,15 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         locationSourceListener = new LocationSourceListener(getActivity(), onMyLocationChangedListener);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         locationSourceListener.getBestAvailableProvider();
-        if(googleMap != null){
+        if (googleMap != null) {
             googleMap.setLocationSource(locationSourceListener);
         }
     }
@@ -97,49 +102,65 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     //override this
-    protected void onMapReadyForOverride(){}
+    protected void onMapReadyForOverride() {
+    }
 
     /**
      * animate google map to my location and add marker to my location
      */
     protected void gotoMyLocation() {
 
-        if(googleMap == null) return;
+        if (googleMap == null) {
+            return;
+        }
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Activity.LOCATION_SERVICE);
+        if (myLocation == null) {
+            myLocation = getLastKnownLocation();
 
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
+        }
 
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission( getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (myLocation != null) {
+            LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            updateCoordinates(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 
-        }else{
-
-            if(myLocation == null){
-                myLocation = locationManager.getLastKnownLocation(provider);
+            if (myLocationTempMarker == null) {
+                myLocationTempMarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
             }
+        }
 
-            if(myLocation != null){
-                LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                updateCoordinates(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-
-                if(myLocationTempMarker == null){
-                    myLocationTempMarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
-                }
-            }
-
-            if(myLocation != null){
-                onMyLocationFound();
-            }
-
+        if (myLocation != null) {
+            onMyLocationFound();
         }
 
     }
 
-    protected void onMyLocationFound(){}
+    private Location getLastKnownLocation() {
+        LocationManager mLocationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+
+        } else {
+            for (String provider : providers) {
+                Location l = mLocationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    // Found best last known location: %s", l);
+                    bestLocation = l;
+                }
+            }
+            return bestLocation;
+        }
+    }
+
+    protected void onMyLocationFound() {
+    }
 
     private LocationSourceListener.OnMyLocationChangedListener onMyLocationChangedListener = new LocationSourceListener.OnMyLocationChangedListener() {
         @Override
@@ -149,30 +170,31 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
     };
 
     // Override this
-    protected void onMyLocationChanged(Location myLocationNew){
+    protected void onMyLocationChanged(Location myLocationNew) {
         boolean isMyLocationAlreadyFound = true;
-        if(myLocation == null){
+        if (myLocation == null) {
             isMyLocationAlreadyFound = false;
         }
         myLocation = myLocationNew;
         Log.d("LOG_IVO", "MY LOCATION: " + myLocation.getLatitude() + ", " + myLocation.getLongitude());
         updateCoordinates(new LatLng(myLocation.getLatitude(), myLocationNew.getLongitude()));
 
-        if(myLocationTempMarker != null){
+        if (myLocationTempMarker != null) {
             myLocationTempMarker.remove();
         }
 
-        if(!isMyLocationAlreadyFound){
+        if (!isMyLocationAlreadyFound) {
             onMyLocationFound();
         }
     }
 
-    private void updateCoordinates(LatLng newLocation){
+    private void updateCoordinates(LatLng newLocation) {
         PostLatLngModel postModel = new PostLatLngModel(newLocation.latitude, newLocation.longitude);
 
         UserRetroApiInterface retroApiInterface = getRetrofit().create(UserRetroApiInterface.class);
         Call<BaseModel> call = retroApiInterface.updateCoordinates(postModel, UserSingleton.getInstance().getUser().token_new);
-        call.enqueue(new CustomResponse<BaseModel>(getActivity(), false, false) {});
+        call.enqueue(new CustomResponse<BaseModel>(getActivity(), false, false) {
+        });
     }
 
 }
