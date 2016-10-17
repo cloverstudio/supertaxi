@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="clover_studio.com.supertaxi">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".base.SuperTaxiApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:largeHeap="true"
-        android:name=".base.SuperTaxiApp"
+        android:supportsRtl="true"
         android:theme="@style/AppThemeNoActionBar">
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="io.fabric.ApiKey" android:value="49ed1a7380e5df875c8892fe84398629465e5d8c"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="49ed1a7380e5df875c8892fe84398629465e5d8c" />
 
-        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBONAsYG4Pq-Sx9obbuHxlDaj4aa872kvs"/>
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBONAsYG4Pq-Sx9obbuHxlDaj4aa872kvs" />
 
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -32,59 +39,60 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity"
-            android:windowSoftInputMode="stateHidden"
-            />
+        <activity
+            android:name=".LoginActivity"
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".SignUpActivity"
-            android:windowSoftInputMode="stateHidden"
-            />
+        <activity
+            android:name=".SignUpActivity"
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".ChooseTypeActivity"
-            android:windowSoftInputMode="stateHidden"
-            />
+        <activity
+            android:name=".ChooseTypeActivity"
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".HomeActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
+        <activity
+            android:name=".HomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <activity android:name=".UserHomeActivity"
-            android:windowSoftInputMode="stateHidden"
+        <activity
+            android:name=".UserHomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            />
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".DriverHomeActivity"
-            android:windowSoftInputMode="stateHidden"
+        <activity
+            android:name=".DriverHomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            />
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".CreateUserActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            />
+        <activity
+            android:name=".CreateUserActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <activity android:name=".RespondedDriverDetailsActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            />
+        <activity
+            android:name=".RespondedDriverDetailsActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <activity android:name=".CameraCropActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
-            />
-
-        <activity android:name=".LastTripDialogLikeActivity"
+        <activity
+            android:name=".CameraCropActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".LastTripDialogLikeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
-            />
+            android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            tools:replace="android:theme"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
     </application>
 
