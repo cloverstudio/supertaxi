@@ -106,7 +106,7 @@ extension UIImage {
         guard !af_inflated else { return }
 
         af_inflated = true
-        CGDataProviderCopyData(CGImageGetDataProvider(CGImage))
+        CGDataProviderCopyData(CGImageGetDataProvider(CGImage!)!)
     }
 }
 
@@ -115,7 +115,7 @@ extension UIImage {
 extension UIImage {
     /// Returns whether the image contains an alpha component.
     public var af_containsAlphaComponent: Bool {
-        let alphaInfo = CGImageGetAlphaInfo(CGImage)
+        let alphaInfo = CGImageGetAlphaInfo(CGImage!)
 
         return (
             alphaInfo == .First ||
@@ -146,7 +146,7 @@ extension UIImage {
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return scaledImage
+        return scaledImage!
     }
 
     /**
@@ -183,7 +183,7 @@ extension UIImage {
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return scaledImage
+        return scaledImage!
     }
 
     /**
@@ -215,7 +215,7 @@ extension UIImage {
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return scaledImage
+        return scaledImage!
     }
 }
 
@@ -247,7 +247,7 @@ extension UIImage {
         let roundedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return roundedImage
+        return roundedImage!
     }
 
     /**
@@ -279,7 +279,7 @@ extension UIImage {
         let roundedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return roundedImage
+        return roundedImage!
     }
 }
 
@@ -318,7 +318,7 @@ extension UIImage {
 
         let cgImageRef = context.createCGImage(outputImage, fromRect: outputImage.extent)
 
-        return UIImage(CGImage: cgImageRef, scale: scale, orientation: imageOrientation)
+        return UIImage(CGImage: cgImageRef!, scale: scale, orientation: imageOrientation)
     }
 }
 

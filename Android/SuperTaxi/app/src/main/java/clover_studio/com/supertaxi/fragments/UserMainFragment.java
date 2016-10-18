@@ -156,9 +156,9 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
     @Override
     public void onResume() {
         super.onResume();
-        if(stopChecking == true){
+        if (stopChecking == true) {
             stopChecking = false;
-            if(acceptedOrder != null){
+            if (acceptedOrder != null) {
                 checkOrderStatus(acceptedOrder);
             }
         }
@@ -174,7 +174,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         super.onDestroy();
     }
 
-    private void initViews(View rootView){
+    private void initViews(View rootView) {
         layoutForMap = (FrameLayout) rootView.findViewById(R.id.frameForMap);
         loadingProgress = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
         ibMyLocation = (ImageButton) rootView.findViewById(R.id.ibMyLocation);
@@ -201,10 +201,10 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
     }
 
     private void resetView() {
-        if(pickupLocation != null){
+        if (pickupLocation != null) {
             isUserSetLocationFromWithPin = true;
         }
-        if(destinationLocation != null){
+        if (destinationLocation != null) {
             isUserSetLocationToWithPin = true;
         }
         pickupLocation = null;
@@ -226,16 +226,16 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     }
 
-    private void configureRecycler(){
+    private void configureRecycler() {
         rvFromSearch.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvFromSearch.setAdapter(new AddressAdapter(new ArrayList<Address>()));
-        ((AddressAdapter)rvFromSearch.getAdapter()).setListener(onFromAddressListener);
+        ((AddressAdapter) rvFromSearch.getAdapter()).setListener(onFromAddressListener);
         rvToSearch.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvToSearch.setAdapter(new AddressAdapter(new ArrayList<Address>()));
-        ((AddressAdapter)rvToSearch.getAdapter()).setListener(onToAddressListener);
+        ((AddressAdapter) rvToSearch.getAdapter()).setListener(onToAddressListener);
     }
 
-    private void addListeners(View rootView){
+    private void addListeners(View rootView) {
         rootView.findViewById(R.id.ibCloseFrom).setOnClickListener(onCloseFromClicked);
         rootView.findViewById(R.id.buttonShowMore).setOnClickListener(onShowMoreClicked);
         rlParentOfMyCurrent.setOnClickListener(onCurrentPinListener);
@@ -261,10 +261,12 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
         new MapStateListener(googleMap, mapFragment, getActivity()) {
             @Override
-            public void onMapTouched() {}
+            public void onMapTouched() {
+            }
 
             @Override
-            public void onMapReleased() {}
+            public void onMapReleased() {
+            }
 
             @Override
             public void onMapUnsettled() {
@@ -278,14 +280,15 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
             }
 
             @Override
-            public void onMapChangeCamera(CameraPosition cameraPosition) {}
+            public void onMapChangeCamera(CameraPosition cameraPosition) {
+            }
         };
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if(acceptedDriver != null){
-            if(marker.getSnippet() != null && marker.getSnippet().equals(acceptedDriver._id)){
+        if (acceptedDriver != null) {
+            if (marker.getSnippet() != null && marker.getSnippet().equals(acceptedDriver._id)) {
                 DriverDetailsDialog.startDialog(getActivity(), acceptedOrder, acceptedDriver);
             }
         }
@@ -304,7 +307,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         @Override
         public void onClick(View v) {
 
-            new AsyncTask<Void, Void, String>(){
+            new AsyncTask<Void, Void, String>() {
 
                 LatLng current;
 
@@ -316,9 +319,9 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                     tvTextViewInMyCurrent.setVisibility(View.INVISIBLE);
                     viewForBlockAllClick.setVisibility(View.VISIBLE);
 
-                    if(pickupLocation == null){
+                    if (pickupLocation == null) {
                         isUserSetLocationFromWithPin = true;
-                    }else{
+                    } else {
                         isUserSetLocationToWithPin = true;
                     }
 
@@ -346,7 +349,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                         return;
                     }
 
-                    if(pickupLocation == null){
+                    if (pickupLocation == null) {
                         etFrom.setText(address);
                         pickupLocation = current;
                         pickupAddress = address;
@@ -354,7 +357,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                         tvTextViewInMyCurrent.setText(getString(R.string.set_destination_location_capital));
                         rlMinutes.setVisibility(View.INVISIBLE);
                         viewTimer.setVisibility(View.INVISIBLE);
-                    }else{
+                    } else {
                         etTo.setText(address);
                         destinationLocation = current;
                         destinationAddress = address;
@@ -369,8 +372,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         }
     };
 
-    private void drawRoute(final int type, OrderModel model, final Integer paddingMap){
-        if(type == Const.DrawRouteUserTypes.PICKUP_AND_DESTINATION_ROUTE){
+    private void drawRoute(final int type, OrderModel model, final Integer paddingMap) {
+        if (type == Const.DrawRouteUserTypes.PICKUP_AND_DESTINATION_ROUTE) {
             removeRoute();
             MapsUtils.calculateRoute(pickupLocation, destinationLocation, new MapsUtils.OnRouteCalculated() {
                 @Override
@@ -380,14 +383,14 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                     googleMap.addMarker(new MarkerOptions().position(destinationLocation));
                 }
             }, getActivity());
-        }else if(type == Const.DrawRouteUserTypes.STARTED_DRIVE){
+        } else if (type == Const.DrawRouteUserTypes.STARTED_DRIVE) {
             final LatLng myLocationLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
             final LatLng destinationLatLng = new LatLng(model.to.location.get(1), model.to.location.get(0));
             final LatLng startedLatLng = new LatLng(model.from.location.get(1), model.from.location.get(0));
             final LatLng driverLatLng = new LatLng(acceptedDriver.currentLocation.get(1), acceptedDriver.currentLocation.get(0));
 
             boolean withZoom = false;
-            if(lastOfDrivePolyline == null){
+            if (lastOfDrivePolyline == null) {
                 withZoom = true;
                 googleMap.clear();
                 TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistanceLabel);
@@ -402,20 +405,20 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                 public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
                     final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100, northeast, southwest);
 
-                    if(drivingMarker != null){
-                        if(!MapsUtils.isSameLocation(drivingMarker.getPosition(), driverLatLng)){
+                    if (drivingMarker != null) {
+                        if (!MapsUtils.isSameLocation(drivingMarker.getPosition(), driverLatLng)) {
                             drivingMarker.setRotation(MapsUtils.getBearingForLocation(drivingMarker.getPosition(), myLocation));
                         }
                         drivingMarker.setPosition(driverLatLng);
-                    }else{
+                    } else {
                         drivingMarker = googleMap.addMarker(new MarkerOptions().position(driverLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)));
                     }
 
-                    if(driverDestinationMarker == null){
+                    if (driverDestinationMarker == null) {
                         driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(destinationLatLng));
                     }
 
-                    if(lastOfDrivePolyline != null){
+                    if (lastOfDrivePolyline != null) {
                         lastOfDrivePolyline.remove();
                     }
                     lastOfDrivePolyline = newPolyline;
@@ -426,14 +429,14 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                 }
             }, getActivity());
 
-        }else if(type == Const.DrawRouteUserTypes.ACCEPTED_DRIVE){
+        } else if (type == Const.DrawRouteUserTypes.ACCEPTED_DRIVE) {
 
             boolean withZoom = false;
-            if(driverMarker == null){
+            if (driverMarker == null) {
                 withZoom = true;
             }
 
-            if(acceptedDriver.currentLocation != null){
+            if (acceptedDriver.currentLocation != null) {
 
                 final LatLng locationPickup = new LatLng(model.from.location.get(1), model.from.location.get(0));
                 final LatLng driverLocation = new LatLng(acceptedDriver.currentLocation.get(1), acceptedDriver.currentLocation.get(0));
@@ -444,32 +447,34 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                     public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
                         final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, finalWithZoom, 100, northeast, southwest);
 
-                        if(driverMarker != null){
-                            if(!MapsUtils.isSameLocation(driverMarker.getPosition(), driverLocation)){
+                        if (driverMarker != null) {
+                            if (!MapsUtils.isSameLocation(driverMarker.getPosition(), driverLocation)) {
                                 driverMarker.setRotation(MapsUtils.getBearingForLocation(driverMarker.getPosition(), driverLocation));
                             }
                             driverMarker.setPosition(driverLocation);
-                        }else{
+                        } else {
                             final ImageView ivTemp = new ImageView(getActivity());
                             ImageUtils.setImageWithPicassoWithListener(ivTemp, Utils.getAvatarUrl(acceptedDriver), new Callback() {
                                 @Override
                                 public void onSuccess() {
-                                    Bitmap bitmap = MapsUtils.getBitmapWithGreenPinAndCar(getActivity(), ((BitmapDrawable)ivTemp.getDrawable()).getBitmap());
-                                    if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
+                                    Bitmap bitmap = MapsUtils.getBitmapWithGreenPinAndCar(getActivity(), ((BitmapDrawable) ivTemp.getDrawable()).getBitmap());
+                                    if (acceptedDriver != null)
+                                        driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
                                 }
 
                                 @Override
                                 public void onError() {
-                                    if(acceptedDriver != null) driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id));
+                                    if (acceptedDriver != null)
+                                        driverMarker = googleMap.addMarker(new MarkerOptions().position(driverLocation).snippet(acceptedDriver._id));
                                 }
                             });
                         }
 
-                        if(driverPickupMarker == null){
+                        if (driverPickupMarker == null) {
                             driverPickupMarker = googleMap.addMarker(new MarkerOptions().position(locationPickup));
                         }
 
-                        if(lastPolyline != null){
+                        if (lastPolyline != null) {
                             lastPolyline.remove();
                         }
                         lastPolyline = newPolyline;
@@ -485,7 +490,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     }
 
-    private void removeRoute(){
+    private void removeRoute() {
         googleMap.clear();
     }
 
@@ -528,36 +533,38 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     private TextWatcher onEtFromTextWatchListener = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
 
         @Override
         public void afterTextChanged(final Editable s) {
 
-            if(isUserSetLocationFromWithPin){
+            if (isUserSetLocationFromWithPin) {
                 isUserSetLocationFromWithPin = false;
                 return;
             }
             nowCharacterFromLength = s.toString().length();
-            if(s.toString().length() > 3){
-                Log.d("text changed","text changed");
+            if (s.toString().length() > 3) {
+                Log.d("text changed", "text changed");
                 final int lastCharacterLength = s.toString().length();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(lastCharacterLength == nowCharacterFromLength){
-                            if(nowCharacterFromLength <= 3){
+                        if (lastCharacterLength == nowCharacterFromLength) {
+                            if (nowCharacterFromLength <= 3) {
                                 hideRlFromList();
-                            }else{
+                            } else {
                                 showRlFromList(s.toString());
                             }
                         }
                     }
                 }, WAIT_FOR_SEARCH_WHILE_TYPING);
 
-            }else{
+            } else {
                 hideRlFromList();
             }
         }
@@ -565,34 +572,36 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     private TextWatcher onEtToTextWatchListener = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
 
         @Override
         public void afterTextChanged(final Editable s) {
-            if(isUserSetLocationToWithPin){
+            if (isUserSetLocationToWithPin) {
                 isUserSetLocationToWithPin = false;
                 return;
             }
             nowCharacterToLength = s.toString().length();
-            if(s.toString().length() > 3){
+            if (s.toString().length() > 3) {
                 final int lastCharacterLength = s.toString().length();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(lastCharacterLength == nowCharacterToLength){
-                            if(nowCharacterToLength <= 3){
+                        if (lastCharacterLength == nowCharacterToLength) {
+                            if (nowCharacterToLength <= 3) {
                                 hideRlToList();
-                            }else{
+                            } else {
                                 showRlToList(s.toString());
                             }
                         }
                     }
                 }, WAIT_FOR_SEARCH_WHILE_TYPING);
 
-            }else{
+            } else {
                 hideRlToList();
             }
         }
@@ -652,8 +661,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         return result.toString();
     }
 
-    private void showRlToList(final String search){
-        new AsyncTask<Void, Void, List<Address>>(){
+    private void showRlToList(final String search) {
+        new AsyncTask<Void, Void, List<Address>>() {
 
             @Override
             protected void onPreExecute() {
@@ -682,7 +691,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                     return;
                 } else {
                     viewForBlockAllClick.setVisibility(View.GONE);
-                    ((AddressAdapter)rvToSearch.getAdapter()).setData(searchAddresses(search));
+                    ((AddressAdapter) rvToSearch.getAdapter()).setData(searchAddresses(search));
                     rlForListTo.setVisibility(View.VISIBLE);
                     viewBlackedOut.setVisibility(View.VISIBLE);
                     rlFrom.setVisibility(View.INVISIBLE);
@@ -694,15 +703,15 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     }
 
-    private void hideRlToList(){
-        ((AddressAdapter)rvToSearch.getAdapter()).clearData();
+    private void hideRlToList() {
+        ((AddressAdapter) rvToSearch.getAdapter()).clearData();
         rlForListTo.setVisibility(View.GONE);
         viewBlackedOut.setVisibility(View.GONE);
         rlFrom.setVisibility(View.VISIBLE);
     }
 
-    private void showRlFromList(final String search){
-        new AsyncTask<Void, Void, List<Address>>(){
+    private void showRlFromList(final String search) {
+        new AsyncTask<Void, Void, List<Address>>() {
 
             @Override
             protected void onPreExecute() {
@@ -731,7 +740,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                     return;
                 } else {
                     viewForBlockAllClick.setVisibility(View.GONE);
-                    ((AddressAdapter)rvFromSearch.getAdapter()).setData(searchAddresses(search));
+                    ((AddressAdapter) rvFromSearch.getAdapter()).setData(searchAddresses(search));
                     rlForListFrom.setVisibility(View.VISIBLE);
                     viewBlackedOut.setVisibility(View.VISIBLE);
                     rlTo.setVisibility(View.GONE);
@@ -743,8 +752,8 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     }
 
-    private void hideRlFromList(){
-        ((AddressAdapter)rvFromSearch.getAdapter()).clearData();
+    private void hideRlFromList() {
+        ((AddressAdapter) rvFromSearch.getAdapter()).clearData();
         rlForListFrom.setVisibility(View.GONE);
         viewBlackedOut.setVisibility(View.GONE);
         rlTo.setVisibility(View.VISIBLE);
@@ -760,24 +769,24 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         }
     }
 
-    private void hideElements(final boolean showSmallPin){
-        if(screenStatus != Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+    private void hideElements(final boolean showSmallPin) {
+        if (screenStatus != Const.MainUserStatus.REQUEST_TAXI_SCREEN) {
             return;
         }
-        if(showSmallPin) smallPin.setVisibility(View.VISIBLE);
+        if (showSmallPin) smallPin.setVisibility(View.VISIBLE);
         AnimationUtils.fade(rlParentOfMyCurrent, 1, 0, 300, new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 rlParentOfMyCurrent.setVisibility(View.GONE);
-                if(showSmallPin) smallPin.setVisibility(View.VISIBLE);
+                if (showSmallPin) smallPin.setVisibility(View.VISIBLE);
             }
         });
         AnimationUtils.fadeThenGoneOrVisible(rlFromTo, 1, 0, 300);
     }
 
-    private void showElements(){
-        if(screenStatus != Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+    private void showElements() {
+        if (screenStatus != Const.MainUserStatus.REQUEST_TAXI_SCREEN) {
             return;
         }
         rlParentOfMyCurrent.setVisibility(View.VISIBLE);
@@ -791,12 +800,12 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         AnimationUtils.fadeThenGoneOrVisible(rlFromTo, 0, 1, 300);
     }
 
-    private void requestTaxi(){
-        if(pickupLocation == null || pickupAddress == null){
+    private void requestTaxi() {
+        if (pickupLocation == null || pickupAddress == null) {
             BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.please_set_pick_up_location));
             return;
         }
-        if(destinationLocation == null || destinationAddress == null){
+        if (destinationLocation == null || destinationAddress == null) {
             BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.error), getString(R.string.please_set_destination_location));
             return;
         }
@@ -811,7 +820,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
     }
 
-    public void cancelTripClearMap(){
+    public void cancelTripClearMap() {
         screenStatus = Const.MainUserStatus.REQUEST_TAXI_SCREEN;
         etFrom.setText("");
         etTo.setText("");
@@ -850,7 +859,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         });
     }
 
-    private void hideRequestTaxiScreenElements(){
+    private void hideRequestTaxiScreenElements() {
         rlFromTo.setVisibility(View.GONE);
         smallPin.setVisibility(View.GONE);
         rlParentOfMyCurrent.setVisibility(View.GONE);
@@ -858,7 +867,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         ibMyLocation.setVisibility(View.GONE);
     }
 
-    private void showRequestTaxiScreenElements(){
+    private void showRequestTaxiScreenElements() {
         rlFromTo.setVisibility(View.VISIBLE);
         rlParentOfMyCurrent.setVisibility(View.VISIBLE);
         smallPin.setVisibility(View.VISIBLE);
@@ -871,7 +880,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         AnimationUtils.fade(ibMyLocation, 0, 1, 300, null);
     }
 
-    private void showTripLayout(){
+    private void showTripLayout() {
         rlCancelTripLayout.setVisibility(View.VISIBLE);
         TextView tvDistance = (TextView) rlCancelTripLayout.findViewById(R.id.tvDistanceLabel);
         tvDistance.setText(getString(R.string.distance_between__driver_and_you_));
@@ -900,11 +909,11 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         checkOrderStatus(order);
     }
 
-    private void checkOrderStatus(final OrderModel orderModel){
-        if(screenStatus == Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+    private void checkOrderStatus(final OrderModel orderModel) {
+        if (screenStatus == Const.MainUserStatus.REQUEST_TAXI_SCREEN) {
             return;
         }
-        if(stopChecking){
+        if (stopChecking) {
             return;
         }
         PostCheckOrderStatusModel postModel = new PostCheckOrderStatusModel(orderModel._id);
@@ -918,20 +927,20 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
                 LogCS.i("LOG", "Order status: " + response.body().data.orderStatus);
 
-                if(screenStatus == Const.MainUserStatus.REQUEST_TAXI_SCREEN){
+                if (screenStatus == Const.MainUserStatus.REQUEST_TAXI_SCREEN) {
                     return;
                 }
 
-                if(response.body().data.orderStatus == Const.OrderStatusTypes.CANCELED){
+                if (response.body().data.orderStatus == Const.OrderStatusTypes.CANCELED) {
                     BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.info), getString(R.string.driver_canceled_order));
                     cancelTripClearMap();
-                }else if(response.body().data.orderStatus == Const.OrderStatusTypes.FINISHED_DRIVE){
-                    if(acceptedDriver == null){
+                } else if (response.body().data.orderStatus == Const.OrderStatusTypes.FINISHED_DRIVE) {
+                    if (acceptedDriver == null) {
                         acceptedDriver = response.body().data.driver;
                     }
                     LastTripDialogLikeActivity.startActivity(getActivity(), acceptedOrder, acceptedDriver);
                     cancelTripClearMap();
-                }else if(response.body().data.orderStatus == Const.OrderStatusTypes.STARTED_DRIVE){
+                } else if (response.body().data.orderStatus == Const.OrderStatusTypes.STARTED_DRIVE) {
 
                     acceptedDriver = response.body().data.driver;
 
@@ -939,7 +948,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
 
                     checkAfterFiveSeconds();
 
-                }else{
+                } else {
                     acceptedDriver = response.body().data.driver;
                     drawRoute(Const.DrawRouteUserTypes.ACCEPTED_DRIVE, orderModel, 100);
 
@@ -956,7 +965,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         });
     }
 
-    private void ignoreOrder(final OrderModel order){
+    private void ignoreOrder(final OrderModel order) {
 
         PostCancelTripModel postModelCancel = new PostCancelTripModel(order._id, Const.CancelTypes.USER_CANCELED, "");
         final DriverRetroApiInterface retroApiInterface = getRetrofit().create(DriverRetroApiInterface.class);
@@ -981,12 +990,12 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
         });
     }
 
-    private void checkAfterFiveSeconds(){
+    private void checkAfterFiveSeconds() {
         LogCS.i("LOG", "Start checker screen: " + screenStatus);
         handlerForCheck.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(acceptedOrder != null){
+                if (acceptedOrder != null) {
                     checkOrderStatus(acceptedOrder);
                 }
             }
@@ -994,12 +1003,13 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
     }
 
     private Call<NearestDriverResponse> call = null;
-    private void getNearestDriver(final LatLng startLatLng){
-        if(myLocation == null){
+
+    private void getNearestDriver(final LatLng startLatLng) {
+        if (myLocation == null) {
             return;
         }
         tvTextViewNearestDriverMinutes.setText("-");
-        if(call != null){
+        if (call != null) {
             call.cancel();
         }
         PostLatLngModel postModel = new PostLatLngModel(myLocation.getLatitude(), myLocation.getLongitude());
@@ -1011,7 +1021,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                 super.onCustomSuccess(call, response);
 
                 UserModel nearestDriver = response.body().data.driver;
-                if(nearestDriver.currentLocation != null){
+                if (nearestDriver.currentLocation != null) {
                     LatLng driverLatLng = new LatLng(nearestDriver.currentLocation.get(1), nearestDriver.currentLocation.get(0));
                     MapsUtils.getTimeBetween(startLatLng, driverLatLng, new MapsUtils.OnTimeCalculated() {
                         @Override
