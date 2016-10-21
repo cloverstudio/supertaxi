@@ -94,9 +94,9 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         addressFrom.text = userAddressFrom
         addressTo.text = userAddressTo
         
-        userAvatar.load(Api.IMAGE_URL + userFileId)
-        userAvatar.layer.cornerRadius = userAvatar.frame.size.height/2
-        userAvatar.clipsToBounds = true
+     //   userAvatar.load(Api.IMAGE_URL + userFileId)
+       // userAvatar.layer.cornerRadius = userAvatar.frame.size.height/2
+      //  userAvatar.clipsToBounds = true
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -210,14 +210,14 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
                 userView!.canShowCallout = true
                 
                 let pinImage: UIImageView = UIImageView(frame: CGRectMake(0, 0, 35, 35))
-                pinImage.load(Api.IMAGE_URL + userFileId)
+               // pinImage.load(Api.IMAGE_URL + userFileId)
                 pinImage.layer.cornerRadius = pinImage.layer.frame.size.width / 2
                 pinImage.layer.borderWidth = 2
                 pinImage.layer.borderColor = Colors.greenTransparent(1).CGColor
                 pinImage.layer.masksToBounds = true
                 
                 UIGraphicsBeginImageContext(pinImage.bounds.size);
-                pinImage.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+               // pinImage.layer.renderInContext(UIGraphicsGetCurrentContext()!)
                 let screenShot = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
                 

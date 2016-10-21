@@ -14,13 +14,20 @@ import SwiftyJSON
 
 class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, DriverListDelegate, GetOpenOrdersDelegate  {
     
+    @IBOutlet weak var driverInfoView: UIView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet var avatar: UIImageView!
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet weak var driverName: UILabel!
+    @IBOutlet weak var driverCarType: UILabel!
+    @IBOutlet weak var driverCarRegistration: UILabel!
+    @IBOutlet weak var driverStartFee: UILabel!
+    @IBOutlet weak var driverTelNum: UILabel!
+    @IBOutlet weak var driverRatingView: UIView!
     
     let UserInformation = NSUserDefaults.standardUserDefaults()
     var apiManager: ApiManager!
-    
+    var driversList = [DriverInfoModel]()
     var locationManager: CLLocationManager!
     
     var lat: Double!
@@ -104,6 +111,26 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         
     }
     
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        if view.annotation is MKUserLocation{
+            return
+        } else {
+            let driverAnnotation = view.annotation as! DriverAnnotation
+            for driver in driversList {
+                if driver.car_registration==driverAnnotation.title {
+                    driverName.text = driver.name
+                    print(driver.name)
+                    driverCarType.text = driver.car_type
+                    driverCarRegistration.text = driver.car_registration
+                    //driverTelNum.text = driver.telNum
+                    driverStartFee.text = String(driver.fee_start)
+                    driverInfoView.hidden = false
+                }
+            }
+            
+        }
+    }
+    
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?{
         if (annotation is MKUserLocation) {
             return nil
@@ -114,14 +141,12 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
         if anView == nil {
             anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            anView!.canShowCallout = true
+            anView!.canShowCallout = false
         }
         else {
             anView!.annotation = annotation
         }
-
         anView!.image = UIImage(named: "black_car_icon")
-        
         return anView
     }
     
@@ -134,15 +159,53 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     func onDriversListSucess(json: JSON) {
-        
+    
         mapView.removeAnnotations(mapView.annotations)
         
+        driversList=[DriverInfoModel]()
+        
+        var driverInfo:DriverInfoModel
+        
         for driver in json.array! {
-            let driverAnnotation = DriverAnnotation(title: driver["driver"]["name"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!))
-            mapView.addAnnotation(driverAnnotation)
             
-        }
-    
+            
+            
+                 driverInfo = DriverInfoModel(id: driver["_id"].string!,
+                                             name: driver["driver"]["name"].string!,
+                                             car_type: driver["driver"]["car_type"].string!,
+                                             car_registration: driver["driver"]["car_registration"].string!,
+                                             fee_start: driver["driver"]["fee_start"].int!,
+                                             fee_km: driver["driver"]["fee_km"].int!)
+                if driver["averageRate"].float != nil {
+                    driverInfo.averageRate = driver["averageRate"].float!
+                } else {
+                    driverInfo.averageRate = 0.0
+                }
+                
+                if driver["avatar"]["fileid"].string != nil {
+                    driverInfo.fileId = driver["avatar"]["fileid"].string!
+                } else {
+                    driverInfo.fileId = ""
+                }
+                
+                if driver["telNum"].string != nil {
+                    driverInfo.telNum = driver["telNum"].string!
+                } else {
+                    driverInfo.telNum = ""
+                }
+                
+                
+          
+            
+            
+            driversList.append(driverInfo)
+        
+            let driverAnnotation = DriverAnnotation(title: driver["driver"]["car_registration"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!))
+            mapView.addAnnotation(driverAnnotation)
+            }
+    }
+    @IBAction func onCloseButtonPressed(sender: UIButton) {
+        driverInfoView.hidden=true
     }
     
     func onDriversListError(error: NSInteger) {

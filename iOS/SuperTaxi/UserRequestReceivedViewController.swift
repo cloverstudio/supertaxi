@@ -10,7 +10,12 @@ import UIKit
 import SwiftyJSON
 import MapKit
 
-class UserRequestReceivedViewController: UIViewController {
+
+protocol DriverUpdateDistance {
+    func updateDriverDistance( distance:String);
+}
+
+class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
     
     @IBOutlet var contactView: UIView!
     @IBOutlet var txtName: UILabel!
@@ -28,6 +33,7 @@ class UserRequestReceivedViewController: UIViewController {
     var distance: String!
     var driverPhoneNumber: String!
     var driverId: String!
+    var viewController:UserLongPressViewController!
     
     var orderId: String!
     
@@ -58,6 +64,14 @@ class UserRequestReceivedViewController: UIViewController {
         
         distance = "3.34 km"
         txtDistance.text = distance
+         viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserMapWithTaxiID") as? UserLongPressViewController
+        viewController?.driver = driver
+        print("boooook")
+        viewController?.driverLocation = driverLocation
+        viewController?.from = from
+        viewController?.to = to
+        viewController?.orderId = orderId
+        viewController?.driverDistanceDelegate = self
         
     }
 
@@ -65,16 +79,15 @@ class UserRequestReceivedViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func updateDriverDistance( distance: String) {
+        txtDistance.text = distance
+        self.distance = distance
+    }
 
     @IBAction func showOnMap(sender: AnyObject) {
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserMapWithTaxiID") as? UserLongPressViewController
-        viewController?.driver = driver
-        viewController?.driverFileId = driverFileId
-        viewController?.driverLocation = driverLocation
-        viewController?.from = from
-        viewController?.to = to
-        viewController?.orderId = orderId
-        viewController?.driverId = driverId
+    
+    
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     

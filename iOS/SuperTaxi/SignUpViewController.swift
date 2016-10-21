@@ -49,6 +49,7 @@ public class SignUpViewController: UIViewController, SignUpApiDelegate {
     }
     
     func onSignUpTimeSuccess(secret: String) {
+        print("boooook")
         print(secret)
         let parameters : NSDictionary = ["email" : txtEmail.text!,
                                          "password" : Tools().sha1(txtPassword.text! + Api.SALT),

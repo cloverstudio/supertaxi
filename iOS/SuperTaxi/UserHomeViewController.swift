@@ -65,8 +65,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     var orderId = ""
     var getOrderStatus = false
     
-    var driverId = ""
-    var driverPhoneNumber: String!
+  
     
     var matchingItems:[MKMapItem] = []
     
@@ -295,7 +294,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     
     
     func getOrderResult(){
-        
+        print("dobio order")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.apiManager.getOrderStatus(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
         })
@@ -452,33 +451,47 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     
     func onOrderStatusSuccess(json: JSON) {
         
+        print(json)
+        
         let driver: DriverInfoModel = DriverInfoModel(
+            id: json["data"]["driver"]["_id"].string!,
             name: json["data"]["driver"]["driver"]["name"].string!,
             car_type: json["data"]["driver"]["driver"]["car_type"].string!,
             car_registration: json["data"]["driver"]["driver"]["car_registration"].string!,
             fee_start: json["data"]["driver"]["driver"]["fee_start"].int!,
             fee_km: json["data"]["driver"]["driver"]["fee_km"].int!)
         
-        var driverFileId = ""
+        if json["data"]["driver"]["averageRate"].float != nil {
+            driver.averageRate = json["data"]["driver"]["averageRate"].float!
+        } else {
+            driver.averageRate = 0.0
+        }
+        
+        
+        if json["data"]["driver"]["telNum"].string != nil {
+            driver.telNum = json["data"]["driver"]["telNum"].string!
+        } else {
+            driver.telNum = ""
+        }
+        
         
         if json["data"]["driver"]["avatar"]["fileid"].string != nil {
-            driverFileId = json["data"]["driver"]["avatar"]["fileid"].string!
+            driver.fileId = json["data"]["driver"]["avatar"]["fileid"].string!
+        } else {
+            driver.fileId=""
         }
         
         let location = json["data"]["driver"]["currentLocation"].array!
         
-        driverId = json["data"]["driver"]["_id"].string!
-        driverPhoneNumber = json["data"]["driver"]["telNum"].string!
+        
         
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiDriverDetailsID") as? UserRequestReceivedViewController
         viewController!.driver = driver
-        viewController!.driverFileId = driverFileId
+        viewController!.driverFileId = driver.fileId
         viewController!.driverLocation = location
         viewController?.from = CLLocationCoordinate2D(latitude: latFrom, longitude: lonFrom)
         viewController?.to = CLLocationCoordinate2D(latitude: latTo, longitude: lonTo)
         viewController?.orderId = orderId
-        viewController?.driverId = driverId
-        viewController?.driverPhoneNumber = driverPhoneNumber
         self.navigationController?.pushViewController(viewController!, animated: true)
         
         viewRequest.hidden = true

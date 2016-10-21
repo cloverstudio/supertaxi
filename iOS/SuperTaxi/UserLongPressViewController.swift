@@ -24,6 +24,11 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     @IBOutlet var avatarImage: UIImageView!
     @IBOutlet var txtDriverName: UILabel!
     @IBOutlet var avatarImage3: UIImageView!
+    @IBOutlet weak var carType: UILabel!
+    @IBOutlet weak var carRegistration: UILabel!
+    @IBOutlet weak var startFee: UILabel!
+    @IBOutlet weak var telNum: UILabel!
+    @IBOutlet weak var driverRating: UIView!
     
     var locationManager: CLLocationManager!
     
@@ -31,14 +36,14 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     var apiManager: ApiManager!
     
     var driver: DriverInfoModel!
-    var driverFileId: String!
     var driverLocation: [JSON]!
     var driverLoc: CLLocationCoordinate2D!
-    var driverId: String!
     
     var from: CLLocationCoordinate2D!
     var to: CLLocationCoordinate2D!
     var helperLocation: CLLocationCoordinate2D!
+    var distance:String!
+    var driverDistanceDelegate:DriverUpdateDistance!
     
     var orderId: String!
     
@@ -49,16 +54,16 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("ja sam nastao")
         apiManager = ApiManager()
         apiManager.orderStatusDelegate = self
         apiManager.profileDelegate = self
+        
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
-        
         mapView.delegate = self
         
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -81,13 +86,17 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         avatarImage.layer.cornerRadius = avatarImage.frame.size.height/2
         avatarImage.clipsToBounds = true
         
-        avatarImage3.load(Api.IMAGE_URL + driverFileId)
+        
+        avatarImage3.load(Api.IMAGE_URL + driver.fileId)
+        
         avatarImage3.layer.cornerRadius = avatarImage3.frame.size.height/2
         avatarImage3.clipsToBounds = true
         
         txtDriverName.text = driver.name
-//        txtCarReg.text = driver.car_registration
-//        txtCarType.text = driver.car_type
+        carType.text = driver.car_type
+        carRegistration.text = driver.car_registration
+        telNum.text = driver.telNum
+        startFee.text = String(driver.fee_start)
         
     
         driverLoc = CLLocationCoordinate2D(latitude: driverLocation[1].double!, longitude: driverLocation[0].double!)
@@ -98,7 +107,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     }
     
     func getDriverLocation(){
-        self.apiManager.getProfileDetail(self.userInformation.stringForKey(UserDetails.TOKEN)!, userId: self.driverId)
+        self.apiManager.getProfileDetail(self.userInformation.stringForKey(UserDetails.TOKEN)!, userId: self.driver.id)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -151,7 +160,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
             if anView == nil {
                 anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-                anView!.canShowCallout = true
+                anView!.canShowCallout = false
                 anView!.image = UIImage(named: "black_car_icon")
             }
          
@@ -189,6 +198,13 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         }
         
         return nil
+    }
+    
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        let annotation = view.annotation
+        if annotation is DriverAnnotation {
+            ratingView.hidden=false
+        }
     }
     
     func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
@@ -261,7 +277,8 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             let route = response.routes[0]
             self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
             self.txtDistance.text = String(route.distance / 1000) + " km"
-            
+            self.distance = String(route.distance / 1000) + " km"
+            self.driverDistanceDelegate.updateDriverDistance(String(route.distance / 1000) + " km")
         }
         
     }
@@ -318,7 +335,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func onOrderStatusDriveEnded(json: JSON){
         if !tripEnded {
-            let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: driver.name, start: from, end: to, type: 1, image: driverFileId, id: driverId)
+            let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: driver.name, start: from, end: to, type: 1, image: driver.fileId, id: driver.id)
             customView.rateViewDelegate = self
             self.view.addSubview(customView)
         }

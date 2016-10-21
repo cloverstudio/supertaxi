@@ -101,8 +101,8 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
             userInformation.setValue(data.data.user.user.name, forKey: UserDetails.NAME)
             userInformation.setValue(data.data.user.user.age, forKey: UserDetails.AGE)
             userInformation.setValue(data.data.user.user.note, forKey: UserDetails.NOTE)
-            userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
-            userInformation.setValue(data.data.user.avatar["fileid"].string!, forKey: UserDetails.THUMBNAIL)
+            //userInformation.setValue(data.data.user.avatar["thumbfileid"].string!, forKey: UserDetails.THUMBNAIL)
+            //userInformation.setValue(data.data.user.avatar["fileid"].string!, forKey: UserDetails.THUMBNAIL)
             userInformation.setValue("1", forKey: UserDetails.TYPE)
 
         } else {
