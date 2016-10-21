@@ -38,6 +38,7 @@ import clover_studio.com.supertaxi.utils.AnimationUtils;
 import clover_studio.com.supertaxi.utils.Const;
 import clover_studio.com.supertaxi.utils.ImageUtils;
 import clover_studio.com.supertaxi.utils.Utils;
+import clover_studio.com.supertaxi.view.CustomButton;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -55,6 +56,8 @@ public class DriverDetailsDialog extends Dialog {
     private TextView tvMobile;
     private TextView tvRating;
     private LinearLayout llStarLayout;
+    private LinearLayout llButtons;
+    private CustomButton closeButton;
 
     private OrderModel order;
     private UserModel driver;
@@ -81,6 +84,12 @@ public class DriverDetailsDialog extends Dialog {
 
         show();
 
+        if(order==null) {
+            llButtons.setVisibility(View.INVISIBLE);
+            closeButton.setVisibility(View.VISIBLE);
+
+        }
+
     }
 
     @Override
@@ -100,6 +109,8 @@ public class DriverDetailsDialog extends Dialog {
         tvMobile = (TextView) findViewById(R.id.tvMobileValue);
         tvRating = (TextView) findViewById(R.id.tvKRatingValue);
         llStarLayout = (LinearLayout) findViewById(R.id.ratingStars);
+        llButtons=(LinearLayout) findViewById(R.id.llButtons);
+        closeButton = (CustomButton) findViewById(R.id.fullWidthCloseButton);
 
         if(driverData != null){
             String urlAvatar = Utils.getAvatarUrl(driverData);
@@ -121,7 +132,7 @@ public class DriverDetailsDialog extends Dialog {
                 llStarLayout.getChildAt(i).setSelected(true);
             }
 
-            findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.fullWidthCloseButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     DriverDetailsDialog.this.dismiss();
@@ -156,6 +167,13 @@ public class DriverDetailsDialog extends Dialog {
             for (int i = 0; i < rating; i++) {
                 llStarLayout.getChildAt(i).setSelected(true);
             }
+
+            findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DriverDetailsDialog.this.dismiss();
+                }
+            });
 
             findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
                 @Override

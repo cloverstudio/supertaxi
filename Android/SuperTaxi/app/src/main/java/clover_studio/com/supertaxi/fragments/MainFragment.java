@@ -66,6 +66,7 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
     @Override
     public void onResume() {
         super.onResume();
+        locationSourceListener = new LocationSourceListener(getActivity(), onMyLocationChangedListener);
         locationSourceListener.getBestAvailableProvider();
         if (googleMap != null) {
             googleMap.setLocationSource(locationSourceListener);
@@ -78,6 +79,7 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
         locationSourceListener.deactivate();
         stopChecking = true;
         handlerForCheck.removeCallbacksAndMessages(null);
+        locationSourceListener=null;
     }
 
     @Override
@@ -89,7 +91,8 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
     @SuppressWarnings("MissingPermission")
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        loadingProgress.setVisibility(View.GONE);
+
+       loadingProgress.setVisibility(View.GONE);
 
         this.googleMap = googleMap;
 
@@ -115,6 +118,7 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
         }
 
         if (myLocation == null) {
+
             myLocation = getLastKnownLocation();
 
         }
@@ -125,6 +129,7 @@ public class MainFragment extends BaseFragment implements OnMapReadyCallback {
             updateCoordinates(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 
             if (myLocationTempMarker == null) {
+
                 myLocationTempMarker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_my_location)));
             }
         }

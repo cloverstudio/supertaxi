@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
@@ -101,9 +103,14 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
 
         initViews(rootView);
 
-        mapFragment = new TouchableMapFragment();
-        getFragmentManager().beginTransaction().add(layoutForMap.getId(), mapFragment, "TAG").commit();
-        mapFragment.getMapAsync(DriverMainFragment.this);
+        if (getFragmentManager().findFragmentByTag("TAG") == null) {
+            mapFragment = new TouchableMapFragment();
+            getFragmentManager().beginTransaction().add(layoutForMap.getId(), mapFragment, "TAG").commit();
+            mapFragment.getMapAsync(DriverMainFragment.this);
+        } else {
+            mapFragment = (TouchableMapFragment) getFragmentManager().findFragmentByTag("TAG");
+            mapFragment.getMapAsync(DriverMainFragment.this);
+        }
 
         checkForOpenOrder();
         checkForOtherTaxi();
@@ -114,10 +121,10 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
     @Override
     public void onResume() {
         super.onResume();
-        if(stopChecking == true){
+        if (stopChecking == true) {
             stopChecking = false;
             checkAfterFiveSeconds();
-            if(acceptedOrder != null){
+            if (acceptedOrder != null) {
                 checkOrderStatus(acceptedOrder);
             }
         }
@@ -133,7 +140,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         super.onDestroy();
     }
 
-    private void initViews(View rootView){
+    private void initViews(View rootView) {
         ibMyLocation = (ImageButton) rootView.findViewById(R.id.ibMyLocation);
         layoutForMap = (FrameLayout) rootView.findViewById(R.id.frameForMap);
         loadingProgress = (ProgressBar) rootView.findViewById(R.id.progressBarLoading);
@@ -149,7 +156,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         ibMyLocation.setOnClickListener(onMyLocationClicked);
     }
 
-    private void fillWithUserRequestInfo(OrderModel model){
+    private void fillWithUserRequestInfo(OrderModel model) {
         TextView tvName = (TextView) rlUserDetails.findViewById(R.id.tvName);
         TextView tvAddressFrom = (TextView) rlUserDetails.findViewById(R.id.tvAddressFrom);
         TextView tvAddressTo = (TextView) rlUserDetails.findViewById(R.id.tvAddressTo);
@@ -165,7 +172,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         animateUserLayout();
     }
 
-    private void animateUserLayout(){
+    private void animateUserLayout() {
         rlUserDetails.setVisibility(View.VISIBLE);
 
         AnimationUtils.translateY(rlUserDetails, -getResources().getDisplayMetrics().heightPixels / 2, 0, 300, new AnimatorListenerAdapter() {
@@ -179,9 +186,9 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         AnimationUtils.translateY(llButtons, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()), 0, 300, null);
     }
 
-    private void animateBackUserLayout(boolean returnToPendingScreen){
+    private void animateBackUserLayout(boolean returnToPendingScreen) {
 
-        if(returnToPendingScreen){
+        if (returnToPendingScreen) {
             screenStatus = Const.MainDriverStatus.PENDING;
         }
 
@@ -204,7 +211,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         AnimationUtils.translateY(llButtons, 0, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()), 300, null);
     }
 
-    private void acceptOrderLayoutInteract(OrderModel model){
+    private void acceptOrderLayoutInteract(OrderModel model) {
         screenStatus = Const.MainDriverStatus.ORDER_ACCEPTED;
 
         MapsUtils.setMapParentLayoutParams(0, 0, layoutForMap);
@@ -227,7 +234,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         drawRoute(Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER, model, 100);
     }
 
-    private void setStartTripLayout(){
+    private void setStartTripLayout() {
         rlStartEndTripLayout.setVisibility(View.VISIBLE);
         AnimationUtils.translateY(rlStartEndTripLayout, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()), 0, 300, new AnimatorListenerAdapter() {
             @Override
@@ -244,7 +251,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         tvDistanceLabel.setText(getString(R.string.distance_between__user_and_you_));
     }
 
-    private void animateBackStartTrip(){
+    private void animateBackStartTrip() {
 
         MapsUtils.setMapParentLayoutParams(null, 0, layoutForMap);
 
@@ -262,7 +269,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         });
     }
 
-    private void setEndTripButton(){
+    private void setEndTripButton() {
         final Button endTrip = (Button) rlStartEndTripLayout.findViewById(R.id.buttonEndTrip);
         final Button startTrip = (Button) rlStartEndTripLayout.findViewById(R.id.buttonStartTrip);
         AnimationUtils.fade(startTrip, 1, 0, 150, new AnimatorListenerAdapter() {
@@ -317,33 +324,39 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
 
         new MapStateListener(googleMap, mapFragment, getActivity()) {
             @Override
-            public void onMapTouched() {}
+            public void onMapTouched() {
+            }
 
             @Override
-            public void onMapReleased() {}
+            public void onMapReleased() {
+            }
 
             @Override
-            public void onMapUnsettled() {}
+            public void onMapUnsettled() {
+            }
 
             @Override
-            public void onMapSettled() {}
+            public void onMapSettled() {
+            }
 
             @Override
-            public void onMapChangeCamera(CameraPosition cameraPosition) {}
+            public void onMapChangeCamera(CameraPosition cameraPosition) {
+            }
         };
 
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if(acceptedOrder != null){
-            if(marker.getSnippet() != null && marker.getSnippet().equals(acceptedOrder._id)){
+        if (acceptedOrder != null) {
+            if (marker.getSnippet() != null && marker.getSnippet().equals(acceptedOrder._id)) {
                 DialogUserRequestDetails.startDialog(getActivity(), acceptedOrder, screenStatus);
             }
-        }else if(marker.getSnippet() != null){
-            if(otherTaxiMarkers.containsKey(marker.getSnippet())){
-                if(otherTaxiData.containsKey(marker.getSnippet())){
+        } else if (marker.getSnippet() != null) {
+            if (otherTaxiMarkers.containsKey(marker.getSnippet())) {
+                if (otherTaxiData.containsKey(marker.getSnippet())) {
                     DriverListResponse.DriverData item = otherTaxiData.get(marker.getSnippet());
+                    Log.d("driverrrr", "driver");
                     DriverDetailsDialog.startDialog(getActivity(), item);
                 }
             }
@@ -354,25 +367,26 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
     @Override
     protected void onMyLocationChanged(Location myLocationNew) {
         super.onMyLocationChanged(myLocationNew);
-        if(screenStatus == Const.MainDriverStatus.START_TRIP){
+        if (screenStatus == Const.MainDriverStatus.START_TRIP) {
             LogCS.i("LOG", "UPDATE START TRIP");
             drawRoute(Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES, acceptedOrder, 100);
-        }if(screenStatus == Const.MainDriverStatus.ORDER_ACCEPTED){
+        }
+        if (screenStatus == Const.MainDriverStatus.ORDER_ACCEPTED) {
             LogCS.i("LOG", "UPDATE ORDER ACCEPTED");
             drawRoute(Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER, acceptedOrder, 100);
         }
     }
 
-    private void checkForOpenOrder(){
-        if(screenStatus != Const.MainDriverStatus.PENDING){
+    private void checkForOpenOrder() {
+        if (screenStatus != Const.MainDriverStatus.PENDING) {
             checkAfterFiveSeconds();
             return;
         }
-        if(stopChecking){
+        if (stopChecking) {
             return;
         }
 
-        if(myLocation == null){
+        if (myLocation == null) {
             checkAfterFiveSeconds();
             return;
         }
@@ -390,7 +404,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
 
                 LogCS.i("LOG", "Get open order: " + model.data.order);
 
-                if(model.data.order != null){
+                if (model.data.order != null) {
 
                     screenStatus = Const.MainDriverStatus.OPEN_ORDER_SHOWED;
 
@@ -413,7 +427,8 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
                     accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            manageOrder(Const.ManageOrderType.ACCEPT_ORDER, model.data.order);;
+                            manageOrder(Const.ManageOrderType.ACCEPT_ORDER, model.data.order);
+                            ;
                         }
                     });
 
@@ -431,15 +446,15 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         });
     }
 
-    private void checkForOtherTaxi(){
-        if(screenStatus != Const.MainDriverStatus.PENDING){
+    private void checkForOtherTaxi() {
+        if (screenStatus != Const.MainDriverStatus.PENDING) {
             return;
         }
-        if(stopChecking){
+        if (stopChecking) {
             return;
         }
 
-        if(myLocation == null){
+        if (myLocation == null) {
             return;
         }
 
@@ -454,20 +469,20 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
 
                 LogCS.i("LOG", "Get other taxi");
 
-                for(DriverListResponse.DriverData item : response.body().data.drivers){
-                    if(item.currentLocation != null && item.currentLocation.length > 1){
+                for (DriverListResponse.DriverData item : response.body().data.drivers) {
+                    if (item.currentLocation != null && item.currentLocation.length > 1) {
 
-                        if(otherTaxiMarkers.containsKey(item._id)){
+                        if (otherTaxiMarkers.containsKey(item._id)) {
                             Marker itemMarker = otherTaxiMarkers.get(item._id);
                             LatLng newLocation = new LatLng(item.currentLocation[1], item.currentLocation[0]);
-                            if(MapsUtils.isSameLocation(itemMarker.getPosition(), newLocation)){
+                            if (MapsUtils.isSameLocation(itemMarker.getPosition(), newLocation)) {
                                 //same position, do nothing for now
-                            }else{
+                            } else {
                                 itemMarker.setRotation(MapsUtils.getBearingForLocation(itemMarker.getPosition(), newLocation));
                                 itemMarker.setPosition(newLocation);
                             }
-                        }else{
-                            if(!item._id.equals(Utils.getMyId())){
+                        } else {
+                            if (!item._id.equals(Utils.getMyId())) {
                                 Marker newMarker = googleMap.addMarker(new MarkerOptions()
                                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).rotation(0).position(new LatLng(item.currentLocation[1], item.currentLocation[0])));
                                 otherTaxiMarkers.put(item._id, newMarker);
@@ -489,11 +504,11 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         });
     }
 
-    private void checkOrderStatus(final OrderModel orderModel){
-        if(screenStatus == Const.MainDriverStatus.PENDING){
+    private void checkOrderStatus(final OrderModel orderModel) {
+        if (screenStatus == Const.MainDriverStatus.PENDING) {
             return;
         }
-        if(stopChecking){
+        if (stopChecking) {
             return;
         }
         PostCheckOrderStatusModel postModel = new PostCheckOrderStatusModel(orderModel._id);
@@ -507,14 +522,14 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
 
                 LogCS.i("LOG", "Order status: " + response.body().data.orderStatus);
 
-                if(screenStatus == Const.MainDriverStatus.PENDING){
+                if (screenStatus == Const.MainDriverStatus.PENDING) {
                     return;
                 }
 
-                if(response.body().data.orderStatus == Const.OrderStatusTypes.CANCELED){
+                if (response.body().data.orderStatus == Const.OrderStatusTypes.CANCELED) {
                     BasicDialog.startOneButtonDialog(getActivity(), getString(R.string.info), getString(R.string.user_canceled_order));
                     userCanceledTrip();
-                }else{
+                } else {
                     checkOrderStatus(orderModel);
                 }
 
@@ -528,18 +543,18 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         });
     }
 
-    private void drawRoute(final int type, OrderModel model, final int paddingMap){
-        if(type != Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES
-                && type != Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER){
+    private void drawRoute(final int type, OrderModel model, final int paddingMap) {
+        if (type != Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES
+                && type != Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER) {
             clearMapAndDriversMarkers();
         }
-        if(myLocation != null){
+        if (myLocation != null) {
 
             final LatLng locationFrom = new LatLng(model.from.location.get(1), model.from.location.get(0));
             final LatLng locationTo = new LatLng(model.to.location.get(1), model.to.location.get(0));
             final LatLng myLocationLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
-            if(type == Const.DrawRouteDriverTypes.STARTED_DRIVE_WITH_ALTERNATIVES){
+            if (type == Const.DrawRouteDriverTypes.STARTED_DRIVE_WITH_ALTERNATIVES) {
                 MapsUtils.calculateRouteWithAlternatives(myLocationLatLng, locationTo, new MapsUtils.OnRouteWithAlternativesCalculated() {
                     @Override
                     public void onSuccessCalculate(List<List<LatLng>> list, String distance, long distanceValue) {
@@ -548,29 +563,29 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
 
                         alternativesPolyline = new ArrayList<>();
                         int i = 1;
-                        for(List<LatLng> item : list){
+                        for (List<LatLng> item : list) {
                             Polyline itemPoly = null;
-                            if(i == 1){
+                            if (i == 1) {
                                 itemPoly = MapsUtils.drawPolyLines(item, googleMap, true, paddingMap, null, null);
-                            }else{
+                            } else {
                                 itemPoly = MapsUtils.drawPolyLinesAlternative(item, googleMap, true, paddingMap);
                             }
-                            i ++;
-                            if(itemPoly != null) alternativesPolyline.add(itemPoly);
+                            i++;
+                            if (itemPoly != null) alternativesPolyline.add(itemPoly);
                         }
 
-                        if(driverMarker != null){
+                        if (driverMarker != null) {
                             driverMarker.setRotation(MapsUtils.getBearingForLocation(driverMarker.getPosition(), myLocation));
                             driverMarker.setPosition(myLocationLatLng);
-                        }else{
+                        } else {
                             driverMarker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
                         }
-                        if(driverDestinationMarker == null){
+                        if (driverDestinationMarker == null) {
                             driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(locationTo).snippet(""));
                         }
                     }
                 }, getActivity());
-            }else if(type == Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES){
+            } else if (type == Const.DrawRouteDriverTypes.STARTED_DRIVE_WITHOUT_ALTERNATIVES) {
                 MapsUtils.calculateRoute(myLocationLatLng, locationTo, new MapsUtils.OnRouteCalculated() {
 
                     @Override
@@ -580,53 +595,53 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
 
                         final Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, false, paddingMap, null, null);
 
-                        if(driverMarker != null){
+                        if (driverMarker != null) {
                             driverMarker.setRotation(MapsUtils.getBearingForLocation(driverMarker.getPosition(), myLocation));
                             driverMarker.setPosition(myLocationLatLng);
-                        }else{
+                        } else {
                             driverMarker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
                         }
-                        if(driverDestinationMarker == null){
+                        if (driverDestinationMarker == null) {
                             driverDestinationMarker = googleMap.addMarker(new MarkerOptions().position(locationTo).snippet(""));
                         }
 
-                        if(alternativesPolyline != null && alternativesPolyline.size() > 0){
-                            for(Polyline item : alternativesPolyline){
+                        if (alternativesPolyline != null && alternativesPolyline.size() > 0) {
+                            for (Polyline item : alternativesPolyline) {
                                 item.remove();
                             }
                             alternativesPolyline.clear();
                         }
 
-                        if(lastPolyline != null){
+                        if (lastPolyline != null) {
                             lastPolyline.remove();
                         }
                         lastPolyline = newPolyline;
                     }
                 }, getActivity());
-            }else if(type == Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER){
+            } else if (type == Const.DrawRouteDriverTypes.ON_ACCEPTED_ORDER) {
                 MapsUtils.calculateRoute(myLocationLatLng, locationFrom, new MapsUtils.OnRouteCalculated() {
                     @Override
                     public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
 
                         tvDistance.setText(distance + " (" + duration + ")");
 
-                        if(onAcceptDriverMarker == null){
+                        if (onAcceptDriverMarker == null) {
                             clearMapAndDriversMarkers();
                             onAcceptDriverMarker = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.map_car)).position(myLocationLatLng).rotation(90));
-                        }else{
+                        } else {
                             onAcceptDriverMarker.setRotation(MapsUtils.getBearingForLocation(onAcceptDriverMarker.getPosition(), myLocation));
                             onAcceptDriverMarker.setPosition(myLocationLatLng);
                         }
 
                         Polyline newPolyline = MapsUtils.drawPolyLines(list, googleMap, true, paddingMap, northeast, southwest);
 
-                        if(acceptedOrder != null){
-                            if(onAcceptDestinationMarker == null){
+                        if (acceptedOrder != null) {
+                            if (onAcceptDestinationMarker == null) {
                                 final ImageView ivTemp = new ImageView(getActivity());
                                 ImageUtils.setImageWithPicassoWithListener(ivTemp, Utils.getAvatarUrl(acceptedOrder.user), new Callback() {
                                     @Override
                                     public void onSuccess() {
-                                        Bitmap bitmap = MapsUtils.getBitmapWithGreenPin(getActivity(), ((BitmapDrawable)ivTemp.getDrawable()).getBitmap());
+                                        Bitmap bitmap = MapsUtils.getBitmapWithGreenPin(getActivity(), ((BitmapDrawable) ivTemp.getDrawable()).getBitmap());
                                         onAcceptDestinationMarker = googleMap.addMarker(new MarkerOptions().position(locationFrom).snippet(acceptedOrder._id).icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
                                     }
 
@@ -638,14 +653,14 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
                             }
                         }
 
-                        if(onAcceptLastPolyline != null){
+                        if (onAcceptLastPolyline != null) {
                             onAcceptLastPolyline.remove();
                         }
                         onAcceptLastPolyline = newPolyline;
 
                     }
                 }, getActivity());
-            }else {
+            } else {
                 MapsUtils.calculateRoute(myLocationLatLng, locationFrom, new MapsUtils.OnRouteCalculated() {
                     @Override
                     public void onSuccessCalculate(List<LatLng> list, String distance, long distanceValue, String duration, long durationValue, LatLng northeast, LatLng southwest) {
@@ -660,7 +675,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         }
     }
 
-    private void checkAfterFiveSeconds(){
+    private void checkAfterFiveSeconds() {
         LogCS.i("LOG", "Start checker screen: " + screenStatus);
         handlerForCheck.postDelayed(new Runnable() {
             @Override
@@ -671,29 +686,29 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         }, 5000);
     }
 
-    private void manageOrder(final int type, final OrderModel order){
+    private void manageOrder(final int type, final OrderModel order) {
 
-        if(!Utils.checkForOrderType(type)){
+        if (!Utils.checkForOrderType(type)) {
             return;
         }
 
         final PostAcceptOrderModel postModel = new PostAcceptOrderModel(order._id);
         final DriverRetroApiInterface retroApiInterface = getRetrofit().create(DriverRetroApiInterface.class);
         Call<BaseModel> call = null;
-        if(type == Const.ManageOrderType.STARTED_TIME){
+        if (type == Const.ManageOrderType.STARTED_TIME) {
             call = retroApiInterface.updateStartTime(postModel, UserSingleton.getInstance().getUser().token_new);
-        }else if(type == Const.ManageOrderType.FINISHED_TIME){
+        } else if (type == Const.ManageOrderType.FINISHED_TIME) {
             call = retroApiInterface.updateFinishTime(postModel, UserSingleton.getInstance().getUser().token_new);
-        }else if(type == Const.ManageOrderType.ARRIVED_TIME){
+        } else if (type == Const.ManageOrderType.ARRIVED_TIME) {
             call = retroApiInterface.updateArriveTime(postModel, UserSingleton.getInstance().getUser().token_new);
-        }else if(type == Const.ManageOrderType.ACCEPT_ORDER){
+        } else if (type == Const.ManageOrderType.ACCEPT_ORDER) {
             call = retroApiInterface.acceptOrder(postModel, UserSingleton.getInstance().getUser().token_new);
-        }else if(type == Const.ManageOrderType.IGNORE_ORDER){
+        } else if (type == Const.ManageOrderType.IGNORE_ORDER) {
             PostCancelTripModel postModelCancel = new PostCancelTripModel(order._id, Const.CancelTypes.DRIVER_CANCELED, "");
             call = retroApiInterface.cancelTrip(postModelCancel, UserSingleton.getInstance().getUser().token_new);
         }
 
-        if (call == null){
+        if (call == null) {
             return;
         }
 
@@ -702,15 +717,15 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
             @Override
             public void onCustomSuccess(Call<BaseModel> call, Response<BaseModel> response) {
                 super.onCustomSuccess(call, response);
-                if(type == Const.ManageOrderType.STARTED_TIME){
+                if (type == Const.ManageOrderType.STARTED_TIME) {
                     onUpdateStartedTimeSuccess(order);
-                }else if(type == Const.ManageOrderType.FINISHED_TIME){
+                } else if (type == Const.ManageOrderType.FINISHED_TIME) {
                     onUpdateFinishedTimeSuccess(order);
-                }else if(type == Const.ManageOrderType.ARRIVED_TIME){
+                } else if (type == Const.ManageOrderType.ARRIVED_TIME) {
                     onUpdateArrivedTimeSuccess(order);
-                }else if(type == Const.ManageOrderType.ACCEPT_ORDER){
+                } else if (type == Const.ManageOrderType.ACCEPT_ORDER) {
                     onAcceptedSuccess(order);
-                }else if(type == Const.ManageOrderType.IGNORE_ORDER){
+                } else if (type == Const.ManageOrderType.IGNORE_ORDER) {
                     onIgnoreSuccess(order);
                 }
             }
@@ -718,46 +733,46 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
             @Override
             public void onTryAgain(Call<BaseModel> call, Response<BaseModel> response) {
                 super.onTryAgain(call, response);
-                if(response.body().code == Const.ErrorCodes.ALREADY_STARTED_OR_CANCELED
-                        || response.body().code == Const.ErrorCodes.ALREADY_ACCEPTED_OR_CANCELED){
+                if (response.body().code == Const.ErrorCodes.ALREADY_STARTED_OR_CANCELED
+                        || response.body().code == Const.ErrorCodes.ALREADY_ACCEPTED_OR_CANCELED) {
                     animateBackUserLayout(true);
-                }else{
+                } else {
                     manageOrder(type, order);
                 }
             }
 
             @Override
             public void onCustomFailed(Call<BaseModel> call, Response<BaseModel> response) {
-                if(response.body().code == Const.ErrorCodes.ALREADY_STARTED_OR_CANCELED
-                        || response.body().code == Const.ErrorCodes.ALREADY_ACCEPTED_OR_CANCELED){
+                if (response.body().code == Const.ErrorCodes.ALREADY_STARTED_OR_CANCELED
+                        || response.body().code == Const.ErrorCodes.ALREADY_ACCEPTED_OR_CANCELED) {
                     animateBackUserLayout(true);
-                }else{
+                } else {
                     super.onCustomFailed(call, response);
                 }
             }
         });
     }
 
-    private void onAcceptedSuccess(OrderModel order){
+    private void onAcceptedSuccess(OrderModel order) {
         acceptedOrder = order;
         acceptOrderLayoutInteract(order);
     }
 
-    private void onIgnoreSuccess(OrderModel order){
+    private void onIgnoreSuccess(OrderModel order) {
         animateBackUserLayout(true);
     }
 
-    private void onUpdateArrivedTimeSuccess(OrderModel order){
+    private void onUpdateArrivedTimeSuccess(OrderModel order) {
 
     }
 
-    private void clearMapAndDriversMarkers(){
+    private void clearMapAndDriversMarkers() {
         googleMap.clear();
         otherTaxiMarkers.clear();
         otherTaxiData.clear();
     }
 
-    private void onUpdateStartedTimeSuccess(OrderModel order){
+    private void onUpdateStartedTimeSuccess(OrderModel order) {
         clearMapAndDriversMarkers();
         setEndTripButton();
         screenStatus = Const.MainDriverStatus.START_TRIP;
@@ -765,7 +780,7 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         drawRoute(Const.DrawRouteDriverTypes.STARTED_DRIVE_WITH_ALTERNATIVES, acceptedOrder, 100);
     }
 
-    private void onUpdateFinishedTimeSuccess(OrderModel order){
+    private void onUpdateFinishedTimeSuccess(OrderModel order) {
         setDataToNull();
         clearMapAndDriversMarkers();
         gotoMyLocation();
@@ -775,31 +790,31 @@ public class DriverMainFragment extends MainFragment implements GoogleMap.OnMark
         acceptedOrder = null;
     }
 
-    public void cancelTripClearMap(){
-        if(acceptedOrder != null){
+    public void cancelTripClearMap() {
+        if (acceptedOrder != null) {
             screenStatus = Const.MainDriverStatus.PENDING;
             manageOrder(Const.ManageOrderType.IGNORE_ORDER, acceptedOrder);
-            if(rlStartEndTripLayout.getVisibility() == View.VISIBLE){
+            if (rlStartEndTripLayout.getVisibility() == View.VISIBLE) {
                 animateBackStartTrip();
             }
             acceptedOrder = null;
         }
     }
 
-    private void userCanceledTrip(){
+    private void userCanceledTrip() {
         setDataToNull();
         animateBackUserLayout(true);
-        if(rlStartEndTripLayout.getVisibility() == View.VISIBLE){
+        if (rlStartEndTripLayout.getVisibility() == View.VISIBLE) {
             animateBackStartTrip();
         }
         acceptedOrder = null;
     }
 
-    public void setDataToNull(){
+    public void setDataToNull() {
         driverDestinationMarker = null;
         driverMarker = null;
         lastPolyline = null;
-        if(alternativesPolyline != null) alternativesPolyline.clear();
+        if (alternativesPolyline != null) alternativesPolyline.clear();
         alternativesPolyline = null;
         onAcceptDestinationMarker = null;
         onAcceptDriverMarker = null;

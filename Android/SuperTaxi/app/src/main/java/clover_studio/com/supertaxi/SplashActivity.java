@@ -27,7 +27,7 @@ import clover_studio.com.supertaxi.utils.Utils;
 public class SplashActivity extends BaseActivity {
 
     private BasicDialog.TwoButtonDialogListener twoButtonDialogListener;
-
+    public static boolean firstLaunch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +46,11 @@ public class SplashActivity extends BaseActivity {
             public void run() {
                 if (SuperTaxiApp.getPreferences().getCustomBoolean(Const.PreferencesKey.USER_CREATED) &&
                         SuperTaxiApp.getPreferences().getCustomBoolean(Const.PreferencesKey.REMEMBER_ME)) {
-
+                    firstLaunch=true;
                     HomeActivity.startActivity(getActivity(), UserSingleton.getInstance().getUserType());
 
                 } else {
+                    firstLaunch=true;
                     LoginActivity.startActivity(getActivity());
                 }
                 finish();

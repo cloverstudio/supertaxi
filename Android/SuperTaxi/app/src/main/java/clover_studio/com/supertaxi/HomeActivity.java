@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -32,6 +33,8 @@ import com.balysv.materialmenu.MaterialMenuView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import clover_studio.com.supertaxi.api.retrofit.CustomResponse;
 import clover_studio.com.supertaxi.api.retrofit.UserRetroApiInterface;
@@ -92,7 +95,6 @@ public class HomeActivity extends BaseActivity {
     //**********FOR SIDEBAR*****//
     private float lastTranslate = 0.0f;
     private boolean isDrawerOpened;
-
     DrawerLayout dlDrawerLayout;
     LinearLayout llSidebarDrawer;
     LinearLayout llMainContent;
@@ -112,6 +114,16 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(!SplashActivity.firstLaunch) {
+            Intent i = getBaseContext().getPackageManager()
+                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            startActivity(i);
+            ;
+        } else {
+            SplashActivity.firstLaunch=false;
+        }
 
         setContentView(R.layout.activity_home);
         setToolbar(R.id.tToolbar, R.layout.custom_toolbar_title_menu_left_image_right);
@@ -125,6 +137,7 @@ public class HomeActivity extends BaseActivity {
         rlForMainFragment = (RelativeLayout) findViewById(R.id.rlForMainFragment);
 
         frManager = getSupportFragmentManager();
+        frManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         initOtherFragments();
         setInitialFragment();
@@ -169,7 +182,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setInitialFragment() {
-
         activeFragmentTag = mainFragment.getClass().getName();
         frManager.beginTransaction().add(rlForMainFragment.getId(), mainFragment, activeFragmentTag).commit();
 
