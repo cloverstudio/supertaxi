@@ -24,7 +24,12 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     @IBOutlet weak var driverStartFee: UILabel!
     @IBOutlet weak var driverTelNum: UILabel!
     @IBOutlet weak var driverRatingView: UIView!
+    @IBOutlet weak var driverRatingSecondStar: UIImageView!
+    @IBOutlet weak var driverRatingThirdStar: UIImageView!
+    @IBOutlet weak var driverRatingFifthStar: UIImageView!
     
+    @IBOutlet weak var driverRatingFourthStar: UIImageView!
+    @IBOutlet weak var driverRatingFirstStar: UIImageView!
     let UserInformation = NSUserDefaults.standardUserDefaults()
     var apiManager: ApiManager!
     var driversList = [DriverInfoModel]()
@@ -124,6 +129,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
                     driverCarRegistration.text = driver.car_registration
                     //driverTelNum.text = driver.telNum
                     driverStartFee.text = String(driver.fee_start)
+                    setAverageRating(driver.averageRate)
                     driverInfoView.hidden = false
                 }
             }
@@ -294,5 +300,36 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     func onOpenOrderError(error: NSInteger) {
         
     }
+    
+    func setAverageRating(averageRating: Float) {
+        let yellowStar = UIImage(named: "small_star_active")
+        let grayStar = UIImage(named: "gray_star")
+        driverRatingFirstStar.image = grayStar
+        driverRatingSecondStar.image = grayStar
+        driverRatingThirdStar.image = grayStar
+        driverRatingFourthStar.image = grayStar
+        driverRatingFifthStar.image = grayStar
+        if averageRating >= 0.5 {
+            driverRatingFirstStar.image = yellowStar
+        }
+        
+        if averageRating >= 1.5 {
+            driverRatingSecondStar.image = yellowStar
+        }
+        
+        if averageRating >= 2.5 {
+            driverRatingThirdStar.image = yellowStar
+        }
+        
+        if averageRating >= 3.5 {
+            driverRatingFourthStar.image = yellowStar
+        }
+        
+        if averageRating >= 4.5 {
+            driverRatingFifthStar.image = yellowStar
+        }
+        
+    }
+    
 
 }

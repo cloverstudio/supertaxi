@@ -1293,6 +1293,10 @@
                     <connections>
                         <outlet property="avatar" destination="quW-P3-1V4" id="JfD-5c-3kg"/>
                         <outlet property="contactView" destination="jwS-34-QTY" id="M1R-QJ-7zD"/>
+                        <outlet property="driverRatingFifthStar" destination="2zm-Ad-0Ya" id="hIe-tB-hK2"/>
+                        <outlet property="driverRatingFourthStar" destination="HWP-TW-JTp" id="r61-o4-WiJ"/>
+                        <outlet property="driverRatingSecondStar" destination="AuY-lI-DP7" id="S4b-7h-zow"/>
+                        <outlet property="driverRatingThirdStar" destination="Auf-5U-Srg" id="mAq-k8-eo6"/>
                         <outlet property="txtCarRegistraion" destination="8H2-JD-EqN" id="Xq9-zG-Cd3"/>
                         <outlet property="txtCarType" destination="lh1-Ub-CzK" id="5LG-aC-Gj0"/>
                         <outlet property="txtDistance" destination="zxq-8v-AAO" id="26D-VY-cEf"/>
@@ -1555,6 +1559,11 @@
                         <outlet property="carRegistration" destination="AS7-3v-e3g" id="2PZ-g2-4mz"/>
                         <outlet property="carType" destination="fzI-2b-g6v" id="tuY-DF-7dw"/>
                         <outlet property="driverRating" destination="H4v-LQ-8Te" id="TE3-82-xeN"/>
+                        <outlet property="driverRatingFifthStar" destination="CEi-gK-J4v" id="9a1-iq-P0u"/>
+                        <outlet property="driverRatingFirstStar" destination="AOu-TB-Ryu" id="WH3-cc-mxe"/>
+                        <outlet property="driverRatingFourthStar" destination="lPs-b7-fm0" id="lEo-ED-ATx"/>
+                        <outlet property="driverRatingSecondStar" destination="3e6-4w-kZ4" id="4lV-Ib-RUg"/>
+                        <outlet property="driverRatingThirdStar" destination="HNr-lb-bzZ" id="cH7-sj-kge"/>
                         <outlet property="mapView" destination="0Vr-83-TmH" id="8JC-wH-oAL"/>
                         <outlet property="navView" destination="flk-av-1Ri" id="88s-VH-rcV"/>
                         <outlet property="ratingView" destination="fdB-q6-rMp" id="3qj-Jl-oUn"/>
@@ -1818,74 +1827,74 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="feg-pe-Zj9" userLabel="fee/kmLine">
-                                        <rect key="frame" x="23" y="133" width="329" height="1"/>
+                                        <rect key="frame" x="125" y="94" width="125" height="94"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Fee / km" textAlignment="natural" minimumFontSize="17" id="75i-yy-1Jn">
-                                        <rect key="frame" x="23" y="192" width="329" height="30"/>
+                                        <rect key="frame" x="125" y="252" width="125" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <view contentMode="scaleToFill" id="LD0-ig-vZ9" userLabel="CarRegNumberLine">
-                                        <rect key="frame" x="23" y="177" width="329" height="2"/>
+                                        <rect key="frame" x="125" y="94" width="125" height="94"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Start fee" textAlignment="natural" minimumFontSize="17" id="w25-xf-64m">
-                                        <rect key="frame" x="23" y="146" width="329" height="30"/>
+                                        <rect key="frame" x="125" y="252" width="125" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <view contentMode="scaleToFill" id="2Vx-3g-ZHl" userLabel="CarRegNumberLine">
-                                        <rect key="frame" x="23" y="267" width="329" height="1"/>
+                                        <rect key="frame" x="125" y="94" width="125" height="94"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Car reg number" textAlignment="natural" minimumFontSize="17" id="i63-aL-wXD">
-                                        <rect key="frame" x="23" y="101" width="329" height="30"/>
+                                        <rect key="frame" x="125" y="252" width="125" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                                     </textField>
                                     <view contentMode="scaleToFill" id="YAe-ea-e1c" userLabel="CarTypeLine">
-                                        <rect key="frame" x="23" y="87" width="329" height="1"/>
+                                        <rect key="frame" x="125" y="94" width="125" height="94"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Car type" textAlignment="natural" minimumFontSize="17" id="O7V-od-Ior">
-                                        <rect key="frame" x="23" y="55" width="329" height="30"/>
+                                        <rect key="frame" x="125" y="252" width="125" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                     </textField>
                                     <view contentMode="scaleToFill" id="Ljd-6r-mRF" userLabel="NameLine">
-                                        <rect key="frame" x="23" y="43" width="329" height="2"/>
+                                        <rect key="frame" x="125" y="94" width="125" height="94"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" id="1Co-bn-xoK">
-                                        <rect key="frame" x="23" y="10" width="329" height="30"/>
+                                        <rect key="frame" x="125" y="252" width="125" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone Number" textAlignment="natural" minimumFontSize="17" id="bYv-3P-VEc">
-                                        <rect key="frame" x="23" y="238" width="329" height="30"/>
+                                        <rect key="frame" x="125" y="252" width="125" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                     </textField>
                                     <view contentMode="scaleToFill" id="RMy-eP-qOz" userLabel="CarRegNumberLine">
-                                        <rect key="frame" x="23" y="222" width="329" height="1"/>
+                                        <rect key="frame" x="125" y="94" width="125" height="94"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
@@ -2128,6 +2137,11 @@
                         <outlet property="driverCarType" destination="yMK-8o-oIn" id="yJP-Cf-sT7"/>
                         <outlet property="driverInfoView" destination="td8-fi-cOd" id="qI3-Tn-sZf"/>
                         <outlet property="driverName" destination="7df-GN-fz9" id="Hp6-Jj-QnZ"/>
+                        <outlet property="driverRatingFifthStar" destination="Gb5-3I-C6T" id="Zo4-Bg-Opi"/>
+                        <outlet property="driverRatingFirstStar" destination="6Gk-c1-JWA" id="ahP-FU-lHz"/>
+                        <outlet property="driverRatingFourthStar" destination="Fqs-d0-sWF" id="Pt8-jd-yhx"/>
+                        <outlet property="driverRatingSecondStar" destination="Fui-OP-aea" id="qHZ-uh-3bv"/>
+                        <outlet property="driverRatingThirdStar" destination="aYt-fC-RBD" id="tUw-6R-hee"/>
                         <outlet property="driverRatingView" destination="Cd2-er-9jW" id="mWd-LY-fvr"/>
                         <outlet property="driverStartFee" destination="38y-Rc-st2" id="GAS-q3-N4i"/>
                         <outlet property="mapView" destination="bsD-yO-M8g" id="Otg-rl-pfp"/>
@@ -2137,7 +2151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GSR-Fd-KIO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="923.5" y="1201.5"/>
+            <point key="canvasLocation" x="922" y="1194"/>
         </scene>
         <!--Forgot Password View Controller-->
         <scene sceneID="uW8-TI-A1Y">

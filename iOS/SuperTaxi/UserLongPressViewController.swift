@@ -29,6 +29,11 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     @IBOutlet weak var startFee: UILabel!
     @IBOutlet weak var telNum: UILabel!
     @IBOutlet weak var driverRating: UIView!
+    @IBOutlet weak var driverRatingFirstStar: UIImageView!
+    @IBOutlet weak var driverRatingSecondStar: UIImageView!
+    @IBOutlet weak var driverRatingThirdStar: UIImageView!
+    @IBOutlet weak var driverRatingFourthStar: UIImageView!
+    @IBOutlet weak var driverRatingFifthStar: UIImageView!
     
     var locationManager: CLLocationManager!
     
@@ -203,6 +208,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
         let annotation = view.annotation
         if annotation is DriverAnnotation {
+            setAverageRating(driver.averageRate)
             ratingView.hidden=false
         }
     }
@@ -341,6 +347,36 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         }
         
         tripEnded = true
+        
+    }
+    
+    func setAverageRating(averageRating: Float) {
+        let yellowStar = UIImage(named: "small_star_active")
+        let grayStar = UIImage(named: "gray_star")
+        driverRatingFirstStar.image = grayStar
+        driverRatingSecondStar.image = grayStar
+        driverRatingThirdStar.image = grayStar
+        driverRatingFourthStar.image = grayStar
+        driverRatingFifthStar.image = grayStar
+        if averageRating >= 0.5 {
+            driverRatingFirstStar.image = yellowStar
+        }
+        
+        if averageRating >= 1.5 {
+            driverRatingSecondStar.image = yellowStar
+        }
+        
+        if averageRating >= 2.5 {
+            driverRatingThirdStar.image = yellowStar
+        }
+        
+        if averageRating >= 3.5 {
+            driverRatingFourthStar.image = yellowStar
+        }
+        
+        if averageRating >= 4.5 {
+            driverRatingFifthStar.image = yellowStar
+        }
         
     }
     

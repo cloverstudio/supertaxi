@@ -24,6 +24,11 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
     @IBOutlet var txtCarRegistraion: UILabel!
     @IBOutlet var txtFeeStart: UILabel!
     @IBOutlet var avatar: UIImageView!
+    @IBOutlet weak var driverRatingFirstStar: UIImageView!
+    @IBOutlet weak var driverRatingSecondStar: UIImageView!
+    @IBOutlet weak var driverRatingThirdStar: UIImageView!
+    @IBOutlet weak var driverRatingFourthStar: UIImageView!
+    @IBOutlet weak var driverRatingFifthStar: UIImageView!
     
     var driver: DriverInfoModel!
     var driverFileId: String!
@@ -58,6 +63,7 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
             txtCarType.text = driver.car_type
             txtCarRegistraion.text = driver.car_registration
             txtFeeStart.text = String(driver.fee_start)
+            setAverageRating(driver.averageRate)
         }
         
         apiManager = ApiManager()
@@ -98,6 +104,36 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
     
     @IBAction func btnCallDriver(sender: AnyObject) {
         UIApplication.sharedApplication().openURL(NSURL(string: "telprompt://" + driverPhoneNumber)!)
+    }
+    
+    func setAverageRating(averageRating: Float) {
+        let yellowStar = UIImage(named: "small_star_active")
+        let grayStar = UIImage(named: "gray_star")
+       // driverRatingFirstStar.image = grayStar
+        driverRatingSecondStar.image = grayStar
+        driverRatingThirdStar.image = grayStar
+        driverRatingFourthStar.image = grayStar
+        driverRatingFifthStar.image = grayStar
+        if averageRating >= 0.5 {
+           // driverRatingFirstStar.image = yellowStar
+        }
+        
+        if averageRating >= 1.5 {
+            driverRatingSecondStar.image = yellowStar
+        }
+        
+        if averageRating >= 2.5 {
+            driverRatingThirdStar.image = yellowStar
+        }
+        
+        if averageRating >= 3.5 {
+            driverRatingFourthStar.image = yellowStar
+        }
+        
+        if averageRating >= 4.5 {
+            driverRatingFifthStar.image = yellowStar
+        }
+        
     }
     
     
