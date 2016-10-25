@@ -34,6 +34,8 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     @IBOutlet weak var driverRatingThirdStar: UIImageView!
     @IBOutlet weak var driverRatingFourthStar: UIImageView!
     @IBOutlet weak var driverRatingFifthStar: UIImageView!
+    @IBOutlet weak var txtAboveTheDistance1: UILabel!
+    @IBOutlet weak var txtAboveTheDistance2: UILabel!
     
     var locationManager: CLLocationManager!
     
@@ -49,12 +51,13 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     var helperLocation: CLLocationCoordinate2D!
     var distance:String!
     var driverDistanceDelegate:DriverUpdateDistance!
+
     
     var orderId: String!
     
     var tripStarted = false
     var tripEnded = false
-    
+    var timer:NSTimer!
     var angle: Float! = 0
     
     override func viewDidLoad() {
@@ -107,7 +110,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         driverLoc = CLLocationCoordinate2D(latitude: driverLocation[1].double!, longitude: driverLocation[0].double!)
         createRoute(driverLoc, endLocation: from)
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
         
     }
     
@@ -246,6 +249,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             let destinationAnnotation = MKPointAnnotation()
             destinationAnnotation.title = ""
             
+            
             if let location = destinationPlacemark.location {
                 destinationAnnotation.coordinate = location.coordinate
             }
@@ -314,7 +318,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             
             let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
                 UIAlertAction in
-                
+                self.timer.invalidate()
                 let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
                 self.navigationController?.pushViewController(viewController!, animated: true)
             }
@@ -323,6 +327,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             alert.addAction(okAction)
             self.presentViewController(alert, animated: true, completion: nil)
         } else {
+            self.timer.invalidate()
             let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
             self.navigationController?.pushViewController(viewController!, animated: true)
         }
@@ -330,6 +335,8 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func onOrderSrarusStartedDrive(json: JSON){
         if !tripStarted {
+            txtAboveTheDistance1.text = "DISTANCE TO"
+            txtAboveTheDistance2.text = "DESTINATION:"
             createRoute(driverLoc, endLocation: to)
             cancelTripBottom.enabled = false
         }
@@ -341,7 +348,11 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func onOrderStatusDriveEnded(json: JSON){
         if !tripEnded {
-            let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: driver.name, start: from, end: to, type: 1, image: driver.fileId, id: driver.id)
+            if driver.fileId == nil {
+                driver.fileId = ""
+            }
+            let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: driver.name, start: from, end: to, type: 1, image: driver.fileId, id: driver.id, driver: driver)
+            
             customView.rateViewDelegate = self
             self.view.addSubview(customView)
         }
@@ -382,6 +393,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func onDriveRated() {
         helperLocation = nil
+        self.timer.invalidate()
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
 
@@ -389,6 +401,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func onDriveRatedError(){
         helperLocation = nil
+        self.timer.invalidate()
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
     }

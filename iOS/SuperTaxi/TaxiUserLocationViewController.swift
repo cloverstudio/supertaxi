@@ -27,6 +27,9 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     @IBOutlet var addressTo: UILabel!
     @IBOutlet var txtUserNote: UILabel!
     @IBOutlet var txtUserName: UILabel!
+    @IBOutlet weak var txtAboveTheDistance1: UILabel!
+    @IBOutlet weak var txtAboveTheDistance2: UILabel!
+    
     
     var locationManager: CLLocationManager!
     let UserInformation = NSUserDefaults.standardUserDefaults()
@@ -117,6 +120,8 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     @IBAction func onStartTripClick(sender: AnyObject) {
         
         tripStarted = true
+        txtAboveTheDistance1.text="DISTANCE TO"
+        txtAboveTheDistance2.text="DESTINATION:"
         createRoute(driverLocation, endLocation: to)
         
         btnStartTrip.hidden = true
@@ -127,11 +132,14 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     }
     
     @IBAction func onEndTrip(sender: AnyObject) {
+        if  userFileId == nil {
+            userFileId=""
+        }
         let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: userName, start: from, end: to, type: 2, image: userFileId, id: userId)
+        
         customView.rateViewDelegate = self
         self.view.addSubview(customView)
         apiManager.updateFinishTime(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: orderId)
-        
         
     }
     

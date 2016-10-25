@@ -15,7 +15,7 @@ protocol DriverUpdateDistance {
     func updateDriverDistance( distance:String);
 }
 
-class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
+class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance, ProfileDelegate {
     
     @IBOutlet var contactView: UIView!
     @IBOutlet var txtName: UILabel!
@@ -39,11 +39,13 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
     var driverPhoneNumber: String!
     var driverId: String!
     var viewController:UserLongPressViewController!
+    var driverLoc:CLLocationCoordinate2D!
     
     var orderId: String!
     
-    let UserInformation = NSUserDefaults.standardUserDefaults()
+    let userInformation = NSUserDefaults.standardUserDefaults()
     var apiManager: ApiManager!
+    var timer:NSTimer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,17 +69,14 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
         }
         
         apiManager = ApiManager()
-        
-        distance = "3.34 km"
+        apiManager.profileDelegate = self
+        distance = "** km"
         txtDistance.text = distance
-         viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserMapWithTaxiID") as? UserLongPressViewController
-        viewController?.driver = driver
-        print("boooook")
-        viewController?.driverLocation = driverLocation
-        viewController?.from = from
-        viewController?.to = to
-        viewController?.orderId = orderId
-        viewController?.driverDistanceDelegate = self
+        driverLoc = CLLocationCoordinate2D(latitude: driverLocation[1].double!, longitude: driverLocation[0].double!)
+        calculateDistance(driverLoc,endLocation: from)
+        timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
+        
+        
         
     }
 
@@ -86,19 +85,76 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
         // Dispose of any resources that can be recreated.
     }
     
+    func getDriverLocation(){
+        print("tražim vozača")
+        self.apiManager.getProfileDetail(self.userInformation.stringForKey(UserDetails.TOKEN)!, userId: self.driver.id)
+    }
+    
+    func calculateDistance( startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+        
+        
+        let sourceLocation = startLocation
+        let destinationLocation = endLocation
+        
+        let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
+        let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
+        
+        let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
+        let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
+        
+        let sourceAnnotation = DriverAnnotation(title: driver.name, coordinate: startLocation)
+        
+        if let location = sourcePlacemark.location {
+            sourceAnnotation.coordinate = location.coordinate
+        }
+        
+      
+        let directionRequest = MKDirectionsRequest()
+        directionRequest.source = sourceMapItem
+        directionRequest.destination = destinationMapItem
+        directionRequest.transportType = .Automobile
+        
+        let directions = MKDirections(request: directionRequest)
+        
+        directions.calculateDirectionsWithCompletionHandler {
+            (response, error) -> Void in
+            
+            guard let response = response else {
+                if let error = error {
+                    print("Error: \(error)")
+                }
+                
+                return
+            }
+            
+            let route = response.routes[0]
+            self.txtDistance.text = String(route.distance / 1000) + " km"
+            self.distance = String(route.distance / 1000) + " km"
+        }
+        
+    }
+
+    
     func updateDriverDistance( distance: String) {
         txtDistance.text = distance
         self.distance = distance
     }
 
     @IBAction func showOnMap(sender: AnyObject) {
-    
-    
+        viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserMapWithTaxiID") as? UserLongPressViewController
+        viewController?.driver = driver
+        viewController?.driverLocation = driverLocation
+        viewController?.from = from
+        viewController?.to = to
+        viewController?.orderId = orderId
+        viewController?.driverDistanceDelegate = self
+        self.timer.invalidate()
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
     @IBAction func cancel(sender: AnyObject) {
-        apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
+        apiManager.cancelOrder(userInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
+        self.timer.invalidate()
         self.navigationController!.popViewControllerAnimated(true)
     }
     
@@ -136,6 +192,10 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance {
         
     }
     
+    func onProfileDetailsSuccess(json: JSON){
+        driverLoc = CLLocationCoordinate2D(latitude: json["data"]["user"]["currentLocation"][1].double!, longitude: json["data"]["user"]["currentLocation"][0].double!)
+        print(driverLoc)
+        calculateDistance(driverLoc, endLocation: from)
     
-    
+    }
 }

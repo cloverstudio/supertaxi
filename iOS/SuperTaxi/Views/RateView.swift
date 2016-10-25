@@ -21,7 +21,6 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     @IBOutlet var mainBackView: UIView!
     @IBOutlet var name: UILabel!
     @IBOutlet var time: UILabel!
-    @IBOutlet var price: UILabel!
     @IBOutlet var image: UIImageView!
     @IBOutlet var mapView: MKMapView!
     
@@ -30,19 +29,34 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     @IBOutlet var threeStars: UIButton!
     @IBOutlet var fourStars: UIButton!
     @IBOutlet var fiveStars: UIButton!
-    
+    @IBOutlet weak var priceTxtLabel: UILabel!
+    @IBOutlet weak var priceAmount: UILabel!
     var nameText: String!
     var start: CLLocationCoordinate2D!
     var end: CLLocationCoordinate2D!
     var imageFile: String!
     var type: NSInteger!
     var id: String!
+    var distance:Float!
+    var driver:DriverInfoModel!
     
     let userInformation = NSUserDefaults.standardUserDefaults()
     var apiManager: ApiManager!
     
     var rateViewDelegate: RateViewDelegate!
     
+    init(frame: CGRect, name: String, start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, type: NSInteger, image: String, id: String, driver: DriverInfoModel) {
+        super.init(frame: frame)
+        
+        self.nameText = name
+        self.start = start
+        self.end = end
+        self.imageFile = image
+        self.type = type
+        self.id = id
+        self.driver = driver
+        loadViewFromNib ()
+    }
     init(frame: CGRect, name: String, start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, type: NSInteger, image: String, id: String) {
         super.init(frame: frame)
         
@@ -52,6 +66,8 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         self.imageFile = image
         self.type = type
         self.id = id
+        priceAmount.hidden = true
+        priceTxtLabel.hidden = true
         loadViewFromNib ()
     }
     
@@ -158,6 +174,14 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
             }
             
             let route = response.routes[0]
+            self.distance = Float(route.distance)/1000
+            if self.driver != nil {
+                print(self.driver.fee_km)
+                print(self.driver.fee_start)
+                print(self.distance)
+                self.priceAmount.text = "$ " + String (format:"%.2f",Float(self.driver.fee_start) + self.distance*Float(self.driver.fee_km))
+                 }
+            
             self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
             
             self.mapView.zoomEnabled = false

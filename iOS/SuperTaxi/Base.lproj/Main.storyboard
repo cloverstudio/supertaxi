@@ -1569,6 +1569,8 @@
                         <outlet property="ratingView" destination="fdB-q6-rMp" id="3qj-Jl-oUn"/>
                         <outlet property="startFee" destination="CUT-fn-tne" id="7WJ-Ke-TZk"/>
                         <outlet property="telNum" destination="mjH-el-OUi" id="qhT-rb-KKM"/>
+                        <outlet property="txtAboveTheDistance1" destination="ORj-US-8mZ" id="Hf5-sF-UHo"/>
+                        <outlet property="txtAboveTheDistance2" destination="ReR-Xs-Dmq" id="ceZ-z2-L3c"/>
                         <outlet property="txtDistance" destination="Kkl-f0-PAs" id="8kX-TZ-RiM"/>
                         <outlet property="txtDriverName" destination="IOS-p1-yNJ" id="kk6-TB-yHq"/>
                     </connections>
@@ -2378,7 +2380,7 @@
                                         <color key="textColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.46274509800000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOU AND USER:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8fA-C0-qXa">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USER AND YOU:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8fA-C0-qXa">
                                         <frame key="frameInset" minX="2.40%" minY="35.71%" width="37.33%" height="24.29%"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="11"/>
@@ -2569,6 +2571,8 @@
                         <outlet property="btnEndTrip" destination="t1V-y3-ZRr" id="cRq-Xl-QCW"/>
                         <outlet property="btnStartTrip" destination="zIp-kt-h12" id="WzW-1G-WAJ"/>
                         <outlet property="mapView" destination="hjw-XK-f9O" id="pfh-Ql-Ucp"/>
+                        <outlet property="txtAboveTheDistance1" destination="ijx-oZ-tMT" id="jqp-38-GgB"/>
+                        <outlet property="txtAboveTheDistance2" destination="8fA-C0-qXa" id="E3O-pZ-zU0"/>
                         <outlet property="txtDistance" destination="len-6M-1b2" id="UWp-p1-MAa"/>
                         <outlet property="txtUserAge" destination="4uh-a8-NAW" id="oov-ZF-H7t"/>
                         <outlet property="txtUserName" destination="yoj-x2-SA8" id="SBq-bq-zjH"/>
