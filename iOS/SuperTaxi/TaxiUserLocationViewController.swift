@@ -13,7 +13,7 @@ import SWRevealViewController
 import SwiftyJSON
 import ImageLoader
 
-class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, RateViewDelegate {
+class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, RateViewDelegate, UpdateTimeDelegate, UpdateCoordinatesDelegate {
 
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var btnStartTrip: UIButton!
@@ -76,7 +76,8 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
         apiManager = ApiManager()
         apiManager.orderStatusDelegate = self
-
+        apiManager.updateTimeDelegate = self
+        apiManager.updateCoordinatesDelegate = self
         viewAlert.layer.cornerRadius = 5
         
         if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
@@ -117,6 +118,9 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
        
     }
     
+    
+    
+    
     @IBAction func onStartTripClick(sender: AnyObject) {
         
         tripStarted = true
@@ -131,6 +135,8 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         apiManager.updateStartTime(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: orderId)
     }
     
+    
+    
     @IBAction func onEndTrip(sender: AnyObject) {
         if  userFileId == nil {
             userFileId=""
@@ -143,6 +149,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
     }
     
+    // MARK: handle internet error
     @IBAction func onCancelTrip(sender: AnyObject) {
         apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 2, reason: "Neznam")
     }
@@ -151,6 +158,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         self.revealViewController().revealToggle(sender)
     }
     
+    // MARK: handle internet error
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         apiManager.updateCoordinates(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: (manager.location?.coordinate.latitude)!, lon: (manager.location?.coordinate.longitude)!)
         
@@ -319,6 +327,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
     }
     
+    
     func getOrderStatus(){
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -337,11 +346,17 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
             getOrderStatus()
         }
     }
-    
     func onOrderStatusError(error: NSInteger) {
-        if (tripStarted) {
-            getOrderStatus()
-        }
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            if (self.tripStarted) {
+                self.getOrderStatus()
+            }
+            
+        }))
+      
+        self.presentViewController(alert, animated: true, completion: nil)
+        
     }
     
     func onOrderStatusCanceled(json: JSON) {
@@ -383,4 +398,57 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
+    
+    func onStartTimeUpdateSuccess() {
+        
+    }
+    
+    func onStartTimeUpdateError(error:NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            if (self.tripStarted) {
+                self.apiManager.updateStartTime(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
+            }
+            
+        }))
+        
+    }
+    
+    func onFinishTimeUpdateSuccess() {
+        
+    }
+    
+    func onFinishTimeUpdateError(error: NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            if (self.tripStarted) {
+                self.apiManager.updateFinishTime(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
+            }
+            
+        }))
+    }
+    
+    func onArriveTimeUpdateSuccess() {
+        
+    }
+    
+    func onArriveTimeUpdateError(error:NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            if (self.tripStarted) {
+                self.apiManager.updateArriveTime(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
+            }
+            
+        }))
+        
+    }
+    
+    func onUpdateCoordinatesError(error:NSInteger) {
+        
+    }
+    
+    func onUpdateCoordinatesSuccess() {
+        
+    }
+    
 }

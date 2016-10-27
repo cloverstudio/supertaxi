@@ -12,7 +12,7 @@ import CoreLocation
 import SWRevealViewController
 import SwiftyJSON
 
-class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, DriverListDelegate, GetOpenOrdersDelegate  {
+class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, DriverListDelegate, GetOpenOrdersDelegate, UpdateCoordinatesDelegate  {
     
     @IBOutlet weak var driverInfoView: UIView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -55,6 +55,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         apiManager = ApiManager()
         apiManager.driversListDelegate = self
         apiManager.openOrderDelegate = self
+        apiManager.updateCoordinatesDelegate = self
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -91,7 +92,6 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         centerMap(locValue)
     }
-    
     func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
         apiManager.getDriverList(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
     }
@@ -215,7 +215,11 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     func onDriversListError(error: NSInteger) {
-        
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.apiManager.getDriverList(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
@@ -273,7 +277,6 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         }
     
     }
-    
     func getOpenOrders(){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             if (self.lat != nil && self.lon != nil){
@@ -298,7 +301,11 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     func onOpenOrderError(error: NSInteger) {
-        
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.getOpenOrders()
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     func setAverageRating(averageRating: Float) {
@@ -329,6 +336,18 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             driverRatingFifthStar.image = yellowStar
         }
         
+    }
+    
+    func onUpdateCoordinatesSuccess() {
+        
+    }
+    
+    func onUpdateCoordinatesError(error :NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.apiManager.updateCoordinates(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
 

@@ -15,7 +15,7 @@ protocol DriverUpdateDistance {
     func updateDriverDistance( distance:String);
 }
 
-class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance, ProfileDelegate {
+class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance, ProfileDelegate, OrderCancelDelegate {
     
     @IBOutlet var contactView: UIView!
     @IBOutlet var txtName: UILabel!
@@ -70,11 +70,12 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance, 
         
         apiManager = ApiManager()
         apiManager.profileDelegate = self
+        apiManager.cancelOrderDelegate = self
         distance = "** km"
         txtDistance.text = distance
         driverLoc = CLLocationCoordinate2D(latitude: driverLocation[1].double!, longitude: driverLocation[0].double!)
         calculateDistance(driverLoc,endLocation: from)
-        timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserRequestReceivedViewController.getDriverLocation), userInfo: nil, repeats: true)
         
         
         
@@ -84,7 +85,7 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance, 
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func getDriverLocation(){
         print("tražim vozača")
         self.apiManager.getProfileDetail(self.userInformation.stringForKey(UserDetails.TOKEN)!, userId: self.driver.id)
@@ -152,10 +153,10 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance, 
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
+    
     @IBAction func cancel(sender: AnyObject) {
         apiManager.cancelOrder(userInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
-        self.timer.invalidate()
-        self.navigationController!.popViewControllerAnimated(true)
+        
     }
     
     @IBAction func btnCallDriver(sender: AnyObject) {
@@ -197,5 +198,32 @@ class UserRequestReceivedViewController: UIViewController,DriverUpdateDistance, 
         print(driverLoc)
         calculateDistance(driverLoc, endLocation: from)
     
+    }
+    
+    func onProfileDetailsError(error: NSInteger) {
+        timer.invalidate()
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.getDriverLocation()
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserRequestReceivedViewController.getDriverLocation), userInfo: nil, repeats: true)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func onCancelOrderSuccess() {
+        self.timer.invalidate()
+        self.navigationController!.popViewControllerAnimated(true)
+    }
+    
+    func onCancelOrderError(error: NSInteger) {
+        self.timer.invalidate()
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.cancel(self)
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserRequestReceivedViewController.getDriverLocation), userInfo: nil, repeats: true)
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }

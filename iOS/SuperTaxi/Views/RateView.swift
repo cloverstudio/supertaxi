@@ -66,8 +66,8 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         self.imageFile = image
         self.type = type
         self.id = id
-        priceAmount.hidden = true
-        priceTxtLabel.hidden = true
+        //priceAmount.hidden = true
+        //priceTxtLabel.hidden = true
         loadViewFromNib ()
     }
     
@@ -246,7 +246,7 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     func onRateSuccess() {
         rateViewDelegate.onDriveRated()
     }
-    
+    // MARK: handle internet error
     func onRateError() {
         rateViewDelegate.onDriveRatedError()
     }

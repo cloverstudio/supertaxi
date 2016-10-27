@@ -13,7 +13,7 @@ import SWRevealViewController
 import SwiftyJSON
 
 
-class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CallOrderDelegate, OrderStatusDelegate, NearestDriverDelegate, UITableViewDelegate, UITableViewDataSource {
+class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, CallOrderDelegate, OrderStatusDelegate, NearestDriverDelegate, UITableViewDelegate, UITableViewDataSource, OrderCancelDelegate {
     
     @IBOutlet var viewFrom: UIView!
     @IBOutlet var viewTo: UIView!
@@ -64,7 +64,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     
     var orderId = ""
     var getOrderStatus = false
-    
+    var getOrderErrorCounter = 0
   
     
     var matchingItems:[MKMapItem] = []
@@ -136,6 +136,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         apiManager.callOrderDelegate = self
         apiManager.orderStatusDelegate = self
         apiManager.nearestDriverDelegate = self
+        apiManager.cancelOrderDelegate = self
         
         fromTextView.addTarget(self, action: #selector(UserHomeViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
         toTextView.addTarget(self, action: #selector(UserHomeViewController.textFieldDidChange(_:)), forControlEvents: UIControlEvents.EditingChanged)
@@ -272,8 +273,8 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         viewRequest.hidden = false
     }
     
+    
     @IBAction func cancelRequestButton(sender: AnyObject) {
-        viewRequest.hidden = true
         apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
     }
     
@@ -294,7 +295,6 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     
     
     func getOrderResult(){
-        print("dobio order")
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             self.apiManager.getOrderStatus(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
         })
@@ -329,6 +329,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         lon = center.longitude
         
         if (!isPickUpLocationSet) {
+            
             apiManager.getNearestDriver(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
         }
         
@@ -386,8 +387,20 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         getOrderResult()
     }
     
-    func onCallOrderError(error: NSInteger) {
-        print("error")
+    
+    func onCallOrderError(error: NSInteger, crewNumber: NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.apiManager.orderTaxi(self.UserInformation.stringForKey(UserDetails.TOKEN)!, latFrom: self.latFrom, lonFrom: self.lonFrom, addressFrom: self.addressFrom, latTo: self.latTo, lonTo: self.lonTo, addressTo: self.addressTo, crewNum: crewNumber)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: {(action:UIAlertAction!) in
+            
+            self.viewRequest.hidden=true
+            
+            
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+        
     }
     
     func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
@@ -504,9 +517,20 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         }
     }
     
+    
     func onOrderStatusError(error: NSInteger) {
         
-    }
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            if !self.getOrderStatus {
+                self.getOrderResult()
+            }
+            
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+       }
+    
+
     
     func onOrderStatusCanceled(json: JSON) {
         
@@ -569,6 +593,15 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         }
     }
     
+    
+    func onNearestDriveError(error: NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.apiManager.getNearestDriver(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     func textFieldDidChange(textField: UITextField) {
         if(textField.text != ""){
             
@@ -591,6 +624,20 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         } else {
             tableBackView.hidden = true
         }
+    }
+    
+    func onCancelOrderSuccess() {
+        viewRequest.hidden = true
+    }
+    
+    func onCancelOrderError(error: NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.viewRequest.hidden = false
+            self.cancelRequestButton(self)
+                   }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     // number of rows in table view

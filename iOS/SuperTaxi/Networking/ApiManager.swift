@@ -31,7 +31,7 @@ protocol SetUserDetailsDelegate {
 
 protocol CallOrderDelegate {
     func onCallOrdered(id: String)
-    func onCallOrderError(error: NSInteger)
+    func onCallOrderError(error: NSInteger, crewNumber: NSInteger)
 }
 
 protocol DriverListDelegate {
@@ -62,6 +62,11 @@ protocol OrderStatusDelegate {
     func onOrderStatusDriveEnded(json: JSON)
 }
 
+protocol OrderCancelDelegate {
+    func onCancelOrderSuccess()
+    func onCancelOrderError(error: NSInteger)
+}
+
 protocol RateDelegate {
     func onRateSuccess()
     func onRateError()
@@ -69,11 +74,29 @@ protocol RateDelegate {
 
 protocol ProfileDelegate {
     func onProfileDetailsSuccess(json: JSON)
+    func onProfileDetailsError(error: NSInteger)
 }
 
 protocol NearestDriverDelegate {
     func onNearestDriverSuccess(latitude: Double, longitude: Double)
+    func onNearestDriveError(error: NSInteger)
+    
 }
+
+protocol UpdateTimeDelegate {
+    func onStartTimeUpdateSuccess()
+    func onStartTimeUpdateError(error: NSInteger)
+    func onArriveTimeUpdateSuccess()
+    func onArriveTimeUpdateError(error: NSInteger)
+    func onFinishTimeUpdateSuccess()
+    func onFinishTimeUpdateError(error: NSInteger)
+}
+
+protocol UpdateCoordinatesDelegate {
+    func onUpdateCoordinatesSuccess()
+    func onUpdateCoordinatesError(error: NSInteger)
+}
+
 
 public class ApiManager {
     
@@ -88,6 +111,9 @@ public class ApiManager {
     var rateDelegate: RateDelegate!
     var profileDelegate: ProfileDelegate!
     var nearestDriverDelegate: NearestDriverDelegate!
+    var updateCoordinatesDelegate: UpdateCoordinatesDelegate!
+    var updateTimeDelegate: UpdateTimeDelegate!
+    var cancelOrderDelegate:OrderCancelDelegate!
 
     func getTimeForSecret(type: NSInteger) {
         
@@ -95,20 +121,29 @@ public class ApiManager {
         
         Alamofire.request(.GET, url).responseObject {
             (response: Response<BaseModel, NSError>) in
+            switch response.result {
+            case .Success(let value):
+              let baseModel = value
+              var time = baseModel.time
+              time = time! / 10000
+              let timePlusSalt = Api.SALT + (time?.description)!
+              let shaSecret = Tools().sha1(timePlusSalt)
             
-            let baseModel = response.result.value
-            var time = baseModel?.time
-            time = time! / 10000
-            let timePlusSalt = Api.SALT + (time?.description)!
-            let shaSecret = Tools().sha1(timePlusSalt)
-            
-            if(type == 1){
-                self.loginDelegate.onLoginTimeSuccess(shaSecret)
-            } else{
-                self.signUpDelegate.onSignUpTimeSuccess(shaSecret)
-            }
+              if(type == 1){
+                  self.loginDelegate.onLoginTimeSuccess(shaSecret)
+              } else{
+                  self.signUpDelegate.onSignUpTimeSuccess(shaSecret)
+              }
+            case .Failure(let error):
+              if(type == 1){
+                    self.loginDelegate.onLoginError(error.code)
+              } else{
+                    self.signUpDelegate.onSignUpError(error.code)
+                }
         }
-        
+            
+    }
+    
     }
     
     func signin(parameters : NSDictionary){
@@ -119,15 +154,13 @@ public class ApiManager {
             .responseObject {
                 (response: Response<UserLoginModel, NSError>) in
                 
-                let userLogin: UserLoginModel = response.result.value!
-                
-                if(userLogin.data != nil){
-                    self.loginDelegate.onLoginSuccess(response.result.value!)
-                } else {
-                    self.loginDelegate.onLoginError((response.result.value?.code)!)
-                }
-                
-                
+                switch response.result {
+                case .Success(let value):
+                      self.loginDelegate.onLoginSuccess(value)
+                case .Failure(let error):
+                      self.loginDelegate.onLoginError(error.code)
+                  
+            }
         }
     }
     
@@ -138,14 +171,12 @@ public class ApiManager {
             .responseObject {
                 (response: Response<UserLoginModel, NSError>) in
                 
-                let userLogin: UserLoginModel = response.result.value!
-                
-                if(userLogin.data != nil){
-                    self.signUpDelegate.onSignUpSuccess(response.result.value!)
-                } else {
-                    self.signUpDelegate.onSignUpError((response.result.value?.code)!)
+                switch response.result {
+                case .Success(let value):
+                    self.signUpDelegate.onSignUpSuccess(value)
+                case .Failure(let error):
+                    self.signUpDelegate.onSignUpError(error.code)
                 }
-                
         }
     }
     
@@ -203,7 +234,7 @@ public class ApiManager {
                         }
                         
                     }
-                case .Failure(let encodingError):
+                case .Failure(_):
                     self.setUserDetailsDelegate.onSetUserDetailsError(1000)
                 }
             }
@@ -229,12 +260,17 @@ public class ApiManager {
             .responseObject {
                 (response: Response<OrderResponseModel, NSError>) in
                 
-                let order: OrderResponseModel = response.result.value!
-                
-                if (order.data["order"]["_id"] != nil) {
-                    self.callOrderDelegate.onCallOrdered(order.data["order"]["_id"].string!)
-                } else {
-                    self.callOrderDelegate.onCallOrderError((response.result.value?.code)!)
+                switch response.result {
+                case .Success(let value) :
+                    let order: OrderResponseModel = value
+                    if (order.data["order"]["_id"] != nil) {
+                        self.callOrderDelegate.onCallOrdered(order.data["order"]["_id"].string!)
+                    } else {
+                        self.callOrderDelegate.onCallOrderError(value.code, crewNumber: crewNum)
+                    }
+                case .Failure(let error) :
+                    self.callOrderDelegate.onCallOrderError(error.code, crewNumber: crewNum)
+                    
                 }
         }
     }
@@ -253,9 +289,12 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                             
-//                if let JSON = response.result.value {
-//                    print("JSON: \(JSON)")
-//                }
+                switch response.result {
+                case .Success(_):
+                    self.cancelOrderDelegate.onCancelOrderSuccess()
+                case .Failure(let error):
+                    self.cancelOrderDelegate.onCancelOrderError(error.code)
+                }
         }
         
     }
@@ -273,11 +312,12 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                if response.result.value != nil {
-                    let json = JSON(response.result.value!)
+                switch response.result {
+                case .Success(let value):
+                    let json = JSON(value)
                     self.driversListDelegate.onDriversListSucess(json["data"]["drivers"])
-                } else {
-                    self.driversListDelegate.onDriversListError((response.result.value?.code)!)
+                case .Failure(let error):
+                    self.driversListDelegate.onDriversListError(error.code)
                 }
         }
     
@@ -295,17 +335,17 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                
-                if response.result.value != nil {
-                    let json = JSON(response.result.value!)
-                
+                switch response.result{
+                case .Success(let value):
+                    let json = JSON(value)
                     if (json["data"]["order"].exists()){
                         self.openOrderDelegate.onOpenOrderSuccess(json)
                     } else {
                         self.openOrderDelegate.onOpenOrderNoOrders()
                     }
-                } else {
-                    self.openOrderDelegate.onOpenOrderError((response.result.value?.code)!)
+                case .Failure(let error) :
+                    self.openOrderDelegate.onOpenOrderError(error.code)
+                
                 }
         }
         
@@ -323,11 +363,14 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                if response.result.value != nil {
+                switch response.result {
+                    
+                case .Success(_):
                     self.acceptOrderDelegate.onAcceptORderSuccess()
-                } else {
-                    self.acceptOrderDelegate.onAcceptOrderError((response.result.value?.code)!)
+                case .Failure(let error):
+                    self.acceptOrderDelegate.onAcceptOrderError(error.code)
                 }
+                
         }
         
     }
@@ -344,9 +387,11 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                if response.result.value != nil {
-                    let json = JSON(response.result.value!)
-                
+                switch response.result{
+                    
+                case .Success(let value):
+                    let json = JSON(value)
+                    
                     if (json["data"]["orderStatus"].number == 1){
                         self.orderStatusDelegate.onOrderStatusSuccess(json)
                     } else if(json["data"]["orderStatus"].number == 2){
@@ -358,8 +403,10 @@ public class ApiManager {
                     } else {
                         self.orderStatusDelegate.onOrderStatusNoDrivers()
                     }
-                } else {
-                    self.orderStatusDelegate.onOrderStatusError((response.result.value?.code)!)
+                case .Failure(let error) :
+                    self.orderStatusDelegate.onOrderStatusError(error.code)
+                    
+                    
                 }
         }
         
@@ -378,8 +425,11 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                if response.result.value != nil {
-                    print("Coordinates updated!")
+                switch response.result  {
+                case .Success(_):
+                    self.updateCoordinatesDelegate.onUpdateCoordinatesSuccess()
+                case .Failure(let error):
+                    self.updateCoordinatesDelegate.onUpdateCoordinatesError(error.code)
                 }
         }
         
@@ -396,9 +446,11 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                
-                if let JSON = response.result.value {
-                    print("JSON ARRIVE TIME: \(JSON)")
+                switch response.result {
+                case .Success(_):
+                    self.updateTimeDelegate.onArriveTimeUpdateSuccess()
+                case .Failure(let error):
+                    self.updateTimeDelegate.onArriveTimeUpdateError(error.code)
                 }
         }
         
@@ -415,9 +467,12 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                
-                if let JSON = response.result.value {
-                    print("JSON FINISH TIME: \(JSON)")
+               
+                switch response.result {
+                case .Success(_):
+                    self.updateTimeDelegate.onFinishTimeUpdateSuccess()
+                case . Failure(let error):
+                    self.updateTimeDelegate.onStartTimeUpdateError(error.code)
                 }
         }
         
@@ -435,8 +490,11 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                if let JSON = response.result.value {
-                    print("JSON START TIME: \(JSON)")
+                switch response.result {
+                case .Success(_):
+                    self.updateTimeDelegate.onStartTimeUpdateSuccess()
+                case .Failure(let error):
+                    self.updateTimeDelegate.onStartTimeUpdateError(error.code)
                 }
         }
         
@@ -456,15 +514,21 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
         .responseJSON { response in
             
-            if response.result.value != nil {
+            switch response.result {
                 
-                let json = JSON(response.result.value!)
+            case .Success(let value):
+                
+                let json = JSON(value)
                 
                 if(json["code"].number == 1){
                     self.rateDelegate.onRateSuccess()
                 } else {
                     self.rateDelegate.onRateError()
                 }
+                
+            case .Failure(_):
+                self.rateDelegate.onRateError()
+            
             }
         }
         
@@ -482,14 +546,19 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                if response.result.value != nil {
-                    let json = JSON(response.result.value!)
+                switch response.result{
+                case .Success(let value):
+                    let json = JSON(value)
                     self.profileDelegate.onProfileDetailsSuccess(json)
+                case .Failure(let error):
+                    self.profileDelegate.onProfileDetailsError(error.code)
+                    
                 }
         }
         
     }
     
+        
     func getNearestDriver(token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.NEAREST_DRIVER
@@ -502,19 +571,21 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                
-                if response.result.value != nil {
-                    let json = JSON(response.result.value!)
+                switch response.result{
+                    
+                case .Success(let value):
+                    let json = JSON(value)
                     self.nearestDriverDelegate.onNearestDriverSuccess(json["data"]["driver"]["currentLocation"][1].double!, longitude: json["data"]["driver"]["currentLocation"][0].double!)
+                    
+                case .Failure(let error):
+                    self.nearestDriverDelegate.onNearestDriveError(error.code)
+                    
                 }
-        }
         
     }
 
 }
-
-
-
+}
 
 
 

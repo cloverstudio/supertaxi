@@ -11,7 +11,7 @@ import SwiftyJSON
 import MapKit
 import ObjectMapper
 
-class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, AcceptOrderDelegate, OrderStatusDelegate {
+class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, AcceptOrderDelegate, OrderStatusDelegate, OrderCancelDelegate {
     
     @IBOutlet var avatar: UIImageView!
     @IBOutlet var mapView: MKMapView!
@@ -40,6 +40,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     var userNote: String!
     var userAddressFrom: String!
     var userAddressTo: String!
+    var getOrderStatusErrorCounter = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +64,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         apiManager = ApiManager()
         apiManager.acceptOrderDelegate = self
         apiManager.orderStatusDelegate = self
+        apiManager.cancelOrderDelegate = self
         
         orderId = json["data"]["order"]["_id"].string
         userId = json["data"]["order"]["user"]["_id"].string
@@ -104,10 +106,13 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     }
     
     // MARK: - UIAction Methods
+    
     @IBAction func onIgnoreClick(sender: AnyObject) {
         apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: self.orderId, type: 2, reason: "Neznam jos")
-        self.navigationController?.popViewControllerAnimated(true)
+        
     }
+    
+    
     
     @IBAction func onAcceptClick(sender: AnyObject) {
         apiManager.acceptOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
@@ -214,10 +219,17 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
-    func onAcceptOrderError(error: NSInteger) {
-        print("error")
-    }
     
+    func onAcceptOrderError(error: NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.onAcceptClick(self)
+            
+        }))
+       
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+  
     func getOrderStatus(){
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -233,8 +245,20 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         getOrderStatus()
     }
     
+    
     func onOrderStatusError(error: NSInteger) {
+        if getOrderStatusErrorCounter >= 10 {
+            let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+                self.getOrderStatus()
+                
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+        } else {
+        getOrderStatusErrorCounter = getOrderStatusErrorCounter + 1
         getOrderStatus()
+        }
     }
     
     func onOrderStatusCanceled(json: JSON) {
@@ -263,6 +287,22 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     
     func onOrderStatusDriveEnded(json: JSON){
         
+    }
+    
+    func onCancelOrderSuccess() {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func onCancelOrderError(error: NSInteger) {
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.onIgnoreClick(self)
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: {(action: UIAlertAction!) in
+            
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 
 }

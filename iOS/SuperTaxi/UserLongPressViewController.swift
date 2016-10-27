@@ -13,7 +13,7 @@ import CoreLocation
 import SWRevealViewController
 import SwiftyJSON
 
-class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, ProfileDelegate, RateViewDelegate {
+class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, ProfileDelegate, RateViewDelegate, OrderCancelDelegate {
     
     @IBOutlet var ratingView: UIView!
     @IBOutlet var navView: UIView!
@@ -59,13 +59,14 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     var tripEnded = false
     var timer:NSTimer!
     var angle: Float! = 0
+    var getOrderStatusErrorCounter: Int! = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ja sam nastao")
         apiManager = ApiManager()
         apiManager.orderStatusDelegate = self
         apiManager.profileDelegate = self
+        apiManager.cancelOrderDelegate = self
         
         
         locationManager = CLLocationManager()
@@ -130,6 +131,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     @IBAction func onCloseDialog(sender: AnyObject) {
         ratingView.hidden = true
     }
+    
     
     @IBAction func onCancelTrip(sender: AnyObject) {
         apiManager.cancelOrder(userInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
@@ -296,24 +298,39 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     func getOrderStatus(){
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
             self.apiManager.getOrderStatus(self.userInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }
     
     func onOrderStatusSuccess(json: JSON) {
+        getOrderStatusErrorCounter = 0
         getOrderStatus()
     }
     
     func onOrderStatusNoDrivers() {
+        getOrderStatusErrorCounter = 0
         getOrderStatus()
     }
     
     func onOrderStatusError(error: NSInteger) {
+        if getOrderStatusErrorCounter >= 10 {
+            timer.invalidate()
+            let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+                self.getOrderStatus()
+                self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
+                
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+        getOrderStatusErrorCounter = getOrderStatusErrorCounter + 1
         getOrderStatus()
+        }
     }
     
     func onOrderStatusCanceled(json: JSON) {
-        
+        getOrderStatusErrorCounter = 0
         if(json["data"]["cancelType"].number == 2){
             
             let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
@@ -334,6 +351,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     }
     
     func onOrderSrarusStartedDrive(json: JSON){
+        getOrderStatusErrorCounter = 0
         if !tripStarted {
             txtAboveTheDistance1.text = "DISTANCE TO"
             txtAboveTheDistance2.text = "DESTINATION:"
@@ -347,6 +365,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     }
     
     func onOrderStatusDriveEnded(json: JSON){
+        getOrderStatusErrorCounter = 0
         if !tripEnded {
             if driver.fileId == nil {
                 driver.fileId = ""
@@ -414,4 +433,31 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             createRoute(driverLoc, endLocation: from)
         }
     }
+    func onProfileDetailsError(error: NSInteger) {
+        timer.invalidate()
+        print("Error driver")
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.getDriverLocation()
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func onCancelOrderSuccess() {
+    
+    }
+    
+    func onCancelOrderError(error: NSInteger) {
+        timer.invalidate()
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
+            self.onCancelTrip(self)
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
 }
