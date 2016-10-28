@@ -29,8 +29,9 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     @IBOutlet var threeStars: UIButton!
     @IBOutlet var fourStars: UIButton!
     @IBOutlet var fiveStars: UIButton!
-    @IBOutlet weak var priceTxtLabel: UILabel!
-    @IBOutlet weak var priceAmount: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var priceAmountLbl: UILabel!
+   
     var nameText: String!
     var start: CLLocationCoordinate2D!
     var end: CLLocationCoordinate2D!
@@ -66,9 +67,10 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         self.imageFile = image
         self.type = type
         self.id = id
-        //priceAmount.hidden = true
-        //priceTxtLabel.hidden = true
         loadViewFromNib ()
+        priceAmountLbl.hidden = true
+        priceLabel.hidden = true
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -179,7 +181,7 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
                 print(self.driver.fee_km)
                 print(self.driver.fee_start)
                 print(self.distance)
-                self.priceAmount.text = "$ " + String (format:"%.2f",Float(self.driver.fee_start) + self.distance*Float(self.driver.fee_km))
+                self.priceAmountLbl.text = "$ " + String (format:"%.2f",Float(self.driver.fee_start) + self.distance*Float(self.driver.fee_km))
                  }
             
             self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)

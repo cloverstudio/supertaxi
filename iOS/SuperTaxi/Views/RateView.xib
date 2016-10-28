@@ -15,8 +15,8 @@
                 <outlet property="mapView" destination="JtI-5x-KuY" id="7cf-JC-Oe0"/>
                 <outlet property="name" destination="JZY-BA-EHh" id="hRl-Ee-4WN"/>
                 <outlet property="oneStar" destination="fHI-X1-0uW" id="zIi-by-Zmt"/>
-                <outlet property="priceAmount" destination="05Y-ue-GzX" id="OqZ-im-1QH"/>
-                <outlet property="priceTxtLabel" destination="yaK-wQ-74Y" id="pid-96-zKh"/>
+                <outlet property="priceAmountLbl" destination="05Y-ue-GzX" id="19D-LH-mnK"/>
+                <outlet property="priceLabel" destination="yaK-wQ-74Y" id="XiS-Ii-89K"/>
                 <outlet property="threeStars" destination="ZF7-8o-Vms" id="yXT-vk-u24"/>
                 <outlet property="time" destination="tVs-EE-KhS" id="3IA-uO-3gQ"/>
                 <outlet property="twoStars" destination="fWn-hV-5yi" id="2bs-iZ-yZ7"/>
