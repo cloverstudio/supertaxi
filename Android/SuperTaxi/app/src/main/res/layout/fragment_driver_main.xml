@@ -228,6 +228,7 @@
 
     </RelativeLayout>
 
+
     <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
     <LinearLayout
         android:focusable="true"

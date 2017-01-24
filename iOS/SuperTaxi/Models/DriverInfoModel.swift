@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-public class DriverInfoModel: Mappable {
+open class DriverInfoModel: Mappable {
     
     var name: String!
     var car_type: String!
@@ -29,7 +29,7 @@ public class DriverInfoModel: Mappable {
         self.fee_km = fee_km
     }
     
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         name <- map["name"]
         car_type <- map["car_type"]
         car_registration <- map["car_registration"]

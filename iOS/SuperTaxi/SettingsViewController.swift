@@ -22,7 +22,7 @@ class SettingsViewController: UIViewController {
         
     }
 
-    @IBAction func back(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func back(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

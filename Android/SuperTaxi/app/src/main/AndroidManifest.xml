@@ -32,6 +32,7 @@
             android:value="AIzaSyBONAsYG4Pq-Sx9obbuHxlDaj4aa872kvs" />
 
         <activity android:name=".SplashActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

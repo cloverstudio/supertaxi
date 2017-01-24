@@ -49,7 +49,7 @@ PODS:
   - SWRevealViewController (2.3.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.4)
+  - Alamofire (~> 3.3)
   - AlamofireImage (~> 2.0)
   - AlamofireObjectMapper (~> 3.0)
   - Bolts
@@ -93,6 +93,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: fa5f81b2a929fd4c83328011066bed1d61cb1601
+PODFILE CHECKSUM: 08763f87be3dd0fc19af07d2976fbedc35f4046d
 
 COCOAPODS: 1.0.0

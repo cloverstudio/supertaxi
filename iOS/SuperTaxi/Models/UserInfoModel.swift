@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-public class UserInfoModel: Mappable {
+open class UserInfoModel: Mappable {
     
     var name: String!
     var age: NSInteger!
@@ -20,7 +20,7 @@ public class UserInfoModel: Mappable {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         name <- map["name"]
         age <- map["age"]
         note <- map["note"]

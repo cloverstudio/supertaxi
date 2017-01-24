@@ -34,7 +34,7 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     var fbEmail: String!
     var fbId: String!
     
-    let userInformation = NSUserDefaults.standardUserDefaults()
+    let userInformation = UserDefaults.standard
     
     let progressHUD = ProgressHUD(text: "")
     
@@ -57,22 +57,22 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         
     }
     
-    @IBAction func onSigninClick(sender: UIButton) {
+    @IBAction func onSigninClick(_ sender: UIButton) {
         if txtEmail.text == "" {
-            let alert = UIAlertController(title: "Alert", message: "Please enter your Email Address", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Alert", message: "Please enter your Email Address", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         } else if txtPassword.text == "" {
-            let alert = UIAlertController(title: "Alert", message: "Please enter your Password", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Alert", message: "Please enter your Password", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         } else {
             apiManager.getTimeForSecret(1)
             progressHUD.show()
         }
     }
     
-    func onLoginTimeSuccess(secret: String) {
+    func onLoginTimeSuccess(_ secret: String) {
         
         var parameters : NSDictionary!
         
@@ -94,10 +94,10 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
 
     }
     
-    func onLoginSuccess(data: UserLoginModel) {
+    func onLoginSuccess(_ data: UserLoginModel) {
         
         if data.data.user.user != nil {
-            self.performSegueWithIdentifier("SignInSeague", sender: nil)
+            self.performSegue(withIdentifier: "SignInSeague", sender: nil)
             userInformation.setValue(data.data.user.user.name, forKey: UserDetails.NAME)
             userInformation.setValue(data.data.user.user.age, forKey: UserDetails.AGE)
             userInformation.setValue(data.data.user.user.note, forKey: UserDetails.NOTE)
@@ -120,7 +120,7 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
             }
             
             userInformation.setValue("2", forKey: UserDetails.TYPE)
-            self.performSegueWithIdentifier("DriverSigInSegue", sender: nil)
+            self.performSegue(withIdentifier: "DriverSigInSegue", sender: nil)
         }
         
         userInformation.setValue(data.data.user.telNum, forKey: UserDetails.TEL_NUM)
@@ -128,20 +128,20 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         userInformation.setValue(data.data.user.email, forKey: UserDetails.EMAIL)
         userInformation.setValue(data.data.user._id, forKey: UserDetails._ID)
         
-        if (switchRememberMe.on) {
-            userInformation.setBool(true, forKey: UserDetails.REMEMBER_ME)
+        if (switchRememberMe.isOn) {
+            userInformation.set(true, forKey: UserDetails.REMEMBER_ME)
         }
         
-        userInformation.setBool(true, forKey: UserDetails.IS_LOGGED_IN)
+        userInformation.set(true, forKey: UserDetails.IS_LOGGED_IN)
     }
     
-    func onLoginError(errocCode: NSInteger){
+    func onLoginError(_ errocCode: NSInteger){
         
         if (loginType == 1) {
             
-            let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(errocCode), preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(errocCode), preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         } else {
             apiManager.getTimeForSecret(2)
         }
@@ -151,7 +151,7 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     
     // Background Sign Up
     
-    func onSignUpTimeSuccess(secret: String) {
+    func onSignUpTimeSuccess(_ secret: String) {
         let parameters : NSDictionary = ["email" : fbEmail,
                                          "password" : Tools().sha1(fbId + Api.SALT),
                                          "secret": secret]
@@ -161,44 +161,44 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         self.loginType = 1
     }
     
-    func onSignUpSuccess(data: UserLoginModel) {
+    func onSignUpSuccess(_ data: UserLoginModel) {
         
-        self.performSegueWithIdentifier("SocialSignUpSegue", sender: nil)
+        self.performSegue(withIdentifier: "SocialSignUpSegue", sender: nil)
         userInformation.setValue(data.data.token_new, forKey: UserDetails.TOKEN)
         userInformation.setValue(data.data.user.email, forKey: UserDetails.EMAIL)
         userInformation.setValue(data.data.user._id, forKey: UserDetails._ID)
         
         self.loginType = 1
         
-        if (switchRememberMe.on) {
-            userInformation.setBool(true, forKey: UserDetails.REMEMBER_ME)
+        if (switchRememberMe.isOn) {
+            userInformation.set(true, forKey: UserDetails.REMEMBER_ME)
         }
     }
     
-    func onSignUpError(errorCode: NSInteger){
+    func onSignUpError(_ errorCode: NSInteger){
         
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(errorCode), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(errorCode), preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
         
         self.loginType = 1
         
         progressHUD.hide()
     }
     
-    @IBAction func onForgotPasswordClick(sender: AnyObject) {
+    @IBAction func onForgotPasswordClick(_ sender: AnyObject) {
         
     }
     
     // MARK: Facebook Login
-    @IBAction func btnFBLoginPressed(sender: AnyObject) {
+    @IBAction func btnFBLoginPressed(_ sender: AnyObject) {
         
         progressHUD.show()
         
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
-        fbLoginManager.logInWithReadPermissions(["email"], handler: { (result, error) -> Void in
+        fbLoginManager.logIn(withReadPermissions: ["email"], handler: { (result, error) -> Void in
             if (error == nil){
-                let fbloginresult : FBSDKLoginManagerLoginResult = result
+                let fbloginresult : FBSDKLoginManagerLoginResult = result!
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
@@ -209,8 +209,8 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     }
     
     func getFBUserData(){
-        if((FBSDKAccessToken.currentAccessToken()) != nil){
-            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).startWithCompletionHandler({ (connection, result, error) -> Void in
+        if((FBSDKAccessToken.current()) != nil){
+            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
                     
                     self.loginType = 2
@@ -242,13 +242,13 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     }
     
     // MARK: Twitter Login
-    @IBAction func btnTwitterLoginPressed(sender: AnyObject) {
+    @IBAction func btnTwitterLoginPressed(_ sender: AnyObject) {
         
     }
 
     // MARK: Google+ Login
     
-    @IBAction func gSignIn(sender: AnyObject) {
+    @IBAction func gSignIn(_ sender: AnyObject) {
         GIDSignIn.sharedInstance().signIn()
         self.loginType = 2
         
@@ -256,18 +256,18 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     }
     
     // Present a view that prompts the user to sign in with Google
-    func signIn(signIn: GIDSignIn!,
-                presentViewController viewController: UIViewController!) {
-        self.presentViewController(viewController, animated: true, completion: nil)
+    func sign(_ signIn: GIDSignIn!,
+                present viewController: UIViewController!) {
+        self.present(viewController, animated: true, completion: nil)
     }
     
     // Dismiss the "Sign in with Google" view
-    func signIn(signIn: GIDSignIn!,
-                dismissViewController viewController: UIViewController!) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func sign(_ signIn: GIDSignIn!,
+                dismiss viewController: UIViewController!) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
                 withError error: NSError!) {
         if (error == nil) {
 
@@ -288,7 +288,7 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
         }
     }
     
-    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user:GIDGoogleUser!,
                 withError error: NSError!) {
         // Perform any operations when the user disconnects from app here.
         // ...

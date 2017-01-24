@@ -10,11 +10,11 @@ import Foundation
 
 public protocol Mappable {
 	init?(_ map: Map)
-	mutating func mapping(map: Map)
+	mutating func mapping(_ map: Map)
 }
 
 public protocol MappableCluster: Mappable {
-	static func objectForMapping(map: Map) -> Mappable?
+	static func objectForMapping(_ map: Map) -> Mappable?
 }
 
 public extension Mappable {
@@ -43,7 +43,7 @@ public extension Mappable {
 	}
 	
 	/// Returns the JSON String for the object
-	public func toJSONString(prettyPrint: Bool = false) -> String? {
+	public func toJSONString(_ prettyPrint: Bool = false) -> String? {
 		return Mapper().toJSONString(self, prettyPrint: prettyPrint)
 	}
 }
@@ -74,7 +74,7 @@ public extension Array where Element: Mappable {
 	}
 	
 	/// Returns the JSON String for the object
-	public func toJSONString(prettyPrint: Bool = false) -> String? {
+	public func toJSONString(_ prettyPrint: Bool = false) -> String? {
 		return Mapper().toJSONString(self, prettyPrint: prettyPrint)
 	}
 }
@@ -105,7 +105,7 @@ public extension Set where Element: Mappable {
 	}
 	
 	/// Returns the JSON String for the object
-	public func toJSONString(prettyPrint: Bool = false) -> String? {
+	public func toJSONString(_ prettyPrint: Bool = false) -> String? {
 		return Mapper().toJSONString(self, prettyPrint: prettyPrint)
 	}
 }

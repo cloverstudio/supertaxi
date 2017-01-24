@@ -8,18 +8,18 @@
 
 import Foundation
 
-public class Tools {
+open class Tools {
     
-    func sha1(string: String) -> String {
-        let data = string.dataUsingEncoding(NSUTF8StringEncoding)!
-        var digest = [UInt8](count:Int(CC_SHA1_DIGEST_LENGTH), repeatedValue: 0)
-        CC_SHA1(data.bytes, CC_LONG(data.length), &digest)
+    func sha1(_ string: String) -> String {
+        let data = string.data(using: String.Encoding.utf8)!
+        var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
+        CC_SHA1((data as NSData).bytes, CC_LONG(data.count), &digest)
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
         
-        return hexBytes.joinWithSeparator("")
+        return hexBytes.joined(separator: "")
     }
     
-    func getErrorFromCode(code: NSInteger) -> String {
+    func getErrorFromCode(_ code: NSInteger) -> String {
         
         if (code == 6000000) {
             return "UnknownError"

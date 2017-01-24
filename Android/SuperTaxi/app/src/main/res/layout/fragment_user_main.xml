@@ -230,6 +230,7 @@
                 android:background="@color/transparent"
                 android:id="@+id/etTo"
                 android:textSize="@dimen/text_view_default"
+                android:inputType="textNoSuggestions"
                 android:textColor="@color/second_best_gray"/>
 
         </RelativeLayout>
@@ -268,7 +269,7 @@
                 android:background="@color/transparent"
                 android:id="@+id/etFrom"
                 android:maxLines="1"
-                android:inputType="text"
+                android:inputType="textNoSuggestions"
                 android:textSize="@dimen/text_view_default"
                 android:textColor="@color/second_best_gray"/>
 

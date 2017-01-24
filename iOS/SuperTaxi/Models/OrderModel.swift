@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-public class OrderModel: Mappable {
+open class OrderModel: Mappable {
     
 //    var __v: NSInteger?
     var _id: String?
@@ -23,7 +23,7 @@ public class OrderModel: Mappable {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
 //        __v <- map["__v"]
         _id <- map["_id"]
 //        createOrderTs <- map["createOrderTs"]

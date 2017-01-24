@@ -18,7 +18,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     @IBOutlet var avatar: UIImageView!
     @IBOutlet var mapView: MKMapView!
     
-    let UserInformation = NSUserDefaults.standardUserDefaults()
+    let UserInformation = UserDefaults.standard
     var apiManager: ApiManager!
     
     var locationManager: CLLocationManager!
@@ -33,8 +33,8 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
-            avatar.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!)
+        if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
+            avatar.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!)
         }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
@@ -55,7 +55,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         locationManager.startUpdatingLocation()
         
         if let coor = mapView.userLocation.location?.coordinate{
-            mapView.setCenterCoordinate(coor, animated: true)
+            mapView.setCenter(coor, animated: true)
         }
         
         mapView.showsUserLocation = true;
@@ -67,24 +67,24 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         getOpenOrders()
     }
     
-    @IBAction func menuButton(sender: AnyObject) {
+    @IBAction func menuButton(_ sender: AnyObject) {
         self.revealViewController().revealToggle(sender)
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         centerMap(locValue)
     }
     
-    func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
-        apiManager.getDriverList(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+        apiManager.getDriverList(UserInformation.string(forKey: UserDetails.TOKEN)!, lat: lat, lon: lon)
     }
     
-    func centerMap(center:CLLocationCoordinate2D){
+    func centerMap(_ center:CLLocationCoordinate2D){
         
         let spanX = 0.007
         let spanY = 0.007
@@ -93,25 +93,25 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         mapView.setRegion(newRegion, animated: true)
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
         let center = mapView.centerCoordinate
         
         lat = center.latitude
         lon = center.longitude
         
-        apiManager.updateCoordinates(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
+        apiManager.updateCoordinates(UserInformation.string(forKey: UserDetails.TOKEN)!, lat: lat, lon: lon)
         
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?{
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
         if (annotation is MKUserLocation) {
             return nil
         }
         
         let reuseId = "driver"
         
-        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        var anView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
         if anView == nil {
             anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             anView!.canShowCallout = true
@@ -125,7 +125,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         return anView
     }
     
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor(red: 57/255.0, green: 149/255.0, blue: 246/255.0, alpha: 1.0)
         renderer.lineWidth = 10.0
@@ -133,7 +133,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         return renderer
     }
     
-    func onDriversListSucess(json: JSON) {
+    func onDriversListSucess(_ json: JSON) {
         
         mapView.removeAnnotations(mapView.annotations)
         
@@ -145,11 +145,11 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     
     }
     
-    func onDriversListError(error: NSInteger) {
+    func onDriversListError(_ error: NSInteger) {
         
     }
     
-    func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+    func createRoute(_ startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
         
@@ -182,11 +182,11 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
-        directionRequest.transportType = .Automobile
+        directionRequest.transportType = .automobile
         
         let directions = MKDirections(request: directionRequest)
         
-        directions.calculateDirectionsWithCompletionHandler {
+        directions.calculate {
             (response, error) -> Void in
             
             guard let response = response else {
@@ -198,7 +198,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             }
             
             let route = response.routes[0]
-            self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
+            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             
             
         }
@@ -206,9 +206,9 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     func getOpenOrders(){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
             if (self.lat != nil && self.lon != nil){
-                self.apiManager.getOpenOrder(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+                self.apiManager.getOpenOrder(self.UserInformation.string(forKey: UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
             }
             
         })
@@ -218,9 +218,9 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             getOpenOrders()
     }
     
-    func onOpenOrderSuccess(json: JSON) {
+    func onOpenOrderSuccess(_ json: JSON) {
         
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiRequestMapView") as? TaxiRequestFromUserViewController
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiRequestMapView") as? TaxiRequestFromUserViewController
         viewController!.json = json
         viewController!.lat = mapView.userLocation.coordinate.latitude
         viewController!.lon = mapView.userLocation.coordinate.longitude
@@ -228,7 +228,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         
     }
     
-    func onOpenOrderError(error: NSInteger) {
+    func onOpenOrderError(_ error: NSInteger) {
         
     }
 

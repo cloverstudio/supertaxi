@@ -68,23 +68,23 @@ struct UserDetails {
 
 struct Colors {
     
-    static func darkBlue(alpha:CGFloat) -> UIColor {
+    static func darkBlue(_ alpha:CGFloat) -> UIColor {
         return UIColor.init(red: 26/255, green: 53/255, blue: 58/255, alpha: alpha)
     }
     
-    static func greyBorder(alpha:CGFloat) -> UIColor {
+    static func greyBorder(_ alpha:CGFloat) -> UIColor {
         return UIColor(red:222/255.0, green:225/255.0, blue:227/255.0, alpha: alpha)
     }
     
-    static func progressFill(alpha:CGFloat) -> UIColor {
+    static func progressFill(_ alpha:CGFloat) -> UIColor {
         return UIColor.init(red: 14.0/255, green: 155.0/255, blue: 123.0/255, alpha: alpha)
     }
     
-    static func darkTransparent(alpha:CGFloat) -> UIColor {
+    static func darkTransparent(_ alpha:CGFloat) -> UIColor {
         return UIColor.init(red: 0/255, green: 0/255, blue: 0/255, alpha: alpha)
     }
     
-    static func greenTransparent(alpha:CGFloat) -> UIColor {
+    static func greenTransparent(_ alpha:CGFloat) -> UIColor {
         return UIColor.init(red: 53/255, green: 222/255, blue: 59/255, alpha: alpha)
     }
     

@@ -12,54 +12,54 @@ import AlamofireObjectMapper
 import SwiftyJSON
 
 protocol LoginApiDelegate {
-    func onLoginTimeSuccess(secret: String)
-    func onLoginSuccess(data: UserLoginModel)
-    func onLoginError(errocCode: NSInteger)
+    func onLoginTimeSuccess(_ secret: String)
+    func onLoginSuccess(_ data: UserLoginModel)
+    func onLoginError(_ errocCode: NSInteger)
 }
 
 protocol SignUpApiDelegate {
-    func onSignUpTimeSuccess(secret: String)
-    func onSignUpSuccess(data: UserLoginModel)
-    func onSignUpError(errorCode: NSInteger)
+    func onSignUpTimeSuccess(_ secret: String)
+    func onSignUpSuccess(_ data: UserLoginModel)
+    func onSignUpError(_ errorCode: NSInteger)
 }
 
 protocol SetUserDetailsDelegate {
-    func onSetUserDetailsSuccess(json: JSON)
-    func onSetUserDetailsError(error: NSInteger)
-    func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
+    func onSetUserDetailsSuccess(_ json: JSON)
+    func onSetUserDetailsError(_ error: NSInteger)
+    func showPRogress(_ totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
 }
 
 protocol CallOrderDelegate {
-    func onCallOrdered(id: String)
-    func onCallOrderError(error: NSInteger)
+    func onCallOrdered(_ id: String)
+    func onCallOrderError(_ error: NSInteger)
 }
 
 protocol DriverListDelegate {
 
-    func onDriversListSucess(json: JSON)
-    func onDriversListError(error: NSInteger)
+    func onDriversListSucess(_ json: JSON)
+    func onDriversListError(_ error: NSInteger)
 }
 
 protocol GetOpenOrdersDelegate {
     
-    func onOpenOrderSuccess(json: JSON)
+    func onOpenOrderSuccess(_ json: JSON)
     func onOpenOrderNoOrders()
-    func onOpenOrderError(error: NSInteger)
+    func onOpenOrderError(_ error: NSInteger)
 }
 
 protocol AcceptOrderDelegate {
     func onAcceptORderSuccess()
-    func onAcceptOrderError(error: NSInteger)
+    func onAcceptOrderError(_ error: NSInteger)
 }
 
 protocol OrderStatusDelegate {
     
-    func onOrderStatusSuccess(json: JSON)
-    func onOrderStatusCanceled(json: JSON)
+    func onOrderStatusSuccess(_ json: JSON)
+    func onOrderStatusCanceled(_ json: JSON)
     func onOrderStatusNoDrivers()
-    func onOrderStatusError(error: NSInteger)
-    func onOrderSrarusStartedDrive(json: JSON)
-    func onOrderStatusDriveEnded(json: JSON)
+    func onOrderStatusError(_ error: NSInteger)
+    func onOrderSrarusStartedDrive(_ json: JSON)
+    func onOrderStatusDriveEnded(_ json: JSON)
 }
 
 protocol RateDelegate {
@@ -68,14 +68,14 @@ protocol RateDelegate {
 }
 
 protocol ProfileDelegate {
-    func onProfileDetailsSuccess(json: JSON)
+    func onProfileDetailsSuccess(_ json: JSON)
 }
 
 protocol NearestDriverDelegate {
-    func onNearestDriverSuccess(latitude: Double, longitude: Double)
+    func onNearestDriverSuccess(_ latitude: Double, longitude: Double)
 }
 
-public class ApiManager {
+open class ApiManager {
     
     var loginDelegate: LoginApiDelegate!
     var signUpDelegate: SignUpApiDelegate!
@@ -89,7 +89,7 @@ public class ApiManager {
     var profileDelegate: ProfileDelegate!
     var nearestDriverDelegate: NearestDriverDelegate!
 
-    func getTimeForSecret(type: NSInteger) {
+    func getTimeForSecret(_ type: NSInteger) {
         
         let url : String = Api.SERVER_BASE_URL + Api.TEST
         
@@ -111,7 +111,7 @@ public class ApiManager {
         
     }
     
-    func signin(parameters : NSDictionary){
+    func signin(_ parameters : NSDictionary){
         
         let signinurl : String = Api.SERVER_BASE_URL + Api.USER_SIGNIN_URL
     
@@ -131,7 +131,7 @@ public class ApiManager {
         }
     }
     
-    func signUp(parameters : NSDictionary){
+    func signUp(_ parameters : NSDictionary){
         let signupurl : String = Api.SERVER_BASE_URL + Api.USER_SIGNUP_URL
         
         Alamofire.request(.POST, signupurl, parameters: parameters as? [String : AnyObject])
@@ -149,8 +149,8 @@ public class ApiManager {
         }
     }
     
-    func setUserDetails(token: String, name: String, type: String, telNum: String, age: String, note: String,car_type: String,
-                        car_registration: String, fee_start: String, fee_km: String, fileData: NSData, fileName: String, mime: String){
+    func setUserDetails(_ token: String, name: String, type: String, telNum: String, age: String, note: String,car_type: String,
+                        car_registration: String, fee_start: String, fee_km: String, fileData: Data, fileName: String, mime: String){
         
         let url = Api.SERVER_BASE_URL + Api.USER_UPDATE_PROFILE_URL
         
@@ -169,23 +169,23 @@ public class ApiManager {
         Alamofire.upload(.POST, url, headers: headers,
             multipartFormData: { multipartFormData in
                 multipartFormData.appendBodyPart(data: fileData, name: "file", fileName: fileName, mimeType: "image/" + mimeType)
-                multipartFormData.appendBodyPart(data:name.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"name")
-                multipartFormData.appendBodyPart(data:type.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"type")
-                multipartFormData.appendBodyPart(data:telNum.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"telNum")
-                multipartFormData.appendBodyPart(data:age.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"age")
-                multipartFormData.appendBodyPart(data:note.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"note")
-                multipartFormData.appendBodyPart(data:car_type.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"car_type")
-                multipartFormData.appendBodyPart(data:car_registration.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"car_registration")
-                multipartFormData.appendBodyPart(data:fee_start.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"fee_start")
-                multipartFormData.appendBodyPart(data:fee_km.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"fee_km")
+                multipartFormData.appendBodyPart(data:name.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"name")
+                multipartFormData.appendBodyPart(data:type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"type")
+                multipartFormData.appendBodyPart(data:telNum.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"telNum")
+                multipartFormData.appendBodyPart(data:age.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"age")
+                multipartFormData.appendBodyPart(data:note.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"note")
+                multipartFormData.appendBodyPart(data:car_type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"car_type")
+                multipartFormData.appendBodyPart(data:car_registration.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"car_registration")
+                multipartFormData.appendBodyPart(data:fee_start.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"fee_start")
+                multipartFormData.appendBodyPart(data:fee_km.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"fee_km")
             },
             encodingCompletion: { encodingResult in
                 switch encodingResult {
-                case .Success(let upload, _, _):
+                case .success(let upload, _, _):
                     
                     upload.progress { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) in
           
-                        dispatch_async(dispatch_get_main_queue(),{
+                        DispatchQueue.main.async(execute: {
                             
                             self.setUserDetailsDelegate.showPRogress(totalBytesWritten, totalBytesExpectedToWrite: totalBytesExpectedToWrite)
                             
@@ -203,7 +203,7 @@ public class ApiManager {
                         }
                         
                     }
-                case .Failure(let encodingError):
+                case .failure(let encodingError):
                     self.setUserDetailsDelegate.onSetUserDetailsError(1000)
                 }
             }
@@ -211,7 +211,7 @@ public class ApiManager {
     }
     
     
-    func orderTaxi(token: String, latFrom: Double, lonFrom: Double, addressFrom: String, latTo: Double, lonTo: Double, addressTo: String, crewNum: NSInteger){
+    func orderTaxi(_ token: String, latFrom: Double, lonFrom: Double, addressFrom: String, latTo: Double, lonTo: Double, addressTo: String, crewNum: NSInteger){
         let url : String = Api.SERVER_BASE_URL + Api.ORDER_CALL
         
         let headers = ["access-token": token]
@@ -239,7 +239,7 @@ public class ApiManager {
         }
     }
     
-    func cancelOrder(token: String, id: String, type: NSInteger, reason: String){
+    func cancelOrder(_ token: String, id: String, type: NSInteger, reason: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.CANCEL_ORDER
         
@@ -260,7 +260,7 @@ public class ApiManager {
         
     }
     
-    func getDriverList(token: String, lat: Double, lon: Double){
+    func getDriverList(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.DRIVERS
         
@@ -283,7 +283,7 @@ public class ApiManager {
     
     }
 
-    func getOpenOrder(token: String, lat: Double, lon: Double){
+    func getOpenOrder(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.GET_OPEN_ORDER
         
@@ -311,7 +311,7 @@ public class ApiManager {
         
     }
     
-    func acceptOrder(token: String, orderId: String){
+    func acceptOrder(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.ACCEPT_ORDER
         
@@ -332,7 +332,7 @@ public class ApiManager {
         
     }
     
-    func getOrderStatus(token: String, orderId: String){
+    func getOrderStatus(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.ORDER_STATUS
         
@@ -365,7 +365,7 @@ public class ApiManager {
         
     }
     
-    func updateCoordinates(token: String, lat: Double, lon: Double){
+    func updateCoordinates(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.UPDATE_COORDINATES
         
@@ -385,7 +385,7 @@ public class ApiManager {
         
     }
     
-    func updateArriveTime(token: String, orderId: String){
+    func updateArriveTime(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.ARRIVE_TIME
         
@@ -404,7 +404,7 @@ public class ApiManager {
         
     }
     
-    func updateFinishTime(token: String, orderId: String){
+    func updateFinishTime(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.FINISH_TIME
         
@@ -423,7 +423,7 @@ public class ApiManager {
         
     }
     
-    func updateStartTime(token: String, orderId: String){
+    func updateStartTime(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.START_TIME
         
@@ -442,7 +442,7 @@ public class ApiManager {
         
     }
     
-    func rateProfile(token: String, id: String, type: NSInteger, rate: NSInteger){
+    func rateProfile(_ token: String, id: String, type: NSInteger, rate: NSInteger){
         
         let url : String = Api.SERVER_BASE_URL + Api.RATE_PROFILE
         
@@ -470,7 +470,7 @@ public class ApiManager {
         
     }
     
-    func getProfileDetail(token: String, userId: String){
+    func getProfileDetail(_ token: String, userId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.PROFILE_DETAIL
         
@@ -490,7 +490,7 @@ public class ApiManager {
         
     }
     
-    func getNearestDriver(token: String, lat: Double, lon: Double){
+    func getNearestDriver(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.NEAREST_DRIVER
         

@@ -10,6 +10,26 @@ import UIKit
 import SwiftyJSON
 import AssetsLibrary
 import ImageLoader
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class CreatingUserProfileViewController: UIViewController, UIImagePickerControllerDelegate,
                     UINavigationControllerDelegate, UIApplicationDelegate, UITextFieldDelegate,
@@ -25,10 +45,10 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     @IBOutlet weak var imgUpload: UIImageView!
     let picker = UIImagePickerController()
     
-    let userInformation = NSUserDefaults.standardUserDefaults()
+    let userInformation = UserDefaults.standard
     var apiManager: ApiManager!
     
-    var imageData: NSData! = nil
+    var imageData: Data! = nil
     var mime: String!
     
     var goNext = false
@@ -49,13 +69,13 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         imgUserPhoto.clipsToBounds = true
         
         if !isEditingProfile{
-            btnSave.enabled = false
+            btnSave.isEnabled = false
             btnSave.alpha = 0.4
         }
         
-        txtName.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
-        txtAge.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
-        txtNote.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), forControlEvents: .EditingDidEnd)
+        txtName.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), for: .editingDidEnd)
+        txtAge.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), for: .editingDidEnd)
+        txtNote.addTarget(self, action: #selector(CreatingUserProfileViewController.textFieldDidChange(_:)), for: .editingDidEnd)
         
         txtName.delegate = self
         txtAge.delegate = self
@@ -66,21 +86,21 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         
         let status:ALAuthorizationStatus = ALAssetsLibrary.authorizationStatus()
         
-        if status != ALAuthorizationStatus.Authorized{
+        if status != ALAuthorizationStatus.authorized{
             print("User has not given authorization for the camera roll")
         }
         
         if isEditingProfile {
-            txtName.text = userInformation.stringForKey(UserDetails.NAME)
-            txtAge.text = userInformation.stringForKey(UserDetails.AGE)
-            txtNote.text = userInformation.stringForKey(UserDetails.NOTE)
-            txtPhoneNumber.text = userInformation.stringForKey(UserDetails.TEL_NUM)
+            txtName.text = userInformation.string(forKey: UserDetails.NAME)
+            txtAge.text = userInformation.string(forKey: UserDetails.AGE)
+            txtNote.text = userInformation.string(forKey: UserDetails.NOTE)
+            txtPhoneNumber.text = userInformation.string(forKey: UserDetails.TEL_NUM)
             
-            if (userInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
-                imgUserPhoto.load(Api.IMAGE_URL + userInformation.stringForKey(UserDetails.THUMBNAIL)!)
+            if (userInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
+                imgUserPhoto.load(Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!)
             }
             
-            imageData = NSData()
+            imageData = Data()
             mime = ""
         }
         
@@ -94,93 +114,93 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     }
     
     // MARK: - UITextField Delegate
-    func textFieldDidChange(textField: UITextField ) {
+    func textFieldDidChange(_ textField: UITextField ) {
         if (!(txtName.text?.isEmpty)! && !(txtAge.text?.isEmpty)! && !(txtNote.text?.isEmpty)!) {
-            btnSave.enabled = true
+            btnSave.isEnabled = true
             btnSave.alpha = 1.0
         }
     }
     
     // MARK: - UIAction Methods
-    @IBAction func onCancelClick(sender: AnyObject) {
+    @IBAction func onCancelClick(_ sender: AnyObject) {
         if isEditingProfile {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         } else {
-            self.navigationController?.popViewControllerAnimated(true)
+            self.navigationController?.popViewController(animated: true)
         }
         
     }
     
-    @IBAction func onUploadAvatarClick(sender: AnyObject) {
+    @IBAction func onUploadAvatarClick(_ sender: AnyObject) {
         picker.allowsEditing = false
-        picker.sourceType = .PhotoLibrary
-        presentViewController(picker, animated: true, completion: nil)
-        imgUpload.hidden = true
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true, completion: nil)
+        imgUpload.isHidden = true
     }
     
-    @IBAction func onSave(sender: AnyObject) {
+    @IBAction func onSave(_ sender: AnyObject) {
         
         let age:Int? = Int(txtAge.text!)
         
         if txtName.text == "" {
-            let alert = UIAlertController(title: "Alert", message: "Please enter your Name", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-            btnSave.enabled = false
+            let alert = UIAlertController(title: "Alert", message: "Please enter your Name", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            btnSave.isEnabled = false
             btnSave.alpha = 0.4
         } else {
             isNameOk = true
         }
         
         if txtAge.text == ""  {
-            let alert = UIAlertController(title: "Alert", message: "Please enter your Age", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-            btnSave.enabled = false
+            let alert = UIAlertController(title: "Alert", message: "Please enter your Age", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            btnSave.isEnabled = false
             btnSave.alpha = 0.4
         } else {
             isAgeOk = true
         }
         
         if age > 100  {
-            let alert = UIAlertController(title: "Alert", message: "Age can't be bigger than 150", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Alert", message: "Age can't be bigger than 150", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             isAgeOk = false
         } else {
             isAgeOk = true
         }
         
         if txtNote.text == "" {
-            let alert = UIAlertController(title: "Alert", message: "Please enter your Note", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-            btnSave.enabled = false
+            let alert = UIAlertController(title: "Alert", message: "Please enter your Note", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            btnSave.isEnabled = false
             btnSave.alpha = 0.4
         } else {
             isNoteOK = true
         }
         
         if (imgUserPhoto.image == nil) {
-            let alert = UIAlertController(title: "Alert", message: "Please upload your avatar photo", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Alert", message: "Please upload your avatar photo", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         } else {
             goNext = true
         }
         
         if txtPhoneNumber.text == "" {
-            let alert = UIAlertController(title: "Alert", message: "Please enter your phone number!", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-            btnSave.enabled = false
+            let alert = UIAlertController(title: "Alert", message: "Please enter your phone number!", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            btnSave.isEnabled = false
             btnSave.alpha = 0.4
         } else {
             isPhoneNumOK = true
         }
     
         if (goNext) {
-            apiManager.setUserDetails(userInformation.objectForKey(UserDetails.TOKEN) as! String, name: txtName.text!, type: "1", telNum: txtPhoneNumber.text!, age: txtAge.text!, note: txtNote.text!, car_type: "", car_registration: "", fee_start: "", fee_km: "", fileData: imageData, fileName: "file", mime: mime)
+            apiManager.setUserDetails(userInformation.object(forKey: UserDetails.TOKEN) as! String, name: txtName.text!, type: "1", telNum: txtPhoneNumber.text!, age: txtAge.text!, note: txtNote.text!, car_type: "", car_registration: "", fee_start: "", fee_km: "", fileData: imageData, fileName: "file", mime: mime)
             
             progressHUD.show()
         }
@@ -189,28 +209,28 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
     }
     
     // MARK: - UIAction Methods
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let choosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         imgUserPhoto.image = choosenImage
         
-        let imageURL = info[UIImagePickerControllerReferenceURL] as! NSURL
+        let imageURL = info[UIImagePickerControllerReferenceURL] as! URL
         
         mime = imageURL.pathExtension
         imageData = UIImagePNGRepresentation(choosenImage)
         
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
         
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
     
-    func onSetUserDetailsSuccess(json: JSON) {
+    func onSetUserDetailsSuccess(_ json: JSON) {
         
         if isEditingProfile{
-            self.dismissViewControllerAnimated(true, completion: nil)
-            btnSave.enabled = true
+            self.dismiss(animated: true, completion: nil)
+            btnSave.isEnabled = true
             btnSave.alpha = 1
         } else {
             userInformation.setValue(json["data"]["user"]["telNum"].string, forKey: UserDetails.TEL_NUM)
@@ -220,19 +240,19 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             userInformation.setValue(json["data"]["user"]["avatar"]["thumbfileid"].string, forKey: UserDetails.THUMBNAIL)
             userInformation.setValue(json["data"]["user"]["avatar"]["fileid"].string, forKey: UserDetails.AVATAR)
             userInformation.setValue("1", forKey: UserDetails.TYPE)
-            self.performSegueWithIdentifier("SetUSerDetailsSegue", sender: nil)
+            self.performSegue(withIdentifier: "SetUSerDetailsSegue", sender: nil)
         }
     }
     
-    func onSetUserDetailsError(error: NSInteger) {
-        dismissViewControllerAnimated(true, completion: nil)
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+    func onSetUserDetailsError(_ error: NSInteger) {
+        dismiss(animated: true, completion: nil)
+        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
         progressHUD.hide()
     }
     
-    func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
+    func showPRogress(_ totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
         
     }
 }

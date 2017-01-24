@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-public class BaseModel: Mappable {
+open class BaseModel: Mappable {
     
     var code: NSInteger!
     var time: CLong!
@@ -18,7 +18,7 @@ public class BaseModel: Mappable {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         code <- map["code"]
         time <- map["time"]
     }

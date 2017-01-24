@@ -52,8 +52,8 @@ extension Request {
 
         - parameter contentTypes: The additional content types.
     */
-    public class func addAcceptableImageContentTypes(contentTypes: Set<String>) {
-        Request.acceptableImageContentTypes.unionInPlace(contentTypes)
+    public class func addAcceptableImageContentTypes(_ contentTypes: Set<String>) {
+        Request.acceptableImageContentTypes.formUnion(contentTypes)
     }
 
     // MARK: - iOS, tvOS and watchOS
@@ -77,28 +77,28 @@ extension Request {
         - returns: An image response serializer.
     */
     public class func imageResponseSerializer(
-        imageScale imageScale: CGFloat = Request.imageScale,
+        imageScale: CGFloat = Request.imageScale,
         inflateResponseImage: Bool = true)
         -> ResponseSerializer<UIImage, NSError>
     {
         return ResponseSerializer { request, response, data, error in
-            guard error == nil else { return .Failure(error!) }
+            guard error == nil else { return .failure(error!) }
 
-            guard let validData = data where validData.length > 0 else {
-                return .Failure(Request.imageDataError())
+            guard let validData = data  where validData.count > 0 else {
+                return .failure(Request.imageDataError())
             }
 
             guard Request.validateContentTypeForRequest(request, response: response) else {
-                return .Failure(Request.contentTypeValidationError())
+                return .failure(Request.contentTypeValidationError())
             }
 
             do {
                 let image = try Request.imageFromResponseData(validData, imageScale: imageScale)
                 if inflateResponseImage { image.af_inflate() }
 
-                return .Success(image)
+                return .success(image)
             } catch {
-                return .Failure(error as NSError)
+                return .failure(error as NSError)
             }
         }
     }
@@ -125,21 +125,21 @@ extension Request {
         - returns: The request.
     */
     public func responseImage(
-        imageScale: CGFloat = Request.imageScale,
+        _ imageScale: CGFloat = Request.imageScale,
         inflateResponseImage: Bool = true,
-        completionHandler: Response<Image, NSError> -> Void)
+        completionHandler: (Response<Image, NSError>) -> Void)
         -> Self
     {
         return response(
             responseSerializer: Request.imageResponseSerializer(
-                imageScale: imageScale,
+                imageScale,
                 inflateResponseImage: inflateResponseImage
             ),
             completionHandler: completionHandler
         )
     }
 
-    private class func imageFromResponseData(data: NSData, imageScale: CGFloat) throws -> UIImage {
+    fileprivate class func imageFromResponseData(_ data: Data, imageScale: CGFloat) throws -> UIImage {
         if let image = UIImage.af_threadSafeImageWithData(data, scale: imageScale) {
             return image
         }
@@ -147,9 +147,9 @@ extension Request {
         throw imageDataError()
     }
 
-    private class var imageScale: CGFloat {
+    fileprivate class var imageScale: CGFloat {
         #if os(iOS) || os(tvOS)
-            return UIScreen.mainScreen().scale
+            return UIScreen.main.scale
         #elseif os(watchOS)
             return WKInterfaceDevice.currentDevice().screenScale
         #endif
@@ -168,7 +168,7 @@ extension Request {
         return ResponseSerializer { request, response, data, error in
             guard error == nil else { return .Failure(error!) }
 
-            guard let validData = data where validData.length > 0 else {
+            guard let validData = data  where validData.length > 0 else {
                 return .Failure(Request.imageDataError())
             }
 
@@ -208,29 +208,29 @@ extension Request {
 
     // MARK: - Private - Shared Helper Methods
 
-    private class func validateContentTypeForRequest(
-        request: NSURLRequest?,
-        response: NSHTTPURLResponse?)
+    fileprivate class func validateContentTypeForRequest(
+        _ request: URLRequest?,
+        response: HTTPURLResponse?)
         -> Bool
     {
-        if let URL = request?.URL where URL.fileURL {
+        if let URL = request?.url  where URL.isFileURL {
             return true
         }
 
-        if let mimeType = response?.MIMEType where Request.acceptableImageContentTypes.contains(mimeType) {
+        if let mimeType = response?.mimeType  where Request.acceptableImageContentTypes.contains(mimeType) {
             return true
         }
 
         return false
     }
 
-    private class func contentTypeValidationError() -> NSError {
+    fileprivate class func contentTypeValidationError() -> NSError {
         let failureReason = "Failed to validate response due to unacceptable content type"
-        return Error.errorWithCode(NSURLErrorCannotDecodeContentData, failureReason: failureReason)
+        return Alamofire.Error.errorWithCode(NSURLErrorCannotDecodeContentData, failureReason: failureReason)
     }
 
-    private class func imageDataError() -> NSError {
+    fileprivate class func imageDataError() -> NSError {
         let failureReason = "Failed to create a valid Image from the response data"
-        return Error.errorWithCode(NSURLErrorCannotDecodeContentData, failureReason: failureReason)
+        return Alamofire.Error.errorWithCode(NSURLErrorCannotDecodeContentData, failureReason: failureReason)
     }
 }
