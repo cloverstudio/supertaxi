@@ -13,7 +13,7 @@ import SWRevealViewController
 import SwiftyJSON
 import ImageLoader
 
-class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, RateViewDelegate, UpdateTimeDelegate, UpdateCoordinatesDelegate {
+class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, OrderStatusDelegate, RateViewDelegate {
 
     @IBOutlet weak var viewAlert: UIView!
     @IBOutlet weak var btnStartTrip: UIButton!
@@ -27,12 +27,9 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     @IBOutlet var addressTo: UILabel!
     @IBOutlet var txtUserNote: UILabel!
     @IBOutlet var txtUserName: UILabel!
-    @IBOutlet weak var txtAboveTheDistance1: UILabel!
-    @IBOutlet weak var txtAboveTheDistance2: UILabel!
-    
     
     var locationManager: CLLocationManager!
-    let UserInformation = NSUserDefaults.standardUserDefaults()
+    let UserInformation = UserDefaults.standard
     var apiManager: ApiManager!
     
     var from: CLLocationCoordinate2D!
@@ -69,19 +66,18 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         locationManager.startUpdatingLocation()
         
         if let coor = mapView.userLocation.location?.coordinate{
-            mapView.setCenterCoordinate(coor, animated: true)
+            mapView.setCenter(coor, animated: true)
         }
         
 //        mapView.showsUserLocation = true;
         
         apiManager = ApiManager()
         apiManager.orderStatusDelegate = self
-        apiManager.updateTimeDelegate = self
-        apiManager.updateCoordinatesDelegate = self
+
         viewAlert.layer.cornerRadius = 5
         
-        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
-            avatar.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!)
+        if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
+            avatar.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!)
         }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
@@ -98,12 +94,12 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         addressFrom.text = userAddressFrom
         addressTo.text = userAddressTo
         
-     //   userAvatar.load(Api.IMAGE_URL + userFileId)
-       // userAvatar.layer.cornerRadius = userAvatar.frame.size.height/2
-      //  userAvatar.clipsToBounds = true
+        userAvatar.load(Api.IMAGE_URL + userFileId)
+        userAvatar.layer.cornerRadius = userAvatar.frame.size.height/2
+        userAvatar.clipsToBounds = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         getOrderStatus()
     }
     
@@ -118,64 +114,52 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
        
     }
     
-    
-    
-    
-    @IBAction func onStartTripClick(sender: AnyObject) {
+    @IBAction func onStartTripClick(_ sender: AnyObject) {
         
         tripStarted = true
-        txtAboveTheDistance1.text="DISTANCE TO"
-        txtAboveTheDistance2.text="DESTINATION:"
         createRoute(driverLocation, endLocation: to)
         
-        btnStartTrip.hidden = true
-        btnEndTrip.hidden = false
+        btnStartTrip.isHidden = true
+        btnEndTrip.isHidden = false
         
-        apiManager.updateArriveTime(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: orderId)
-        apiManager.updateStartTime(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: orderId)
+        apiManager.updateArriveTime(UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: orderId)
+        apiManager.updateStartTime(UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: orderId)
     }
     
-    
-    
-    @IBAction func onEndTrip(sender: AnyObject) {
-        if  userFileId == nil {
-            userFileId=""
-        }
-        let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: userName, start: from, end: to, type: 2, image: userFileId, id: userId)
-        
+    @IBAction func onEndTrip(_ sender: AnyObject) {
+        let customView = RateView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), name: userName, start: from, end: to, type: 2, image: userFileId, id: userId)
         customView.rateViewDelegate = self
         self.view.addSubview(customView)
-        apiManager.updateFinishTime(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: orderId)
+        apiManager.updateFinishTime(UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: orderId)
+        
         
     }
     
-    // MARK: handle internet error
-    @IBAction func onCancelTrip(sender: AnyObject) {
-        apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 2, reason: "Neznam")
+    @IBAction func onCancelTrip(_ sender: AnyObject) {
+        apiManager.cancelOrder(UserInformation.string(forKey: UserDetails.TOKEN)!, id: orderId, type: 2, reason: "Neznam")
     }
     
-    @IBAction func openSidebar(sender: AnyObject) {
+    @IBAction func openSidebar(_ sender: AnyObject) {
         self.revealViewController().revealToggle(sender)
     }
     
-    // MARK: handle internet error
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        apiManager.updateCoordinates(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: (manager.location?.coordinate.latitude)!, lon: (manager.location?.coordinate.longitude)!)
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        apiManager.updateCoordinates(UserInformation.string(forKey: UserDetails.TOKEN)!, lat: (manager.location?.coordinate.latitude)!, lon: (manager.location?.coordinate.longitude)!)
         
         if !tripStarted {
             driverLocation = manager.location?.coordinate
         }
     }
     
-    @IBAction func onClose(sender: AnyObject) {
-        viewAlert.hidden = true
+    @IBAction func onClose(_ sender: AnyObject) {
+        viewAlert.isHidden = true
     }
     
-    func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         
     }
     
-    func centerMap(center:CLLocationCoordinate2D){
+    func centerMap(_ center:CLLocationCoordinate2D){
         
         let spanX = 0.007
         let spanY = 0.007
@@ -184,11 +168,11 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         mapView.setRegion(newRegion, animated: true)
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
     }
     
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor(red: 57/255.0, green: 149/255.0, blue: 246/255.0, alpha: 1.0)
         renderer.lineWidth = 10.0
@@ -196,22 +180,22 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         return renderer
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKPointAnnotation {
             return nil
             
         } else if annotation is DriverAnnotation {
             let reuseId = "driver"
             
-            var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+            var anView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
             if anView == nil {
                 anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
                 anView!.canShowCallout = true
                 anView!.image = UIImage(named: "black_car_icon")
             }
             
-            var rotationTransform: CGAffineTransform = CGAffineTransformIdentity;
-            rotationTransform = CGAffineTransformMakeRotation(CGFloat(angle));
+            var rotationTransform: CGAffineTransform = CGAffineTransform.identity;
+            rotationTransform = CGAffineTransform(rotationAngle: CGFloat(angle));
             anView!.transform = rotationTransform;
             
             return anView
@@ -220,20 +204,20 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
             
             let reuseId = "user"
             
-            var userView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+            var userView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
             if userView == nil {
                 userView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
                 userView!.canShowCallout = true
                 
-                let pinImage: UIImageView = UIImageView(frame: CGRectMake(0, 0, 35, 35))
-               // pinImage.load(Api.IMAGE_URL + userFileId)
+                let pinImage: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+                pinImage.load(Api.IMAGE_URL + userFileId)
                 pinImage.layer.cornerRadius = pinImage.layer.frame.size.width / 2
                 pinImage.layer.borderWidth = 2
-                pinImage.layer.borderColor = Colors.greenTransparent(1).CGColor
+                pinImage.layer.borderColor = Colors.greenTransparent(1).cgColor
                 pinImage.layer.masksToBounds = true
                 
                 UIGraphicsBeginImageContext(pinImage.bounds.size);
-               // pinImage.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+                pinImage.layer.render(in: UIGraphicsGetCurrentContext()!)
                 let screenShot = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
                 
@@ -246,14 +230,14 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         return nil
     }
     
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         if view.annotation is UserAnnotation {
-            viewAlert.hidden = false
+            viewAlert.isHidden = false
         }
     }
     
-    func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+    func createRoute(_ startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
         
         if helperLocation != nil {
             let delatLongitude = Float(helperLocation.longitude - startLocation.longitude)
@@ -303,11 +287,11 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
-        directionRequest.transportType = .Automobile
+        directionRequest.transportType = .automobile
         
         let directions = MKDirections(request: directionRequest)
         
-        directions.calculateDirectionsWithCompletionHandler {
+        directions.calculate {
             (response, error) -> Void in
             
             guard let response = response else {
@@ -319,7 +303,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
             }
             
             let route = response.routes[0]
-            self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
+            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             
             self.txtDistance.text = String(route.distance / 1000) + " km"
             
@@ -327,15 +311,14 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
     }
     
-    
     func getOrderStatus(){
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.apiManager.getOrderStatus(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+            self.apiManager.getOrderStatus(self.UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }
     
-    func onOrderStatusSuccess(json: JSON) {
+    func onOrderStatusSuccess(_ json: JSON) {
         if (tripStarted) {
             getOrderStatus()
         }
@@ -346,33 +329,27 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
             getOrderStatus()
         }
     }
-    func onOrderStatusError(error: NSInteger) {
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
-            if (self.tripStarted) {
-                self.getOrderStatus()
-            }
-            
-        }))
-      
-        self.presentViewController(alert, animated: true, completion: nil)
-        
+    
+    func onOrderStatusError(_ error: NSInteger) {
+        if (tripStarted) {
+            getOrderStatus()
+        }
     }
     
-    func onOrderStatusCanceled(json: JSON) {
+    func onOrderStatusCanceled(_ json: JSON) {
         if(orderStatus){
             if(json["data"]["cancelType"].number == 1){
-                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
+                let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
                     UIAlertAction in
-                    let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+                    let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiProfileMapVC") as? TaxiProfileMapViewController
                     self.navigationController?.pushViewController(viewController!, animated: true)
                 }
                 
-                let alert = UIAlertController(title: "Info", message: "User canceled!", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Info", message: "User canceled!", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(okAction)
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             } else {
-                let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+                let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiProfileMapVC") as? TaxiProfileMapViewController
                 self.navigationController?.pushViewController(viewController!, animated: true)
             }
         }
@@ -380,75 +357,22 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         orderStatus = true
     }
     
-    func onOrderSrarusStartedDrive(json: JSON){
+    func onOrderSrarusStartedDrive(_ json: JSON){
     
     }
     
-    func onOrderStatusDriveEnded(json: JSON){
+    func onOrderStatusDriveEnded(_ json: JSON){
         
     }
     
     func onDriveRated() {
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiProfileMapVC") as? TaxiProfileMapViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
         
     }
     
     func onDriveRatedError(){
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiProfileMapVC") as? TaxiProfileMapViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
-    
-    func onStartTimeUpdateSuccess() {
-        
-    }
-    
-    func onStartTimeUpdateError(error:NSInteger) {
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
-            if (self.tripStarted) {
-                self.apiManager.updateStartTime(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
-            }
-            
-        }))
-        
-    }
-    
-    func onFinishTimeUpdateSuccess() {
-        
-    }
-    
-    func onFinishTimeUpdateError(error: NSInteger) {
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
-            if (self.tripStarted) {
-                self.apiManager.updateFinishTime(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
-            }
-            
-        }))
-    }
-    
-    func onArriveTimeUpdateSuccess() {
-        
-    }
-    
-    func onArriveTimeUpdateError(error:NSInteger) {
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
-            if (self.tripStarted) {
-                self.apiManager.updateArriveTime(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
-            }
-            
-        }))
-        
-    }
-    
-    func onUpdateCoordinatesError(error:NSInteger) {
-        
-    }
-    
-    func onUpdateCoordinatesSuccess() {
-        
-    }
-    
 }

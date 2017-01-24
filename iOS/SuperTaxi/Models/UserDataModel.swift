@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-public class UserDataModel: Mappable {
+open class UserDataModel: Mappable {
     
     var token_new: String!
     var user: UserModel!
@@ -18,7 +18,7 @@ public class UserDataModel: Mappable {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         token_new <- map["token_new"]
         user <- map["user"]
     }

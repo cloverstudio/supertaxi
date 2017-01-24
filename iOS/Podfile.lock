@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (3.5.1)
+  - Alamofire (3.4.0)
   - AlamofireImage (2.4.0):
     - Alamofire (~> 3.3)
   - AlamofireObjectMapper (3.0.0):
@@ -49,7 +49,7 @@ PODS:
   - SWRevealViewController (2.3.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.5)
+  - Alamofire (~> 3.3)
   - AlamofireImage (~> 2.0)
   - AlamofireObjectMapper (~> 3.0)
   - Bolts
@@ -72,7 +72,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
-  Alamofire: 0dfba1184a543e2aa160f4e39cac4e8aba48d223
+  Alamofire: c19a627cefd6a95f840401c49ab1f124e07f54ee
   AlamofireImage: 87408b652e0f5ae5fe364035f15aea8b9b24c77e
   AlamofireObjectMapper: 2d16585d06177be0116d76de73497e77437798af
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
@@ -93,6 +93,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: bd1b4739f7dd54c297381d087d355b9011b35616
+PODFILE CHECKSUM: 08763f87be3dd0fc19af07d2976fbedc35f4046d
 
 COCOAPODS: 1.0.0

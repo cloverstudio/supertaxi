@@ -10,7 +10,7 @@ import Foundation
 import ObjectMapper
 import SwiftyJSON
 
-public class UserModel: Mappable {
+open class UserModel: Mappable {
 
     var _v: NSInteger!
     var _id: String!
@@ -28,7 +28,7 @@ public class UserModel: Mappable {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         _v <- map["_v"]
         _id <- map["_id"]
         created <- map["created"]

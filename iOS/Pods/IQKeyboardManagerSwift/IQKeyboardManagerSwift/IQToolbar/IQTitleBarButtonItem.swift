@@ -24,46 +24,46 @@
 
 import UIKit
 
-public class IQTitleBarButtonItem: IQBarButtonItem {
+open class IQTitleBarButtonItem: IQBarButtonItem {
    
-    public var font : UIFont? {
+    open;; var font : UIFont? {
     
         didSet {
             if let unwrappedFont = font {
                 _titleLabel?.font = unwrappedFont
             } else {
-                _titleLabel?.font = UIFont.systemFontOfSize(13)
+                _titleLabel?.font = UIFont.systemFont(ofSize: 13)
             }
         }
     }
     
-    private var _titleLabel : UILabel?
-    private var _titleView : UIView?
+    fileprivate;; var _titleLabel : UILabel?
+    fileprivate;; var _titleView : UIView?
 
     override init() {
         super.init()
     }
     
-    init(title : String?) {
+    convenience init(title : String?) {
 
-        self.init(title: nil, style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        self.init(title: nil, style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         
         _titleView = UIView()
-        _titleView?.backgroundColor = UIColor.clearColor()
-        _titleView?.autoresizingMask = [.FlexibleWidth,.FlexibleHeight]
+        _titleView?.backgroundColor = UIColor.clear
+        _titleView?.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         
         _titleLabel = UILabel()
         _titleLabel?.numberOfLines = 0
-        _titleLabel?.textColor = UIColor.grayColor()
-        _titleLabel?.backgroundColor = UIColor.clearColor()
-        _titleLabel?.textAlignment = .Center
+        _titleLabel?.textColor = UIColor.gray
+        _titleLabel?.backgroundColor = UIColor.clear
+        _titleLabel?.textAlignment = .center
         _titleLabel?.text = title
-        _titleLabel?.autoresizingMask = [.FlexibleWidth,.FlexibleHeight]
-        font = UIFont.systemFontOfSize(13.0)
+        _titleLabel?.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        font = UIFont.systemFont(ofSize: 13.0)
         _titleLabel?.font = self.font
         _titleView?.addSubview(_titleLabel!)
         customView = _titleView
-        enabled = false
+        isEnabled = false
     }
 
     required public init?(coder aDecoder: NSCoder) {

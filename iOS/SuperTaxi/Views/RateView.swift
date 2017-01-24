@@ -21,6 +21,7 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     @IBOutlet var mainBackView: UIView!
     @IBOutlet var name: UILabel!
     @IBOutlet var time: UILabel!
+    @IBOutlet var price: UILabel!
     @IBOutlet var image: UIImageView!
     @IBOutlet var mapView: MKMapView!
     
@@ -29,35 +30,19 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     @IBOutlet var threeStars: UIButton!
     @IBOutlet var fourStars: UIButton!
     @IBOutlet var fiveStars: UIButton!
-    @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var priceAmountLbl: UILabel!
-   
+    
     var nameText: String!
     var start: CLLocationCoordinate2D!
     var end: CLLocationCoordinate2D!
     var imageFile: String!
     var type: NSInteger!
     var id: String!
-    var distance:Float!
-    var driver:DriverInfoModel!
     
-    let userInformation = NSUserDefaults.standardUserDefaults()
+    let userInformation = UserDefaults.standard
     var apiManager: ApiManager!
     
     var rateViewDelegate: RateViewDelegate!
     
-    init(frame: CGRect, name: String, start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, type: NSInteger, image: String, id: String, driver: DriverInfoModel) {
-        super.init(frame: frame)
-        
-        self.nameText = name
-        self.start = start
-        self.end = end
-        self.imageFile = image
-        self.type = type
-        self.id = id
-        self.driver = driver
-        loadViewFromNib ()
-    }
     init(frame: CGRect, name: String, start: CLLocationCoordinate2D, end: CLLocationCoordinate2D, type: NSInteger, image: String, id: String) {
         super.init(frame: frame)
         
@@ -68,9 +53,6 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         self.type = type
         self.id = id
         loadViewFromNib ()
-        priceAmountLbl.hidden = true
-        priceLabel.hidden = true
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -78,11 +60,11 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     }
     func loadViewFromNib() {
         
-        let bundle = NSBundle(forClass: self.dynamicType)
+        let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: "RateView", bundle: bundle)
-        let view = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
+        let view = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
         view.frame = bounds
-        view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.backgroundColor = Colors.greyBorder(0.7)
         self.addSubview(view)
         
@@ -95,16 +77,16 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         mainBackView.clipsToBounds = true
         name.text = nameText
         
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Hour, .Minute, .Weekday], fromDate: date)
+        let date = Date()
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components([.hour, .minute, .weekday], from: date)
         let hour = components.hour
         let minutes = components.minute
         let day = components.weekday
         
-        let dayOfWeek: String = dayOfTheWeek(day)!
+        let dayOfWeek: String = dayOfTheWeek(day!)!
         
-        time.text = dayOfWeek  + ", " + String(hour) + ":" + String(minutes)
+        time.text = dayOfWeek  + ", " + String(describing: hour) + ":" + String(describing: minutes)
         
         if (imageFile != nil){
             if type == 1 {
@@ -121,7 +103,7 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         createRoute(start, endLocation: end)
     }
     
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor(red: 57/255.0, green: 149/255.0, blue: 246/255.0, alpha: 1.0)
         renderer.lineWidth = 10.0
@@ -129,7 +111,7 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         return renderer
     }
     
-    func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+    func createRoute(_ startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
         
@@ -160,11 +142,11 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
-        directionRequest.transportType = .Automobile
+        directionRequest.transportType = .automobile
         
         let directions = MKDirections(request: directionRequest)
         
-        directions.calculateDirectionsWithCompletionHandler {
+        directions.calculate {
             (response, error) -> Void in
             
             guard let response = response else {
@@ -176,25 +158,17 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
             }
             
             let route = response.routes[0]
-            self.distance = Float(route.distance)/1000
-            if self.driver != nil {
-                print(self.driver.fee_km)
-                print(self.driver.fee_start)
-                print(self.distance)
-                self.priceAmountLbl.text = "$ " + String (format:"%.2f",Float(self.driver.fee_start) + self.distance*Float(self.driver.fee_km))
-                 }
+            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             
-            self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
-            
-            self.mapView.zoomEnabled = false
-            self.mapView.rotateEnabled = false
-            self.mapView.scrollEnabled = false
-            self.mapView.pitchEnabled = false
+            self.mapView.isZoomEnabled = false
+            self.mapView.isRotateEnabled = false
+            self.mapView.isScrollEnabled = false
+            self.mapView.isPitchEnabled = false
         }
         
     }
     
-    func dayOfTheWeek(day: NSInteger) -> String? {
+    func dayOfTheWeek(_ day: NSInteger) -> String? {
         let weekdays = [
             "Sunday",
             "Monday",
@@ -209,46 +183,46 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
     }
     
     
-    @IBAction func oneStarBtn(sender: AnyObject) {
-        oneStar.setImage(UIImage(named: "star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: id, type: type, rate: 1)
+    @IBAction func oneStarBtn(_ sender: AnyObject) {
+        oneStar.setImage(UIImage(named: "star_active"), for: UIControlState())
+        apiManager.rateProfile(userInformation.string(forKey: UserDetails.TOKEN)!, id: id, type: type, rate: 1)
     }
     
-    @IBAction func twoStarBtn(sender: AnyObject) {
-        oneStar.setImage(UIImage(named: "star_active"), forState: .Normal)
-        twoStars.setImage(UIImage(named: "small_star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: id, type: type, rate: 2)
+    @IBAction func twoStarBtn(_ sender: AnyObject) {
+        oneStar.setImage(UIImage(named: "star_active"), for: UIControlState())
+        twoStars.setImage(UIImage(named: "small_star_active"), for: UIControlState())
+        apiManager.rateProfile(userInformation.string(forKey: UserDetails.TOKEN)!, id: id, type: type, rate: 2)
     }
     
-    @IBAction func threeStarBtn(sender: AnyObject) {
-        oneStar.setImage(UIImage(named: "star_active"), forState: .Normal)
-        twoStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        threeStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: id, type: type, rate: 3)
+    @IBAction func threeStarBtn(_ sender: AnyObject) {
+        oneStar.setImage(UIImage(named: "star_active"), for: UIControlState())
+        twoStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        threeStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        apiManager.rateProfile(userInformation.string(forKey: UserDetails.TOKEN)!, id: id, type: type, rate: 3)
     }
     
-    @IBAction func fourStarBtn(sender: AnyObject) {
-        oneStar.setImage(UIImage(named: "star_active"), forState: .Normal)
-        twoStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        threeStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        fourStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: id, type: type, rate: 4)
+    @IBAction func fourStarBtn(_ sender: AnyObject) {
+        oneStar.setImage(UIImage(named: "star_active"), for: UIControlState())
+        twoStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        threeStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        fourStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        apiManager.rateProfile(userInformation.string(forKey: UserDetails.TOKEN)!, id: id, type: type, rate: 4)
     }
     
-    @IBAction func fiveStarBtn(sender: AnyObject) {
-        oneStar.setImage(UIImage(named: "star_active"), forState: .Normal)
-        twoStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        threeStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        fourStars.setImage(UIImage(named: "star_active"), forState: .Normal)
-        fiveStars.setImage(UIImage(named: "star_active"), forState: .Normal)
+    @IBAction func fiveStarBtn(_ sender: AnyObject) {
+        oneStar.setImage(UIImage(named: "star_active"), for: UIControlState())
+        twoStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        threeStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        fourStars.setImage(UIImage(named: "star_active"), for: UIControlState())
+        fiveStars.setImage(UIImage(named: "star_active"), for: UIControlState())
         
-        apiManager.rateProfile(userInformation.stringForKey(UserDetails.TOKEN)!, id: id, type: type, rate: 5)
+        apiManager.rateProfile(userInformation.string(forKey: UserDetails.TOKEN)!, id: id, type: type, rate: 5)
     }
     
     func onRateSuccess() {
         rateViewDelegate.onDriveRated()
     }
-    // MARK: handle internet error
+    
     func onRateError() {
         rateViewDelegate.onDriveRatedError()
     }

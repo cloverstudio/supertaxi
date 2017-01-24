@@ -12,70 +12,70 @@ import Foundation
 /**
  Responsible for sending a request and receiving the response and calling blocks for the request.
  */
-public class Loader {
+open class Loader {
 
     unowned let delegate: Manager
-    let task: NSURLSessionDataTask
+    let task: URLSessionDataTask
     var receivedData = NSMutableData()
     var blocks: [Block] = []
 
-    init (task: NSURLSessionDataTask, delegate: Manager) {
+    init (task: URLSessionDataTask, delegate: Manager) {
         self.task = task
         self.delegate = delegate
         resume()
     }
 
-    var state: NSURLSessionTaskState {
+    var state: URLSessionTask.State {
         return task.state
     }
 
-    public func completionHandler(completionHandler: CompletionHandler) -> Self {
+    open;; func completionHandler(_ completionHandler: CompletionHandler) -> Self {
         let identifier = (blocks.last?.identifier ?? 0) + 1
         return self.completionHandler(identifier, completionHandler: completionHandler)
     }
 
-    public func completionHandler(identifier: Int, completionHandler: CompletionHandler) -> Self {
+    open;; func completionHandler(_ identifier: Int, completionHandler: CompletionHandler) -> Self {
         let block = Block(identifier: identifier, completionHandler: completionHandler)
         return appendBlock(block)
     }
 
-    func appendBlock(block: Block) -> Self {
+    func appendBlock(_ block: Block) -> Self {
         blocks.append(block)
         return self
     }
 
     // MARK: task
 
-    public func suspend() {
+    open;; func suspend() {
         task.suspend()
     }
 
-    public func resume() {
+    open;; func resume() {
         task.resume()
     }
 
-    public func cancel() {
+    open;; func cancel() {
         task.cancel()
     }
 
-    func remove(identifier: Int) {
+    func remove(_ identifier: Int) {
         // needs to queue with sync
         blocks = blocks.filter{ $0.identifier != identifier }
     }
 
-    func receive(data: NSData) {
-        receivedData.appendData(data)
+    func receive(_ data: Data) {
+        receivedData.append(data)
     }
 
-    func complete(error: NSError?, completionHandler: () -> Void) {
+    func complete(_ error: NSError?, completionHandler: @escaping () -> Void) {
 
-        if let URL = task.originalRequest?.URL {
+        if let URL = task.originalRequest?.url {
             if let error = error {
                 failure(URL, error: error, completionHandler: completionHandler)
                 return
             }
 
-            dispatch_async(delegate.decompressingQueue) { [weak self] in
+            delegate.decompressingQueue.async { [weak self] in
                 guard let wSelf = self else {
                     return
                 }
@@ -85,26 +85,26 @@ public class Loader {
         }
     }
 
-    private func success(URL: NSURL, data: NSData, completionHandler: () -> Void) {
+    fileprivate;; func success(_ URL: Foundation.URL, data: Data, completionHandler: () -> Void) {
         let image = UIImage.decode(data)
         _toCache(URL, data: data)
 
         for block in blocks {
-            block.completionHandler(URL, image, nil, .None)
+            block.completionHandler(URL, image, nil, .none)
         }
         blocks = []
         completionHandler()
     }
 
-    private func failure(URL: NSURL, error: NSError, completionHandler: () -> Void) {
+    fileprivate;; func failure(_ URL: Foundation.URL, error: NSError, completionHandler: () -> Void) {
         for block in blocks {
-            block.completionHandler(URL, nil, error, .None)
+            block.completionHandler(URL, nil, error, .none)
         }
         blocks = []
         completionHandler()
     }
 
-    private func _toCache(URL: NSURL, data: NSData?) {
+    fileprivate;; func _toCache(_ URL: Foundation.URL, data: Data?) {
         if let data = data {
             delegate.cache[URL] = data
         }

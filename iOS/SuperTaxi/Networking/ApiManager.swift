@@ -12,59 +12,54 @@ import AlamofireObjectMapper
 import SwiftyJSON
 
 protocol LoginApiDelegate {
-    func onLoginTimeSuccess(secret: String)
-    func onLoginSuccess(data: UserLoginModel)
-    func onLoginError(errocCode: NSInteger)
+    func onLoginTimeSuccess(_ secret: String)
+    func onLoginSuccess(_ data: UserLoginModel)
+    func onLoginError(_ errocCode: NSInteger)
 }
 
 protocol SignUpApiDelegate {
-    func onSignUpTimeSuccess(secret: String)
-    func onSignUpSuccess(data: UserLoginModel)
-    func onSignUpError(errorCode: NSInteger)
+    func onSignUpTimeSuccess(_ secret: String)
+    func onSignUpSuccess(_ data: UserLoginModel)
+    func onSignUpError(_ errorCode: NSInteger)
 }
 
 protocol SetUserDetailsDelegate {
-    func onSetUserDetailsSuccess(json: JSON)
-    func onSetUserDetailsError(error: NSInteger)
-    func showPRogress(totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
+    func onSetUserDetailsSuccess(_ json: JSON)
+    func onSetUserDetailsError(_ error: NSInteger)
+    func showPRogress(_ totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
 }
 
 protocol CallOrderDelegate {
-    func onCallOrdered(id: String)
-    func onCallOrderError(error: NSInteger, crewNumber: NSInteger)
+    func onCallOrdered(_ id: String)
+    func onCallOrderError(_ error: NSInteger)
 }
 
 protocol DriverListDelegate {
 
-    func onDriversListSucess(json: JSON)
-    func onDriversListError(error: NSInteger)
+    func onDriversListSucess(_ json: JSON)
+    func onDriversListError(_ error: NSInteger)
 }
 
 protocol GetOpenOrdersDelegate {
     
-    func onOpenOrderSuccess(json: JSON)
+    func onOpenOrderSuccess(_ json: JSON)
     func onOpenOrderNoOrders()
-    func onOpenOrderError(error: NSInteger)
+    func onOpenOrderError(_ error: NSInteger)
 }
 
 protocol AcceptOrderDelegate {
     func onAcceptORderSuccess()
-    func onAcceptOrderError(error: NSInteger)
+    func onAcceptOrderError(_ error: NSInteger)
 }
 
 protocol OrderStatusDelegate {
     
-    func onOrderStatusSuccess(json: JSON)
-    func onOrderStatusCanceled(json: JSON)
+    func onOrderStatusSuccess(_ json: JSON)
+    func onOrderStatusCanceled(_ json: JSON)
     func onOrderStatusNoDrivers()
-    func onOrderStatusError(error: NSInteger)
-    func onOrderSrarusStartedDrive(json: JSON)
-    func onOrderStatusDriveEnded(json: JSON)
-}
-
-protocol OrderCancelDelegate {
-    func onCancelOrderSuccess()
-    func onCancelOrderError(error: NSInteger)
+    func onOrderStatusError(_ error: NSInteger)
+    func onOrderSrarusStartedDrive(_ json: JSON)
+    func onOrderStatusDriveEnded(_ json: JSON)
 }
 
 protocol RateDelegate {
@@ -73,32 +68,14 @@ protocol RateDelegate {
 }
 
 protocol ProfileDelegate {
-    func onProfileDetailsSuccess(json: JSON)
-    func onProfileDetailsError(error: NSInteger)
+    func onProfileDetailsSuccess(_ json: JSON)
 }
 
 protocol NearestDriverDelegate {
-    func onNearestDriverSuccess(latitude: Double, longitude: Double)
-    func onNearestDriveError(error: NSInteger)
-    
+    func onNearestDriverSuccess(_ latitude: Double, longitude: Double)
 }
 
-protocol UpdateTimeDelegate {
-    func onStartTimeUpdateSuccess()
-    func onStartTimeUpdateError(error: NSInteger)
-    func onArriveTimeUpdateSuccess()
-    func onArriveTimeUpdateError(error: NSInteger)
-    func onFinishTimeUpdateSuccess()
-    func onFinishTimeUpdateError(error: NSInteger)
-}
-
-protocol UpdateCoordinatesDelegate {
-    func onUpdateCoordinatesSuccess()
-    func onUpdateCoordinatesError(error: NSInteger)
-}
-
-
-public class ApiManager {
+open class ApiManager {
     
     var loginDelegate: LoginApiDelegate!
     var signUpDelegate: SignUpApiDelegate!
@@ -111,42 +88,30 @@ public class ApiManager {
     var rateDelegate: RateDelegate!
     var profileDelegate: ProfileDelegate!
     var nearestDriverDelegate: NearestDriverDelegate!
-    var updateCoordinatesDelegate: UpdateCoordinatesDelegate!
-    var updateTimeDelegate: UpdateTimeDelegate!
-    var cancelOrderDelegate:OrderCancelDelegate!
 
-    func getTimeForSecret(type: NSInteger) {
+    func getTimeForSecret(_ type: NSInteger) {
         
         let url : String = Api.SERVER_BASE_URL + Api.TEST
         
         Alamofire.request(.GET, url).responseObject {
             (response: Response<BaseModel, NSError>) in
-            switch response.result {
-            case .Success(let value):
-              let baseModel = value
-              var time = baseModel.time
-              time = time! / 10000
-              let timePlusSalt = Api.SALT + (time?.description)!
-              let shaSecret = Tools().sha1(timePlusSalt)
             
-              if(type == 1){
-                  self.loginDelegate.onLoginTimeSuccess(shaSecret)
-              } else{
-                  self.signUpDelegate.onSignUpTimeSuccess(shaSecret)
-              }
-            case .Failure(let error):
-              if(type == 1){
-                    self.loginDelegate.onLoginError(error.code)
-              } else{
-                    self.signUpDelegate.onSignUpError(error.code)
-                }
+            let baseModel = response.result.value
+            var time = baseModel?.time
+            time = time! / 10000
+            let timePlusSalt = Api.SALT + (time?.description)!
+            let shaSecret = Tools().sha1(timePlusSalt)
+            
+            if(type == 1){
+                self.loginDelegate.onLoginTimeSuccess(shaSecret)
+            } else{
+                self.signUpDelegate.onSignUpTimeSuccess(shaSecret)
+            }
         }
-            
+        
     }
     
-    }
-    
-    func signin(parameters : NSDictionary){
+    func signin(_ parameters : NSDictionary){
         
         let signinurl : String = Api.SERVER_BASE_URL + Api.USER_SIGNIN_URL
     
@@ -154,34 +119,38 @@ public class ApiManager {
             .responseObject {
                 (response: Response<UserLoginModel, NSError>) in
                 
-                switch response.result {
-                case .Success(let value):
-                      self.loginDelegate.onLoginSuccess(value)
-                case .Failure(let error):
-                      self.loginDelegate.onLoginError(error.code)
-                  
-            }
+                let userLogin: UserLoginModel = response.result.value!
+                
+                if(userLogin.data != nil){
+                    self.loginDelegate.onLoginSuccess(response.result.value!)
+                } else {
+                    self.loginDelegate.onLoginError((response.result.value?.code)!)
+                }
+                
+                
         }
     }
     
-    func signUp(parameters : NSDictionary){
+    func signUp(_ parameters : NSDictionary){
         let signupurl : String = Api.SERVER_BASE_URL + Api.USER_SIGNUP_URL
         
         Alamofire.request(.POST, signupurl, parameters: parameters as? [String : AnyObject])
             .responseObject {
                 (response: Response<UserLoginModel, NSError>) in
                 
-                switch response.result {
-                case .Success(let value):
-                    self.signUpDelegate.onSignUpSuccess(value)
-                case .Failure(let error):
-                    self.signUpDelegate.onSignUpError(error.code)
+                let userLogin: UserLoginModel = response.result.value!
+                
+                if(userLogin.data != nil){
+                    self.signUpDelegate.onSignUpSuccess(response.result.value!)
+                } else {
+                    self.signUpDelegate.onSignUpError((response.result.value?.code)!)
                 }
+                
         }
     }
     
-    func setUserDetails(token: String, name: String, type: String, telNum: String, age: String, note: String,car_type: String,
-                        car_registration: String, fee_start: String, fee_km: String, fileData: NSData, fileName: String, mime: String){
+    func setUserDetails(_ token: String, name: String, type: String, telNum: String, age: String, note: String,car_type: String,
+                        car_registration: String, fee_start: String, fee_km: String, fileData: Data, fileName: String, mime: String){
         
         let url = Api.SERVER_BASE_URL + Api.USER_UPDATE_PROFILE_URL
         
@@ -200,23 +169,23 @@ public class ApiManager {
         Alamofire.upload(.POST, url, headers: headers,
             multipartFormData: { multipartFormData in
                 multipartFormData.appendBodyPart(data: fileData, name: "file", fileName: fileName, mimeType: "image/" + mimeType)
-                multipartFormData.appendBodyPart(data:name.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"name")
-                multipartFormData.appendBodyPart(data:type.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"type")
-                multipartFormData.appendBodyPart(data:telNum.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"telNum")
-                multipartFormData.appendBodyPart(data:age.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"age")
-                multipartFormData.appendBodyPart(data:note.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"note")
-                multipartFormData.appendBodyPart(data:car_type.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"car_type")
-                multipartFormData.appendBodyPart(data:car_registration.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"car_registration")
-                multipartFormData.appendBodyPart(data:fee_start.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"fee_start")
-                multipartFormData.appendBodyPart(data:fee_km.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, name :"fee_km")
+                multipartFormData.appendBodyPart(data:name.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"name")
+                multipartFormData.appendBodyPart(data:type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"type")
+                multipartFormData.appendBodyPart(data:telNum.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"telNum")
+                multipartFormData.appendBodyPart(data:age.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"age")
+                multipartFormData.appendBodyPart(data:note.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"note")
+                multipartFormData.appendBodyPart(data:car_type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"car_type")
+                multipartFormData.appendBodyPart(data:car_registration.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"car_registration")
+                multipartFormData.appendBodyPart(data:fee_start.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"fee_start")
+                multipartFormData.appendBodyPart(data:fee_km.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"fee_km")
             },
             encodingCompletion: { encodingResult in
                 switch encodingResult {
-                case .Success(let upload, _, _):
+                case .success(let upload, _, _):
                     
                     upload.progress { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) in
           
-                        dispatch_async(dispatch_get_main_queue(),{
+                        DispatchQueue.main.async(execute: {
                             
                             self.setUserDetailsDelegate.showPRogress(totalBytesWritten, totalBytesExpectedToWrite: totalBytesExpectedToWrite)
                             
@@ -234,7 +203,7 @@ public class ApiManager {
                         }
                         
                     }
-                case .Failure(_):
+                case .failure(let encodingError):
                     self.setUserDetailsDelegate.onSetUserDetailsError(1000)
                 }
             }
@@ -242,7 +211,7 @@ public class ApiManager {
     }
     
     
-    func orderTaxi(token: String, latFrom: Double, lonFrom: Double, addressFrom: String, latTo: Double, lonTo: Double, addressTo: String, crewNum: NSInteger){
+    func orderTaxi(_ token: String, latFrom: Double, lonFrom: Double, addressFrom: String, latTo: Double, lonTo: Double, addressTo: String, crewNum: NSInteger){
         let url : String = Api.SERVER_BASE_URL + Api.ORDER_CALL
         
         let headers = ["access-token": token]
@@ -260,22 +229,17 @@ public class ApiManager {
             .responseObject {
                 (response: Response<OrderResponseModel, NSError>) in
                 
-                switch response.result {
-                case .Success(let value) :
-                    let order: OrderResponseModel = value
-                    if (order.data["order"]["_id"] != nil) {
-                        self.callOrderDelegate.onCallOrdered(order.data["order"]["_id"].string!)
-                    } else {
-                        self.callOrderDelegate.onCallOrderError(value.code, crewNumber: crewNum)
-                    }
-                case .Failure(let error) :
-                    self.callOrderDelegate.onCallOrderError(error.code, crewNumber: crewNum)
-                    
+                let order: OrderResponseModel = response.result.value!
+                
+                if (order.data["order"]["_id"] != nil) {
+                    self.callOrderDelegate.onCallOrdered(order.data["order"]["_id"].string!)
+                } else {
+                    self.callOrderDelegate.onCallOrderError((response.result.value?.code)!)
                 }
         }
     }
     
-    func cancelOrder(token: String, id: String, type: NSInteger, reason: String){
+    func cancelOrder(_ token: String, id: String, type: NSInteger, reason: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.CANCEL_ORDER
         
@@ -289,17 +253,14 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                             
-                switch response.result {
-                case .Success(_):
-                    self.cancelOrderDelegate.onCancelOrderSuccess()
-                case .Failure(let error):
-                    self.cancelOrderDelegate.onCancelOrderError(error.code)
-                }
+//                if let JSON = response.result.value {
+//                    print("JSON: \(JSON)")
+//                }
         }
         
     }
     
-    func getDriverList(token: String, lat: Double, lon: Double){
+    func getDriverList(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.DRIVERS
         
@@ -312,18 +273,17 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                switch response.result {
-                case .Success(let value):
-                    let json = JSON(value)
+                if response.result.value != nil {
+                    let json = JSON(response.result.value!)
                     self.driversListDelegate.onDriversListSucess(json["data"]["drivers"])
-                case .Failure(let error):
-                    self.driversListDelegate.onDriversListError(error.code)
+                } else {
+                    self.driversListDelegate.onDriversListError((response.result.value?.code)!)
                 }
         }
     
     }
 
-    func getOpenOrder(token: String, lat: Double, lon: Double){
+    func getOpenOrder(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.GET_OPEN_ORDER
         
@@ -335,23 +295,23 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                switch response.result{
-                case .Success(let value):
-                    let json = JSON(value)
+                
+                if response.result.value != nil {
+                    let json = JSON(response.result.value!)
+                
                     if (json["data"]["order"].exists()){
                         self.openOrderDelegate.onOpenOrderSuccess(json)
                     } else {
                         self.openOrderDelegate.onOpenOrderNoOrders()
                     }
-                case .Failure(let error) :
-                    self.openOrderDelegate.onOpenOrderError(error.code)
-                
+                } else {
+                    self.openOrderDelegate.onOpenOrderError((response.result.value?.code)!)
                 }
         }
         
     }
     
-    func acceptOrder(token: String, orderId: String){
+    func acceptOrder(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.ACCEPT_ORDER
         
@@ -363,19 +323,16 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                switch response.result {
-                    
-                case .Success(_):
+                if response.result.value != nil {
                     self.acceptOrderDelegate.onAcceptORderSuccess()
-                case .Failure(let error):
-                    self.acceptOrderDelegate.onAcceptOrderError(error.code)
+                } else {
+                    self.acceptOrderDelegate.onAcceptOrderError((response.result.value?.code)!)
                 }
-                
         }
         
     }
     
-    func getOrderStatus(token: String, orderId: String){
+    func getOrderStatus(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.ORDER_STATUS
         
@@ -387,11 +344,9 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                switch response.result{
-                    
-                case .Success(let value):
-                    let json = JSON(value)
-                    
+                if response.result.value != nil {
+                    let json = JSON(response.result.value!)
+                
                     if (json["data"]["orderStatus"].number == 1){
                         self.orderStatusDelegate.onOrderStatusSuccess(json)
                     } else if(json["data"]["orderStatus"].number == 2){
@@ -403,16 +358,14 @@ public class ApiManager {
                     } else {
                         self.orderStatusDelegate.onOrderStatusNoDrivers()
                     }
-                case .Failure(let error) :
-                    self.orderStatusDelegate.onOrderStatusError(error.code)
-                    
-                    
+                } else {
+                    self.orderStatusDelegate.onOrderStatusError((response.result.value?.code)!)
                 }
         }
         
     }
     
-    func updateCoordinates(token: String, lat: Double, lon: Double){
+    func updateCoordinates(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.UPDATE_COORDINATES
         
@@ -425,17 +378,14 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                switch response.result  {
-                case .Success(_):
-                    self.updateCoordinatesDelegate.onUpdateCoordinatesSuccess()
-                case .Failure(let error):
-                    self.updateCoordinatesDelegate.onUpdateCoordinatesError(error.code)
+                if response.result.value != nil {
+                    print("Coordinates updated!")
                 }
         }
         
     }
     
-    func updateArriveTime(token: String, orderId: String){
+    func updateArriveTime(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.ARRIVE_TIME
         
@@ -446,17 +396,15 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                switch response.result {
-                case .Success(_):
-                    self.updateTimeDelegate.onArriveTimeUpdateSuccess()
-                case .Failure(let error):
-                    self.updateTimeDelegate.onArriveTimeUpdateError(error.code)
+                
+                if let JSON = response.result.value {
+                    print("JSON ARRIVE TIME: \(JSON)")
                 }
         }
         
     }
     
-    func updateFinishTime(token: String, orderId: String){
+    func updateFinishTime(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.FINISH_TIME
         
@@ -467,18 +415,15 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-               
-                switch response.result {
-                case .Success(_):
-                    self.updateTimeDelegate.onFinishTimeUpdateSuccess()
-                case . Failure(let error):
-                    self.updateTimeDelegate.onStartTimeUpdateError(error.code)
+                
+                if let JSON = response.result.value {
+                    print("JSON FINISH TIME: \(JSON)")
                 }
         }
         
     }
     
-    func updateStartTime(token: String, orderId: String){
+    func updateStartTime(_ token: String, orderId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.START_TIME
         
@@ -490,17 +435,14 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                switch response.result {
-                case .Success(_):
-                    self.updateTimeDelegate.onStartTimeUpdateSuccess()
-                case .Failure(let error):
-                    self.updateTimeDelegate.onStartTimeUpdateError(error.code)
+                if let JSON = response.result.value {
+                    print("JSON START TIME: \(JSON)")
                 }
         }
         
     }
     
-    func rateProfile(token: String, id: String, type: NSInteger, rate: NSInteger){
+    func rateProfile(_ token: String, id: String, type: NSInteger, rate: NSInteger){
         
         let url : String = Api.SERVER_BASE_URL + Api.RATE_PROFILE
         
@@ -514,27 +456,21 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
         .responseJSON { response in
             
-            switch response.result {
+            if response.result.value != nil {
                 
-            case .Success(let value):
-                
-                let json = JSON(value)
+                let json = JSON(response.result.value!)
                 
                 if(json["code"].number == 1){
                     self.rateDelegate.onRateSuccess()
                 } else {
                     self.rateDelegate.onRateError()
                 }
-                
-            case .Failure(_):
-                self.rateDelegate.onRateError()
-            
             }
         }
         
     }
     
-    func getProfileDetail(token: String, userId: String){
+    func getProfileDetail(_ token: String, userId: String){
         
         let url : String = Api.SERVER_BASE_URL + Api.PROFILE_DETAIL
         
@@ -546,20 +482,15 @@ public class ApiManager {
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                 
-                switch response.result{
-                case .Success(let value):
-                    let json = JSON(value)
+                if response.result.value != nil {
+                    let json = JSON(response.result.value!)
                     self.profileDelegate.onProfileDetailsSuccess(json)
-                case .Failure(let error):
-                    self.profileDelegate.onProfileDetailsError(error.code)
-                    
                 }
         }
         
     }
     
-        
-    func getNearestDriver(token: String, lat: Double, lon: Double){
+    func getNearestDriver(_ token: String, lat: Double, lon: Double){
         
         let url : String = Api.SERVER_BASE_URL + Api.NEAREST_DRIVER
         
@@ -571,21 +502,19 @@ public class ApiManager {
         
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
-                switch response.result{
-                    
-                case .Success(let value):
-                    let json = JSON(value)
+                
+                if response.result.value != nil {
+                    let json = JSON(response.result.value!)
                     self.nearestDriverDelegate.onNearestDriverSuccess(json["data"]["driver"]["currentLocation"][1].double!, longitude: json["data"]["driver"]["currentLocation"][0].double!)
-                    
-                case .Failure(let error):
-                    self.nearestDriverDelegate.onNearestDriveError(error.code)
-                    
                 }
+        }
         
     }
 
 }
-}
+
+
+
 
 
 

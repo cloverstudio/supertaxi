@@ -19,7 +19,7 @@ class GetOrderResponseModel : Mappable {
         
     }
     
-    func mapping(map: Map) {
+    func mapping(_ map: Map) {
         code <- map["code"]
         data <- map["data"]
         time <- map["time"]

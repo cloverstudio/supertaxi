@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 
-public class AddressModel: Mappable {
+open class AddressModel: Mappable {
 
     var address: String!
     var location: [Double]!
@@ -18,7 +18,7 @@ public class AddressModel: Mappable {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         address <- map["address"]
         location <- map["location"]
         

@@ -7,7 +7,7 @@ target 'SuperTaxi' do
 
   # Pods for SuperTaxi
 	
-	pod 'Alamofire', '~> 3.5'
+	pod 'Alamofire', '~> 3.3'
 	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
 	pod 'AlamofireImage', '~> 2.0' 
 	pod 'AlamofireObjectMapper', '~> 3.0'

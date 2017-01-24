@@ -24,7 +24,7 @@ class GetOrderModel: Mappable {
         
     }
     
-    func mapping(map: Map) {
+    func mapping(_ map: Map) {
         userId <- map["userId"]
         createOrderTs <- map["crewNum"]
         crewNum <- map["crewNum"]

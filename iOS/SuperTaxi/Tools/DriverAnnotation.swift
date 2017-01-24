@@ -10,10 +10,10 @@ import Foundation
 import MapKit
 import CoreAudioKit
 
-public class DriverAnnotation: NSObject, MKAnnotation {
+open class DriverAnnotation: NSObject, MKAnnotation {
     
-    public var title: String?
-    public var coordinate: CLLocationCoordinate2D
+    open var title: String?
+    open var coordinate: CLLocationCoordinate2D
     
     init(title: String, coordinate: CLLocationCoordinate2D) {
         self.title = title

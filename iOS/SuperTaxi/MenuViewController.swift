@@ -16,7 +16,7 @@ class MenuViewController: UIViewController {
     var slideOutAnimationEnabled: Bool!
     var settingsVC: SettingsViewController!
     
-    let UserInformation = NSUserDefaults.standardUserDefaults()
+    let UserInformation = UserDefaults.standard
     
     required init?(coder aDecoder: NSCoder) {
         self.slideOutAnimationEnabled = true
@@ -29,14 +29,14 @@ class MenuViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.slideOutAnimationEnabled = true
         
-        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
-            imgPhoto.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!, placeholder: UIImage(named: "user"))
+        if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
+            imgPhoto.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!, placeholder: UIImage(named: "user"))
         }
         
         imgPhoto.layer.cornerRadius = imgPhoto.frame.size.width / 2
         imgPhoto.clipsToBounds = true
         
-        txtFirstName.text = UserInformation.stringForKey(UserDetails.NAME)
+        txtFirstName.text = UserInformation.string(forKey: UserDetails.NAME)
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,48 +45,48 @@ class MenuViewController: UIViewController {
     }
 
    
-    @IBAction func onHome(sender: AnyObject) {
-        self.revealViewController().revealToggleAnimated(true)
+    @IBAction func onHome(_ sender: AnyObject) {
+        self.revealViewController().revealToggle(animated: true)
         
     }
     
-    @IBAction func btnOpenProfile(sender: AnyObject) {
-        if (UserInformation.stringForKey(UserDetails.TYPE)! == "2") {
-            let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiCreateProfileVC") as? TaxiCreateProfileViewController
+    @IBAction func btnOpenProfile(_ sender: AnyObject) {
+        if (UserInformation.string(forKey: UserDetails.TYPE)! == "2") {
+            let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiCreateProfileVC") as? TaxiCreateProfileViewController
             viewController?.isEditingProfile = true
-            self.revealViewController()?.presentViewController(viewController!, animated: true, completion: nil)
+            self.revealViewController()?.present(viewController!, animated: true, completion: nil)
         } else {
-            let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("CreatingUserProfileVC") as? CreatingUserProfileViewController
+            let viewController = self.storyboard?.instantiateViewController(withIdentifier: "CreatingUserProfileVC") as? CreatingUserProfileViewController
             viewController?.isEditingProfile = true
-            self.revealViewController()?.presentViewController(viewController!, animated: true, completion: nil)
+            self.revealViewController()?.present(viewController!, animated: true, completion: nil)
         }
         
-        self.revealViewController().revealToggleAnimated(true)
+        self.revealViewController().revealToggle(animated: true)
 
     }
     
-    @IBAction func btnSettings(sender: AnyObject) {
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("Settings") as? SettingsViewController
-        self.revealViewController()?.presentViewController(viewController!, animated: true, completion: nil)
-        self.revealViewController().revealToggleAnimated(true)
+    @IBAction func btnSettings(_ sender: AnyObject) {
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "Settings") as? SettingsViewController
+        self.revealViewController()?.present(viewController!, animated: true, completion: nil)
+        self.revealViewController().revealToggle(animated: true)
     }
     
-    @IBAction func btnReportAProblem(sender: AnyObject) {
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("ReportID") as? ReportProblemViewController
-        self.revealViewController()?.presentViewController(viewController!, animated: true, completion: nil)
-        self.revealViewController().revealToggleAnimated(true)
+    @IBAction func btnReportAProblem(_ sender: AnyObject) {
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "ReportID") as? ReportProblemViewController
+        self.revealViewController()?.present(viewController!, animated: true, completion: nil)
+        self.revealViewController().revealToggle(animated: true)
     }
     
-    @IBAction func btnAbout(sender: AnyObject) {
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("AboutID") as? AboutViewController
-        self.revealViewController()?.presentViewController(viewController!, animated: true, completion: nil)
-        self.revealViewController().revealToggleAnimated(true)
+    @IBAction func btnAbout(_ sender: AnyObject) {
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "AboutID") as? AboutViewController
+        self.revealViewController()?.present(viewController!, animated: true, completion: nil)
+        self.revealViewController().revealToggle(animated: true)
     }
     
-    @IBAction func btnHistory(sender: AnyObject) {
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("HistoryID") as? HistoryViewController
-        self.revealViewController()?.presentViewController(viewController!, animated: true, completion: nil)
-        self.revealViewController().revealToggleAnimated(true)
+    @IBAction func btnHistory(_ sender: AnyObject) {
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HistoryID") as? HistoryViewController
+        self.revealViewController()?.present(viewController!, animated: true, completion: nil)
+        self.revealViewController().revealToggle(animated: true)
     }
     
 }

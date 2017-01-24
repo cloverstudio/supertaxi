@@ -12,27 +12,15 @@ import CoreLocation
 import SWRevealViewController
 import SwiftyJSON
 
-class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, DriverListDelegate, GetOpenOrdersDelegate, UpdateCoordinatesDelegate  {
+class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, DriverListDelegate, GetOpenOrdersDelegate  {
     
-    @IBOutlet weak var driverInfoView: UIView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet var avatar: UIImageView!
     @IBOutlet var mapView: MKMapView!
-    @IBOutlet weak var driverName: UILabel!
-    @IBOutlet weak var driverCarType: UILabel!
-    @IBOutlet weak var driverCarRegistration: UILabel!
-    @IBOutlet weak var driverStartFee: UILabel!
-    @IBOutlet weak var driverTelNum: UILabel!
-    @IBOutlet weak var driverRatingView: UIView!
-    @IBOutlet weak var driverRatingSecondStar: UIImageView!
-    @IBOutlet weak var driverRatingThirdStar: UIImageView!
-    @IBOutlet weak var driverRatingFifthStar: UIImageView!
     
-    @IBOutlet weak var driverRatingFourthStar: UIImageView!
-    @IBOutlet weak var driverRatingFirstStar: UIImageView!
-    let UserInformation = NSUserDefaults.standardUserDefaults()
+    let UserInformation = UserDefaults.standard
     var apiManager: ApiManager!
-    var driversList = [DriverInfoModel]()
+    
     var locationManager: CLLocationManager!
     
     var lat: Double!
@@ -45,8 +33,8 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (UserInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
-            avatar.load(Api.IMAGE_URL + UserInformation.stringForKey(UserDetails.THUMBNAIL)!)
+        if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
+            avatar.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!)
         }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
@@ -55,7 +43,6 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         apiManager = ApiManager()
         apiManager.driversListDelegate = self
         apiManager.openOrderDelegate = self
-        apiManager.updateCoordinatesDelegate = self
         
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -68,7 +55,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         locationManager.startUpdatingLocation()
         
         if let coor = mapView.userLocation.location?.coordinate{
-            mapView.setCenterCoordinate(coor, animated: true)
+            mapView.setCenter(coor, animated: true)
         }
         
         mapView.showsUserLocation = true;
@@ -80,23 +67,24 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         getOpenOrders()
     }
     
-    @IBAction func menuButton(sender: AnyObject) {
+    @IBAction func menuButton(_ sender: AnyObject) {
         self.revealViewController().revealToggle(sender)
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         centerMap(locValue)
     }
-    func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
-        apiManager.getDriverList(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
+    
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
+        apiManager.getDriverList(UserInformation.string(forKey: UserDetails.TOKEN)!, lat: lat, lon: lon)
     }
     
-    func centerMap(center:CLLocationCoordinate2D){
+    func centerMap(_ center:CLLocationCoordinate2D){
         
         let spanX = 0.007
         let spanY = 0.007
@@ -105,58 +93,39 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         mapView.setRegion(newRegion, animated: true)
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
         let center = mapView.centerCoordinate
         
         lat = center.latitude
         lon = center.longitude
         
-        apiManager.updateCoordinates(UserInformation.stringForKey(UserDetails.TOKEN)!, lat: lat, lon: lon)
+        apiManager.updateCoordinates(UserInformation.string(forKey: UserDetails.TOKEN)!, lat: lat, lon: lon)
         
     }
     
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        if view.annotation is MKUserLocation{
-            return
-        } else {
-            let driverAnnotation = view.annotation as! DriverAnnotation
-            for driver in driversList {
-                if driver.car_registration==driverAnnotation.title {
-                    driverName.text = driver.name
-                    print(driver.name)
-                    driverCarType.text = driver.car_type
-                    driverCarRegistration.text = driver.car_registration
-                    //driverTelNum.text = driver.telNum
-                    driverStartFee.text = String(driver.fee_start)
-                    setAverageRating(driver.averageRate)
-                    driverInfoView.hidden = false
-                }
-            }
-            
-        }
-    }
-    
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView?{
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?{
         if (annotation is MKUserLocation) {
             return nil
         }
         
         let reuseId = "driver"
         
-        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        var anView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
         if anView == nil {
             anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            anView!.canShowCallout = false
+            anView!.canShowCallout = true
         }
         else {
             anView!.annotation = annotation
         }
+
         anView!.image = UIImage(named: "black_car_icon")
+        
         return anView
     }
     
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor(red: 57/255.0, green: 149/255.0, blue: 246/255.0, alpha: 1.0)
         renderer.lineWidth = 10.0
@@ -164,65 +133,23 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         return renderer
     }
     
-    func onDriversListSucess(json: JSON) {
-    
+    func onDriversListSucess(_ json: JSON) {
+        
         mapView.removeAnnotations(mapView.annotations)
         
-        driversList=[DriverInfoModel]()
-        
-        var driverInfo:DriverInfoModel
-        
         for driver in json.array! {
-            
-            
-            
-                 driverInfo = DriverInfoModel(id: driver["_id"].string!,
-                                             name: driver["driver"]["name"].string!,
-                                             car_type: driver["driver"]["car_type"].string!,
-                                             car_registration: driver["driver"]["car_registration"].string!,
-                                             fee_start: driver["driver"]["fee_start"].int!,
-                                             fee_km: driver["driver"]["fee_km"].int!)
-                if driver["averageRate"].float != nil {
-                    driverInfo.averageRate = driver["averageRate"].float!
-                } else {
-                    driverInfo.averageRate = 0.0
-                }
-                
-                if driver["avatar"]["fileid"].string != nil {
-                    driverInfo.fileId = driver["avatar"]["fileid"].string!
-                } else {
-                    driverInfo.fileId = ""
-                }
-                
-                if driver["telNum"].string != nil {
-                    driverInfo.telNum = driver["telNum"].string!
-                } else {
-                    driverInfo.telNum = ""
-                }
-                
-                
-          
-            
-            
-            driversList.append(driverInfo)
-        
-            let driverAnnotation = DriverAnnotation(title: driver["driver"]["car_registration"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!))
+            let driverAnnotation = DriverAnnotation(title: driver["driver"]["name"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!))
             mapView.addAnnotation(driverAnnotation)
-            }
-    }
-    @IBAction func onCloseButtonPressed(sender: UIButton) {
-        driverInfoView.hidden=true
+            
+        }
+    
     }
     
-    func onDriversListError(error: NSInteger) {
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
-            self.apiManager.getDriverList(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
-        }))
-        self.presentViewController(alert, animated: true, completion: nil)
+    func onDriversListError(_ error: NSInteger) {
+        
     }
     
-    func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+    func createRoute(_ startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
         
@@ -255,11 +182,11 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
-        directionRequest.transportType = .Automobile
+        directionRequest.transportType = .automobile
         
         let directions = MKDirections(request: directionRequest)
         
-        directions.calculateDirectionsWithCompletionHandler {
+        directions.calculate {
             (response, error) -> Void in
             
             guard let response = response else {
@@ -271,16 +198,17 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             }
             
             let route = response.routes[0]
-            self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
+            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             
             
         }
     
     }
+    
     func getOpenOrders(){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
             if (self.lat != nil && self.lon != nil){
-                self.apiManager.getOpenOrder(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
+                self.apiManager.getOpenOrder(self.UserInformation.string(forKey: UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
             }
             
         })
@@ -290,9 +218,9 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
             getOpenOrders()
     }
     
-    func onOpenOrderSuccess(json: JSON) {
+    func onOpenOrderSuccess(_ json: JSON) {
         
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiRequestMapView") as? TaxiRequestFromUserViewController
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiRequestMapView") as? TaxiRequestFromUserViewController
         viewController!.json = json
         viewController!.lat = mapView.userLocation.coordinate.latitude
         viewController!.lon = mapView.userLocation.coordinate.longitude
@@ -300,55 +228,8 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         
     }
     
-    func onOpenOrderError(error: NSInteger) {
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
-            self.getOpenOrders()
-        }))
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    func setAverageRating(averageRating: Float) {
-        let yellowStar = UIImage(named: "small_star_active")
-        let grayStar = UIImage(named: "gray_star")
-        driverRatingFirstStar.image = grayStar
-        driverRatingSecondStar.image = grayStar
-        driverRatingThirdStar.image = grayStar
-        driverRatingFourthStar.image = grayStar
-        driverRatingFifthStar.image = grayStar
-        if averageRating >= 0.5 {
-            driverRatingFirstStar.image = yellowStar
-        }
-        
-        if averageRating >= 1.5 {
-            driverRatingSecondStar.image = yellowStar
-        }
-        
-        if averageRating >= 2.5 {
-            driverRatingThirdStar.image = yellowStar
-        }
-        
-        if averageRating >= 3.5 {
-            driverRatingFourthStar.image = yellowStar
-        }
-        
-        if averageRating >= 4.5 {
-            driverRatingFifthStar.image = yellowStar
-        }
+    func onOpenOrderError(_ error: NSInteger) {
         
     }
-    
-    func onUpdateCoordinatesSuccess() {
-        
-    }
-    
-    func onUpdateCoordinatesError(error :NSInteger) {
-        let alert = UIAlertController(title: "Error", message: Tools().getErrorFromCode(error), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) in
-            self.apiManager.updateCoordinates(self.UserInformation.stringForKey(UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
-        }))
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
-    
 
 }

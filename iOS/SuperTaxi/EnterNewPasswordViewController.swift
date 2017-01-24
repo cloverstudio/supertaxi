@@ -21,8 +21,8 @@ class EnterNewPasswordViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onCancelClick(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func onCancelClick(_ sender: AnyObject) {
+        self.navigationController?.popViewController(animated: true)
     }
 
 
