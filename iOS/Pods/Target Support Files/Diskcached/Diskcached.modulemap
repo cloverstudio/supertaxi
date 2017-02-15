@@ -1,0 +1,6 @@
+framework module Diskcached {
+  umbrella header "Diskcached-umbrella.h"
+
+  export *
+  module * { export * }
+}

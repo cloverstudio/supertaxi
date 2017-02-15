@@ -90,9 +90,9 @@ class RateView: UIView, MKMapViewDelegate, RateDelegate {
         
         if (imageFile != nil){
             if type == 1 {
-                image.load(Api.IMAGE_URL + imageFile, placeholder: UIImage(named: "user"))
+                image.load(URL(string: Api.IMAGE_URL + imageFile), placeholderImage: UIImage(named: "user"))
             } else {
-                image.load(Api.IMAGE_URL + imageFile, placeholder: UIImage(named: "taxi_driver"))
+                image.load(URL(string: Api.IMAGE_URL + imageFile), placeholderImage: UIImage(named: "taxi_driver"))
             }
             
         }

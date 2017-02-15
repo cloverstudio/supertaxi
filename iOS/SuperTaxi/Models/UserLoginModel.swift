@@ -15,11 +15,11 @@ open class UserLoginModel: Mappable {
     var data: UserDataModel!
     var time: CLong!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         code <- map["code"]
         data <- map["data"]
         time <- map["time"]

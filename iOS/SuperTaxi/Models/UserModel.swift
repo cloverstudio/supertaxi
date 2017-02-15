@@ -24,11 +24,11 @@ open class UserModel: Mappable {
     var user: UserInfoModel!
     var telNum: String!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         _v <- map["_v"]
         _id <- map["_id"]
         created <- map["created"]

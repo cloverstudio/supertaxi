@@ -24,20 +24,23 @@
 
 import UIKit
 
+private var kIQToolbarTitleInvocationTarget     = "kIQToolbarTitleInvocationTarget"
+private var kIQToolbarTitleInvocationSelector   = "kIQToolbarTitleInvocationSelector"
+
 /** @abstract   IQToolbar for IQKeyboardManager.    */
 open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
 
-    override;; open;; override class func initialize() {
+    override open class func initialize() {
         
         superclass()?.initialize()
                 
         self.appearance().barTintColor = nil
         
         //Background image
-        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.any,            barMetrics: UIBarMetrics.,,default)
-        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.bottom,         barMetrics: UIBarMetrics.,,default)
-        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.top,            barMetrics: UIBarMetrics.,,default)
-        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.topAttached,    barMetrics: UIBarMetrics.,,default)
+        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.any,            barMetrics: UIBarMetrics.default)
+        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.bottom,         barMetrics: UIBarMetrics.default)
+        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.top,            barMetrics: UIBarMetrics.default)
+        self.appearance().setBackgroundImage(nil, forToolbarPosition: UIBarPosition.topAttached,    barMetrics: UIBarMetrics.default)
 
         self.appearance().setShadowImage(nil, forToolbarPosition: UIBarPosition.any)
         self.appearance().setShadowImage(nil, forToolbarPosition: UIBarPosition.bottom)
@@ -48,7 +51,7 @@ open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
         self.appearance().backgroundColor = nil
     }
     
-    open;; var titleFont : UIFont? {
+    open var titleFont : UIFont? {
         
         didSet {
             
@@ -57,13 +60,14 @@ open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
                     
                     if let newItem = item as? IQTitleBarButtonItem {
                         newItem.font = titleFont
+                        break
                     }
                 }
             }
         }
     }
     
-    open;; var title : String? {
+    open var title : String? {
         
         didSet {
             
@@ -71,7 +75,56 @@ open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
                 for item in newItems {
                     
                     if let newItem = item as? IQTitleBarButtonItem {
-                        newItem.font = titleFont
+                        newItem.title = title
+                        break
+                    }
+                }
+            }
+        }
+    }
+    
+    open var doneTitle : String?
+    open var doneImage : UIImage?
+
+    /**
+     Optional target & action to behave toolbar title button as clickable button
+     
+     @param target Target object.
+     @param action Target Selector.
+     */
+    open func setCustomToolbarTitleTarget(_ target: AnyObject?, action: Selector?) {
+        toolbarTitleInvocation = (target, action)
+    }
+    
+    /**
+     Customized Invocation to be called on title button action. titleInvocation is internally created using setTitleTarget:action: method.
+     */
+    open var toolbarTitleInvocation : (target: AnyObject?, action: Selector?) {
+        get {
+            let target: AnyObject? = objc_getAssociatedObject(self, &kIQToolbarTitleInvocationTarget) as AnyObject?
+            var action : Selector?
+            
+            if let selectorString = objc_getAssociatedObject(self, &kIQToolbarTitleInvocationSelector) as? String {
+                action = NSSelectorFromString(selectorString)
+            }
+            
+            return (target: target, action: action)
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &kIQToolbarTitleInvocationTarget, newValue.target, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            
+            if let unwrappedSelector = newValue.action {
+                objc_setAssociatedObject(self, &kIQToolbarTitleInvocationSelector, NSStringFromSelector(unwrappedSelector), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            } else {
+                objc_setAssociatedObject(self, &kIQToolbarTitleInvocationSelector, nil, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+            
+            if let unwrappedItems = items {
+                for item in unwrappedItems {
+                    
+                    if let newItem = item as? IQTitleBarButtonItem {
+                        newItem.titleInvocation = newValue
+                        break
                     }
                 }
             }
@@ -96,27 +149,45 @@ open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
         self.isTranslucent = true
     }
 
-    override;; open;; override func sizeThatFits(_ size: CGSize) -> CGSize {
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
         var sizeThatFit = super.sizeThatFits(size)
         sizeThatFit.height = 44
         return sizeThatFit
     }
 
-    override;; open;; var tintColor: UIColor! {
+    override open var tintColor: UIColor! {
         
         didSet {
             if let unwrappedItems = items {
                 for item in unwrappedItems {
+                    item.tintColor = tintColor
+                }
+            }
+        }
+    }
+    
+    override open var barStyle: UIBarStyle {
+        didSet {
+            
+            if let unwrappedItems = items {
+                for item in unwrappedItems {
                     
                     if let newItem = item as? IQTitleBarButtonItem {
-                        newItem.tintColor = tintColor
+
+                        if barStyle == .default {
+                            newItem.selectableTextColor = UIColor.init(colorLiteralRed: 0.0, green: 0.5, blue: 1.0, alpha: 1)
+                        } else {
+                            newItem.selectableTextColor = UIColor.yellow
+                        }
+                        
+                        break
                     }
                 }
             }
         }
     }
     
-    override;; open;; override func layoutSubviews() {
+    override open func layoutSubviews() {
 
         super.layoutSubviews()
         
@@ -131,7 +202,7 @@ open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
         var rightRect = CGRect.null
         var isTitleBarButtonFound = false
         
-        let sortedSubviews = self.subviews.sorted({ (view1 : UIView, view2 : UIView) -> Bool in
+        let sortedSubviews = self.subviews.sorted(by: { (view1 : UIView, view2 : UIView) -> Bool in
             
             let x1 = view1.frame.minX
             let y1 = view1.frame.minY
@@ -150,7 +221,7 @@ open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
             if (isTitleBarButtonFound == true)
             {
                 rightRect = barButtonItemView.frame
-                break;
+                break
             }
             else if (type(of: barButtonItemView) === UIView.self)
             {
@@ -185,7 +256,7 @@ open class IQToolbar: UIToolbar , UIInputViewAudioFeedback {
         }
     }
     
-    open;; var enableInputClicksWhenVisible: Bool {
+    open var enableInputClicksWhenVisible: Bool {
         return true
     }
 }

@@ -14,11 +14,11 @@ open class BaseModel: Mappable {
     var code: NSInteger!
     var time: CLong!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         code <- map["code"]
         time <- map["time"]
     }

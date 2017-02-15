@@ -22,7 +22,7 @@ class ForgotPasswordViewController: UIViewController {
     }
     
     @IBAction func onCancelClick(_ sender: AnyObject) {
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 
 

@@ -20,11 +20,11 @@ class GetOrderModel: Mappable {
     var from: AddressModel?
     var user: UserModel?
     
-    required init?(_ map: Map) {
+    required init?(map: Map) {
         
     }
     
-    func mapping(_ map: Map) {
+    func mapping(map: Map) {
         userId <- map["userId"]
         createOrderTs <- map["crewNum"]
         crewNum <- map["crewNum"]

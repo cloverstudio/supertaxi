@@ -14,11 +14,11 @@ open class AddressModel: Mappable {
     var address: String!
     var location: [Double]!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         address <- map["address"]
         location <- map["location"]
         

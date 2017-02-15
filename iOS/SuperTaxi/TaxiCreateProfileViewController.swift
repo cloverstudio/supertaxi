@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 import AssetsLibrary
 import ImageLoader
+import AVFoundation
 
 class TaxiCreateProfileViewController: UIViewController, UINavigationControllerDelegate,
                 UIImagePickerControllerDelegate, UIApplicationDelegate, UITextFieldDelegate, SetUserDetailsDelegate {
@@ -83,7 +84,7 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
             txtPhoneNumber.text = userInformation.string(forKey: UserDetails.TEL_NUM)
             
             if (userInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
-                imgTaxiDriverPhoto.load(Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!)
+                imgTaxiDriverPhoto.load(URL(string: Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!))
             }
         }
         
@@ -109,17 +110,17 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         if isEditingProfile {
             self.dismiss(animated: true, completion: nil)
         } else {
-            self.navigationController?.popViewController(animated: true)
+            let _ = self.navigationController?.popViewController(animated: true)
         }
         
     }
 
     @IBAction func onUploadPhotoClick(_ sender: AnyObject) {
+        checkCameraAuthorizationStatus()
         picker.allowsEditing = false
         picker.sourceType = .photoLibrary
         present(picker, animated: true, completion: nil)
         imgDriver.isHidden = true
-        
     }
 
     @IBAction func onSaveDetails(_ sender: AnyObject) {
@@ -208,7 +209,6 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
         imageData = UIImagePNGRepresentation(choosenImage)
         
         dismiss(animated: true, completion: nil)
-        
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -248,4 +248,15 @@ class TaxiCreateProfileViewController: UIViewController, UINavigationControllerD
 
     }
 
+    
+    func checkCameraAuthorizationStatus() {
+        if AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) == AVAuthorizationStatus.authorized {
+            return
+        }
+        else {
+            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo,  completionHandler: {
+                granted in
+            })
+        }
+    }
 }

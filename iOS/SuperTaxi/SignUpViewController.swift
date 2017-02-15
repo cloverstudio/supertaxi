@@ -75,6 +75,6 @@ open class SignUpViewController: UIViewController, SignUpApiDelegate {
     }
     
     @IBAction func onCancel(_ sender: AnyObject) {
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 }

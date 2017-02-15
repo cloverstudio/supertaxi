@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import Foundation
 import UIKit
 
 /**
@@ -38,7 +37,7 @@ internal extension Array {
     */
     internal func sortedArrayByTag() -> [Element] {
         
-        return sorted({ (obj1 : Element, obj2 : Element) -> Bool in
+        return sorted(by: { (obj1 : Element, obj2 : Element) -> Bool in
             
             let view1 = obj1 as! UIView
             let view2 = obj2 as! UIView
@@ -52,7 +51,7 @@ internal extension Array {
     */
     internal func sortedArrayByPosition() -> [Element] {
         
-        return sorted({ (obj1 : Element, obj2 : Element) -> Bool in
+        return sorted(by: { (obj1 : Element, obj2 : Element) -> Bool in
             
             let view1 = obj1 as! UIView
             let view2 = obj2 as! UIView

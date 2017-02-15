@@ -187,25 +187,30 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     }
     
     @IBAction func onForgotPasswordClick(_ sender: AnyObject) {
-        
     }
     
     // MARK: Facebook Login
     @IBAction func btnFBLoginPressed(_ sender: AnyObject) {
-        
         progressHUD.show()
         
         let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
-        fbLoginManager.logIn(withReadPermissions: ["email"], handler: { (result, error) -> Void in
-            if (error == nil){
-                let fbloginresult : FBSDKLoginManagerLoginResult = result!
-                if(fbloginresult.grantedPermissions.contains("email"))
-                {
-                    self.getFBUserData()
-                    fbLoginManager.logOut()
+        
+        fbLoginManager.logIn(withReadPermissions: ["email"], from: self) { (result, error) -> Void in
+            let fbloginresult : FBSDKLoginManagerLoginResult = result!
+            
+            if fbloginresult.isCancelled {
+                self.dismiss(animated: true, completion: nil)
+            }
+            else {
+                if error == nil {
+                    if(fbloginresult.grantedPermissions.contains("email"))
+                    {
+                        self.getFBUserData()
+                        fbLoginManager.logOut()
+                    }
                 }
             }
-        })
+        }
     }
     
     func getFBUserData(){
@@ -251,7 +256,6 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     @IBAction func gSignIn(_ sender: AnyObject) {
         GIDSignIn.sharedInstance().signIn()
         self.loginType = 2
-        
         progressHUD.show()
     }
     
@@ -268,27 +272,28 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
     }
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
-                withError error: NSError!) {
+                withError error: Error!) {
         if (error == nil) {
-
+            
             let userId = user.userID
             let email = user.profile.email
-            
+        
             fbEmail = email
             txtEmail.text = email
-            
+                
             fbId = userId
             txtPassword.text = userId
-            
+                
             self.apiManager.getTimeForSecret(1)
-            
             
         } else {
             print("\(error.localizedDescription)")
         }
+        
+        progressHUD.hide()
     }
     
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user:GIDGoogleUser!,
+    private func sign(_ signIn: GIDSignIn!, didDisconnectWith user:GIDGoogleUser!,
                 withError error: NSError!) {
         // Perform any operations when the user disconnects from app here.
         // ...

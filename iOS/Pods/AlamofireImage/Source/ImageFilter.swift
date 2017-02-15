@@ -1,30 +1,32 @@
-// ImageFilter.swift
 //
-// Copyright (c) 2015-2016 Alamofire Software Foundation (http://alamofire.org/)
+//  ImageFilter.swift
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+//  Copyright (c) 2015-2016 Alamofire Software Foundation (http://alamofire.org/)
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+//
 
 import Foundation
 
 #if os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
-#elseif os(OSX)
+#elseif os(macOS)
 import Cocoa
 #endif
 
@@ -55,8 +57,8 @@ public protocol Sizable {
 extension ImageFilter where Self: Sizable {
     /// The unique idenitifier for an `ImageFilter` conforming to the `Sizable` protocol.
     public var identifier: String {
-        let width = Int64(round(size.width))
-        let height = Int64(round(size.height))
+        let width = Int64(size.width.rounded())
+        let height = Int64(size.height.rounded())
 
         return "\(type(of: self))-size:(\(width)x\(height))"
     }
@@ -73,7 +75,7 @@ public protocol Roundable {
 extension ImageFilter where Self: Roundable {
     /// The unique idenitifier for an `ImageFilter` conforming to the `Roundable` protocol.
     public var identifier: String {
-        let radius = Int64(round(self.radius))
+        let radius = Int64(self.radius.rounded())
         return "\(type(of: self))-radius:(\(radius))"
     }
 }
@@ -88,14 +90,12 @@ public struct DynamicImageFilter: ImageFilter {
     /// A closure used to create an alternative representation of the given image.
     public let filter: (Image) -> Image
 
-    /**
-        Initializes the `DynamicImageFilter` instance with the specified identifier and filter closure.
-
-        - parameter identifier: The unique identifier of the filter.
-        - parameter filter:     A closure used to create an alternative representation of the given image.
-
-        - returns: The new `DynamicImageFilter` instance.
-    */
+    /// Initializes the `DynamicImageFilter` instance with the specified identifier and filter closure.
+    ///
+    /// - parameter identifier: The unique identifier of the filter.
+    /// - parameter filter:     A closure used to create an alternative representation of the given image.
+    ///
+    /// - returns: The new `DynamicImageFilter` instance.
     public init(_ identifier: String, filter: @escaping (Image) -> Image) {
         self.identifier = identifier
         self.filter = filter
@@ -131,24 +131,20 @@ public struct DynamicCompositeImageFilter: CompositeImageFilter {
     /// The image filters to apply to the image in sequential order.
     public let filters: [ImageFilter]
 
-    /**
-        Initializes the `DynamicCompositeImageFilter` instance with the given filters.
-
-        - parameter filters: The filters taking part in the composite image filter.
-
-        - returns: The new `DynamicCompositeImageFilter` instance.
-    */
+    /// Initializes the `DynamicCompositeImageFilter` instance with the given filters.
+    ///
+    /// - parameter filters: The filters taking part in the composite image filter.
+    ///
+    /// - returns: The new `DynamicCompositeImageFilter` instance.
     public init(_ filters: [ImageFilter]) {
         self.filters = filters
     }
 
-    /**
-        Initializes the `DynamicCompositeImageFilter` instance with the given filters.
-
-        - parameter filters: The filters taking part in the composite image filter.
-
-        - returns: The new `DynamicCompositeImageFilter` instance.
-    */
+    /// Initializes the `DynamicCompositeImageFilter` instance with the given filters.
+    ///
+    /// - parameter filters: The filters taking part in the composite image filter.
+    ///
+    /// - returns: The new `DynamicCompositeImageFilter` instance.
     public init(_ filters: ImageFilter...) {
         self.init(filters)
     }
@@ -163,13 +159,11 @@ public struct ScaledToSizeFilter: ImageFilter, Sizable {
     /// The size of the filter.
     public let size: CGSize
 
-    /**
-        Initializes the `ScaledToSizeFilter` instance with the given size.
-
-        - parameter size: The size.
-
-        - returns: The new `ScaledToSizeFilter` instance.
-    */
+    /// Initializes the `ScaledToSizeFilter` instance with the given size.
+    ///
+    /// - parameter size: The size.
+    ///
+    /// - returns: The new `ScaledToSizeFilter` instance.
     public init(size: CGSize) {
         self.size = size
     }
@@ -177,7 +171,7 @@ public struct ScaledToSizeFilter: ImageFilter, Sizable {
     /// The filter closure used to create the modified representation of the given image.
     public var filter: (Image) -> Image {
         return { image in
-            return image.af_imageScaledToSize(self.size)
+            return image.af_imageScaled(to: self.size)
         }
     }
 }
@@ -189,13 +183,11 @@ public struct AspectScaledToFitSizeFilter: ImageFilter, Sizable {
     /// The size of the filter.
     public let size: CGSize
 
-    /**
-        Initializes the `AspectScaledToFitSizeFilter` instance with the given size.
-
-        - parameter size: The size.
-
-        - returns: The new `AspectScaledToFitSizeFilter` instance.
-    */
+    /// Initializes the `AspectScaledToFitSizeFilter` instance with the given size.
+    ///
+    /// - parameter size: The size.
+    ///
+    /// - returns: The new `AspectScaledToFitSizeFilter` instance.
     public init(size: CGSize) {
         self.size = size
     }
@@ -203,7 +195,7 @@ public struct AspectScaledToFitSizeFilter: ImageFilter, Sizable {
     /// The filter closure used to create the modified representation of the given image.
     public var filter: (Image) -> Image {
         return { image in
-            return image.af_imageAspectScaledToFitSize(self.size)
+            return image.af_imageAspectScaled(toFit: self.size)
         }
     }
 }
@@ -216,13 +208,11 @@ public struct AspectScaledToFillSizeFilter: ImageFilter, Sizable {
     /// The size of the filter.
     public let size: CGSize
 
-    /**
-        Initializes the `AspectScaledToFillSizeFilter` instance with the given size.
-
-        - parameter size: The size.
-
-        - returns: The new `AspectScaledToFillSizeFilter` instance.
-    */
+    /// Initializes the `AspectScaledToFillSizeFilter` instance with the given size.
+    ///
+    /// - parameter size: The size.
+    ///
+    /// - returns: The new `AspectScaledToFillSizeFilter` instance.
     public init(size: CGSize) {
         self.size = size
     }
@@ -230,7 +220,7 @@ public struct AspectScaledToFillSizeFilter: ImageFilter, Sizable {
     /// The filter closure used to create the modified representation of the given image.
     public var filter: (Image) -> Image {
         return { image in
-            return image.af_imageAspectScaledToFillSize(self.size)
+            return image.af_imageAspectScaled(toFill: self.size)
         }
     }
 }
@@ -245,18 +235,16 @@ public struct RoundedCornersFilter: ImageFilter, Roundable {
     /// Whether to divide the radius by the image scale.
     public let divideRadiusByImageScale: Bool
 
-    /**
-        Initializes the `RoundedCornersFilter` instance with the given radius.
-
-        - parameter radius:                   The radius.
-        - parameter divideRadiusByImageScale: Whether to divide the radius by the image scale. Set to `true` when the
-                                              image has the same resolution for all screen scales such as @1x, @2x and
-                                              @3x (i.e. single image from web server). Set to `false` for images loaded
-                                              from an asset catalog with varying resolutions for each screen scale.
-                                              `false` by default.
-
-        - returns: The new `RoundedCornersFilter` instance.
-    */
+    /// Initializes the `RoundedCornersFilter` instance with the given radius.
+    ///
+    /// - parameter radius:                   The radius.
+    /// - parameter divideRadiusByImageScale: Whether to divide the radius by the image scale. Set to `true` when the
+    ///                                       image has the same resolution for all screen scales such as @1x, @2x and
+    ///                                       @3x (i.e. single image from web server). Set to `false` for images loaded
+    ///                                       from an asset catalog with varying resolutions for each screen scale.
+    ///                                       `false` by default.
+    ///
+    /// - returns: The new `RoundedCornersFilter` instance.
     public init(radius: CGFloat, divideRadiusByImageScale: Bool = false) {
         self.radius = radius
         self.divideRadiusByImageScale = divideRadiusByImageScale
@@ -265,8 +253,8 @@ public struct RoundedCornersFilter: ImageFilter, Roundable {
     /// The filter closure used to create the modified representation of the given image.
     public var filter: (Image) -> Image {
         return { image in
-            return image.af_imageWithRoundedCornerRadius(
-                self.radius,
+            return image.af_imageRounded(
+                withCornerRadius: self.radius,
                 divideRadiusByImageScale: self.divideRadiusByImageScale
             )
         }
@@ -274,7 +262,7 @@ public struct RoundedCornersFilter: ImageFilter, Roundable {
 
     /// The unique idenitifier for an `ImageFilter` conforming to the `Roundable` protocol.
     public var identifier: String {
-        let radius = Int64(round(self.radius))
+        let radius = Int64(self.radius.rounded())
         return "\(type(of: self))-radius:(\(radius))-divided:(\(divideRadiusByImageScale))"
     }
 }
@@ -283,11 +271,9 @@ public struct RoundedCornersFilter: ImageFilter, Roundable {
 
 /// Rounds the corners of an image into a circle.
 public struct CircleFilter: ImageFilter {
-    /**
-        Initializes the `CircleFilter` instance.
-
-        - returns: The new `CircleFilter` instance.
-    */
+    /// Initializes the `CircleFilter` instance.
+    ///
+    /// - returns: The new `CircleFilter` instance.
     public init() {}
 
     /// The filter closure used to create the modified representation of the given image.
@@ -302,28 +288,45 @@ public struct CircleFilter: ImageFilter {
 
 #if os(iOS) || os(tvOS)
 
+/// The `CoreImageFilter` protocol defines `parameters`, `filterName` properties used by CoreImage.
+@available(iOS 9.0, *)
+public protocol CoreImageFilter: ImageFilter {
+    /// The filter name of the CoreImage filter.
+	var filterName: String { get }
+
+    /// The image filter parameters passed to CoreImage.
+    var parameters: [String: Any] { get }
+}
+
+@available(iOS 9.0, *)
+public extension ImageFilter where Self: CoreImageFilter {
+	/// The filter closure used to create the modified representation of the given image.
+	public var filter: (Image) -> Image {
+		return { image in
+            return image.af_imageFiltered(withCoreImageFilter: self.filterName, parameters: self.parameters) ?? image
+		}
+	}
+
+	/// The unique idenitifier for an `ImageFilter` conforming to the `CoreImageFilter` protocol.
+	public var identifier: String { return "\(type(of: self))-parameters:(\(self.parameters))" }
+}
+
 /// Blurs an image using a `CIGaussianBlur` filter with the specified blur radius.
-public struct BlurFilter: ImageFilter {
-    /// The blur radius of the filter.
-    let blurRadius: UInt
+@available(iOS 9.0, *)
+public struct BlurFilter: ImageFilter, CoreImageFilter {
+    /// The filter name.
+    public let filterName = "CIGaussianBlur"
 
-    /**
-        Initializes the `BlurFilter` instance with the given blur radius.
+    /// The image filter parameters passed to CoreImage.
+    public let parameters: [String: Any]
 
-        - parameter blurRadius: The blur radius.
-
-        - returns: The new `BlurFilter` instance.
-    */
+    /// Initializes the `BlurFilter` instance with the given blur radius.
+    ///
+    /// - parameter blurRadius: The blur radius.
+    ///
+    /// - returns: The new `BlurFilter` instance.
     public init(blurRadius: UInt = 10) {
-        self.blurRadius = blurRadius
-    }
-
-    /// The filter closure used to create the modified representation of the given image.
-    public var filter: (Image) -> Image {
-        return { image in
-            let parameters = ["inputRadius": self.blurRadius]
-            return image.af_imageWithAppliedCoreImageFilter("CIGaussianBlur", filterParameters: parameters) ?? image
-        }
+        self.parameters = ["inputRadius": blurRadius]
     }
 }
 
@@ -333,19 +336,17 @@ public struct BlurFilter: ImageFilter {
 
 /// Scales an image to a specified size, then rounds the corners to the specified radius.
 public struct ScaledToSizeWithRoundedCornersFilter: CompositeImageFilter {
-    /**
-        Initializes the `ScaledToSizeWithRoundedCornersFilter` instance with the given size and radius.
-
-        - parameter size:                     The size.
-        - parameter radius:                   The radius.
-        - parameter divideRadiusByImageScale: Whether to divide the radius by the image scale. Set to `true` when the
-                                              image has the same resolution for all screen scales such as @1x, @2x and
-                                              @3x (i.e. single image from web server). Set to `false` for images loaded
-                                              from an asset catalog with varying resolutions for each screen scale.
-                                              `false` by default.
-
-        - returns: The new `ScaledToSizeWithRoundedCornersFilter` instance.
-    */
+    /// Initializes the `ScaledToSizeWithRoundedCornersFilter` instance with the given size and radius.
+    ///
+    /// - parameter size:                     The size.
+    /// - parameter radius:                   The radius.
+    /// - parameter divideRadiusByImageScale: Whether to divide the radius by the image scale. Set to `true` when the
+    ///                                       image has the same resolution for all screen scales such as @1x, @2x and
+    ///                                       @3x (i.e. single image from web server). Set to `false` for images loaded
+    ///                                       from an asset catalog with varying resolutions for each screen scale.
+    ///                                       `false` by default.
+    ///
+    /// - returns: The new `ScaledToSizeWithRoundedCornersFilter` instance.
     public init(size: CGSize, radius: CGFloat, divideRadiusByImageScale: Bool = false) {
         self.filters = [
             ScaledToSizeFilter(size: size),
@@ -359,22 +360,20 @@ public struct ScaledToSizeWithRoundedCornersFilter: CompositeImageFilter {
 
 // MARK: -
 
-/// Scales an image from the center while maintaining the aspect ratio to fit within a specified size, then rounds the 
+/// Scales an image from the center while maintaining the aspect ratio to fit within a specified size, then rounds the
 /// corners to the specified radius.
 public struct AspectScaledToFillSizeWithRoundedCornersFilter: CompositeImageFilter {
-    /**
-        Initializes the `AspectScaledToFillSizeWithRoundedCornersFilter` instance with the given size and radius.
-
-        - parameter size:                     The size.
-        - parameter radius:                   The radius.
-        - parameter divideRadiusByImageScale: Whether to divide the radius by the image scale. Set to `true` when the
-                                              image has the same resolution for all screen scales such as @1x, @2x and
-                                              @3x (i.e. single image from web server). Set to `false` for images loaded
-                                              from an asset catalog with varying resolutions for each screen scale.
-                                              `false` by default.
-
-        - returns: The new `AspectScaledToFillSizeWithRoundedCornersFilter` instance.
-    */
+    /// Initializes the `AspectScaledToFillSizeWithRoundedCornersFilter` instance with the given size and radius.
+    ///
+    /// - parameter size:                     The size.
+    /// - parameter radius:                   The radius.
+    /// - parameter divideRadiusByImageScale: Whether to divide the radius by the image scale. Set to `true` when the
+    ///                                       image has the same resolution for all screen scales such as @1x, @2x and
+    ///                                       @3x (i.e. single image from web server). Set to `false` for images loaded
+    ///                                       from an asset catalog with varying resolutions for each screen scale.
+    ///                                       `false` by default.
+    ///
+    /// - returns: The new `AspectScaledToFillSizeWithRoundedCornersFilter` instance.
     public init(size: CGSize, radius: CGFloat, divideRadiusByImageScale: Bool = false) {
         self.filters = [
             AspectScaledToFillSizeFilter(size: size),
@@ -390,13 +389,11 @@ public struct AspectScaledToFillSizeWithRoundedCornersFilter: CompositeImageFilt
 
 /// Scales an image to a specified size, then rounds the corners into a circle.
 public struct ScaledToSizeCircleFilter: CompositeImageFilter {
-    /**
-        Initializes the `ScaledToSizeCircleFilter` instance with the given size.
-
-        - parameter size: The size.
-
-        - returns: The new `ScaledToSizeCircleFilter` instance.
-    */
+    /// Initializes the `ScaledToSizeCircleFilter` instance with the given size.
+    ///
+    /// - parameter size: The size.
+    ///
+    /// - returns: The new `ScaledToSizeCircleFilter` instance.
     public init(size: CGSize) {
         self.filters = [ScaledToSizeFilter(size: size), CircleFilter()]
     }
@@ -410,13 +407,11 @@ public struct ScaledToSizeCircleFilter: CompositeImageFilter {
 /// Scales an image from the center while maintaining the aspect ratio to fit within a specified size, then rounds the
 /// corners into a circle.
 public struct AspectScaledToFillSizeCircleFilter: CompositeImageFilter {
-    /**
-        Initializes the `AspectScaledToFillSizeCircleFilter` instance with the given size.
-
-        - parameter size: The size.
-
-        - returns: The new `AspectScaledToFillSizeCircleFilter` instance.
-    */
+    /// Initializes the `AspectScaledToFillSizeCircleFilter` instance with the given size.
+    ///
+    /// - parameter size: The size.
+    ///
+    /// - returns: The new `AspectScaledToFillSizeCircleFilter` instance.
     public init(size: CGSize) {
         self.filters = [AspectScaledToFillSizeFilter(size: size), CircleFilter()]
     }

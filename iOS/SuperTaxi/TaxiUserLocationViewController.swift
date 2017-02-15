@@ -77,7 +77,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         viewAlert.layer.cornerRadius = 5
         
         if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
-            avatar.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!)
+            avatar.load(URL(string: Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!))
         }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
@@ -93,8 +93,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
         
         addressFrom.text = userAddressFrom
         addressTo.text = userAddressTo
-        
-        userAvatar.load(Api.IMAGE_URL + userFileId)
+        userAvatar.load(URL(string: Api.IMAGE_URL + userFileId))
         userAvatar.layer.cornerRadius = userAvatar.frame.size.height/2
         userAvatar.clipsToBounds = true
     }
@@ -210,7 +209,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
                 userView!.canShowCallout = true
                 
                 let pinImage: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
-                pinImage.load(Api.IMAGE_URL + userFileId)
+                pinImage.load(URL(string: Api.IMAGE_URL + userFileId))
                 pinImage.layer.cornerRadius = pinImage.layer.frame.size.width / 2
                 pinImage.layer.borderWidth = 2
                 pinImage.layer.borderColor = Colors.greenTransparent(1).cgColor
@@ -313,7 +312,7 @@ class TaxiUserLocationViewController: UIViewController, MKMapViewDelegate, CLLoc
     
     func getOrderStatus(){
         
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+        DispatchQueue.global(qos: .default).async(execute: {
             self.apiManager.getOrderStatus(self.UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }

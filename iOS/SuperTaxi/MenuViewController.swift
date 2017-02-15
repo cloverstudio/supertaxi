@@ -30,8 +30,8 @@ class MenuViewController: UIViewController {
         self.slideOutAnimationEnabled = true
         
         if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
-            imgPhoto.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!, placeholder: UIImage(named: "user"))
-        }
+            imgPhoto.load(URL(string: Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!), placeholderImage: UIImage(named: "user"))
+            }
         
         imgPhoto.layer.cornerRadius = imgPhoto.frame.size.width / 2
         imgPhoto.clipsToBounds = true

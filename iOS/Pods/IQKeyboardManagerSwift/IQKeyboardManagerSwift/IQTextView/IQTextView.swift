@@ -49,7 +49,7 @@ open class IQTextView : UITextView {
     fileprivate var placeholderLabel: UILabel?
     
     /** @abstract To set textView's placeholder text. Default is ni.    */
-    open var placeholder : String? {
+    @IBInspectable open var placeholder : String? {
 
         get {
             return placeholderLabel?.text
@@ -79,7 +79,7 @@ open class IQTextView : UITextView {
         }
     }
     
-    open func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         
         if let unwrappedPlaceholderLabel = placeholderLabel {
@@ -126,7 +126,7 @@ open class IQTextView : UITextView {
         }
         
         set {
-            
+            super.delegate = newValue
         }
     }
 }

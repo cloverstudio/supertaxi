@@ -34,7 +34,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         super.viewDidLoad()
         
         if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
-            avatar.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!)
+            avatar.load(URL(string: Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!))
         }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
@@ -140,7 +140,6 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
         for driver in json.array! {
             let driverAnnotation = DriverAnnotation(title: driver["driver"]["name"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!))
             mapView.addAnnotation(driverAnnotation)
-            
         }
     
     }
@@ -206,7 +205,7 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     func getOpenOrders(){
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+        DispatchQueue.global(qos: .default).async(execute: {
             if (self.lat != nil && self.lon != nil){
                 self.apiManager.getOpenOrder(self.UserInformation.string(forKey: UserDetails.TOKEN)!, lat: self.lat, lon: self.lon)
             }

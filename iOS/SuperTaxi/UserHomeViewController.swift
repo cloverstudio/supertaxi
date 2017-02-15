@@ -178,9 +178,10 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
-            avatarView.load(Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!, placeholder: UIImage(named: "user"))
+        if (UserInformation.string(forKey: UserDetails.THUMBNAIL) != nil) {
+            avatarView.load(URL(string: Api.IMAGE_URL + UserInformation.string(forKey: UserDetails.THUMBNAIL)!), placeholderImage: UIImage(named: "user"))
         }
+        
         getOrderStatus = false
         orderId = ""
 
@@ -296,7 +297,7 @@ class UserHomeViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     
     func getOrderResult(){
         
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+        DispatchQueue.global(qos: .default).async(execute: {
             self.apiManager.getOrderStatus(self.UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }

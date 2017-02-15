@@ -16,14 +16,13 @@ open class UserInfoModel: Mappable {
     var note: String!
     
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         name <- map["name"]
         age <- map["age"]
         note <- map["note"]
-        
     }
 }

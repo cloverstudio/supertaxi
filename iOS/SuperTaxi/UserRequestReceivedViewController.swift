@@ -41,8 +41,8 @@ class UserRequestReceivedViewController: UIViewController {
         contactView.layer.borderColor = Colors.darkBlue(1).cgColor
         
         if driverFileId != nil {
-            avatar.load(Api.IMAGE_URL + driverFileId, placeholder: UIImage(named: "taxi_driver"))
-        }
+            avatar.load(URL(string: Api.IMAGE_URL + driverFileId), placeholderImage: UIImage(named: "taxi_driver"))
+            }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
         avatar.clipsToBounds = true

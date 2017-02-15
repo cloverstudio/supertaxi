@@ -93,8 +93,7 @@ open class ApiManager {
         
         let url : String = Api.SERVER_BASE_URL + Api.TEST
         
-        Alamofire.request(.GET, url).responseObject {
-            (response: Response<BaseModel, NSError>) in
+        Alamofire.request(url).responseObject { (response: DataResponse<BaseModel>) in
             
             let baseModel = response.result.value
             var time = baseModel?.time
@@ -115,9 +114,9 @@ open class ApiManager {
         
         let signinurl : String = Api.SERVER_BASE_URL + Api.USER_SIGNIN_URL
     
-        Alamofire.request(.POST, signinurl, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(signinurl, method: .post, parameters: parameters as? [String : AnyObject])
             .responseObject {
-                (response: Response<UserLoginModel, NSError>) in
+                (response: DataResponse<UserLoginModel>) in
                 
                 let userLogin: UserLoginModel = response.result.value!
                 
@@ -126,17 +125,15 @@ open class ApiManager {
                 } else {
                     self.loginDelegate.onLoginError((response.result.value?.code)!)
                 }
-                
-                
         }
     }
     
     func signUp(_ parameters : NSDictionary){
         let signupurl : String = Api.SERVER_BASE_URL + Api.USER_SIGNUP_URL
         
-        Alamofire.request(.POST, signupurl, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(signupurl, method: .post, parameters: parameters as? [String : AnyObject])
             .responseObject {
-                (response: Response<UserLoginModel, NSError>) in
+                (response: DataResponse<UserLoginModel>) in
                 
                 let userLogin: UserLoginModel = response.result.value!
                 
@@ -166,32 +163,32 @@ open class ApiManager {
             mimeType = "image/gif"
         }
     
-        Alamofire.upload(.POST, url, headers: headers,
+        
+       
+        
+        Alamofire.upload(
             multipartFormData: { multipartFormData in
-                multipartFormData.appendBodyPart(data: fileData, name: "file", fileName: fileName, mimeType: "image/" + mimeType)
-                multipartFormData.appendBodyPart(data:name.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"name")
-                multipartFormData.appendBodyPart(data:type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"type")
-                multipartFormData.appendBodyPart(data:telNum.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"telNum")
-                multipartFormData.appendBodyPart(data:age.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"age")
-                multipartFormData.appendBodyPart(data:note.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"note")
-                multipartFormData.appendBodyPart(data:car_type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"car_type")
-                multipartFormData.appendBodyPart(data:car_registration.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"car_registration")
-                multipartFormData.appendBodyPart(data:fee_start.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"fee_start")
-                multipartFormData.appendBodyPart(data:fee_km.data(using: String.Encoding.utf8, allowLossyConversion: false)!, name :"fee_km")
-            },
+                multipartFormData.append(fileData, withName: "file", fileName: fileName, mimeType: "image/" + mimeType)
+                multipartFormData.append(name.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"name")
+                multipartFormData.append(type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"type")
+                multipartFormData.append(telNum.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"telNum")
+                multipartFormData.append(age.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"age")
+                multipartFormData.append(note.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"note")
+                multipartFormData.append(car_type.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"car_type")
+                multipartFormData.append(car_registration.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"car_registration")
+                multipartFormData.append(fee_start.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"fee_start")
+                multipartFormData.append(fee_km.data(using: String.Encoding.utf8, allowLossyConversion: false)!, withName :"fee_km")        },
+            to: url, headers: headers, 
             encodingCompletion: { encodingResult in
                 switch encodingResult {
                 case .success(let upload, _, _):
                     
-                    upload.progress { (bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) in
-          
+                    upload.uploadProgress { progress in
                         DispatchQueue.main.async(execute: {
-                            
-                            self.setUserDetailsDelegate.showPRogress(totalBytesWritten, totalBytesExpectedToWrite: totalBytesExpectedToWrite)
-                            
+
+                            self.setUserDetailsDelegate.showPRogress(progress.completedUnitCount, totalBytesExpectedToWrite: progress.totalUnitCount)
                         })
                     }
-                    
                     
                     upload.responseJSON { response in
                         let json = JSON(response.result.value!)
@@ -201,9 +198,11 @@ open class ApiManager {
                         } else {
                             self.setUserDetailsDelegate.onSetUserDetailsError(json["code"].int!)
                         }
-                        
+
                     }
-                case .failure(let encodingError):
+                    
+                    
+                case .failure( _):
                     self.setUserDetailsDelegate.onSetUserDetailsError(1000)
                 }
             }
@@ -225,22 +224,24 @@ open class ApiManager {
             "addressTo": addressTo,
             "crewNum": crewNum]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseObject {
-                (response: Response<OrderResponseModel, NSError>) in
-                
+                (response: DataResponse<OrderResponseModel>) in
                 let order: OrderResponseModel = response.result.value!
-                
-                if (order.data["order"]["_id"] != nil) {
+            
+                if (order.data["order"]["_id"] != JSON.null) {
                     self.callOrderDelegate.onCallOrdered(order.data["order"]["_id"].string!)
                 } else {
                     self.callOrderDelegate.onCallOrderError((response.result.value?.code)!)
                 }
+
+            }
         }
-    }
     
     func cancelOrder(_ token: String, id: String, type: NSInteger, reason: String){
         
+    /* TODO: cancel order
+         
         let url : String = Api.SERVER_BASE_URL + Api.CANCEL_ORDER
         
         let headers = ["access-token": token]
@@ -250,6 +251,7 @@ open class ApiManager {
             "type": type,
             "reason": reason]
         
+        
         Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
             .responseJSON { response in
                             
@@ -257,7 +259,7 @@ open class ApiManager {
 //                    print("JSON: \(JSON)")
 //                }
         }
-        
+        */
     }
     
     func getDriverList(_ token: String, lat: Double, lon: Double){
@@ -270,17 +272,16 @@ open class ApiManager {
             "lat": lat,
             "lon": lon]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if response.result.value != nil {
                     let json = JSON(response.result.value!)
                     self.driversListDelegate.onDriversListSucess(json["data"]["drivers"])
                 } else {
-                    self.driversListDelegate.onDriversListError((response.result.value?.code)!)
+                    self.driversListDelegate.onDriversListError(((response.result.value as AnyObject).code)!)
                 }
         }
-    
     }
 
     func getOpenOrder(_ token: String, lat: Double, lon: Double){
@@ -293,7 +294,7 @@ open class ApiManager {
             "lat": lat,
             "lon": lon]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if response.result.value != nil {
@@ -305,7 +306,7 @@ open class ApiManager {
                         self.openOrderDelegate.onOpenOrderNoOrders()
                     }
                 } else {
-                    self.openOrderDelegate.onOpenOrderError((response.result.value?.code)!)
+                    self.openOrderDelegate.onOpenOrderError(((response.result.value as AnyObject).code)!)
                 }
         }
         
@@ -320,13 +321,13 @@ open class ApiManager {
         let parameters: NSDictionary = [
             "orderId": orderId]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if response.result.value != nil {
                     self.acceptOrderDelegate.onAcceptORderSuccess()
                 } else {
-                    self.acceptOrderDelegate.onAcceptOrderError((response.result.value?.code)!)
+                    self.acceptOrderDelegate.onAcceptOrderError(((response.result.value as AnyObject).code)!)
                 }
         }
         
@@ -341,7 +342,7 @@ open class ApiManager {
         let parameters: NSDictionary = [
             "orderId": orderId]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if response.result.value != nil {
@@ -359,7 +360,7 @@ open class ApiManager {
                         self.orderStatusDelegate.onOrderStatusNoDrivers()
                     }
                 } else {
-                    self.orderStatusDelegate.onOrderStatusError((response.result.value?.code)!)
+                    self.orderStatusDelegate.onOrderStatusError(((response.result.value as AnyObject).code)!)
                 }
         }
         
@@ -375,7 +376,7 @@ open class ApiManager {
             "lat": lat,
             "lon": lon]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if response.result.value != nil {
@@ -394,7 +395,7 @@ open class ApiManager {
         let parameters: NSDictionary = [
             "orderId": orderId]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if let JSON = response.result.value {
@@ -413,7 +414,7 @@ open class ApiManager {
         let parameters: NSDictionary = [
             "orderId": orderId]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if let JSON = response.result.value {
@@ -432,7 +433,7 @@ open class ApiManager {
         let parameters: NSDictionary = [
             "orderId": orderId]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if let JSON = response.result.value {
@@ -453,7 +454,7 @@ open class ApiManager {
         "type": type,
         "rate": rate]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
         .responseJSON { response in
             
             if response.result.value != nil {
@@ -479,7 +480,7 @@ open class ApiManager {
         let parameters: NSDictionary = [
             "userId": userId]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject],  headers: headers)
             .responseJSON { response in
                 
                 if response.result.value != nil {
@@ -500,7 +501,7 @@ open class ApiManager {
             "lat": lat,
             "lon": lon]
         
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
                 
                 if response.result.value != nil {

@@ -75,13 +75,13 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         navView.layer.borderWidth = 1
         
         if (userInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
-            avatarImage.load(Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!)
+            avatarImage.load(URL(string: Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!))
         }
         
         avatarImage.layer.cornerRadius = avatarImage.frame.size.height/2
         avatarImage.clipsToBounds = true
         
-        avatarImage3.load(Api.IMAGE_URL + driverFileId)
+        avatarImage3.load(URL(string: Api.IMAGE_URL + driverFileId))
         avatarImage3.layer.cornerRadius = avatarImage3.frame.size.height/2
         avatarImage3.clipsToBounds = true
         
@@ -171,7 +171,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
                 userView!.canShowCallout = true
                 
                 let pinImage: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
-                pinImage.load(Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!)
+                pinImage.load(URL(string: Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!))
                 pinImage.layer.cornerRadius = pinImage.layer.frame.size.width / 2
                 pinImage.layer.borderWidth = 2
                 pinImage.layer.borderColor = Colors.greenTransparent(1).cgColor
@@ -268,7 +268,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func getOrderStatus(){
         
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+        DispatchQueue.global(qos: .default).async(execute: {
             self.apiManager.getOrderStatus(self.userInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }

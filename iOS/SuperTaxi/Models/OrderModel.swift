@@ -19,11 +19,11 @@ open class OrderModel: Mappable {
 //    var to: AddressModel?
 //    var userId: String?
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
 //        __v <- map["__v"]
         _id <- map["_id"]
 //        createOrderTs <- map["createOrderTs"]

@@ -97,7 +97,7 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
             txtPhoneNumber.text = userInformation.string(forKey: UserDetails.TEL_NUM)
             
             if (userInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
-                imgUserPhoto.load(Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!)
+                imgUserPhoto.load(URL(string: Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!))
             }
             
             imageData = Data()
@@ -126,7 +126,7 @@ class CreatingUserProfileViewController: UIViewController, UIImagePickerControll
         if isEditingProfile {
             self.dismiss(animated: true, completion: nil)
         } else {
-            self.navigationController?.popViewController(animated: true)
+            let _ = self.navigationController?.popViewController(animated: true)
         }
         
     }

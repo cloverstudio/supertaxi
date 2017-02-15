@@ -17,7 +17,7 @@ open class DriverInfoModel: Mappable {
     var fee_start: NSInteger!
     var fee_km: NSInteger!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
@@ -29,7 +29,7 @@ open class DriverInfoModel: Mappable {
         self.fee_km = fee_km
     }
     
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         name <- map["name"]
         car_type <- map["car_type"]
         car_registration <- map["car_registration"]

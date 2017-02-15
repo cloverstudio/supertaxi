@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B82D49B2429E78C79B1FF4CF227CD541'
+               BlueprintIdentifier = '2D1723D428566FF1F6AB75944295CEF1'
                BlueprintName = 'Pods-SuperTaxiUITests'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Pods-SuperTaxiUITests.framework'>

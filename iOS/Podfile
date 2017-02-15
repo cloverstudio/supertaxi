@@ -7,16 +7,16 @@ target 'SuperTaxi' do
 
   # Pods for SuperTaxi
 	
-	pod 'Alamofire', '~> 3.3'
-	pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git'
-	pod 'AlamofireImage', '~> 2.0' 
-	pod 'AlamofireObjectMapper', '~> 3.0'
-	pod 'IQKeyboardManagerSwift'
+	pod 'Alamofire', '~> 4.3'
+	pod 'SwiftyJSON'
+	pod 'AlamofireImage', '~> 3.1' 
+	pod 'AlamofireObjectMapper', '~> 4.0'
+	pod 'IQKeyboardManagerSwift', '4.0.6'
 	pod 'Bolts'
 	pod 'FBSDKCoreKit'
 	pod 'FBSDKShareKit'
 	pod 'FBSDKLoginKit'
-	pod 'ImageLoader'
+	pod 'ImageLoader', '~> 0.1.1'
 	pod 'SWRevealViewController', '~> 2.3'
 	pod 'Google/SignIn'
 

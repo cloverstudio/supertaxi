@@ -72,7 +72,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         txtStreet.text = "From: " + json["data"]["order"]["from"]["address"].string!
         txtCity.text = "To: " + json["data"]["order"]["to"]["address"].string!
         
-        if (json["data"]["order"]["user"] != nil) {
+        if (json["data"]["order"]["user"] != JSON.null) {
             
             userName = json["data"]["order"]["user"]["user"]["name"].string!
             userAge = json["data"]["order"]["user"]["user"]["age"].int!
@@ -81,7 +81,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
             
             if (json["data"]["order"]["user"]["avatar"].exists()){
                 userFileId = json["data"]["order"]["user"]["avatar"]["fileid"].string!
-                avatar.load(Api.IMAGE_URL + userFileId, placeholder: UIImage(named: "user"))
+                avatar.load(URL(string: Api.IMAGE_URL + userFileId), placeholderImage: UIImage(named: "user"))
             }
         }
         
@@ -106,7 +106,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     // MARK: - UIAction Methods
     @IBAction func onIgnoreClick(_ sender: AnyObject) {
         apiManager.cancelOrder(UserInformation.string(forKey: UserDetails.TOKEN)!, id: self.orderId, type: 2, reason: "Neznam jos")
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func onAcceptClick(_ sender: AnyObject) {
@@ -220,7 +220,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     
     func getOrderStatus(){
         
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
+        DispatchQueue.global(qos: .default).async(execute: {
             self.apiManager.getOrderStatus(self.UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }

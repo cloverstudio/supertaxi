@@ -21,7 +21,7 @@ class SelectProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     @IBAction func onCancel(_ sender: AnyObject) {
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 
 }
