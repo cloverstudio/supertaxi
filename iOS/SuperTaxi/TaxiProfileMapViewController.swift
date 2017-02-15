@@ -134,12 +134,16 @@ class TaxiProfileMapViewController: UIViewController, CLLocationManagerDelegate,
     }
     
     func onDriversListSucess(_ json: JSON) {
-        
         mapView.removeAnnotations(mapView.annotations)
         
         for driver in json.array! {
-            let driverAnnotation = DriverAnnotation(title: driver["driver"]["name"].string!, coordinate: CLLocationCoordinate2D(latitude: driver["currentLocation"][1].double!, longitude: driver["currentLocation"][0].double!))
-            mapView.addAnnotation(driverAnnotation)
+            if let title = driver["driver"]["name"].string
+                , let latitude =  driver["currentLocation"][1].double
+                , let longitude = driver["currentLocation"][0].double {
+            
+                let driverAnnotation = DriverAnnotation(title: title, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                mapView.addAnnotation(driverAnnotation)
+            }
         }
     
     }

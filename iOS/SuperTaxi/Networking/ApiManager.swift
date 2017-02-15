@@ -263,7 +263,9 @@ open class ApiManager {
     }
     
     func getDriverList(_ token: String, lat: Double, lon: Double){
-        
+        print(token)
+        print(lat)
+        print(lon)
         let url : String = Api.SERVER_BASE_URL + Api.DRIVERS
         
         let headers = ["access-token": token]
