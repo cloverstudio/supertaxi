@@ -210,6 +210,8 @@ class LoginViewController: UIViewController, LoginApiDelegate, SignUpApiDelegate
                     }
                 }
             }
+            
+            self.progressHUD.hide()
         }
     }
     

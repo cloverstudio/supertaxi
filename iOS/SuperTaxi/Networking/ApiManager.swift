@@ -75,7 +75,7 @@ protocol NearestDriverDelegate {
     func onNearestDriverSuccess(_ latitude: Double, longitude: Double)
 }
 
-open class ApiManager {
+class ApiManager {
     
     var loginDelegate: LoginApiDelegate!
     var signUpDelegate: SignUpApiDelegate!
@@ -164,8 +164,6 @@ open class ApiManager {
         }
     
         
-       
-        
         Alamofire.upload(
             multipartFormData: { multipartFormData in
                 multipartFormData.append(fileData, withName: "file", fileName: fileName, mimeType: "image/" + mimeType)
@@ -239,11 +237,7 @@ open class ApiManager {
         }
     
     func cancelOrder(_ token: String, id: String, type: NSInteger, reason: String){
-        
-    /* TODO: cancel order
-         
         let url : String = Api.SERVER_BASE_URL + Api.CANCEL_ORDER
-        
         let headers = ["access-token": token]
         
         let parameters: NSDictionary = [
@@ -251,21 +245,16 @@ open class ApiManager {
             "type": type,
             "reason": reason]
         
-        
-        Alamofire.request(.POST, url, headers: headers, parameters: parameters as? [String : AnyObject])
+        Alamofire.request(url, method: .post, parameters: parameters as? [String : AnyObject], headers: headers)
             .responseJSON { response in
-                            
-//                if let JSON = response.result.value {
-//                    print("JSON: \(JSON)")
-//                }
+            
+                if let JSON = response.result.value {
+                    print(JSON)
+                }
         }
-        */
     }
     
     func getDriverList(_ token: String, lat: Double, lon: Double){
-        print(token)
-        print(lat)
-        print(lon)
         let url : String = Api.SERVER_BASE_URL + Api.DRIVERS
         
         let headers = ["access-token": token]

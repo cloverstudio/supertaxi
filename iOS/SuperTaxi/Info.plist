@@ -72,6 +72,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Please enable this to upload your photo from camera.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>App use Locations service mode Always</string>
 	<key>NSLocationUsageDescription</key>
