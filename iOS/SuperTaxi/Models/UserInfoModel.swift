@@ -9,21 +9,20 @@
 import Foundation
 import ObjectMapper
 
-public class UserInfoModel: Mappable {
+open class UserInfoModel: Mappable {
     
     var name: String!
     var age: NSInteger!
     var note: String!
     
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         name <- map["name"]
         age <- map["age"]
         note <- map["note"]
-        
     }
 }

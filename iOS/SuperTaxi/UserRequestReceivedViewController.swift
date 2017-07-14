@@ -31,18 +31,18 @@ class UserRequestReceivedViewController: UIViewController {
     
     var orderId: String!
     
-    let UserInformation = NSUserDefaults.standardUserDefaults()
+    let UserInformation = UserDefaults.standard
     var apiManager: ApiManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         contactView.layer.borderWidth = 1
-        contactView.layer.borderColor = Colors.darkBlue(1).CGColor
+        contactView.layer.borderColor = Colors.darkBlue(1).cgColor
         
         if driverFileId != nil {
-            avatar.load(Api.IMAGE_URL + driverFileId, placeholder: UIImage(named: "taxi_driver"))
-        }
+            avatar.load(URL(string: Api.IMAGE_URL + driverFileId), placeholderImage: UIImage(named: "taxi_driver"))
+            }
         
         avatar.layer.cornerRadius = avatar.frame.size.height/2
         avatar.clipsToBounds = true
@@ -66,8 +66,8 @@ class UserRequestReceivedViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func showOnMap(sender: AnyObject) {
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserMapWithTaxiID") as? UserLongPressViewController
+    @IBAction func showOnMap(_ sender: AnyObject) {
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "UserMapWithTaxiID") as? UserLongPressViewController
         viewController?.driver = driver
         viewController?.driverFileId = driverFileId
         viewController?.driverLocation = driverLocation
@@ -78,13 +78,13 @@ class UserRequestReceivedViewController: UIViewController {
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
-    @IBAction func cancel(sender: AnyObject) {
-        apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
-        self.navigationController!.popViewControllerAnimated(true)
+    @IBAction func cancel(_ sender: AnyObject) {
+        apiManager.cancelOrder(UserInformation.string(forKey: UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
+        self.navigationController!.popViewController(animated: true)
     }
     
-    @IBAction func btnCallDriver(sender: AnyObject) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "telprompt://" + driverPhoneNumber)!)
+    @IBAction func btnCallDriver(_ sender: AnyObject) {
+        UIApplication.shared.openURL(URL(string: "telprompt://" + driverPhoneNumber)!)
     }
     
     

@@ -10,17 +10,17 @@ import Foundation
 import ObjectMapper
 import SwiftyJSON
 
-public class OrderResponseModel: Mappable {
+open class OrderResponseModel: Mappable {
     
     var code: NSInteger!
     var data: JSON!
     var time: CLong!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         code <- map["code"]
         data <- map["data"]
         time <- map["time"]

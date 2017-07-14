@@ -20,7 +20,7 @@ class GetOrderModel: Mappable {
     var from: AddressModel?
     var user: UserModel?
     
-    required init?(_ map: Map) {
+    required init?(map: Map) {
         
     }
     

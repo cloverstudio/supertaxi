@@ -9,16 +9,16 @@
 import Foundation
 import ObjectMapper
 
-public class AddressModel: Mappable {
+open class AddressModel: Mappable {
 
     var address: String!
     var location: [Double]!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         address <- map["address"]
         location <- map["location"]
         

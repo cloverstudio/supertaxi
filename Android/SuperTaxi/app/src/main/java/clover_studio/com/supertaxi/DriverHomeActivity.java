@@ -22,6 +22,7 @@ public class DriverHomeActivity extends HomeActivity {
 
     public static void startActivity(Activity activity){
         Intent startActivity = new Intent(activity, DriverHomeActivity.class);
+        startActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if(activity instanceof BaseActivity){
             ((BaseActivity)activity).startActivity(startActivity);
         }else{

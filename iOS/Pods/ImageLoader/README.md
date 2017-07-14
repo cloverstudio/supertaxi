@@ -1,127 +1,69 @@
-ImageLoader
-=======
-[![Build-Status](https://api.travis-ci.org/hirohisa/ImageLoaderSwift.svg?branch=master)](https://travis-ci.org/hirohisa/ImageLoaderSwift)
-[![CocoaPods](https://img.shields.io/cocoapods/v/ImageLoader.svg)](https://cocoapods.org/pods/ImageLoader)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![codecov.io](https://codecov.io/github/hirohisa/ImageLoaderSwift/coverage.svg?branch=master)](https://codecov.io/github/hirohisa/ImageLoaderSwift?branch=master)
-[![license](https://img.shields.io/badge/license-MIT-000000.svg)](https://github.com/hirohisa/ImageLoaderSwift/blob/master/LICENSE)
+ImageLoader [![Build-Status](https://img.shields.io/travis/hirohisa/ImageLoader/master.svg)](https://travis-ci.org/hirohisa/ImageLoader.png?branch=master) [![GitHub-version](https://img.shields.io/cocoapods/v/ImageLoader.svg)](https://github.com/hirohisa/ImageLoader/tags) [![platform](https://img.shields.io/cocoapods/p/ImageLoader.svg)](https://github.com/hirohisa/ImageLoader) [![license](https://img.shields.io/cocoapods/l/ImageLoader.svg)](https://github.com/hirohisa/ImageLoader/blob/master/LICENSE) [![Test-Coverage](https://img.shields.io/coveralls/hirohisa/ImageLoader/master.svg)](https://coveralls.io/r/hirohisa/ImageLoader)
+===========
 
-ImageLoader is an instrument for asynchronous image loading written in Swift. It is a lightweight and fast image loader for iOS.
+ImageLoader is an instrument for asynchronous image loading. It is a lightweight and fast image loader for iOS.
 
 Features
 ----------
 
 - [x] Simple methods with UIImageView Category.
-- [x] Control Loader to resume, suspend and cancel with URL.
-- [x] A module for cache can be set by yourself and default cache (Disk) uses disk spaces and un-uses memory.
+- [x] A module for cache can be set by yourself. [hirohisa/Diskcached](https://github.com/hirohisa/Diskcached)
 - [x] Loading images is handled by ImageLoader, not UIImageView.
-- [x] After image view start loading another image, previous loading task is possible to live with caching.
-- [x] Support `NSURL`, `String` and `NSURLComponents` by `URLLiteralConvertible`
-- [ ] Optimize to use memory when image is set.
-- [x] Support image type .jpeg, .png
+- [x] Easy to modify implementation from other modules
 - [x] Comprehensive Unit Test Coverage
 
 Requirements
 ----------
 
-- iOS 8.0+
-- Xcode 7.0+ Swift 2.0
+- iOS 5.0+
 
-ImageLoader | Xcode | Swift
------------ | ----- | -----
-0.3.x | 6.4 | 1.2
-0.4+ | 7.0+ | 2.0
+If your project's target is iOS 7.0+, use [ImageLoaderSwift](https://github.com/hirohisa/ImageLoaderSwift). It's A lightweight and fast image loader for iOS written in Swift.
 
-If your project's target need to support iOS5.x or 6.x, use [ImageLoader](https://github.com/hirohisa/ImageLoader). It's A lightweight and fast image loader for iOS written in Objective-C.
 
 Installation
 ----------
 
-### CocoaPods
+There are two ways to use this in your project:
 
-[CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects.
+- Copy the ImageLoader class files into your project
 
-To integrate ImageLoader into your Xcode project using CocoaPods, specify it in your `Podfile`:
-
+- Install with CocoaPods to write Podfile
 ```ruby
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
-use_frameworks!
-
-pod 'ImageLoader'
+platform :ios
+pod 'ImageLoader', '~> 0.1.1'
 ```
 
-Then, run the following command:
-
-```bash
-$ pod install
-```
-
-### Carthage
-
-[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that automates the process of adding frameworks to your Cocoa application.
-
-You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
-
-```bash
-$ brew update
-$ brew install carthage
-```
-
-To integrate ImageLoader into your Xcode project using Carthage, specify it in your `Cartfile`:
-
-```
-github "hirohisa/ImageLoaderSwift" ~> 0.6.0
-```
-
-### Manually
-
-If you prefer not to use either of the aforementioned dependency managers, you can integrate ImageLoader into your project manually.
-
-#### Embedded Framework
-
-- Open up Terminal, `cd` into your top-level project directory, and run the following command "if" your project is not initialized as a git repository:
-
-- Add ImageLoader as a git [submodule](http://git-scm.com/docs/git-submodule) by running the following command:
-
-```bash
-$ git submodule add https://github.com/hirohisa/ImageLoaderSwift.git
-```
-
-Usage
+Modify implementation from other modules
 ----------
 
-#### ImageLoader
-
-**load**
-```swift
-import ImageLoader
-
-ImageLoader.load("http://image").completionHandler { _ in }
+impliment same methods
+```objc
+[imageView setImageWithURL:URL];
+[imageView setImageWithURL:URL placeholderImage:nil];
 ```
 
-**suspend**
-```swift
-import ImageLoader
+#### AFNetworking
 
-ImageLoader.suspend("http://image")
+from:
+```objc
+#import <SDWebImage/UIImageView+WebCache.h>
 ```
 
-
-#### UIImageView Category
-
-```swift
-import ImageLoader
-
-imageView.load("http://image")
+to:
+```objc
+#import <ImageLoader/UIImageView+ImageLoader.h>
 ```
 
-or
+#### SDWebImage
 
-```swift
-import ImageLoader
+from:
+```objc
+#import <AFNetworking/UIImageView+AFNetworking.h>
+```
 
-imageView.load("http://image", placeholder: nil) { _ in ... }
+to:
+```objc
+#import <ImageLoader/UIImageView+ImageLoader.h>
 ```
 
 

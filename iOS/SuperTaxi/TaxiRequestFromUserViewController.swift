@@ -20,7 +20,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     @IBOutlet var txtCity: UILabel!
     
     var locationManager: CLLocationManager!
-    let UserInformation = NSUserDefaults.standardUserDefaults()
+    let UserInformation = UserDefaults.standard
     var apiManager: ApiManager!
     
     var json: JSON!
@@ -55,7 +55,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         locationManager.startUpdatingLocation()
         
         if let coor = mapView.userLocation.location?.coordinate{
-            mapView.setCenterCoordinate(coor, animated: true)
+            mapView.setCenter(coor, animated: true)
         }
         
         mapView.showsUserLocation = true;
@@ -72,7 +72,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         txtStreet.text = "From: " + json["data"]["order"]["from"]["address"].string!
         txtCity.text = "To: " + json["data"]["order"]["to"]["address"].string!
         
-        if (json["data"]["order"]["user"] != nil) {
+        if (json["data"]["order"]["user"] != JSON.null) {
             
             userName = json["data"]["order"]["user"]["user"]["name"].string!
             userAge = json["data"]["order"]["user"]["user"]["age"].int!
@@ -81,7 +81,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
             
             if (json["data"]["order"]["user"]["avatar"].exists()){
                 userFileId = json["data"]["order"]["user"]["avatar"]["fileid"].string!
-                avatar.load(Api.IMAGE_URL + userFileId, placeholder: UIImage(named: "user"))
+                avatar.load(URL(string: Api.IMAGE_URL + userFileId), placeholderImage: UIImage(named: "user"))
             }
         }
         
@@ -104,24 +104,24 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     }
     
     // MARK: - UIAction Methods
-    @IBAction func onIgnoreClick(sender: AnyObject) {
-        apiManager.cancelOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, id: self.orderId, type: 2, reason: "Neznam jos")
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func onIgnoreClick(_ sender: AnyObject) {
+        apiManager.cancelOrder(UserInformation.string(forKey: UserDetails.TOKEN)!, id: self.orderId, type: 2, reason: "Neznam jos")
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func onAcceptClick(sender: AnyObject) {
-        apiManager.acceptOrder(UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
+    @IBAction func onAcceptClick(_ sender: AnyObject) {
+        apiManager.acceptOrder(UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
     }
     
-    func mapViewDidFinishRenderingMap(mapView: MKMapView, fullyRendered: Bool) {
+    func mapViewDidFinishRenderingMap(_ mapView: MKMapView, fullyRendered: Bool) {
         
     }
     
-    func centerMap(center:CLLocationCoordinate2D){
+    func centerMap(_ center:CLLocationCoordinate2D){
         
         let spanX = 0.007
         let spanY = 0.007
@@ -130,11 +130,11 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         mapView.setRegion(newRegion, animated: true)
     }
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
     }
     
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor(red: 57/255.0, green: 149/255.0, blue: 246/255.0, alpha: 1.0)
         renderer.lineWidth = 10.0
@@ -142,7 +142,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         return renderer
     }
     
-    func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+    func createRoute(_ startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
         
         mapView.removeOverlays(mapView.overlays)
         mapView.removeAnnotations(mapView.annotations)
@@ -173,11 +173,11 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
-        directionRequest.transportType = .Automobile
+        directionRequest.transportType = .automobile
         
         let directions = MKDirections(request: directionRequest)
         
-        directions.calculateDirectionsWithCompletionHandler {
+        directions.calculate {
             (response, error) -> Void in
             
             guard let response = response else {
@@ -189,7 +189,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
             }
             
             let route = response.routes[0]
-            self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
+            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             
 //            let rect = route.polyline.boundingMapRect
 //            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
@@ -199,7 +199,7 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
     
     func onAcceptORderSuccess() {
         
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiUserLocationID") as? TaxiUserLocationViewController
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiUserLocationID") as? TaxiUserLocationViewController
         viewController!.from = from
         viewController!.to = to
         viewController!.driverLocation = CLLocationCoordinate2D(latitude: lat, longitude: lon)
@@ -214,18 +214,18 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
-    func onAcceptOrderError(error: NSInteger) {
+    func onAcceptOrderError(_ error: NSInteger) {
         print("error")
     }
     
     func getOrderStatus(){
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.apiManager.getOrderStatus(self.UserInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
+        DispatchQueue.global(qos: .default).async(execute: {
+            self.apiManager.getOrderStatus(self.UserInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }
     
-    func onOrderStatusSuccess(json: JSON) {
+    func onOrderStatusSuccess(_ json: JSON) {
         getOrderStatus()
     }
     
@@ -233,35 +233,35 @@ class TaxiRequestFromUserViewController: UIViewController, CLLocationManagerDele
         getOrderStatus()
     }
     
-    func onOrderStatusError(error: NSInteger) {
+    func onOrderStatusError(_ error: NSInteger) {
         getOrderStatus()
     }
     
-    func onOrderStatusCanceled(json: JSON) {
+    func onOrderStatusCanceled(_ json: JSON) {
         
         if(json["data"]["cancelType"].number == 1){
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
+            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
                 UIAlertAction in
                 
-                let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+                let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiProfileMapVC") as? TaxiProfileMapViewController
                 self.navigationController?.pushViewController(viewController!, animated: true)
             }
             
-            let alert = UIAlertController(title: "Info", message: "User canceled!", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Info", message: "User canceled!", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(okAction)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         } else {
-            let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("TaxiProfileMapVC") as? TaxiProfileMapViewController
+            let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TaxiProfileMapVC") as? TaxiProfileMapViewController
             self.navigationController?.pushViewController(viewController!, animated: true)
         }
         
     }
     
-    func onOrderSrarusStartedDrive(json: JSON){
+    func onOrderSrarusStartedDrive(_ json: JSON){
         
     }
     
-    func onOrderStatusDriveEnded(json: JSON){
+    func onOrderStatusDriveEnded(_ json: JSON){
         
     }
 

@@ -27,7 +27,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     var locationManager: CLLocationManager!
     
-    let userInformation = NSUserDefaults.standardUserDefaults()
+    let userInformation = UserDefaults.standard
     var apiManager: ApiManager!
     
     var driver: DriverInfoModel!
@@ -65,23 +65,23 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         locationManager.startUpdatingLocation()
         
         if let coor = mapView.userLocation.location?.coordinate{
-            mapView.setCenterCoordinate(coor, animated: true)
+            mapView.setCenter(coor, animated: true)
         }
         
         mapView.showsUserLocation = true;
 
         ratingView.layer.cornerRadius = 5
-        navView.layer.borderColor = Colors.darkBlue(1).CGColor
+        navView.layer.borderColor = Colors.darkBlue(1).cgColor
         navView.layer.borderWidth = 1
         
-        if (userInformation.stringForKey(UserDetails.THUMBNAIL) != nil){
-            avatarImage.load(Api.IMAGE_URL + userInformation.stringForKey(UserDetails.THUMBNAIL)!)
+        if (userInformation.string(forKey: UserDetails.THUMBNAIL) != nil){
+            avatarImage.load(URL(string: Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!))
         }
         
         avatarImage.layer.cornerRadius = avatarImage.frame.size.height/2
         avatarImage.clipsToBounds = true
         
-        avatarImage3.load(Api.IMAGE_URL + driverFileId)
+        avatarImage3.load(URL(string: Api.IMAGE_URL + driverFileId))
         avatarImage3.layer.cornerRadius = avatarImage3.frame.size.height/2
         avatarImage3.clipsToBounds = true
         
@@ -93,15 +93,15 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         driverLoc = CLLocationCoordinate2D(latitude: driverLocation[1].double!, longitude: driverLocation[0].double!)
         createRoute(driverLoc, endLocation: from)
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
+        _ = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(UserLongPressViewController.getDriverLocation), userInfo: nil, repeats: true)
         
     }
     
     func getDriverLocation(){
-        self.apiManager.getProfileDetail(self.userInformation.stringForKey(UserDetails.TOKEN)!, userId: self.driverId)
+        self.apiManager.getProfileDetail(self.userInformation.string(forKey: UserDetails.TOKEN)!, userId: self.driverId)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         getOrderStatus()
     }
 
@@ -110,28 +110,28 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onCloseDialog(sender: AnyObject) {
-        ratingView.hidden = true
+    @IBAction func onCloseDialog(_ sender: AnyObject) {
+        ratingView.isHidden = true
     }
     
-    @IBAction func onCancelTrip(sender: AnyObject) {
-        apiManager.cancelOrder(userInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
+    @IBAction func onCancelTrip(_ sender: AnyObject) {
+        apiManager.cancelOrder(userInformation.string(forKey: UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
     }
     
-    @IBAction func onCancelTripBottom(sender: AnyObject) {
-        apiManager.cancelOrder(userInformation.stringForKey(UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
+    @IBAction func onCancelTripBottom(_ sender: AnyObject) {
+        apiManager.cancelOrder(userInformation.string(forKey: UserDetails.TOKEN)!, id: orderId, type: 1, reason: "Neznam jos")
     }
     
-    @IBAction func onMenuOpen(sender: AnyObject) {
+    @IBAction func onMenuOpen(_ sender: AnyObject) {
         self.revealViewController().revealToggle(sender)
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 //        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         
     }
     
-    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(overlay: overlay)
         renderer.strokeColor = UIColor(red: 57/255.0, green: 149/255.0, blue: 246/255.0, alpha: 1.0)
         renderer.lineWidth = 5.0
@@ -140,7 +140,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     }
     
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         if annotation is MKPointAnnotation {
             return nil
@@ -148,15 +148,15 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         } else if annotation is DriverAnnotation {
             let reuseId = "driver"
             
-            var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+            var anView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
             if anView == nil {
                 anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
                 anView!.canShowCallout = true
                 anView!.image = UIImage(named: "black_car_icon")
             }
          
-            var rotationTransform: CGAffineTransform = CGAffineTransformIdentity;
-            rotationTransform = CGAffineTransformMakeRotation(CGFloat(angle));
+            var rotationTransform: CGAffineTransform = CGAffineTransform.identity;
+            rotationTransform = CGAffineTransform(rotationAngle: CGFloat(angle));
             anView!.transform = rotationTransform;
             
             return anView
@@ -165,20 +165,20 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             
             let reuseId = "user"
             
-            var userView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+            var userView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
             if userView == nil {
                 userView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
                 userView!.canShowCallout = true
                 
-                let pinImage: UIImageView = UIImageView(frame: CGRectMake(0, 0, 35, 35))
-                pinImage.load(Api.IMAGE_URL + userInformation.stringForKey(UserDetails.THUMBNAIL)!)
+                let pinImage: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+                pinImage.load(URL(string: Api.IMAGE_URL + userInformation.string(forKey: UserDetails.THUMBNAIL)!))
                 pinImage.layer.cornerRadius = pinImage.layer.frame.size.width / 2
                 pinImage.layer.borderWidth = 2
-                pinImage.layer.borderColor = Colors.greenTransparent(1).CGColor
+                pinImage.layer.borderColor = Colors.greenTransparent(1).cgColor
                 pinImage.layer.masksToBounds = true
                 
                 UIGraphicsBeginImageContext(pinImage.bounds.size);
-                pinImage.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+                pinImage.layer.render(in: UIGraphicsGetCurrentContext()!)
                 let screenShot = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
                 
@@ -191,7 +191,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         return nil
     }
     
-    func createRoute(startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
+    func createRoute(_ startLocation: CLLocationCoordinate2D, endLocation: CLLocationCoordinate2D){
         
         if helperLocation != nil {
             let delatLongitude = Float(helperLocation.longitude - startLocation.longitude)
@@ -243,11 +243,11 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         let directionRequest = MKDirectionsRequest()
         directionRequest.source = sourceMapItem
         directionRequest.destination = destinationMapItem
-        directionRequest.transportType = .Automobile
+        directionRequest.transportType = .automobile
         
         let directions = MKDirections(request: directionRequest)
         
-        directions.calculateDirectionsWithCompletionHandler {
+        directions.calculate {
             (response, error) -> Void in
             
             guard let response = response else {
@@ -259,7 +259,7 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
             }
             
             let route = response.routes[0]
-            self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
+            self.mapView.add((route.polyline), level: MKOverlayLevel.aboveRoads)
             self.txtDistance.text = String(route.distance / 1000) + " km"
             
         }
@@ -268,12 +268,12 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func getOrderStatus(){
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            self.apiManager.getOrderStatus(self.userInformation.stringForKey(UserDetails.TOKEN)!, orderId: self.orderId)
+        DispatchQueue.global(qos: .default).async(execute: {
+            self.apiManager.getOrderStatus(self.userInformation.string(forKey: UserDetails.TOKEN)!, orderId: self.orderId)
         })
     }
     
-    func onOrderStatusSuccess(json: JSON) {
+    func onOrderStatusSuccess(_ json: JSON) {
         getOrderStatus()
     }
     
@@ -281,34 +281,34 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         getOrderStatus()
     }
     
-    func onOrderStatusError(error: NSInteger) {
+    func onOrderStatusError(_ error: NSInteger) {
         getOrderStatus()
     }
     
-    func onOrderStatusCanceled(json: JSON) {
+    func onOrderStatusCanceled(_ json: JSON) {
         
         if(json["data"]["cancelType"].number == 2){
             
-            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) {
+            let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) {
                 UIAlertAction in
                 
-                let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
+                let viewController = self.storyboard?.instantiateViewController(withIdentifier: "UserHomeVC") as? UserHomeViewController
                 self.navigationController?.pushViewController(viewController!, animated: true)
             }
             
-            let alert = UIAlertController(title: "Info", message: "Driver canceled!", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Info", message: "Driver canceled!", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(okAction)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         } else {
-            let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
+            let viewController = self.storyboard?.instantiateViewController(withIdentifier: "UserHomeVC") as? UserHomeViewController
             self.navigationController?.pushViewController(viewController!, animated: true)
         }
     }
     
-    func onOrderSrarusStartedDrive(json: JSON){
+    func onOrderSrarusStartedDrive(_ json: JSON){
         if !tripStarted {
             createRoute(driverLoc, endLocation: to)
-            cancelTripBottom.enabled = false
+            cancelTripBottom.isEnabled = false
         }
         
         tripStarted = true
@@ -316,9 +316,9 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
         getOrderStatus()
     }
     
-    func onOrderStatusDriveEnded(json: JSON){
+    func onOrderStatusDriveEnded(_ json: JSON){
         if !tripEnded {
-            let customView = RateView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height), name: driver.name, start: from, end: to, type: 1, image: driverFileId, id: driverId)
+            let customView = RateView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height), name: driver.name, start: from, end: to, type: 1, image: driverFileId, id: driverId)
             customView.rateViewDelegate = self
             self.view.addSubview(customView)
         }
@@ -329,18 +329,18 @@ class UserLongPressViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     func onDriveRated() {
         helperLocation = nil
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "UserHomeVC") as? UserHomeViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
 
     }
     
     func onDriveRatedError(){
         helperLocation = nil
-        let viewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserHomeVC") as? UserHomeViewController
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "UserHomeVC") as? UserHomeViewController
         self.navigationController?.pushViewController(viewController!, animated: true)
     }
     
-    func onProfileDetailsSuccess(json: JSON){
+    func onProfileDetailsSuccess(_ json: JSON){
         driverLoc = CLLocationCoordinate2D(latitude: json["data"]["user"]["currentLocation"][1].double!, longitude: json["data"]["user"]["currentLocation"][0].double!)
         if tripStarted {
             createRoute(driverLoc, endLocation: to)

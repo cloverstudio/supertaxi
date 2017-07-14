@@ -21,8 +21,8 @@ class ForgotPasswordViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onCancelClick(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func onCancelClick(_ sender: AnyObject) {
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 
 

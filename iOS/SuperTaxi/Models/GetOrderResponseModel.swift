@@ -15,7 +15,7 @@ class GetOrderResponseModel : Mappable {
     var time: Int?
     var data: GetOrderModel?
     
-    required init?(_ map: Map) {
+    required init?(map: Map) {
         
     }
     

@@ -9,17 +9,17 @@
 import Foundation
 import ObjectMapper
 
-public class UserLoginModel: Mappable {
+open class UserLoginModel: Mappable {
     
     var code: NSInteger!
     var data: UserDataModel!
     var time: CLong!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         code <- map["code"]
         data <- map["data"]
         time <- map["time"]

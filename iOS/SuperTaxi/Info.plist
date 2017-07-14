@@ -72,10 +72,16 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Please enable this to upload your photo from camera.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>App use Locations service mode Always</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please enable your location.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please enable this to upload your photo.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -20,8 +20,8 @@ class SelectProfileViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func onCancel(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func onCancel(_ sender: AnyObject) {
+        let _ = self.navigationController?.popViewController(animated: true)
     }
 
 }

@@ -5,7 +5,7 @@ package clover_studio.com.supertaxi.utils;
  */
 public class Const {
 
-    public static final String BASE_URL = "http://107.170.147.230";
+    public static final String BASE_URL = "http://54.193.2.179";
 
     public static final class ErrorCodes{
         public static final int UNKNOWN = 6000000;

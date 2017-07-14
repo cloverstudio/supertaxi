@@ -9,16 +9,16 @@
 import Foundation
 import ObjectMapper
 
-public class UserDataModel: Mappable {
+open class UserDataModel: Mappable {
     
     var token_new: String!
     var user: UserModel!
     
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         
     }
     
-    public func mapping(map: Map) {
+    open func mapping(map: Map) {
         token_new <- map["token_new"]
         user <- map["user"]
     }
