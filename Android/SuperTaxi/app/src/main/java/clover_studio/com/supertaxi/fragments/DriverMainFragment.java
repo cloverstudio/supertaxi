@@ -46,7 +46,6 @@ import clover_studio.com.supertaxi.models.CheckOrderStatusModel;
 import clover_studio.com.supertaxi.models.DriverListResponse;
 import clover_studio.com.supertaxi.models.GetOpenOrderModel;
 import clover_studio.com.supertaxi.models.OrderModel;
-import clover_studio.com.supertaxi.models.UserModel;
 import clover_studio.com.supertaxi.models.post_models.PostAcceptOrderModel;
 import clover_studio.com.supertaxi.models.post_models.PostCancelTripModel;
 import clover_studio.com.supertaxi.models.post_models.PostCheckOrderStatusModel;
