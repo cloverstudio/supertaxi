@@ -1021,7 +1021,7 @@ public class UserMainFragment extends MainFragment implements GoogleMap.OnMarker
                 super.onCustomSuccess(call, response);
 
                 UserModel nearestDriver = response.body().data.driver;
-                if (nearestDriver.currentLocation != null) {
+                if (nearestDriver != null && nearestDriver.currentLocation != null) {
                     LatLng driverLatLng = new LatLng(nearestDriver.currentLocation.get(1), nearestDriver.currentLocation.get(0));
                     MapsUtils.getTimeBetween(startLatLng, driverLatLng, new MapsUtils.OnTimeCalculated() {
                         @Override
