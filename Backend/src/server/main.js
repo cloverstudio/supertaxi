@@ -23,7 +23,7 @@ DatabaseManager.init(function(success){
 
     } else {
 
-        // starts process in valid directory (spika-enterpriese-server)
+        // starts process in valid directory (backend)
         process.chdir(path.resolve(__dirname, "../.."));
 
         WebAPI.init(app);
