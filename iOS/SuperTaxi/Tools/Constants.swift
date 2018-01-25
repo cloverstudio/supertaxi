@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 struct Api {
-    static let SERVER_BASE_URL = "http://107.170.147.230/api/v1/"
-    static let IMAGE_URL = "http://107.170.147.230/uploads/"
+    static let SERVER_BASE_URL = "http://54.193.2.179/api/v1/"
+    static let IMAGE_URL = "http://54.193.2.179/uploads/"
     static let SALT = "8zgqvU6LaziThJI1uz3PevYd"
     static let USER_SIGNIN_URL = "signin"
     static let USER_SIGNUP_URL = "signup"

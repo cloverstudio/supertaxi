@@ -442,6 +442,7 @@
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = XJXX32P7NP;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 					};
 					C3B24AEA1D1C236F00508611 = {
 						CreatedOnToolsVersion = 7.3;
@@ -890,9 +891,10 @@
 					"-framework",
 					"\"SwiftyJSON\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.clover.super.taxi.ent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -944,9 +946,10 @@
 					"-framework",
 					"\"SwiftyJSON\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.cloverstudio.supertaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.clover.super.taxi.ent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SuperTaxi/SuperTaxi-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
