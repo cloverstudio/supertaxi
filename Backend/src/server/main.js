@@ -10,6 +10,7 @@ var port = Conf.port;
 
 var WebAPI = require('./WebAPI/WebAPIMain');
 var DatabaseManager = require('./lib/DatabaseManager');
+var path = require('path');
 
 console.log('Starting SuperTaxi Server...');
 
@@ -21,6 +22,9 @@ DatabaseManager.init(function(success){
         process.exit(1);
 
     } else {
+
+        // starts process in valid directory (backend)
+        process.chdir(path.resolve(__dirname, "../.."));
 
         WebAPI.init(app);
 
